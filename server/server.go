@@ -1,7 +1,7 @@
 package server
 
 import (
-	"doc_manager/log"
+	"doc_manager/logger"
 	"doc_manager/server/handler"
 	"fmt"
 	"github.com/gin-gonic/gin"
@@ -9,7 +9,7 @@ import (
 
 func Start(port string, rPrefix []string) {
 	r := gin.New()
-	r.Use(log.Logger())
+	r.Use(logger.Logger())
 	handler.RegisterRouters(r,nil)
 	err := r.Run(port)
 	if err != nil {
