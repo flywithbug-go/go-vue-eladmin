@@ -6,7 +6,7 @@ import (
 )
 func SetLog() {
 	w := log.NewFileWriter()
-	w.SetPathPattern("./log-%Y%M%D.log")
+	w.SetPathPattern("./log/log-%Y%M%D.log")
 	c := log.NewConsoleWriter()
 	c.SetColor(true)
 	log.Register(w)
