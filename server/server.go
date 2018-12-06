@@ -9,7 +9,8 @@ import (
 
 func Start(port string, rPrefix []string) {
 	r := gin.New()
-	r.Use(logger.Logger())
+
+	r.Use(logger.Logger(),gin.Recovery())
 	handler.RegisterRouters(r,nil)
 	err := r.Run(port)
 	if err != nil {
