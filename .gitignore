@@ -1,24 +1,4 @@
 # Created by .ignore support plugin (hsz.mobi)
-*~
-.DS_Store
-.idea/crawer.iml
-.idea/modules.xml
-.idea/vcs.xml
-.idea/workspace.xml
-learn.iml
-.idea/dbnavigator.xml
-.idea/encodings.xml
-projectFilesBackup/.idea/workspace.xml
-dbnavigator.xml
-ChatDefinition.h
-IMDefaultDefinition.h
-IMClient01
-autobuild.sh
-main
-.idea
-*.iml
-cache
-todo/node_modules
 
 ### Go template
 # Binaries for programs and plugins
