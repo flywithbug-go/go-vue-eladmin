@@ -10,7 +10,7 @@ import (
 func StartApi(port ,staticPath string, rPrefix []string) {
 	r := gin.New()
 	r.Use(logger.Logger(),gin.Recovery())
-	r.Static("/index.html",staticPath)
+	r.Static("/",staticPath)
 	handler.RegisterRouters(r,rPrefix)
 	err := r.Run(port)
 	if err != nil {
