@@ -1,0 +1,25 @@
+2018-12-07 19:27:46 	 [INFO] 	 <logger.go:33>  	 [GIN] [Vge9lbcIVmtoCW4V] [Started]	RequestHeader::{"Accept":["text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8"],"Accept-Encoding":["gzip, deflate, br"],"Accept-Language":["zh-CN,zh;q=0.9"],"Connection":["keep-alive"],"Cookie":["Idea-462cb901=a1024485-141c-49a6-895d-cb168ce1280b; SID=s%3ABa9IwiiWHIhB1WVHu3mCRGJO9OVSm7qH.sEz0ChPzqMNRMkifxeimAbejYkwv1q4tVsm76Xmj6Jw; USERID=186655961"],"Purpose":["prefetch"],"Upgrade-Insecure-Requests":["1"],"User-Agent":["Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36"]}
+
+2018-12-07 19:27:46 	 [INFO] 	 <logger.go:53>  	 [GIN] [Vge9lbcIVmtoCW4V] [Completed]	[97;42m 200 [0m|     229.128µs | ::1 | [97;44m GET [0m|	 /
+
+2018-12-07 19:27:46 	 [INFO] 	 <logger.go:33>  	 [GIN] [Vge9lcnEKotoCW4V] [Started]	RequestHeader::{"Accept":["image/webp,image/apng,image/*,*/*;q=0.8"],"Accept-Encoding":["gzip, deflate, br"],"Accept-Language":["zh-CN,zh;q=0.9"],"Connection":["keep-alive"],"Cookie":["Idea-462cb901=a1024485-141c-49a6-895d-cb168ce1280b; SID=s%3ABa9IwiiWHIhB1WVHu3mCRGJO9OVSm7qH.sEz0ChPzqMNRMkifxeimAbejYkwv1q4tVsm76Xmj6Jw; USERID=186655961"],"Referer":["http://localhost:8081/"],"User-Agent":["Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36"]}
+
+2018-12-07 19:27:46 	 [INFO] 	 <logger.go:53>  	 [GIN] [Vge9lcnEKotoCW4V] [Completed]	[97;43m 404 [0m|      52.475µs | ::1 | [97;44m GET [0m|	 /favicon.ico
+
+2018-12-07 19:27:47 	 [INFO] 	 <logger.go:33>  	 [GIN] [Vge9lfcJTq1oCW4V] [Started]	RequestHeader::{"Accept":["text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8"],"Accept-Encoding":["gzip, deflate, br"],"Accept-Language":["zh-CN,zh;q=0.9"],"Cache-Control":["max-age=0"],"Connection":["keep-alive"],"Cookie":["Idea-462cb901=a1024485-141c-49a6-895d-cb168ce1280b; SID=s%3ABa9IwiiWHIhB1WVHu3mCRGJO9OVSm7qH.sEz0ChPzqMNRMkifxeimAbejYkwv1q4tVsm76Xmj6Jw; USERID=186655961"],"Upgrade-Insecure-Requests":["1"],"User-Agent":["Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36"]}
+
+2018-12-07 19:27:47 	 [INFO] 	 <logger.go:53>  	 [GIN] [Vge9lfcJTq1oCW4V] [Completed]	[97;42m 200 [0m|     117.289µs | ::1 | [97;44m GET [0m|	 /
+
+2018-12-07 19:27:47 	 [INFO] 	 <logger.go:33>  	 [GIN] [Vge9lUAaDbxoCW4V] [Started]	RequestHeader::{"Accept":["text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8"],"Accept-Encoding":["gzip, deflate, br"],"Accept-Language":["zh-CN,zh;q=0.9"],"Cache-Control":["max-age=0"],"Connection":["keep-alive"],"Cookie":["Idea-462cb901=a1024485-141c-49a6-895d-cb168ce1280b; SID=s%3ABa9IwiiWHIhB1WVHu3mCRGJO9OVSm7qH.sEz0ChPzqMNRMkifxeimAbejYkwv1q4tVsm76Xmj6Jw; USERID=186655961"],"Upgrade-Insecure-Requests":["1"],"User-Agent":["Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36"]}
+
+2018-12-07 19:27:47 	 [INFO] 	 <logger.go:53>  	 [GIN] [Vge9lUAaDbxoCW4V] [Completed]	[97;42m 200 [0m|      70.355µs | ::1 | [97;44m GET [0m|	 /
+
+2018-12-07 19:27:47 	 [INFO] 	 <logger.go:33>  	 [GIN] [Vge9lcYprcZoCW4V] [Started]	RequestHeader::{"Accept":["text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8"],"Accept-Encoding":["gzip, deflate, br"],"Accept-Language":["zh-CN,zh;q=0.9"],"Cache-Control":["max-age=0"],"Connection":["keep-alive"],"Cookie":["Idea-462cb901=a1024485-141c-49a6-895d-cb168ce1280b; SID=s%3ABa9IwiiWHIhB1WVHu3mCRGJO9OVSm7qH.sEz0ChPzqMNRMkifxeimAbejYkwv1q4tVsm76Xmj6Jw; USERID=186655961"],"Upgrade-Insecure-Requests":["1"],"User-Agent":["Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36"]}
+
+2018-12-07 19:27:47 	 [INFO] 	 <logger.go:53>  	 [GIN] [Vge9lcYprcZoCW4V] [Completed]	[97;42m 200 [0m|      63.367µs | ::1 | [97;44m GET [0m|	 /
+
+2018-12-07 19:27:48 	 [INFO] 	 <logger.go:33>  	 [GIN] [Vge9lR9o7dBoCW4V] [Started]	RequestHeader::{"Accept":["text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8"],"Accept-Encoding":["gzip, deflate, br"],"Accept-Language":["zh-CN,zh;q=0.9"],"Cache-Control":["max-age=0"],"Connection":["keep-alive"],"Cookie":["Idea-462cb901=a1024485-141c-49a6-895d-cb168ce1280b; SID=s%3ABa9IwiiWHIhB1WVHu3mCRGJO9OVSm7qH.sEz0ChPzqMNRMkifxeimAbejYkwv1q4tVsm76Xmj6Jw; USERID=186655961"],"Upgrade-Insecure-Requests":["1"],"User-Agent":["Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36"]}
+
+2018-12-07 19:27:48 	 [INFO] 	 <logger.go:53>  	 [GIN] [Vge9lR9o7dBoCW4V] [Completed]	[97;42m 200 [0m|          68µs | ::1 | [97;44m GET [0m|	 /
+
+2018-12-07 20:20:58 	 [INFO] 	 <db.go:22>  	 mongodb connected

@@ -1,7 +1,9 @@
 package main
 
 import (
-	"doc_manager/server"
+	"doc-manager/config"
+	"doc-manager/server"
+	"flag"
 	log "github.com/flywithbug/log4go"
 )
 func SetLog() {
@@ -16,6 +18,15 @@ func SetLog() {
 }
 
 func main()  {
+	configPath := flag.String("config", "config.json", "Configuration file to use")
+	flag.Parse()
+	err := config.ReadConfig(*configPath)
+	if err != nil {
+		log.Fatal("读取配置文件错误:", err.Error())
+	}
+	conf := config.Conf()
 	SetLog()
-	server.Start(":8081",nil)
+	defer log.Close()
+	config.DailMongo()
+	server.Start(conf.ServerPort,conf.RouterPrefix)
 }

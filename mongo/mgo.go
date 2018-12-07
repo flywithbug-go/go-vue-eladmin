@@ -24,7 +24,6 @@ type Mongoer interface {
 	Remove(collection string, selector interface{}) error
 }
 
-
 type sessionMgo struct {
 	db 			string
 	destroyed  	bool
