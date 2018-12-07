@@ -33,5 +33,5 @@ func main()  {
 	model.DialMgo(conf.DBConfig.Url)
 
 	//启动ApiServer服务
-	server.StartApi(conf.ApiPort,conf.RouterPrefix)
+	server.StartApi(conf.ApiPort,conf.StaticPath,conf.RouterPrefix)
 }

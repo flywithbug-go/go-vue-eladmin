@@ -18,7 +18,7 @@ func Conf() *Config {
 
 type Config struct {
 	ApiPort 		string		`json:"api_port"`			//httpServer
-	WebPort 		string		`json:"web_port"`
+	StaticPath		string		`json:"static_path"`
 	DBConfig   		DBConfig 	`json:"db_config"`   			//数据库配置
 	RSAConfig		RSAConfig									//加密解密
 	PrivateName		string		`json:"private_name"`
