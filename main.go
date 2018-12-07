@@ -7,6 +7,7 @@ import (
 	log "github.com/flywithbug/log4go"
 )
 
+//log 启动配置
 func SetLog() {
 	w := log.NewFileWriter()
 	w.SetPathPattern("./log/log-%Y%M%D.log")
