@@ -8130,3 +8130,4 @@
 2018-12-08 01:18:50 	 [INFO] 	 <logger.go:53>  	 [GIN] [Ji5yfOQY2MqQHG4V] [Completed]	[97;42m 200 [0m|     644.738µs | ::1 | [97;44m GET [0m|	 /static/assets/favicon.ico
 
 2018-12-08 02:25:33 	 [INFO] 	 <db.go:16>  	 mongodb connected
+2018-12-08 02:55:32 	 [INFO] 	 <db.go:16>  	 mongodb connected
