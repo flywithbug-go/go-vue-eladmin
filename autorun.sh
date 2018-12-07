@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-
-export GO111MODULE=on
+source ~/.bash_profile
+govendor add +e
