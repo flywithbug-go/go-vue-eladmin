@@ -1,11 +1,12 @@
 package main
-
 import (
 	"doc-manager/config"
+	"doc-manager/model"
 	"doc-manager/server"
 	"flag"
 	log "github.com/flywithbug/log4go"
 )
+
 func SetLog() {
 	w := log.NewFileWriter()
 	w.SetPathPattern("./log/log-%Y%M%D.log")
@@ -27,6 +28,10 @@ func main()  {
 	conf := config.Conf()
 	SetLog()
 	defer log.Close()
-	config.DailMongo()
-	server.Start(conf.ServerPort,conf.RouterPrefix)
+
+	//mongodb启动连接
+	model.DialMgo(conf.DBConfig.Url)
+
+	//启动ApiServer服务
+	server.StartApi(conf.ApiPort,conf.RouterPrefix)
 }

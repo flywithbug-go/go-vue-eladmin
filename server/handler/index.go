@@ -17,3 +17,6 @@ func IndexHandler(c *gin.Context) {
 	}()
 	aRes.AddResponseInfo("moves","")
 }
+
+
+
