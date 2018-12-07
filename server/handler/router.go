@@ -1,4 +1,4 @@
-package handler
+package server
 
 
 
@@ -11,7 +11,7 @@ import (
 
 var routers = map[string]gin.HandlerFunc{
 	"GET   		/": 							IndexHandler, //系统状态
-	"GET   		/index": 							IndexHandler, //系统状态
+	"GET   		/index": 						IndexHandler, //系统状态
 
 	//"GET       /version":                      versionHandler, //获取应用最新版本
 }

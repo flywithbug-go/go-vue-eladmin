@@ -5,12 +5,13 @@ import (
 	"doc-manager/server/handler"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
-func Start(port string, rPrefix []string) {
+func StartApi(port string, rPrefix []string) {
 	r := gin.New()
-
 	r.Use(logger.Logger(),gin.Recovery())
+	r.StaticFS("/",http.Dir("./web_client/dist/"))
 	handler.RegisterRouters(r,rPrefix)
 	err := r.Run(port)
 	if err != nil {
