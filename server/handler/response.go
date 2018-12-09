@@ -2,8 +2,6 @@ package handler
 
 import "net/http"
 
-//type Response map[string]interface{}
-
 type Response struct {
 	Data 	map[string]interface{}	`json:"data"`
 	Code 	int						`json:"code"`

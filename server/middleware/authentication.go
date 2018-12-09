@@ -3,7 +3,6 @@ package middleware
 import (
 	"doc-manager/common"
 	"doc-manager/core/jwt"
-	"github.com/flywithbug/log4go"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -19,9 +18,7 @@ func JWTAuthMiddleware() gin.HandlerFunc  {
 			c.Abort()
 			return
 		}
-		log4go.Info("get token: %s",token)
-		j := jwt.NewJWT()
-		claims ,err := j.ParseToken(token)
+		claims ,err := jwt.ParseToken(token)
 		if err != nil {
 			if err == jwt.TokenExpired {
 				c.JSON(http.StatusOK, gin.H{

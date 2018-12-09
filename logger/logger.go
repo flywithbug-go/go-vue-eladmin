@@ -20,7 +20,6 @@ func Logger(notlogged ...string)gin.HandlerFunc  {
 	return func(c *gin.Context) {
 		// Start timer
 		start := time.Now()
-
 		xReqid := c.Request.Header.Get("X-Reqid")
 		if xReqid == "" {
 			xReqid = GenReqID()

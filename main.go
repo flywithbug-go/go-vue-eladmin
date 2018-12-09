@@ -2,6 +2,7 @@ package main
 
 import (
 	"doc-manager/config"
+	"doc-manager/core/jwt"
 	"doc-manager/core/mongo"
 	"doc-manager/server"
 	"flag"
@@ -16,7 +17,7 @@ func SetLog() {
 	c.SetColor(true)
 	log.Register(w)
 	log.Register(c)
-	//log.SetLevel(config.Conf().LogLevel%4)
+	log.SetLevel(1)
 	log.SetLayout("2006-01-02 15:04:05")
 }
 
@@ -29,6 +30,10 @@ func main()  {
 		log.Fatal("读取配置文件错误:", err.Error())
 	}
 	conf := config.Conf()
+
+	//signingKey read
+	jwt.ReadSigningKey(conf.PrivateKeyPath,conf.PublicKeyPath)
+
 
 	SetLog()
 	defer log.Close()

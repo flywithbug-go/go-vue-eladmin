@@ -2,7 +2,6 @@ package handler
 
 import (
 	"doc-manager/server/middleware"
-	"github.com/flywithbug/log4go"
 	"github.com/gin-gonic/gin"
 	"strings"
 )
@@ -21,21 +20,25 @@ var routerss = []ginHandleFunc{
 		handler:	IndexHandler,
 		needAuth:	true,
 		method:		"GET",
-		path:		"/test",
+		path:		"/",
 	},
 	ginHandleFunc{
 		handler:	IndexHandler,
 		needAuth:	false,
 		method:		"GET",
-		path:		"/test1",
+		path:		"/",
+	},
+	ginHandleFunc{
+		handler:LoginHandler,
+		needAuth:false,
+		method:"POST",
+		path:"/login",
 	},
 }
 
 func RegisterRouters(r *gin.Engine, prefix string, auth_prefix string){
 	jwtR := r.Group(prefix + auth_prefix)
 	jwtR.Use(middleware.JWTAuthMiddleware())
-
-
 	for _, v := range routerss {
 		path := strings.ToLower(v.path)
 		if !v.needAuth {
@@ -46,7 +49,7 @@ func RegisterRouters(r *gin.Engine, prefix string, auth_prefix string){
 }
 
 func funcDoRouteRegister(needAuth bool, method, route string, handler gin.HandlerFunc, r *gin.Engine,jwt_r *gin.RouterGroup) {
-	log4go.Info("%!d %s %s %s",needAuth,method,route,jwt_r.BasePath())
+	//log4go.Info("%!d %s %s %s",needAuth,method,route,jwt_r.BasePath())
 	switch method {
 	case "POST":
 		if needAuth {
