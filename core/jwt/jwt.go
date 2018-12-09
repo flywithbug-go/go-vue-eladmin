@@ -1,9 +1,14 @@
-package middleware
+package jwt
 
 import (
 	"errors"
 	"github.com/dgrijalva/jwt-go"
 	"time"
+)
+
+const (
+	notBeforeDuration  = 1000
+	expiresOffset  = 3600*24*7
 )
 
 //JWT 签名结构
@@ -13,12 +18,11 @@ type JWT struct {
 
 // 一些常量
 var (
-
 	TokenExpired       = errors.New("Token is expired")
 	TokenNotValidYet   = errors.New("Token not active yet")
 	TokenMalformed     = errors.New("That's not even a token")
 	TokenInvalid       = errors.New("Couldn't handle this token:")
-	SignKey           = "newtrekWang"
+	SignKey           = "flywithbug"
 )
 
 
@@ -44,7 +48,23 @@ func NewJWT() *JWT  {
 	}
 }
 
-func (j *JWT)GenToken(claims CustomClaims)(string, error)  {
+
+
+func NewCustomClaims(uuid,account string)*CustomClaims  {
+	claims := CustomClaims{
+		ID:uuid,
+		Account:account,
+		StandardClaims:jwt.StandardClaims{
+			NotBefore:int64(time.Now().Unix() - notBeforeDuration), 	// 	签名生效时间
+			ExpiresAt:int64(time.Now().Unix() + expiresOffset),	// 	过期时间 一小时
+			Issuer:"flywithbug",					   	//	签名的发行者
+		},
+	}
+	return &claims
+}
+
+
+func (j *JWT)GenerateToken(claims CustomClaims)(string, error)  {
 	token := jwt.NewWithClaims(jwt.SigningMethodES256, claims)
 	return token.SignedString(j.SigningKey)
 }
@@ -86,7 +106,7 @@ func (j *JWT)RefreshToken(tokenString string)(string, error)  {
 	if claims, ok := token.Claims.(*CustomClaims); ok && token.Valid {
 		jwt.TimeFunc = time.Now
 		claims.StandardClaims.ExpiresAt = time.Now().Add(2*24 *time.Hour).Unix()
-		return j.GenToken(*claims)
+		return j.GenerateToken(*claims)
 	}
 	return "",TokenInvalid
 }

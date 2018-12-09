@@ -40,5 +40,5 @@ func main()  {
 		server.StartWeb(conf.WebPort,conf.StaticPath)
 	}()
 	//启动ApiServer服务
-	server.StartApi(conf.ApiPort,conf.RouterPrefix)
+	server.StartApi(conf.ApiPort,conf.RouterPrefix,conf.AuthPrefix)
 }

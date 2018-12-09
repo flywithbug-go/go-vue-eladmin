@@ -1,59 +1,88 @@
 package handler
 
-
-
 import (
+	"doc-manager/server/middleware"
+	"github.com/flywithbug/log4go"
 	"github.com/gin-gonic/gin"
-	"regexp"
 	"strings"
 )
 
-
-var routers = map[string]gin.HandlerFunc{
-	"GET   		/test": 							IndexHandler, //系统状态
-	//"GET   		/index": 						IndexHandler, //系统状态
-
-	//"GET       /version":                      versionHandler, //获取应用最新版本
+type ginHandleFunc struct {
+	handler   		gin.HandlerFunc
+	needAuth		bool
+	method 			string
+	path 			string
 }
 
-func RegisterRouters(r *gin.Engine, prefixs []string){
-	dup := make(map[string]bool)
-	for _, p := range prefixs {
-		dup[p] = true
-	}
-	if len(dup) == 0 {
-		dup[""] = true
-	}
-	for router, handler := range routers {
-		method ,path := regexpRouters(router)
-		for  k := range dup {
-			funcDoRouteRegister(method,strings.ToLower(k+path),handler,r)//path 全小写
+
+//host:port/auth_prefix/prefix/path
+var routerss = []ginHandleFunc{
+	ginHandleFunc{
+		handler:	IndexHandler,
+		needAuth:	true,
+		method:		"GET",
+		path:		"/test",
+	},
+	ginHandleFunc{
+		handler:	IndexHandler,
+		needAuth:	false,
+		method:		"GET",
+		path:		"/test1",
+	},
+}
+
+func RegisterRouters(r *gin.Engine, prefix string, auth_prefix string){
+	jwtR := r.Group(prefix + auth_prefix)
+	jwtR.Use(middleware.JWTAuthMiddleware())
+
+
+	for _, v := range routerss {
+		path := strings.ToLower(v.path)
+		if !v.needAuth {
+			path = strings.ToLower(prefix + v.path)
 		}
+		funcDoRouteRegister(v.needAuth, strings.ToUpper(v.method),path,v.handler,r,jwtR)
 	}
 }
 
-func funcDoRouteRegister(method, route string, handler gin.HandlerFunc, r *gin.Engine) {
+func funcDoRouteRegister(needAuth bool, method, route string, handler gin.HandlerFunc, r *gin.Engine,jwt_r *gin.RouterGroup) {
+	log4go.Info("%!d %s %s %s",needAuth,method,route,jwt_r.BasePath())
 	switch method {
 	case "POST":
-		r.POST(route, handler)
+		if needAuth {
+			jwt_r.POST(route,handler)
+		}else {
+			r.POST(route, handler)
+		}
 	case "PUT":
-		r.PUT(route, handler)
+		if needAuth {
+			jwt_r.PUT(route,handler)
+		}else {
+			r.PUT(route, handler)
+		}
 	case "HEAD":
-		r.HEAD(route, handler)
+		if needAuth {
+			jwt_r.HEAD(route,handler)
+		}else {
+			r.HEAD(route, handler)
+		}
 	case "DELETE":
-		r.DELETE(route, handler)
+		if needAuth {
+			jwt_r.DELETE(route,handler)
+		}else {
+			r.DELETE(route, handler)
+		}
 	case "OPTIONS":
-		r.OPTIONS(route, handler)
+		if needAuth {
+			jwt_r.OPTIONS(route,handler)
+		}else {
+			r.OPTIONS(route, handler)
+		}
 	default:
-		r.GET(route, handler)
+		if needAuth {
+			jwt_r.GET(route,handler)
+		}else {
+			r.GET(route, handler)
+		}
 	}
-}
-
-var routerRe = regexp.MustCompile(`([A-Z]+)[^/]*(/[a-zA-Z/:]+)`)
-func regexpRouters(router string) (method,path string) {
-	match := routerRe.FindAllStringSubmatch(router, -1)
-	if len(match)<1 {
-		return
-	}
-	return match[0][1],match[0][2]
 }

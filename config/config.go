@@ -25,8 +25,8 @@ type Config struct {
 
 	StaticPath		string		`json:"static_path"`
 	DBConfig   		DBConfig 	`json:"db_config"`   			//数据库配置
-	RouterPrefix 	[]string 	`json:"router_prefix"` 			//api前缀
-	AuthFilterWhite []string 	`json:"auth_filter_white"` 		//白名单
+	RouterPrefix 	string 		`json:"router_prefix"` 			//api前缀
+	AuthPrefix 		string 	 	`json:"auth_prefix"`		//白名单
 	MailConfig      MailConfig	`json:"mail_config"`  			//邮箱
 	AppConfig		AppConfig	`json:"app_config"`
 
@@ -85,7 +85,3 @@ func (this *MailConfig)Dialer()(*gomail.Dialer,error)  {
 	d := gomail.NewDialer(this.Host,this.Port,this.Username,this.Password)
 	return d,nil
 }
-
-
-
-
