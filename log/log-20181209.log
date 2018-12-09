@@ -1,0 +1,46 @@
+2018-12-09 02:50:24 	 [INFO] 	 <db.go:20>  	 mongodb connected
+2018-12-09 02:50:25 	 [INFO] 	 <logger.go:33>  	 [GIN] [hIUO3vhMD9kkcG4V] [Started]	RequestHeader::{"Accept":["text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8"],"Accept-Encoding":["gzip, deflate, br"],"Accept-Language":["zh-CN,zh;q=0.9"],"Cache-Control":["max-age=0"],"Connection":["keep-alive"],"Cookie":["Idea-462cb901=a1024485-141c-49a6-895d-cb168ce1280b; SID=s%3ABa9IwiiWHIhB1WVHu3mCRGJO9OVSm7qH.sEz0ChPzqMNRMkifxeimAbejYkwv1q4tVsm76Xmj6Jw"],"Upgrade-Insecure-Requests":["1"],"User-Agent":["Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36"]}
+
+2018-12-09 02:50:25 	 [INFO] 	 <logger.go:53>  	 [GIN] [hIUO3vhMD9kkcG4V] [Completed]	[97;41m 500 [0m|    7.409839ms | ::1 | [97;44m GET [0m|	 /api/test
+
+2018-12-09 02:50:56 	 [INFO] 	 <db.go:20>  	 mongodb connected
+2018-12-09 02:50:57 	 [INFO] 	 <logger.go:33>  	 [GIN] [nHHdSRict0sscG4V] [Started]	RequestHeader::{"Accept":["text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8"],"Accept-Encoding":["gzip, deflate, br"],"Accept-Language":["zh-CN,zh;q=0.9"],"Cache-Control":["max-age=0"],"Connection":["keep-alive"],"Cookie":["Idea-462cb901=a1024485-141c-49a6-895d-cb168ce1280b; SID=s%3ABa9IwiiWHIhB1WVHu3mCRGJO9OVSm7qH.sEz0ChPzqMNRMkifxeimAbejYkwv1q4tVsm76Xmj6Jw"],"Upgrade-Insecure-Requests":["1"],"User-Agent":["Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36"]}
+
+2018-12-09 02:50:57 	 [INFO] 	 <logger.go:53>  	 [GIN] [nHHdSRict0sscG4V] [Completed]	[97;42m 200 [0m|   68.772151ms | ::1 | [97;44m GET [0m|	 /api/test
+
+2018-12-09 02:51:36 	 [INFO] 	 <db.go:20>  	 mongodb connected
+2018-12-09 02:51:36 	 [INFO] 	 <logger.go:33>  	 [GIN] [-QKvnvhr6l81cG4V] [Started]	RequestHeader::{"Accept":["text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8"],"Accept-Encoding":["gzip, deflate, br"],"Accept-Language":["zh-CN,zh;q=0.9"],"Cache-Control":["max-age=0"],"Connection":["keep-alive"],"Cookie":["Idea-462cb901=a1024485-141c-49a6-895d-cb168ce1280b; SID=s%3ABa9IwiiWHIhB1WVHu3mCRGJO9OVSm7qH.sEz0ChPzqMNRMkifxeimAbejYkwv1q4tVsm76Xmj6Jw"],"Upgrade-Insecure-Requests":["1"],"User-Agent":["Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36"]}
+
+2018-12-09 02:51:36 	 [INFO] 	 <logger.go:53>  	 [GIN] [-QKvnvhr6l81cG4V] [Completed]	[97;42m 200 [0m|     980.835µs | ::1 | [97;44m GET [0m|	 /api/test
+
+2018-12-09 02:51:58 	 [INFO] 	 <logger.go:33>  	 [GIN] [-QKvnrj2qVU6cG4V] [Started]	RequestHeader::{"Accept":["text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8"],"Accept-Encoding":["gzip, deflate, br"],"Accept-Language":["zh-CN,zh;q=0.9"],"Cache-Control":["max-age=0"],"Connection":["keep-alive"],"Cookie":["Idea-462cb901=a1024485-141c-49a6-895d-cb168ce1280b; SID=s%3ABa9IwiiWHIhB1WVHu3mCRGJO9OVSm7qH.sEz0ChPzqMNRMkifxeimAbejYkwv1q4tVsm76Xmj6Jw"],"Upgrade-Insecure-Requests":["1"],"User-Agent":["Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36"]}
+
+2018-12-09 02:51:58 	 [INFO] 	 <logger.go:53>  	 [GIN] [-QKvnrj2qVU6cG4V] [Completed]	[97;42m 200 [0m|   11.563016ms | ::1 | [97;44m GET [0m|	 /api/test
+
+2018-12-09 02:51:58 	 [INFO] 	 <logger.go:33>  	 [GIN] [-QKvnuiHBGI6cG4V] [Started]	RequestHeader::{"Accept":["text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8"],"Accept-Encoding":["gzip, deflate, br"],"Accept-Language":["zh-CN,zh;q=0.9"],"Cache-Control":["max-age=0"],"Connection":["keep-alive"],"Cookie":["Idea-462cb901=a1024485-141c-49a6-895d-cb168ce1280b; SID=s%3ABa9IwiiWHIhB1WVHu3mCRGJO9OVSm7qH.sEz0ChPzqMNRMkifxeimAbejYkwv1q4tVsm76Xmj6Jw"],"Upgrade-Insecure-Requests":["1"],"User-Agent":["Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36"]}
+
+2018-12-09 02:51:58 	 [INFO] 	 <logger.go:53>  	 [GIN] [-QKvnuiHBGI6cG4V] [Completed]	[97;42m 200 [0m|     437.132µs | ::1 | [97;44m GET [0m|	 /api/test
+
+2018-12-09 02:51:58 	 [INFO] 	 <logger.go:33>  	 [GIN] [-QKvnhjWDWw6cG4V] [Started]	RequestHeader::{"Accept":["text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8"],"Accept-Encoding":["gzip, deflate, br"],"Accept-Language":["zh-CN,zh;q=0.9"],"Cache-Control":["max-age=0"],"Connection":["keep-alive"],"Cookie":["Idea-462cb901=a1024485-141c-49a6-895d-cb168ce1280b; SID=s%3ABa9IwiiWHIhB1WVHu3mCRGJO9OVSm7qH.sEz0ChPzqMNRMkifxeimAbejYkwv1q4tVsm76Xmj6Jw"],"Upgrade-Insecure-Requests":["1"],"User-Agent":["Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36"]}
+
+2018-12-09 02:51:58 	 [INFO] 	 <logger.go:53>  	 [GIN] [-QKvnhjWDWw6cG4V] [Completed]	[97;42m 200 [0m|     788.127µs | ::1 | [97;44m GET [0m|	 /api/test
+
+2018-12-09 02:51:58 	 [INFO] 	 <logger.go:33>  	 [GIN] [-QKvnjDOtHM6cG4V] [Started]	RequestHeader::{"Accept":["text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8"],"Accept-Encoding":["gzip, deflate, br"],"Accept-Language":["zh-CN,zh;q=0.9"],"Cache-Control":["max-age=0"],"Connection":["keep-alive"],"Cookie":["Idea-462cb901=a1024485-141c-49a6-895d-cb168ce1280b; SID=s%3ABa9IwiiWHIhB1WVHu3mCRGJO9OVSm7qH.sEz0ChPzqMNRMkifxeimAbejYkwv1q4tVsm76Xmj6Jw"],"Upgrade-Insecure-Requests":["1"],"User-Agent":["Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36"]}
+
+2018-12-09 02:51:58 	 [INFO] 	 <logger.go:53>  	 [GIN] [-QKvnjDOtHM6cG4V] [Completed]	[97;42m 200 [0m|     516.414µs | ::1 | [97;44m GET [0m|	 /api/test
+
+2018-12-09 02:51:58 	 [INFO] 	 <logger.go:33>  	 [GIN] [-QKvnjglCn46cG4V] [Started]	RequestHeader::{"Accept":["text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8"],"Accept-Encoding":["gzip, deflate, br"],"Accept-Language":["zh-CN,zh;q=0.9"],"Cache-Control":["max-age=0"],"Connection":["keep-alive"],"Cookie":["Idea-462cb901=a1024485-141c-49a6-895d-cb168ce1280b; SID=s%3ABa9IwiiWHIhB1WVHu3mCRGJO9OVSm7qH.sEz0ChPzqMNRMkifxeimAbejYkwv1q4tVsm76Xmj6Jw"],"Upgrade-Insecure-Requests":["1"],"User-Agent":["Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36"]}
+
+2018-12-09 02:51:58 	 [INFO] 	 <logger.go:53>  	 [GIN] [-QKvnjglCn46cG4V] [Completed]	[97;42m 200 [0m|     534.856µs | ::1 | [97;44m GET [0m|	 /api/test
+
+2018-12-09 02:51:58 	 [INFO] 	 <logger.go:33>  	 [GIN] [-QKvnriIMIg6cG4V] [Started]	RequestHeader::{"Accept":["text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8"],"Accept-Encoding":["gzip, deflate, br"],"Accept-Language":["zh-CN,zh;q=0.9"],"Cache-Control":["max-age=0"],"Connection":["keep-alive"],"Cookie":["Idea-462cb901=a1024485-141c-49a6-895d-cb168ce1280b; SID=s%3ABa9IwiiWHIhB1WVHu3mCRGJO9OVSm7qH.sEz0ChPzqMNRMkifxeimAbejYkwv1q4tVsm76Xmj6Jw"],"Upgrade-Insecure-Requests":["1"],"User-Agent":["Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36"]}
+
+2018-12-09 02:51:58 	 [INFO] 	 <logger.go:53>  	 [GIN] [-QKvnriIMIg6cG4V] [Completed]	[97;42m 200 [0m|     583.769µs | ::1 | [97;44m GET [0m|	 /api/test
+
+2018-12-09 03:10:16 	 [INFO] 	 <db.go:20>  	 mongodb connected
+2018-12-09 03:10:29 	 [INFO] 	 <db.go:20>  	 mongodb connected
+2018-12-09 03:10:29 	 [INFO] 	 <logger.go:33>  	 [GIN] [ie25arCnFi09cW4V] [Started]	RequestHeader::{"Accept":["text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8"],"Accept-Encoding":["gzip, deflate, br"],"Accept-Language":["zh-CN,zh;q=0.9"],"Cache-Control":["max-age=0"],"Connection":["keep-alive"],"Cookie":["Idea-462cb901=a1024485-141c-49a6-895d-cb168ce1280b; SID=s%3ABa9IwiiWHIhB1WVHu3mCRGJO9OVSm7qH.sEz0ChPzqMNRMkifxeimAbejYkwv1q4tVsm76Xmj6Jw"],"Upgrade-Insecure-Requests":["1"],"User-Agent":["Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36"]}
+
+2018-12-09 03:10:29 	 [ERROR] 	 <login.go:32>  	 key is of invalid type
+2018-12-09 03:10:29 	 [INFO] 	 <logger.go:53>  	 [GIN] [ie25arCnFi09cW4V] [Completed]	[97;42m 200 [0m|     933.412µs | ::1 | [97;44m GET [0m|	 /api/test
+

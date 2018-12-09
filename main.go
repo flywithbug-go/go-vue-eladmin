@@ -1,7 +1,8 @@
 package main
+
 import (
 	"doc-manager/config"
-	"doc-manager/model"
+	"doc-manager/core/mongo"
 	"doc-manager/server"
 	"flag"
 	log "github.com/flywithbug/log4go"
@@ -20,6 +21,7 @@ func SetLog() {
 }
 
 func main()  {
+	//配置文件
 	configPath := flag.String("config", "config.json", "Configuration file to use")
 	flag.Parse()
 	err := config.ReadConfig(*configPath)
@@ -27,12 +29,16 @@ func main()  {
 		log.Fatal("读取配置文件错误:", err.Error())
 	}
 	conf := config.Conf()
+
 	SetLog()
 	defer log.Close()
 
 	//mongodb启动连接
-	model.DialMgo(conf.DBConfig.Url)
-
+	mongo.DialMgo(conf.DBConfig.Url)
+	go func() {
+		//静态文件服务
+		server.StartWeb(conf.WebPort,conf.StaticPath)
+	}()
 	//启动ApiServer服务
-	server.StartApi(conf.ApiPort,conf.StaticPath,conf.RouterPrefix)
+	server.StartApi(conf.ApiPort,conf.RouterPrefix)
 }

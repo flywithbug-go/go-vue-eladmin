@@ -1,4 +1,4 @@
-package mgo
+package mongo
 
 import (
 	"github.com/flywithbug/log4go"

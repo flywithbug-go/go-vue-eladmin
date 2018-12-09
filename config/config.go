@@ -17,11 +17,14 @@ func Conf() *Config {
 
 
 type Config struct {
+	PrivateKeyPath	string		`json:"private_key_path"`
+	PublicKeyPath   string		`json:"public_key_path"`
+
 	ApiPort 		string		`json:"api_port"`			//httpServer
+	WebPort 		string		`json:"web_port"`			//httpServer
+
 	StaticPath		string		`json:"static_path"`
 	DBConfig   		DBConfig 	`json:"db_config"`   			//数据库配置
-	RSAConfig		RSAConfig									//加密解密
-	PrivateName		string		`json:"private_name"`
 	RouterPrefix 	[]string 	`json:"router_prefix"` 			//api前缀
 	AuthFilterWhite []string 	`json:"auth_filter_white"` 		//白名单
 	MailConfig      MailConfig	`json:"mail_config"`  			//邮箱
@@ -52,10 +55,6 @@ type MailConfig struct {
 	Password  string	`json:"password"`
 }
 
-type RSAConfig struct {
-	Public			[]byte
-	Private			[]byte
-}
 
 /*
 读取配置文件
@@ -79,8 +78,6 @@ func (this *Config) Parse(path string) error {
 	if err != nil {
 		return err
 	}
-	b, _ := ioutil.ReadFile(this.PrivateName)
-	this.RSAConfig.Private = b
 	return nil
 }
 
@@ -88,3 +85,7 @@ func (this *MailConfig)Dialer()(*gomail.Dialer,error)  {
 	d := gomail.NewDialer(this.Host,this.Port,this.Username,this.Password)
 	return d,nil
 }
+
+
+
+

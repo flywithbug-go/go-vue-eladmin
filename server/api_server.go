@@ -7,10 +7,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func StartApi(port ,staticPath string, rPrefix []string) {
+func StartApi(port string, rPrefix []string) {
 	r := gin.New()
 	r.Use(logger.Logger(),gin.Recovery())
-	r.Static("/",staticPath)
 	handler.RegisterRouters(r,rPrefix)
 	err := r.Run(port)
 	if err != nil {
