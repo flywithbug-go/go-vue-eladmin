@@ -3,8 +3,6 @@ package model
 import (
 	"doc-manager/core/mongo"
 	"errors"
-	"github.com/dgrijalva/jwt-go"
-	"github.com/flywithbug/log4go"
 	"time"
 )
 
@@ -14,34 +12,6 @@ const (
 	loginCollection = "login"
 )
 
-var (
-	keySecret  = []byte("Hello World！This is secret!")
-)
-
-func genToken()string  {
-	claims := &jwt.StandardClaims{
-		NotBefore:int64(time.Now().Unix()),
-		ExpiresAt:int64(time.Now().Unix() + 1000),
-		Issuer: "Issuer",
-	}
-	token := jwt.NewWithClaims(jwt.SigningMethodES256,claims)
-	ss , err := token.SignedString(keySecret)
-	if err != nil {
-		log4go.Error(err.Error())
-		return ""
-	}
-	return ss
-}
-
-func CheckToken(token string) bool  {
-	_, err := jwt.Parse(token, func(*jwt.Token) (interface{}, error) {
-		return keySecret,nil
-	})
-	if err != nil {
-		return false
-	}
-	return true
-}
 
 
 
@@ -60,7 +30,7 @@ func UserLogin(userId, userAgent string)(l *Login,err error)  {
 	l = new(Login)
 	l.UserId = userId
 	l.userAgent = userAgent
-	l.Token = genToken()
+	//l.Token = genToken()
 	l.CreateTime = time.Now().Unix()
 	l.Status = 1
 	err = l.Insert()

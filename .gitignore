@@ -19,3 +19,4 @@ config.json
 !/vendor/vendor.json
 resources/private_key
 resources/public_key.pub
+log/*
