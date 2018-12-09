@@ -1,4 +1,4 @@
-package handler
+package model
 
 import "net/http"
 
@@ -8,7 +8,6 @@ type Response struct {
 	Msg 	string					`json:"msg"`
 }
 
-
 func NewResponse() *Response {
 	res := new(Response)
 	res.Code = http.StatusOK
@@ -16,7 +15,6 @@ func NewResponse() *Response {
 	res.Msg = ""
 	return res
 }
-
 
 func ErrorResponse(errno int, msg string) *Response {
 	r := NewResponse()
@@ -28,12 +26,12 @@ func ErrorResponse(errno int, msg string) *Response {
 func (s *Response) SetErrorInfo(errno int, msg string) {
 	s.Code = errno
 	s.Msg = msg
-	s.Data["msg"]=msg
+	//s.Data["msg"]=msg
 }
 func (s *Response) SetSuccessInfo(code int, msg string) {
 	s.Code = code
 	s.Msg = msg
-	s.Data["msg"]=msg
+	//s.Data["msg"]=msg
 }
 
 func (s *Response) SetResponseDataInfo(key string, value string) {

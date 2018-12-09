@@ -2,6 +2,7 @@ package handler
 
 import (
 	"doc-manager/core/jwt"
+	"doc-manager/model"
 	log "github.com/flywithbug/log4go"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -9,7 +10,7 @@ import (
 
 
 func LoginHandler(ctx* gin.Context)  {
-	aRes := NewResponse()
+	aRes := model.NewResponse()
 	defer func() {
 		ctx.JSON(http.StatusOK, aRes)
 	}()

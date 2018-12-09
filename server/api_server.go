@@ -1,7 +1,6 @@
 package server
 
 import (
-	"doc-manager/logger"
 	"doc-manager/server/handler"
 	"doc-manager/server/middleware"
 	"fmt"
@@ -10,7 +9,7 @@ import (
 
 func StartApi(port string, rPrefix string,auth_prefix string) {
 	r := gin.New()
-	r.Use(logger.Logger(),gin.Recovery())
+	r.Use(middleware.Logger(),gin.Recovery())
 	r.Use(middleware.CookieMiddleware())
 	handler.RegisterRouters(r,rPrefix,auth_prefix)
 	err := r.Run(port)
