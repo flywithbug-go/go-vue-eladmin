@@ -3,6 +3,12 @@
 	"ignore": "test",
 	"package": [
 		{
+			"checksumSHA1": "+TKtBzv23ywvmmqRiGEjUba4YmI=",
+			"path": "github.com/dgrijalva/jwt-go",
+			"revision": "dbeaa9332f19a944acb5736b4456cfcc02140e29",
+			"revisionTime": "2017-10-19T21:57:19Z"
+		},
+		{
 			"checksumSHA1": "nNzNKUmD/Mnx0AD6l+OwbM2957g=",
 			"path": "github.com/flywithbug/log4go",
 			"revision": "bf02620b9c5dd17e1f4e4a6e427cd24eef628d66",
