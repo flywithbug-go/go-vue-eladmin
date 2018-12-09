@@ -1,4 +1,4 @@
-package model
+package mgo
 
 import (
 	"github.com/flywithbug/log4go"
