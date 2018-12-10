@@ -23,12 +23,6 @@ var routerss = []ginHandleFunc{
 		path:		"/",
 	},
 	ginHandleFunc{
-		handler:	IndexHandler,
-		needAuth:	false,
-		method:		"GET",
-		path:		"/",
-	},
-	ginHandleFunc{
 		handler:LoginHandler,
 		needAuth:false,
 		method:"POST",

@@ -1,7 +1,9 @@
 package handler
 
 import (
+	"doc-manager/common"
 	"doc-manager/model"
+	"github.com/flywithbug/log4go"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -17,5 +19,7 @@ func IndexHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
-
+	userId, _ := c.Get(common.KeyUserId)
+	log4go.Info("index handler %s",userId)
+	//log4go.Info("%v",model.AddAdminUser())
 }

@@ -8,7 +8,6 @@ import (
 	"net/http"
 )
 
-
 func LoginHandler(ctx* gin.Context)  {
 	aRes := model.NewResponse()
 	defer func() {
@@ -20,7 +19,13 @@ func LoginHandler(ctx* gin.Context)  {
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid" + err.Error())
 		return
 	}
-	claims := jwt.NewCustomClaims("abc","abc")
+	u,err := model.FindUserByAccountPass(login.Account,login.Password)
+	if err != nil {
+		log.Error(err.Error())
+		aRes.SetErrorInfo(http.StatusInternalServerError, "account or password not right")
+		return
+	}
+	claims := jwt.NewCustomClaims(u.UserId,u.Account)
 	token ,err  := jwt.GenerateToken(claims)
 	if err != nil {
 		log.Error(err.Error())

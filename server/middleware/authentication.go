@@ -32,6 +32,7 @@ func JWTAuthMiddleware() gin.HandlerFunc  {
 			c.Abort()
 			return
 		}
+		c.Set(common.KeyUserId,claims.ID)
 		c.Set(common.KeyJWTClaims,claims)
 	}
 }
