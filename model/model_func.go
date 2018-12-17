@@ -1,12 +1,17 @@
 package model
 
+var db = "doc-manager"
 
-const (
-	db         = "doc-manager"
-)
+func SetDBName(dbName string) {
+	db = dbName
+}
+
+func DBName() string {
+	return db
+}
 
 
-type ModelOperation interface {
+type OperationModel interface {
 	FindAll()([]interface{},error)
 	Insert()error
 	Update(id string)error
