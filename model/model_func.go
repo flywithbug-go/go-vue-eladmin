@@ -2,7 +2,7 @@ package model
 
 import "doc-manager/core/mongo"
 
-var db = "todo"
+var db = "doc_manager"
 
 func SetDBName(dbName string) {
 	db = dbName
