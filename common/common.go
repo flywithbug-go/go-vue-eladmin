@@ -1,13 +1,14 @@
 package common
+
 import (
 	"crypto/md5"
 	"database/sql"
+	"fmt"
 	"io"
 	"log"
 	"net"
 	"net/http"
 	"strings"
-	"fmt"
 )
 
 func Md5(text string) string {
@@ -15,8 +16,6 @@ func Md5(text string) string {
 	io.WriteString(hashMd5, text)
 	return fmt.Sprintf("%x", hashMd5.Sum(nil))
 }
-
-
 
 /*
 获取IP

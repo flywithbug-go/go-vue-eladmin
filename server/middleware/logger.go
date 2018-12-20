@@ -3,13 +3,14 @@ package middleware
 import (
 	"encoding/base64"
 	"encoding/binary"
+	"encoding/json"
+	"time"
+
 	log "github.com/flywithbug/log4go"
 	"github.com/gin-gonic/gin"
-	"github.com/gin-gonic/gin/json"
-	"time"
 )
 
-func Logger(notlogged ...string)gin.HandlerFunc  {
+func Logger(notlogged ...string) gin.HandlerFunc {
 	//var skip map[string]struct{}
 	//if length := len(notlogged); length > 0 {
 	//	skip = make(map[string]struct{}, length)
@@ -34,11 +35,8 @@ func Logger(notlogged ...string)gin.HandlerFunc  {
 		//		headers,
 		//	)
 		//}
-		headers,_ := json.Marshal(c.Request.Header)
-		log.Info("[GIN] [%s] [Started]\tRequestHeader::%s\n",
-			xReqid,
-			headers,
-		)
+		headers, _ := json.Marshal(c.Request.Header)
+		log.Infoo("[GIN] [%s] [Started]\tRequestHeader::%s\n", xReqid, headers)
 		// Process request
 		c.Next()
 		// Log only when path is not being skipped
@@ -86,7 +84,6 @@ func Logger(notlogged ...string)gin.HandlerFunc  {
 	}
 }
 
-
 var pid = uint32(time.Now().UnixNano() % 4294967291)
 
 // GenReqID is a random generate string func
@@ -123,8 +120,6 @@ func ErrorLoggerT(typ gin.ErrorType) gin.HandlerFunc {
 		}
 	}
 }
-
-
 
 func colorForStatus(code int) string {
 	switch {

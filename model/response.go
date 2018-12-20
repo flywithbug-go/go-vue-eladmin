@@ -3,9 +3,9 @@ package model
 import "net/http"
 
 type Response struct {
-	Data 	map[string]interface{}	`json:"data"`
-	Code 	int						`json:"code"`
-	Msg 	string					`json:"msg"`
+	Data map[string]interface{} `json:"data"`
+	Code int                    `json:"code"`
+	Msg  string                 `json:"msg"`
 }
 
 func NewResponse() *Response {
