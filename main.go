@@ -38,8 +38,9 @@ func main() {
 
 	SetLog()
 	defer log.Close()
-	model.SetDBName(conf.DBConfig.DBName)
 	//mongodb启动连接
+	//设置数据库名字
+	model.SetDBName(conf.DBConfig.DBName)
 	mongo.DialMgo(conf.DBConfig.Url)
 	go func() {
 		//静态文件服务
