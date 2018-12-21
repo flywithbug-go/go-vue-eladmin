@@ -1,4 +1,4 @@
-# doc_manager
+# vue_doc
 
 > doc_manager
 
