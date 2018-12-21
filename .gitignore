@@ -1,5 +1,20 @@
 # Created by .ignore support plugin (hsz.mobi)
 
+.DS_Store
+web_client/node_modules/
+web_client/npm-debug.log*
+web_client/yarn-debug.log*
+web_client/yarn-error.log*
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+
 ### Go template
 # Binaries for programs and plugins
 *.exe
