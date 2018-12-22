@@ -13,7 +13,7 @@ import (
 func LoginHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.JSON(aRes.Code, aRes)
+		c.JSON(http.StatusOK, aRes)
 	}()
 	user := new(model.User)
 	err := c.BindJSON(user)
@@ -24,21 +24,21 @@ func LoginHandler(c *gin.Context) {
 	err = user.CheckLogin(user.Account, user.Password)
 	if err != nil {
 		log.Error(err.Error())
-		aRes.SetErrorInfo(http.StatusUnauthorized, "account or password not right")
+		aRes.SetErrorInfo(http.StatusBadRequest, "account or password not right")
 		return
 	}
 	claims := jwt.NewCustomClaims(user.UserId, user.Account)
 	token, err := jwt.GenerateToken(claims)
 	if err != nil {
 		log.Error(err.Error())
-		aRes.SetErrorInfo(http.StatusUnauthorized, "token generate error"+err.Error())
+		aRes.SetErrorInfo(http.StatusBadRequest, "token generate error"+err.Error())
 		return
 	}
 	userAg := c.GetHeader(common.KeyUserAgent)
 	_, err = model.UserLogin(user.UserId, userAg, token, c.ClientIP())
 	if err != nil {
 		log.Error(err.Error())
-		aRes.SetErrorInfo(http.StatusUnauthorized, "token generate error"+err.Error())
+		aRes.SetErrorInfo(http.StatusBadRequest, "token generate error"+err.Error())
 		return
 	}
 	aRes.SetResponseDataInfo("token", token)

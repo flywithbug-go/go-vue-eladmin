@@ -21,6 +21,10 @@ client.interceptors.request.use(config => {
 
 client.interceptors.response.use(response => {
   const res = response.data
+  console.log(res)
+  if (res.code == 200){
+    return res
+  }
   if (res.code === 401) {
     MessageBox.confirm('已登出，可以取消继续留在该页面，或者重新登录','确定登出',{
       confirmButtonText: '重新登录',
@@ -33,9 +37,14 @@ client.interceptors.response.use(response => {
     })
     return Promise.reject('token 失效')
   }
-  return res.data
+  Message({
+    message: res.msg,
+    type:'error',
+    duration: 5*1000
+  })
+  return Promise.reject(res.msg)
 },error => {
-  console.log('err' + error)
+  console.log('err:' + error)
   Message({
     message: error.message,
     type:'error',

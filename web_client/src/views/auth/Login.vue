@@ -115,7 +115,14 @@ export default {
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid){
-
+          this.loading = true
+          this.$store.dispatch('LoginByAccount',this.loginForm).then(()=> {
+            console.log('did login')
+            this.loading = false
+            this.$route.push({path: this.redirect || '/'})
+          }) .catch(() => {
+            this.loading = false
+          })
         } else {
           console.log('error submit!!')
           return false
