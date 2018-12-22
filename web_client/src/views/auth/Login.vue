@@ -5,12 +5,41 @@
                class="login-form"
                auto-complete="on"
                label-position="left">
-        <el-form-item>
+        <div class="title-container">
+          <h3 class="title" >{{ $t('login.title') }}</h3>
+        </div>
+        <el-form-item prop="account">
           <span class="svg-container">
             <svg-icon icon-class="user"></svg-icon>
           </span>
-          <el-input v-model="loginForm.account" placeholder="请输入用户名" class=""></el-input>
+          <el-input v-model="loginForm.account"
+                    :placeholder="$t('login.username')"
+                    name="account"
+                    type="text"
+                    auto-complete="on" ></el-input>
         </el-form-item>
+
+        <el-form-item prop="password">
+          <span class="svg-container">
+            <svg-icon icon-class="password"/>
+          </span>
+          <el-input :type="passwordType"
+                    v-model="loginForm.password"
+                    :placeholder="$t('login.password')"
+                    auto-complete="on"
+                    @keyup.enter.native="handleLogin"></el-input>
+          <span class="show-pwd" @click="showPwd">
+            <svg-icon :icon-class="pwdIcon"/>
+          </span>
+        </el-form-item>
+        <el-button :loading="loading"
+                   type="primary"
+                   :disabled="loginBtnDisable"
+                   style="width: 100%; margin-bottom: 30px;"
+                   @click.native.prevent="handleLogin">
+          {{ $t('login.logIn') }}
+        </el-button>
+
 
       </el-form>
 
@@ -48,10 +77,20 @@ export default {
         account: [{ required: true, trigger: 'blur', validator: validateUsername }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }]
       },
+      loginDisable:true,
       passwordType: 'password',
+      pwdIcon:'eye',
       loading: false,
       showDialog: false,
       redirect: undefined
+    }
+  },
+  computed: {
+    loginBtnDisable() {
+      if (this.loginForm.password.length < 6 || this.loginForm.account.length < 6){
+        return true
+      }
+      return false
     }
   },
   watch: {
@@ -60,16 +99,20 @@ export default {
         this.redirect = route.query && route.query.redirect
       },
       immediate: true
-    }
+    },
   },
   methods: {
     showPwd() {
       if (this.passwordType === 'password') {
         this.passwordType = ''
+        this.pwdIcon = 'eye_open'
       } else {
         this.passwordType = 'password'
+        this.pwdIcon = 'eye'
       }
     },
+    handleLogin() {
+    }
   }
 }
 </script>
@@ -122,40 +165,71 @@ export default {
   }
 </style>
 
-
 <style rel="stylesheet/scss" lang="scss" scoped>
   $bg:#2d3a4b;
   $dark_gray:#889aa4;
   $light_gray:#eee;
-  $cursor: #fff;
-
-
 
   .login-container {
     position: fixed;
     height: 100%;
     width: 100%;
     background-color: $bg;
-
     .login-form {
       position: absolute;
+      left: 0;
+      right: 0;
       width: 520px;
       max-width: 100%;
       padding: 35px 35px 15px 35px;
       margin: 120px auto;
     }
-    .svg-container {
-      color: $dark_gray;
-      vertical-align: center;
-      width: 45px;
-      cursor: pointer;
-      &:hover {
-        color: #eef1f6;
+    .tips {
+      font-size: 14px;
+      color: #fff;
+      margin-bottom: 10px;
+      span {
+        &:first-of-type {
+          margin-right: 16px;
+        }
       }
     }
-
+    .svg-container {
+      padding: 6px 5px 6px 15px;
+      color: $dark_gray;
+      vertical-align: middle;
+      width: 30px;
+      display: inline-block;
+    }
+    .title-container {
+      position: relative;
+      .title {
+        font-size: 26px;
+        color: $light_gray;
+        margin: 0px auto 40px auto;
+        text-align: center;
+        font-weight: bold;
+      }
+      .set-language {
+        color: #fff;
+        position: absolute;
+        top: 5px;
+        right: 0px;
+      }
+    }
+    .show-pwd {
+      position: absolute;
+      right: 10px;
+      top: 7px;
+      font-size: 16px;
+      color: $dark_gray;
+      cursor: pointer;
+      user-select: none;
+    }
+    .thirdparty-button {
+      position: absolute;
+      right: 35px;
+      bottom: 28px;
+    }
   }
-
-
-
 </style>
