@@ -10,7 +10,7 @@ import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 import '@/styles/index.scss' // global css
 import './icons' // icon
 
-import store from './store/store'
+import store from './store'
 
 
 
