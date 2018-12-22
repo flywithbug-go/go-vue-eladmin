@@ -6,7 +6,7 @@ const app = {
       withoutAnimation: false
     },
     device: 'desktop',
-    language: localStorage.getItem('language') || 'en',
+    language: localStorage.getItem('language') || 'zh',
     size: localStorage.getItem('size') || 'medium'
   },
   mutations: {

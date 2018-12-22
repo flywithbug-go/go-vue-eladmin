@@ -5,6 +5,7 @@ import (
 	"doc-manager/core/jwt"
 	"doc-manager/model"
 	"net/http"
+	"strings"
 
 	log "github.com/flywithbug/log4go"
 	"github.com/gin-gonic/gin"
@@ -91,4 +92,22 @@ func LogoutHandler(c *gin.Context) {
 		return
 	}
 	aRes.SetSuccessInfo(http.StatusOK, "success")
+}
+
+func GetUserInfoHandler(c *gin.Context)  {
+	aRes := model.NewResponse()
+	defer func() {
+		c.JSON(aRes.Code, aRes)
+	}()
+	userId := common.UserId(c)
+	if strings.EqualFold(userId,"") {
+		aRes.SetErrorInfo(http.StatusUnauthorized, "user not found")
+		return
+	}
+	user ,err := model.FindByUserId(userId)
+	if err != nil {
+		aRes.SetErrorInfo(http.StatusUnauthorized, "user not found:" +err.Error())
+		return
+	}
+	aRes.AddResponseInfo("user",user)
 }

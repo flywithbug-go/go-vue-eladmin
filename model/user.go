@@ -21,7 +21,9 @@ type User struct {
 	Phone    string `json:"phone"`
 	Sex      int    `json:"sex"` // 0保密，1男 2女
 	RealName string `json:"real_name" bson:"real_name"`
+	Nick     string `json:"nick" bson:"nick"`  //昵称
 	Title    string `json:"title"`
+
 }
 
 func FindAllUsers() ([]User, error) {
@@ -60,9 +62,15 @@ func (u User) Remove(id string) error {
 	return mongo.Remove(db, userCollection, bson.M{"_id": bson.ObjectIdHex(id)})
 }
 
-func (u *User) FindById(id string) error {
-	err := mongo.FindOne(db, userCollection, bson.M{"_id": bson.ObjectIdHex(id)}, nil, &u)
-	return err
+func FindById(id string) (u *User, err error) {
+	u = new(User)
+	err = mongo.FindOne(db, userCollection, bson.M{"_id": bson.ObjectIdHex(id)}, nil, &u)
+	return
+}
+func FindByUserId(userId string) (u *User, err error) {
+	u = new(User)
+	err = mongo.FindOne(db, userCollection, bson.M{"user_id": userId}, nil, &u)
+	return
 }
 
 func AddAdminUser() error {
