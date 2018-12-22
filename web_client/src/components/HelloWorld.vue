@@ -1,6 +1,7 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
+    <icon name="link" :scale="40" ></icon>
 
   </div>
 </template>
