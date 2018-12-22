@@ -6,6 +6,7 @@
                auto-complete="on"
                label-position="left">
         <div class="title-container">
+          <lang-select class="set-language"></lang-select>
           <h3 class="title" >{{ $t('login.title') }}</h3>
         </div>
         <el-form-item prop="account">
@@ -47,7 +48,7 @@
 </template>
 
 <script>
-  import LangSelect from '../../components/LangSelect/LangSelect'
+  import LangSelect from '../../components/LangSelect/'
 export default {
   name: "Login",
   components: {

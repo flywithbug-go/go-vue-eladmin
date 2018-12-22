@@ -10,6 +10,9 @@ import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 import '@/styles/index.scss' // global css
 import './icons' // icon
 
+import store from './store/store'
+
+
 
 import i18n from './lang' // Internationalization
 import * as filters from './filters' // global filters
@@ -29,6 +32,7 @@ Object.keys(filters).forEach(key => {
 new Vue({
   el: '#app',
   router,
+  store,
   i18n,
   render: h => h(App),
 })
