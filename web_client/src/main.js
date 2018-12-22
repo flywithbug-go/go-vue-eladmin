@@ -10,12 +10,13 @@ import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 import '@/styles/index.scss' // global css
 import './icons' // icon
 
+import './permission' // permission control
+import './errorLog' // error log
+
 import store from './store'
-
-
-
 import i18n from './lang' // Internationalization
 import * as filters from './filters' // global filters
+
 
 
 Vue.config.productionTip = false
