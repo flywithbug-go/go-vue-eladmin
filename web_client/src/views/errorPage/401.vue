@@ -28,6 +28,7 @@
 
 <script>
 import errGif from '@/assets/401_images/401.gif'
+import { getToken } from '@/utils/auth' // getToken from cookie
 
 export default {
   name: 'Page401',

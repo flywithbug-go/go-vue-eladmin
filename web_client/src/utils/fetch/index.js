@@ -21,9 +21,9 @@ client.interceptors.request.use(config => {
 
 client.interceptors.response.use(response => {
   const res = response.data
-  console.log(res)
+  console.log("interceptorsRes:" ,res)
   if (res.code == 200){
-    return res
+    return res.data
   }
   if (res.code === 401) {
     MessageBox.confirm('已登出，可以取消继续留在该页面，或者重新登录','确定登出',{
