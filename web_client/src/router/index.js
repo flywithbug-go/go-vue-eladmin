@@ -1,11 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Layout from '@/views/layout/Layout'
-import Login from '@/views/auth/index'
-
-// Views - Pages
-// import Page404 from '@/views/errorPages/Page404'
-// import Page500 from '@/views/errorPages/Page500'
 
 
 Vue.use(Router)
@@ -71,7 +66,6 @@ export default new Router({
 })
 
 export const asyncRouterMap = [
-
 
 ]
 

@@ -2,6 +2,8 @@
  * Created by jiachenpan on 16/11/18.
  */
 
+//过滤用户名
+//TODO
 export function isvalidUsername(str) {
   const valid_map = ['admin', 'editor']
   return valid_map.indexOf(str.trim()) >= 0

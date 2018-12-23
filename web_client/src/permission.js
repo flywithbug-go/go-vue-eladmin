@@ -15,9 +15,8 @@ const whiteList = ['/login','/auth-redirect']
 
 router.beforeEach((to, from ,next) => {
   NProgress.start()
-  console.log(getToken())
   if (getToken()){  //判断是否登录
-    if (to.name === 'login'){
+    if (to.path === '/login'){
       next({path:'/'})
       NProgress.done()
     }else {

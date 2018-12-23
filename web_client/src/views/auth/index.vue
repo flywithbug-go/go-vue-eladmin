@@ -117,9 +117,9 @@ export default {
         if (valid){
           this.loading = true
           this.$store.dispatch('LoginByAccount',this.loginForm).then(()=> {
-            console.log('did login')
+            console.log('did login',this.redirect)
             this.loading = false
-            this.$route.push({path: this.redirect || '/'})
+            this.$router.push({path: this.redirect || '/'})
           }) .catch(() => {
             this.loading = false
           })
