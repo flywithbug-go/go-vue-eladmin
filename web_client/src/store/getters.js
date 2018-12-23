@@ -1,4 +1,6 @@
 
+
+
 const getters = {
   sidebar: state => state.app.sidebar,
   language: state => state.app.language,
@@ -12,7 +14,7 @@ const getters = {
   email: state => state.user.email,
   errorLogs: state => state.errorLog.logs,
   permission_routers: state => state.permission.routers,
-  addRouters: state => state.permission.addRouters,
+  addRouters: state => state.permission.addRouters
 
 }
 

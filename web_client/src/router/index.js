@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Layout from '@/views/layout/Layout'
+import Layout from '../views/layout/Layout'
 
 
 Vue.use(Router)
@@ -22,12 +22,6 @@ export  const constantRouterMap = [
     path: '/login',
     name: 'login',
     component: () => import('@/views/auth/index'),
-    hidden: true
-  },
-  {
-    path: '/auth-redirect',
-    name: 'auth-redirect',
-    component: () => import('@/views/auth/authredirect'),
     hidden: true
   },
   {
@@ -66,6 +60,41 @@ export default new Router({
 })
 
 export const asyncRouterMap = [
-
+  {
+    path: '/icon',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/svg-icons/index'),
+        name: 'Icons',
+        meta: { title: 'icons', icon: 'icon', noCache: true }
+      }
+    ]
+  },
+  {
+    path: '/error',
+    component: Layout,
+    redirect: 'noredirect',
+    name: 'ErrorPages',
+    meta: {
+      title: 'errorPages',
+      icon: '404'
+    },
+    children: [
+      {
+        path: '401',
+        component: () => import('@/views/errorPage/401'),
+        name: 'Page401',
+        meta: { title: 'page401', noCache: true }
+      },
+      {
+        path: '404',
+        component: () => import('@/views/errorPage/404'),
+        name: 'Page404',
+        meta: { title: 'page404', noCache: true }
+      }
+    ]
+  },
 ]
 

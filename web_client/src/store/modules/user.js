@@ -1,4 +1,3 @@
-
 import { getToken, setToken, removeToken } from '../../utils/auth'
 import {getUserInfo, loginByAccount} from "../../api/user";
 
@@ -9,7 +8,8 @@ const user = {
     avatar: '',
     email: '',
     status: 0,
-    role: 0,
+    role:  -1 ,
+    roles:[],
   },
   mutations: {
     SET_TOKEN: (state, token) => {
@@ -35,11 +35,11 @@ const user = {
     }
   },
   actions: {
-    LoginByAccount(context,userInfo){
+    LoginByAccount({ commit },userInfo) {
       return new Promise((resolve, reject) =>{
         loginByAccount(userInfo.account,userInfo.password).then(response => {
           const token = response.token
-          context.commit('SET_TOKEN', token)
+          commit('SET_TOKEN', token)
           setToken(token)
           resolve()
         }).catch(error => {
@@ -47,18 +47,21 @@ const user = {
         })
       })
     },
-    GetUserInfo(context) {
+    // 获取用户信息
+    GetUserInfo({ commit }) {
       return new  Promise((resolve ,reject)=> {
         getUserInfo().then(response => {
           const user = response.user
           if (user.role < 1){
             reject('getInfo: role must  > 0 !')
           }
-          context.commit('SET_ROLE',user.role)
-          context.commit('SET_NAME', user.name)
-          context.commit('SET_AVATAR', user.avatar)
-          context.commit('SET_EMAIL', user.email)
-          context.commit('SET_STATUS', user.status)
+
+          commit('SET_ROLE',user.role)
+          commit('SET_NAME', user.name)
+          commit('SET_AVATAR', user.avatar)
+          commit('SET_EMAIL', user.email)
+          commit('SET_STATUS', user.status)
+
           resolve(user)
         }).catch(error => {
           reject(error)

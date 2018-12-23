@@ -7,9 +7,7 @@ import errorLog from './modules/errorLog'
 import getters from './getters'
 import permission from './modules/permission'
 
-
 Vue.use(Vuex)
-
 
 const store = new Vuex.Store({
   modules: {
@@ -20,7 +18,6 @@ const store = new Vuex.Store({
   },
   getters
 })
-
 
 export default store
 
