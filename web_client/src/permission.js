@@ -12,7 +12,7 @@ NProgress.configure({ showSpinner: false })// NProgress Configuration
 function hasPermission(role, permissionRoles) {
   if (role === 1) return true // admin permission passed directly
   if (permissionRoles == 0) return true
-  return role <= permissionRoles
+  return permissionRoles >= role
 }
 
 
@@ -38,12 +38,14 @@ router.beforeEach((to, from ,next) => {
           })
         })
       } else {
-        if (hasPermission(store.getters.role, to.meta.role)){
-          console.log("hasPermission")
-          next()
-        } else {
-          next({ path: '/401', replace: true, query: { noGoBack: true }})
-        }
+        console.log("hasPermission")
+        next()
+        //TODO 权限处理
+        // if (to.meta.roles && hasPermission(store.getters.role, to.meta.role)) {
+        //   next()
+        // } else {
+        //   next({ path: '/401', replace: true, query: { noGoBack: true }})
+        // }
       }
     }
   }else {

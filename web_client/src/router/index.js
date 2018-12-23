@@ -50,6 +50,19 @@ export  const constantRouterMap = [
       }
     ]
   },
+  {
+    path: '/documentation',
+    component: Layout,
+    redirect: '/documentation/index',
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/documentation/index'),
+        name: 'Documentation',
+        meta: { title: 'documentation', icon: 'documentation', noCache: true }
+      }
+    ]
+  },
 ]
 
 
@@ -95,6 +108,6 @@ export const asyncRouterMap = [
         meta: { title: 'page404', noCache: true }
       }
     ]
-  },
+  }
 ]
 
