@@ -1,8 +1,8 @@
 package server
 
 import (
-	"doc-manager/server/handler"
-	"doc-manager/server/middleware"
+	"doc-manager/web_server/server/handler"
+	"doc-manager/web_server/server/middleware"
 	"fmt"
 	"github.com/gin-gonic/contrib/static"
 	"time"

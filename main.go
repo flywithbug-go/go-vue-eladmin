@@ -1,11 +1,11 @@
 package main
 
 import (
-	"doc-manager/config"
-	"doc-manager/core/jwt"
-	"doc-manager/core/mongo"
-	"doc-manager/model"
-	"doc-manager/server"
+	"doc-manager/web_server/config"
+	"doc-manager/web_server/core/jwt"
+	"doc-manager/web_server/core/mongo"
+	"doc-manager/web_server/model"
+	"doc-manager/web_server/server"
 	"flag"
 
 	log "github.com/flywithbug/log4go"

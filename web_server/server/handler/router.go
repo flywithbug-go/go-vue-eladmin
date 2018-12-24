@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"doc-manager/server/middleware"
+	"doc-manager/web_server/server/middleware"
 	"strings"
 
 	"github.com/gin-gonic/gin"

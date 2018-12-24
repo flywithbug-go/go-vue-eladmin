@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"doc-manager/model"
+	"doc-manager/web_server/model"
 	"fmt"
 	"net/http"
 	"strings"

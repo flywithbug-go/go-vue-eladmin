@@ -1,7 +1,7 @@
 package model
 
 import (
-	"doc-manager/core/mongo"
+	"doc-manager/web_server/core/mongo"
 	"errors"
 	"time"
 

@@ -1,6 +1,6 @@
 package model
 
-import "doc-manager/core/mongo"
+import "doc-manager/web_server/core/mongo"
 
 var db = "doc_manager"
 

@@ -1,7 +1,7 @@
 package server
 
 import (
-	"doc-manager/server/middleware"
+	"doc-manager/web_server/server/middleware"
 	"fmt"
 	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"

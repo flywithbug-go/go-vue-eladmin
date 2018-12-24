@@ -1,9 +1,9 @@
 package middleware
 
 import (
-	"doc-manager/common"
-	"doc-manager/core/jwt"
-	"doc-manager/model"
+	"doc-manager/web_server/common"
+	"doc-manager/web_server/core/jwt"
+	"doc-manager/web_server/model"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
