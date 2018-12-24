@@ -7,12 +7,11 @@ import { getToken } from './utils/auth' // getToken from cookie
 
 NProgress.configure({ showSpinner: false })// NProgress Configuration
 
-//permission judge
 // permission judge function
-function hasPermission(role, permissionRoles) {
-  if (role === 1) return true // admin permission passed directly
-  if (permissionRoles == 0) return true
-  return permissionRoles >= role
+function hasPermission(roles, permissionRoles) {
+  if (roles.indexOf('admin') >= 0) return true // admin permission passed directly
+  if (!permissionRoles) return true
+  return roles.some(role => permissionRoles.indexOf(role) >= 0)
 }
 
 
@@ -38,14 +37,12 @@ router.beforeEach((to, from ,next) => {
           })
         })
       } else {
-        console.log("hasPermission")
-        next()
-        //TODO 权限处理
-        // if (to.meta.roles && hasPermission(store.getters.role, to.meta.role)) {
-        //   next()
-        // } else {
-        //   next({ path: '/401', replace: true, query: { noGoBack: true }})
-        // }
+        // 没有动态改变权限的需求可直接next() 删除下方权限判断 ↓
+        if (hasPermission(store.getters.roles, to.meta.roles)) {
+          next()
+        } else {
+          next({ path: '/401', replace: true, query: { noGoBack: true }})
+        }
       }
     }
   }else {

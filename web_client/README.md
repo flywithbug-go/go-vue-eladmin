@@ -19,3 +19,8 @@ npm run build --report
 ```
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+
+
+
+//本项目大量借鉴和使用了 [PanJiaChen](https://github.com/PanJiaChen/vue-element-admin)
+的源码，一个很优秀的项目。
