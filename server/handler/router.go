@@ -78,6 +78,13 @@ func funcDoRouteRegister(method, route string, handler gin.HandlerFunc, r *gin.E
 
 var routers = []ginHandleFunc{
 	{
+		handler:htmlHandler,
+		routerType:routerTypeNormal,
+		method:"GET",
+		route:"/doc/html",
+
+	},
+	{
 		handler:    RegisterHandler,
 		routerType: routerTypeNormal,
 		method:     "POST",
