@@ -88,7 +88,7 @@ export default {
   },
   computed: {
     loginBtnDisable() {
-      if (this.loginForm.password.length < 6 || this.loginForm.account.length < 6){
+      if (this.loginForm.password.length < 4 || this.loginForm.account.length < 4){
         return true
       }
       return false

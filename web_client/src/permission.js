@@ -25,11 +25,11 @@ router.beforeEach((to, from ,next) => {
       next({path:'/'})
       NProgress.done()
     }else {
-      if (store.getters.role < 1) {
+      if (store.getters.roles.length === 0) { // 判断当前用户是否已拉取完user_info信息
         store.dispatch('GetUserInfo').then(user => {
-          store.dispatch('GenerateRoutes',user.role).then(() => {
+          store.dispatch('GenerateRoutes',user.roles).then(() => {
             router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
-            next()
+            next({ ...to, replace: true }) // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
           })
         }).catch((err) => {
           store.dispatch('FedLogOut').then(() => {

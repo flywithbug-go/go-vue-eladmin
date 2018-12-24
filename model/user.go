@@ -30,6 +30,7 @@ type User struct {
 	Name     string `json:"name" bson:"name"`  //昵称
 	Title    string `json:"title"`
 	Role     roleState	`json:"role"`   //用于前端路由配置 1 管理员， 2 普通用户，
+	Roles    []string `json:"roles"`   //角色数组
 	Status   int	`json:"status"`
 }
 
@@ -69,15 +70,26 @@ func (u User) Remove(id string) error {
 	return mongo.Remove(db, userCollection, bson.M{"_id": bson.ObjectIdHex(id)})
 }
 
-func FindById(id string) (u *User, err error) {
-	u = new(User)
-	err = mongo.FindOne(db, userCollection, bson.M{"_id": bson.ObjectIdHex(id)}, nil, &u)
-	return
-}
+//func FindById(id string) (u *User, err error) {
+//	u = new(User)
+//	err = mongo.FindOne(db, userCollection, bson.M{"_id": bson.ObjectIdHex(id)}, nil, &u)
+//	return
+//}
 func FindByUserId(userId string) (u *User, err error) {
 	u = new(User)
 	err = mongo.FindOne(db, userCollection, bson.M{"user_id": userId}, nil, &u)
+	u.Roles = MakeUserRoles(u.Role)
 	return
+}
+
+func MakeUserRoles(role roleState)[]string  {
+	if role == roleStateTypeNormal {
+		return []string{"normal"}
+	}else if role == roleStateTypeAdmin {
+		return []string{"admin"}
+	}else {
+		return []string{}
+	}
 }
 
 func AddAdminUser() error {

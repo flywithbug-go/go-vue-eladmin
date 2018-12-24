@@ -8,7 +8,7 @@ const user = {
     avatar: '',
     email: '',
     status: 0,
-    role:  -1 ,
+    // role:  -1 ,
     roles:[],
   },
   mutations: {
@@ -27,8 +27,8 @@ const user = {
     SET_STATUS: (state, status) => {
       state.status = status
     },
-    SET_ROLE: (state, role) => {
-      state.role = role
+    SET_ROLES: (state, roles) => {
+      state.roles = roles
     },
     SET_EMAIL: (state, email) => {
       state.email = email
@@ -51,18 +51,18 @@ const user = {
     GetUserInfo({ commit }) {
       return new  Promise((resolve ,reject)=> {
         getUserInfo().then(response => {
-          const user = response.user
-          if (user.role < 1){
-            reject('getInfo: role must  > 0 !')
+          const data = response.user
+          if (data.roles && data.roles.length > 0) { // 验证返回的roles是否是一个非空数组
+            commit('SET_ROLES', data.roles)
+          } else {
+            reject('getInfo: roles must be a non-null array !')
           }
+          commit('SET_NAME', data.name)
+          commit('SET_AVATAR', data.avatar)
+          commit('SET_EMAIL', data.email)
+          commit('SET_STATUS', data.status)
 
-          commit('SET_ROLE',user.role)
-          commit('SET_NAME', user.name)
-          commit('SET_AVATAR', user.avatar)
-          commit('SET_EMAIL', user.email)
-          commit('SET_STATUS', user.status)
-
-          resolve(user)
+          resolve(data)
         }).catch(error => {
           reject(error)
         })
