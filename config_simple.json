@@ -2,19 +2,19 @@
   "api_port":":6201",
   "web_port":":6203",
   "static_path":"./web_client/dist/",
-  "private_key_path":"./xx/private_key",
-  "public_key_path":"./xx/public_key.pub",
+  "private_key_path":"**/private_key",
+  "public_key_path":"**/public_key.pub",
   "mail_config":{
     "host":"smtp.163.com",
     "port":465,
     "username":"**@163.com",
-    "password":"pass"
+    "password":"**"
   },
   "db_config":{
     "url": "127.0.0.1:27017",
-    "db_name": "todo",
+    "db_name": "doc_manager",
     "force_sync":true
   },
   "router_prefix":"/api",
-  "auth_prefix":"/todo"
+  "auth_prefix":""
 }
