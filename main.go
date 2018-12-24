@@ -42,10 +42,10 @@ func main() {
 	//设置数据库名字
 	model.SetDBName(conf.DBConfig.DBName)
 	mongo.DialMgo(conf.DBConfig.Url)
-	go func() {
-		//静态文件服务
-		server.StartWeb(conf.WebPort, conf.StaticPath)
-	}()
+	//go func() {
+	//	//静态文件服务
+	//	server.StartWeb(conf.WebPort, conf.StaticPath)
+	//}()
 	//启动ApiServer服务
-	server.StartApi(conf.ApiPort, conf.RouterPrefix, conf.AuthPrefix)
+	server.StartServer(conf.ApiPort,conf.StaticPath, conf.RouterPrefix, conf.AuthPrefix)
 }

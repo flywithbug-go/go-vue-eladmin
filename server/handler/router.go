@@ -21,6 +21,9 @@ type ginHandleFunc struct {
 	route      string
 }
 
+
+
+
 //host:port/auth_prefix/prefix/path
 func RegisterRouters(r *gin.Engine, prefix string, authPrefix string) {
 	jwtR := r.Group(prefix + authPrefix)
@@ -74,12 +77,6 @@ func funcDoRouteRegister(method, route string, handler gin.HandlerFunc, r *gin.E
 }
 
 var routers = []ginHandleFunc{
-	{
-		handler:    IndexHandler,
-		routerType: routerTypeNormal,
-		method:     "GET",
-		route:      "/",
-	},
 	{
 		handler:    RegisterHandler,
 		routerType: routerTypeNormal,
