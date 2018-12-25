@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Layout from '../views/layout/Layout'
-
+import metadataRouter from './modules/metadata'
 
 Vue.use(Router)
 
@@ -9,7 +9,6 @@ export  const constantRouterMap = [
   {
     path: '/redirect',
     component: Layout,
-    name: 'redirect',
     hidden: true,
     children: [
       {
@@ -21,7 +20,7 @@ export  const constantRouterMap = [
   {
     path: '/login',
     name: 'login',
-    component: () => import('@/views/auth/index'),
+    component: () => import('@/views/login/index'),
     hidden: true
   },
   {
@@ -73,6 +72,7 @@ export default new Router({
 })
 
 export const asyncRouterMap = [
+  metadataRouter,
   {
     path: '/icon',
     component: Layout,

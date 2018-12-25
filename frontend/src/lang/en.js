@@ -1,5 +1,6 @@
 export default {
   route: {
+    metadata: 'Metadata',
     dashboard: 'Dashboard',
     introduction: 'Introduction',
     documentation: 'Documentation',

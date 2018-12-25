@@ -1,5 +1,6 @@
 export default {
   route: {
+    metadata: '元数据',
     dashboard: '首页',
     introduction: '简述',
     documentation: '文档',
