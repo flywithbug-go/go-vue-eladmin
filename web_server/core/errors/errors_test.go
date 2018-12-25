@@ -4,8 +4,7 @@ package errors_test
 import (
 	"fmt"
 	"testing"
-
-	"doc-manager/web_server/coreserver/core/errors"
+	"doc-manager/web_server/core/errors"
 )
 
 var errMessage = "User with mail: %s already exists"

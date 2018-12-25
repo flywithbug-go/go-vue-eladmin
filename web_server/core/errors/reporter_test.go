@@ -3,8 +3,7 @@ package errors_test
 
 import (
 	"testing"
-
-	"doc-manager/web_server/coreserver/core/errors"
+	"doc-manager/web_server/core/errors"
 )
 
 func TestReporterAdd(t *testing.T) {
