@@ -15,13 +15,13 @@ const metadataRouter = {
       path: 'app',
       component: () => import('@/views/application/app'),
       name: 'AppManager',
-      meta: { title: 'appManager', noCache: true }
+      meta: { title: 'appManager', noCache: true, icon: 'application' }
     },
     {
       path: 'version',
       component: () => import('@/views/application/version'),
       name: 'VersionManager',
-      meta: { title: 'versionManager', noCache: true, }
+      meta: { title: 'versionManager', noCache: true, icon: 'version'}
     },
 
   ]
