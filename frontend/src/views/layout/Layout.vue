@@ -23,6 +23,7 @@
       AppMain,
       TagsView
     },
+    mixins: [ResizeMixin],
     computed: {
       sidebar() {
         return this.$store.state.app.sidebar

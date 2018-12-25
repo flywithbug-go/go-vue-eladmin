@@ -2,17 +2,29 @@ import Layout from '@/views/layout/Layout'
 
 
 const metadataRouter = {
-    path: '',
-    component: Layout,
-    name: 'metadata',
-    redirect: 'metadata',
-    children: [
-      {
-        path: 'metadata',
-        component: () => import('@/views/metadata/index'),
-        name: 'Metadata',
-        meta: { title: 'metadata', icon: 'meta_data', noCache: true }
-      }
-    ]
+  path: '/meta',
+  component: Layout,
+  redirect: 'index',
+  name: 'Metadata',
+  meta: {
+    title: 'metadata',
+    icon: 'metadata'
+  },
+  children: [
+    {
+      path: 'app',
+      component: () => import('@/views/application/app'),
+      name: 'AppManager',
+      meta: { title: 'appManager', noCache: true }
+    },
+    {
+      path: 'version',
+      component: () => import('@/views/application/version'),
+      name: 'VersionManager',
+      meta: { title: 'versionManager', noCache: true, }
+    },
+
+  ]
 }
+
 export  default metadataRouter

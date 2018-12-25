@@ -1,5 +1,8 @@
 export default {
   route: {
+    versionManager:'版本管理',
+    index: '首页',
+    appManager:'APP管理',
     metadata: '元数据',
     dashboard: '首页',
     introduction: '简述',

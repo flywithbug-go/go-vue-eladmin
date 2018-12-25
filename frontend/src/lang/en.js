@@ -1,5 +1,8 @@
 export default {
   route: {
+    versionManager:'VersionManager',
+    index: 'Home',
+    appManager:'AppManager',
     metadata: 'Metadata',
     dashboard: 'Dashboard',
     introduction: 'Introduction',
