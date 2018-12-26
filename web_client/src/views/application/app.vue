@@ -74,14 +74,14 @@
     <!--创建弹窗-->
     <el-dialog :title="$t('application.table_createTitle')" :visible.sync="dialogFormVisible">
 
-
-
       <el-form ref="dataForm" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
         <el-form-item  align="center">
           <el-upload
             class="avatar-uploader"
-            action="/upload/image"
+            :action="actionURL"
             :show-file-list="false"
+            :headers="headers"
+            :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload">
             <img v-if="imageUrl" :src="imageUrl" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -104,6 +104,8 @@
 
 <script>
   import fixedButton from '../../components/FixedButton';
+  import global_ from '../../config'
+  import store from '@/store'
 
   export default {
   name: 'AppManager',
@@ -114,6 +116,8 @@
     return {
       listLoading: true,
       tableKey: 0,
+      headers: {'Authorization': store.getters.token},
+      actionURL:global_.UploadImageURL,
       list: null,
       total: 0,
       dialogFormVisible:false,
@@ -159,9 +163,12 @@
         desc: ''
       }
     },
+    handleAvatarSuccess(res, file) {
+      console.log(res)
+    },
     beforeAvatarUpload(file) {
       console.log("beforeAvatarUpload",file.type)
-      return false;
+      return true;
     }
   }
 }

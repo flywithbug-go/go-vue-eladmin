@@ -1,7 +1,7 @@
 import client from 'axios'
 import { MessageBox,Message } from 'element-ui'
 import store from '@/store'
-import global_ from '@/config'
+import global_ from '../../config'
 
 
 client.defaults.baseURL = global_.BaseURL;
@@ -16,8 +16,10 @@ client.defaults.timeout = 60000 //60秒
 // })
 
 client.interceptors.request.use(config => {
-  if (store.getters.token !== '') {
-    config.headers['Authorization'] = store.getters.token
+  if (store.getters.token) {
+    config.headers.common['Authorization'] = store.getters.token
+  }else {
+    config.headers.common['Authorization'] = ""
   }
   return config
 },error => {
