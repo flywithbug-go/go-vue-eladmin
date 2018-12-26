@@ -108,4 +108,10 @@ var routers = []ginHandleFunc{
 		method:"GET",
 		route:"/user/info",
 	},
+	{
+		handler:GetAllUserInfoHandler,
+		routerType:routerTypeNeedAuth,
+		method:"GET",
+		route:"/user/all",
+	},
 }

@@ -4,7 +4,7 @@
     <el-table v-loading="listLoading"
               :key="tableKey"
               :data="list"
-              border="true"
+              border
               fit
               highlight-current-row
               style="width: 100%;"
@@ -21,7 +21,7 @@
       <el-table-column :label="$t('application.table_name')"
                        prop="id"
                        align="center"
-                       width="150px">
+                       width="150px" >
         <template slot-scope="scope">
           <span> {{ scope.row.name }} </span>
         </template>
@@ -36,14 +36,6 @@
         </template>
       </el-table-column>
 
-      <el-table-column :label="$t('application.table_desc')"
-                       prop="id"
-                       align="center"
-                       width="150px">
-        <template slot-scope="scope">
-          <span> {{ scope.row.desc }} </span>
-        </template>
-      </el-table-column>
 
       <el-table-column :label="$t('application.table_owner')"
                        prop="id"
@@ -63,6 +55,14 @@
         </template>
       </el-table-column>
 
+      <el-table-column :label="$t('application.table_desc')"
+                       prop="id"
+                       align="center"
+                       min-width="150px">
+        <template slot-scope="scope">
+          <span> {{ scope.row.desc }} </span>
+        </template>
+      </el-table-column>
     </el-table>
   </div>
 </template>

@@ -3,8 +3,6 @@ package model
 import (
 	"doc-manager/web_server/core/mongo"
 	"errors"
-	"strings"
-
 	"gopkg.in/mgo.v2/bson"
 )
 
@@ -21,7 +19,7 @@ type User struct {
 	Id       int64  `json:"_id" bson:"_id"`
 	UserId   string `json:"user_id" bson:"user_id"`
 	Account  string `json:"account"`
-	Password string
+	Password string	`json:"password,omitempty"`
 	Avatar   string `json:"avatar"`
 	Email    string `json:"email""`
 	Phone    string `json:"phone"`
@@ -34,9 +32,11 @@ type User struct {
 	Status   int	`json:"status"`
 }
 
+
+
 func FindAllUsers() ([]User, error) {
 	var results []User
-	err := mongo.FindAll(db, userCollection, nil, nil, &results)
+	err := mongo.FindAll(db, userCollection, nil, bson.M{"password":0}, &results)
 	return results, err
 }
 
@@ -59,25 +59,28 @@ func (u *User) CheckLogin(account, pass string) (err error) {
 	return err
 }
 
-func (u *User) Update(id string) error {
-	if !strings.EqualFold(u.UserId, id) {
+func (u *User) Update() error {
+	if u.UserId == "" {
 		return errors.New("userId not equal id")
 	}
-	return mongo.Update(db, userCollection, bson.M{"_id": bson.ObjectIdHex(id)}, u)
+	return mongo.Update(db, userCollection,
+		bson.M{"_id": bson.ObjectIdHex(u.UserId)},
+		bson.M{
+			"avatar":u.Avatar,
+			"role":u.Role,
+			"roles":u.Roles,
+			"title":u.Title,
+			"status":u.Status,
+			"name":u.Name,})
 }
 
 func (u User) Remove(id string) error {
 	return mongo.Remove(db, userCollection, bson.M{"_id": bson.ObjectIdHex(id)})
 }
 
-//func FindById(id string) (u *User, err error) {
-//	u = new(User)
-//	err = mongo.FindOne(db, userCollection, bson.M{"_id": bson.ObjectIdHex(id)}, nil, &u)
-//	return
-//}
 func FindByUserId(userId string) (u *User, err error) {
 	u = new(User)
-	err = mongo.FindOne(db, userCollection, bson.M{"user_id": userId}, nil, &u)
+	err = mongo.FindOne(db, userCollection, bson.M{"user_id": userId}, bson.M{"password":0}, &u)
 	u.Roles = MakeUserRoles(u.Role)
 	return
 }

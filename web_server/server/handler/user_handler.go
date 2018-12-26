@@ -111,3 +111,23 @@ func GetUserInfoHandler(c *gin.Context)  {
 	}
 	aRes.AddResponseInfo("user",user)
 }
+
+func GetAllUserInfoHandler(c *gin.Context)  {
+	aRes := model.NewResponse()
+	defer func() {
+		c.JSON(aRes.Code, aRes)
+	}()
+	userId := common.UserId(c)
+	if strings.EqualFold(userId,"") {
+		aRes.SetErrorInfo(http.StatusUnauthorized, "user not found")
+		return
+	}
+
+	users ,err := model.FindAllUsers()
+	if err != nil {
+		aRes.SetErrorInfo(http.StatusUnauthorized, "users find error" +err.Error())
+		return
+	}
+	aRes.AddResponseInfo("users",users)
+
+}
