@@ -20,15 +20,15 @@ type User struct {
 	UserId   string `json:"user_id" bson:"user_id"`
 	Account  string `json:"account"`
 	Password string	`json:"password,omitempty"`
-	Avatar   string `json:"avatar"`
-	Email    string `json:"email""`
-	Phone    string `json:"phone"`
+	Avatar   string `json:"avatar,omitempty"`
+	Email    string `json:"email,omitempty"`
+	Phone    string `json:"phone,omitempty"`
 	Sex      int    `json:"sex"` // 0保密，1男 2女
 	RealName string `json:"real_name" bson:"real_name"`
-	Name     string `json:"name" bson:"name"`  //昵称
-	Title    string `json:"title"`
+	Name     string `json:"name,omitempty" bson:"name"`  //昵称
+	Title    string `json:"title,omitempty"`
 	Role     roleState	`json:"role"`   //用于前端路由配置 1 管理员， 2 普通用户，
-	Roles    []string `json:"roles"`   //角色数组
+	Roles    []string `json:"roles,omitempty"`   //角色数组
 	Status   int	`json:"status"`
 }
 
