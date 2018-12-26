@@ -35,9 +35,9 @@ const user = {
     }
   },
   actions: {
-    LoginByAccount({ commit },userInfo) {
+    LoginByAccount({ commit },user) {
       return new Promise((resolve, reject) =>{
-        loginByAccount(userInfo.account,userInfo.password).then(response => {
+        loginByAccount(user.account,user.password).then(response => {
           const token = response.token
           commit('SET_TOKEN', token)
           setToken(token)
