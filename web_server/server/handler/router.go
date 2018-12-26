@@ -117,4 +117,10 @@ var routers = []ginHandleFunc{
 		method:     "POST",
 		route:      "/upload/image",
 	},
+	{
+		handler:    getImageHandler,
+		routerType: routerTypeNormal,
+		method:     "GET",
+		route:      "/image",
+	},
 }

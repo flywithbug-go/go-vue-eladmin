@@ -11,8 +11,10 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 
+	"github.com/flywithbug/file"
 	"github.com/flywithbug/log4go"
 	"github.com/nfnt/resize"
 	"github.com/pborman/uuid"
@@ -77,8 +79,7 @@ func uploadImageHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, fmt.Sprintf("write file err : %s", err.Error()))
 		return
 	}
-	avatarPath := fmt.Sprintf("filepath=%s&dir=%s", filename, month)
-
+	avatarPath := fmt.Sprintf("filename=%s&dir=%s", filename, month)
 	aRes.SetResponseDataInfo("filepath", avatarPath)
 
 }
@@ -143,4 +144,39 @@ func scale(in io.Reader, out io.Writer, width, height, quality int) error {
 		return errors.New("ERROR FORMAT")
 	}
 	return nil
+}
+
+func getImageHandler(c *gin.Context) {
+	filename := c.Query("filename")
+	dir := c.Query("dir")
+	size := c.Query("size")
+	if len(size) == 0 {
+		size = "120"
+	}
+	fileOrigin := localImageFilePath + dir + "/" + filename
+	ext := filepath.Ext(filename)
+	if strings.EqualFold(ext, ".gif") {
+		http.ServeFile(c.Writer, c.Request, fileOrigin)
+		return
+	}
+	filePath := localImageFilePath + dir + "/" + size + "-" + filename
+	if !file.FileExists(filePath) {
+		if !file.FileExists(fileOrigin) {
+			c.Writer.Write([]byte("Error: Image Not found."))
+			return
+		}
+		fIn, _ := os.Open(fileOrigin)
+		//log4go.Info(fileOrigin)
+		defer fIn.Close()
+		fOut, _ := os.Create(filePath)
+		//log4go.Info(filename)
+		defer fOut.Close()
+		err := scale(fIn, fOut, 120, 120, 100)
+		if err != nil {
+			log4go.Info(err.Error())
+			http.ServeFile(c.Writer, c.Request, fileOrigin)
+			return
+		}
+	}
+	http.ServeFile(c.Writer, c.Request, filePath)
 }
