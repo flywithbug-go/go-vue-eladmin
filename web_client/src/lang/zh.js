@@ -156,5 +156,13 @@ export default {
     close: '关闭',
     closeOthers: '关闭其它',
     closeAll: '关闭所有'
+  },
+  application: {
+    table_id: "序号",
+    table_name: "名称",
+    table_icon: "图标",
+    table_desc: "描述",
+    table_owner: "负责人",
+    table_time: "创建时间"
   }
 }

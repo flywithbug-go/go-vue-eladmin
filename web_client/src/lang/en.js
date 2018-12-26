@@ -156,5 +156,13 @@ export default {
     close: 'Close',
     closeOthers: 'Close Others',
     closeAll: 'Close All'
+  },
+  application: {
+    table_id: "ID",
+    table_name: "Name",
+    table_icon: "Icon",
+    table_desc: "Description",
+    table_owner: "Owner",
+    table_time: "CreateTime"
   }
 }
