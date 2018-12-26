@@ -6,12 +6,10 @@
   </section>
 </template>
 
-
 <script>
   import fixedIcon from '../../components/FixedIcon';
-
   export default {
-    name: 'test',
+    name: 'Dashboard',
     components: {
       fixedIcon
     },
@@ -31,19 +29,18 @@
 
 </script>
 
-
 <style scoped lang="scss">
   .content{
     height: 100vh;
-
   }
   .fixed-container{
     background-color: #eef1f6;
+    .icon-add{
+      width: 2rem;
+      height: 1.9rem;
+      background-size: 2rem 1.9rem;
+    }
   }
-  .icon-add{
-    width: 2rem;
-    height: 1.9rem;
-    background-size: 2rem 1.9rem;
-  }
+
 </style>
 

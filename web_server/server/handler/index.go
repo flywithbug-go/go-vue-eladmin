@@ -1,14 +1,14 @@
 package handler
 
 import (
-	"doc-manager/web_server/model"
 	"fmt"
 	"net/http"
 	"strings"
 
+	"doc-manager/web_server/model"
+
 	"github.com/gin-gonic/gin"
 )
-
 
 func NoRoute(c *gin.Context) {
 	path := strings.Split(c.Request.URL.Path, "/")

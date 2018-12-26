@@ -1,5 +1,5 @@
 <template>
-  <section class="fixed-icon"
+  <section class="fixed-button"
            :style="{ bottom: bottom + 'rem' }"
            :class="[ !transition ? 'fixed-transition' : '']"
            @click="event">
@@ -8,7 +8,7 @@
 </template>
 <script>
   export default {
-    name: 'fixedIcon',
+    name: 'fixedButton',
     props: {
       bottom: { // 改图标距离底部距离 单位 rem
         type: Number,
@@ -43,7 +43,7 @@
 
 <style scoped lang="scss">
   /*@media only screen and (min-width:750px){html{font-size:20px}} */
-  .fixed-icon{
+  .fixed-button{
     position: fixed;
     z-index: 1100;
     right: 1.7rem;

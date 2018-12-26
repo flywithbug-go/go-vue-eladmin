@@ -163,6 +163,9 @@ export default {
     table_icon: "Icon",
     table_desc: "Description",
     table_owner: "Owner",
-    table_time: "CreateTime"
+    table_time: "Time",
+    table_create_time: "CreateTime",
+    table_createTitle: "Create App",
+    table_desc_placeholder: "Please enter a description"
   }
 }

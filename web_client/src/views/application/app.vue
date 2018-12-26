@@ -1,6 +1,12 @@
 <template>
   <div class="app-container">
-
+    <!--悬浮按钮-->
+    <section class="content">
+      <fixed-button :bottom="3" @clickEvent="addAction" class="fixed-container">
+        <svg-icon icon-class="add" class="icon-add"></svg-icon>
+      </fixed-button>
+    </section>
+<!--列表内容-->
     <el-table v-loading="listLoading"
               :key="tableKey"
               :data="list"
@@ -64,18 +70,47 @@
         </template>
       </el-table-column>
     </el-table>
+
+    <!--创建弹窗-->
+    <el-dialog :title="$t('application.table_createTitle')" :visible.sync="dialogFormVisible">
+      <el-form ref="dataForm" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
+        <el-form-item :label="$t('application.table_name')" prop="name">
+          <el-input v-model="temp.name"/>
+        </el-form-item>
+        <el-form-item :label="$t('application.table_desc')" prop="desc">
+          <el-input :autosize="{ minRows: 2, maxRows: 4}" type="textarea" v-model="temp.desc" :placeholder="$t('application.table_desc_placeholder')"/>
+        </el-form-item>
+      </el-form>
+
+    </el-dialog>
+
+
   </div>
 </template>
 
 <script>
-export default {
+  import fixedButton from '../../components/FixedButton';
+
+  export default {
   name: 'AppManager',
+  components: {
+    fixedButton
+  },
   data() {
     return {
       listLoading: true,
       tableKey: 0,
       list: null,
       total: 0,
+      dialogFormVisible:false,
+      temp: {
+        id: undefined,
+        name: '',
+        icon: '',
+        owner:'',
+        time: new Date(),
+        desc: ''
+      },
     }
   },
   created() {
@@ -93,10 +128,34 @@ export default {
         this.sortByID(order)
       }
     },
+    addAction() {
+      this.resetTemp()
+      this.dialogFormVisible =  true
+
+      console.log('added');
+    },
+    resetTemp() {
+      this.temp = {
+        id: undefined,
+        name: '',
+        icon: '',
+        owner:'',
+        time: new Date(),
+        desc: ''
+      }
+    }
   }
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+  .fixed-container{
+    background-color: #eef1f6;
+    .icon-add{
+      width: 2rem;
+      height: 1.9rem;
+      background-size: 2rem 1.9rem;
+    }
+  }
 
 </style>

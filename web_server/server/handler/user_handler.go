@@ -11,7 +11,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func LoginHandler(c *gin.Context) {
+func loginHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
@@ -45,7 +45,7 @@ func LoginHandler(c *gin.Context) {
 	aRes.SetResponseDataInfo("token", token)
 }
 
-func RegisterHandler(c *gin.Context) {
+func registerHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
 		c.JSON(aRes.Code, aRes)
@@ -76,7 +76,7 @@ func RegisterHandler(c *gin.Context) {
 	aRes.AddResponseInfo("user", user)
 }
 
-func LogoutHandler(c *gin.Context) {
+func logoutHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
 		c.JSON(aRes.Code, aRes)
@@ -94,7 +94,7 @@ func LogoutHandler(c *gin.Context) {
 	aRes.SetSuccessInfo(http.StatusOK, "success")
 }
 
-func GetUserInfoHandler(c *gin.Context)  {
+func getUserInfoHandler(c *gin.Context)  {
 	aRes := model.NewResponse()
 	defer func() {
 		c.JSON(aRes.Code, aRes)
@@ -112,7 +112,7 @@ func GetUserInfoHandler(c *gin.Context)  {
 	aRes.AddResponseInfo("user",user)
 }
 
-func GetAllUserInfoHandler(c *gin.Context)  {
+func getAllUserInfoHandler(c *gin.Context)  {
 	aRes := model.NewResponse()
 	defer func() {
 		c.JSON(aRes.Code, aRes)
@@ -129,5 +129,8 @@ func GetAllUserInfoHandler(c *gin.Context)  {
 		return
 	}
 	aRes.AddResponseInfo("users",users)
+}
+
+func searchUserHandler(c *gin.Context)  {
 
 }

@@ -1,8 +1,9 @@
 package handler
 
 import (
-	"doc-manager/web_server/server/middleware"
 	"strings"
+
+	"doc-manager/web_server/server/middleware"
 
 	"github.com/gin-gonic/gin"
 )
@@ -20,9 +21,6 @@ type ginHandleFunc struct {
 	method     string
 	route      string
 }
-
-
-
 
 //host:port/auth_prefix/prefix/path
 func RegisterRouters(r *gin.Engine, prefix string, authPrefix string) {
@@ -78,40 +76,39 @@ func funcDoRouteRegister(method, route string, handler gin.HandlerFunc, r *gin.E
 
 var routers = []ginHandleFunc{
 	{
-		handler:htmlHandler,
-		routerType:routerTypeNormal,
-		method:"GET",
-		route:"/doc/html",
-
+		handler:    htmlHandler,
+		routerType: routerTypeNormal,
+		method:     "GET",
+		route:      "/doc/html",
 	},
 	{
-		handler:    RegisterHandler,
+		handler:    registerHandler,
 		routerType: routerTypeNormal,
 		method:     "POST",
 		route:      "/register",
 	},
 	{
-		handler:    LoginHandler,
+		handler:    loginHandler,
 		routerType: routerTypeNormal,
 		method:     "POST",
 		route:      "/login",
 	},
 	{
-		handler:    LogoutHandler,
+		handler:    logoutHandler,
 		routerType: routerTypeNeedAuth,
 		route:      "/logout",
 		method:     "POST",
 	},
 	{
-		handler:GetUserInfoHandler,
-		routerType:routerTypeNeedAuth,
-		method:"GET",
-		route:"/user/info",
+		handler:    getUserInfoHandler,
+		routerType: routerTypeNeedAuth,
+		method:     "GET",
+		route:      "/user/info",
 	},
 	{
-		handler:GetAllUserInfoHandler,
-		routerType:routerTypeNeedAuth,
-		method:"GET",
-		route:"/user/all",
+		handler:    getAllUserInfoHandler,
+		routerType: routerTypeNeedAuth,
+		method:     "GET",
+		route:      "/user/all",
 	},
 }

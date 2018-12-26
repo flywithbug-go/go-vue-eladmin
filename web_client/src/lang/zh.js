@@ -163,6 +163,9 @@ export default {
     table_icon: "图标",
     table_desc: "描述",
     table_owner: "负责人",
-    table_time: "创建时间"
+    table_time: "时间",
+    table_create_time: "创建时间",
+    table_createTitle: "创建应用",
+    table_desc_placeholder: "请输入描述内容"
   }
 }
