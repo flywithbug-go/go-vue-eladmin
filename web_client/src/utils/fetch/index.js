@@ -1,13 +1,19 @@
-import axios from 'axios'
+import client from 'axios'
 import { MessageBox,Message } from 'element-ui'
-
 import store from '@/store'
+import global_ from '@/config'
 
-let client = axios.create({
-  baseURL: 'http://localhost:6201/api',
-  timeout: 1000,
-  headers:{'Authorization':localStorage.getItem("Authorization")}
-})
+
+client.defaults.baseURL = global_.BaseURL;
+client.defaults.headers.common['Authorization'] = localStorage.getItem("Authorization");
+client.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+client.defaults.timeout = 60000 //60秒
+//
+// let client = axios.create({
+//   baseURL: global_.BaseURL,
+//   timeout: 60000, //60秒
+//   headers:{'Authorization':localStorage.getItem("Authorization")}
+// })
 
 client.interceptors.request.use(config => {
   if (store.getters.token !== '') {
@@ -52,6 +58,5 @@ client.interceptors.response.use(response => {
   })
   return Promise.reject(error)
 })
-
 
 export default client

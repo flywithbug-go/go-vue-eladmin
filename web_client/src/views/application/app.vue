@@ -73,7 +73,21 @@
 
     <!--创建弹窗-->
     <el-dialog :title="$t('application.table_createTitle')" :visible.sync="dialogFormVisible">
+
+
+
       <el-form ref="dataForm" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
+        <el-form-item  align="center">
+          <el-upload
+            class="avatar-uploader"
+            action="/upload/image"
+            :show-file-list="false"
+            :before-upload="beforeAvatarUpload">
+            <img v-if="imageUrl" :src="imageUrl" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
+        </el-form-item>
+
         <el-form-item :label="$t('application.table_name')" prop="name">
           <el-input v-model="temp.name"/>
         </el-form-item>
@@ -111,6 +125,7 @@
         time: new Date(),
         desc: ''
       },
+      imageUrl: ''
     }
   },
   created() {
@@ -143,6 +158,10 @@
         time: new Date(),
         desc: ''
       }
+    },
+    beforeAvatarUpload(file) {
+      console.log("beforeAvatarUpload",file.type)
+      return false;
     }
   }
 }
@@ -158,4 +177,28 @@
     }
   }
 
+  .avatar-uploader .el-upload {
+    border: 1px dashed #000000;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 100px;
+    height: 100px;
+    line-height: 110px;
+    text-align: center;
+  }
+  .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
+  }
 </style>
