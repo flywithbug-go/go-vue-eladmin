@@ -75,7 +75,10 @@
     <el-dialog :title="$t('application.table_createTitle')" :visible.sync="dialogFormVisible">
 
       <el-form ref="dataForm" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
-        <el-form-item  align="center">
+        <el-form-item align="center">
+          <label>上传图标</label>
+        </el-form-item>
+        <el-form-item  align="center" >
           <el-upload
             class="avatar-uploader"
             :action="actionURL"
@@ -83,8 +86,7 @@
             :headers="headers"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload">
-            <img v-if="imageUrl" :src="imageUrl" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            <img v-if="imageUrl" :src="imageUrl" width="100%" class="avatar">
           </el-upload>
         </el-form-item>
 
@@ -129,7 +131,7 @@
         time: new Date(),
         desc: ''
       },
-      imageUrl: ''
+      imageUrl:require('../../assets/image_placeholder.png')
     }
   },
   created() {
@@ -150,7 +152,6 @@
     addAction() {
       this.resetTemp()
       this.dialogFormVisible =  true
-
       console.log('added');
     },
     resetTemp() {
@@ -163,12 +164,34 @@
         desc: ''
       }
     },
-    handleAvatarSuccess(res, file) {
-      console.log(res)
+    handleAvatarSuccess(res) {
+      if (res.code === 200) {
+        this.imageUrl=global_.downloadImageURL + res.data["imagePath"]
+      } else {
+        this.$message.error(res.msg);
+      }
     },
     beforeAvatarUpload(file) {
-      console.log("beforeAvatarUpload",file.type)
-      return true;
+      const isLt10M = file.size / 1024 / 1024 < 10;
+      if (!isLt10M) {
+        this.$message.error('上传头像图片大小不能超过 10MB!');
+        return false
+      }
+      const isSize = new Promise(function (resolve, reject) {
+        let _URL = window.URL || window.webkitURL;
+        let img = new Image();
+        img.onload = function () {
+          let valid = img.width === img.height
+          valid ? resolve() : reject()
+        }
+        img.src = _URL.createObjectURL(file)
+      }).then(() => {
+        return file;
+      }, () => {
+        this.$message.error('图片格式宽高比必须是1:1');
+        return Promise.reject();
+      });
+      return  isLt10M && isSize;
     }
   }
 }
@@ -185,7 +208,7 @@
   }
 
   .avatar-uploader .el-upload {
-    border: 1px dashed #000000;
+    border: 1px dashed #d9d9d9;
     border-radius: 6px;
     cursor: pointer;
     position: relative;

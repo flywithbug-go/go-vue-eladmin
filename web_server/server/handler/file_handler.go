@@ -80,7 +80,7 @@ func uploadImageHandler(c *gin.Context) {
 		return
 	}
 	avatarPath := fmt.Sprintf("filename=%s&dir=%s", filename, month)
-	aRes.SetResponseDataInfo("filepath", avatarPath)
+	aRes.SetResponseDataInfo("imagePath", avatarPath)
 
 }
 
@@ -150,10 +150,11 @@ func getImageHandler(c *gin.Context) {
 	filename := c.Query("filename")
 	dir := c.Query("dir")
 	size := c.Query("size")
-	if len(size) == 0 {
-		size = "120"
-	}
 	fileOrigin := localImageFilePath + dir + "/" + filename
+	if len(size) == 0 {
+		http.ServeFile(c.Writer, c.Request, fileOrigin)
+		return
+	}
 	ext := filepath.Ext(filename)
 	if strings.EqualFold(ext, ".gif") {
 		http.ServeFile(c.Writer, c.Request, fileOrigin)
