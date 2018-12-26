@@ -1,7 +1,7 @@
 <template>
   <section class="content">
     <fixed-icon :bottom="3" @clickEvent="chat" class="fixed-container">
-      <svg-icon icon-class="add" class="icon-chat"></svg-icon>
+      <svg-icon icon-class="add" class="icon-add"></svg-icon>
     </fixed-icon>
   </section>
 </template>
@@ -25,7 +25,7 @@
       },
     },
     mounted() {
-      document.title = 'Vue制作固定定位图标滑动隐藏效果';
+      document.title = 'Dashboard';
     },
   };
 
@@ -40,7 +40,7 @@
   .fixed-container{
     background-color: #eef1f6;
   }
-  .icon-chat{
+  .icon-add{
     width: 2rem;
     height: 1.9rem;
     background-size: 2rem 1.9rem;
