@@ -124,9 +124,9 @@ var routers = []ginHandleFunc{
 		route:      "/upload/image",
 	},
 	{
-		handler:    getImageHandler,
+		handler:    loadImageHandler,
 		routerType: routerTypeNormal,
 		method:     "GET",
-		route:      "/image",
+		route:      "/image/:path/:filename",
 	},
 }

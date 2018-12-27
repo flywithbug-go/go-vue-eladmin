@@ -68,7 +68,7 @@ func uploadImageHandler(c *gin.Context) {
 	}
 	if bExit {
 		log4go.Info("fileExit: %s", fileName)
-		avatarPath := fmt.Sprintf("filename=%s&dir=%s", fileName, month)
+		avatarPath := fmt.Sprintf("/%s/%s", month, fileName)
 		aRes.SetResponseDataInfo("imagePath", avatarPath)
 		return
 	}
@@ -107,7 +107,7 @@ func uploadImageHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, fmt.Sprintf("write file err : %s", err.Error()))
 		return
 	}
-	avatarPath := fmt.Sprintf("filename=%s&dir=%s", fileName, month)
+	avatarPath := fmt.Sprintf("/%s/%s", month, fileName)
 	aRes.SetResponseDataInfo("imagePath", avatarPath)
 }
 
@@ -173,11 +173,16 @@ func scale(in io.Reader, out io.Writer, width, height, quality int) error {
 	return nil
 }
 
-func getImageHandler(c *gin.Context) {
-	filename := c.Query("filename")
-	dir := c.Query("dir")
+func loadImageHandler(c *gin.Context) {
+	path := c.Param("path")
+	filename := c.Param("filename")
+	log4go.Info("loadImageHandler: %s %s", path, filename)
+	if path == "" || filename == "" {
+		return
+	}
 	size := c.Query("size")
-	fileOrigin := localImageFilePath + dir + "/" + filename
+
+	fileOrigin := localImageFilePath + path + "/" + filename
 	if len(size) == 0 {
 		http.ServeFile(c.Writer, c.Request, fileOrigin)
 		return
@@ -187,7 +192,8 @@ func getImageHandler(c *gin.Context) {
 		http.ServeFile(c.Writer, c.Request, fileOrigin)
 		return
 	}
-	filePath := localImageFilePath + dir + "/" + size + "-" + filename
+
+	filePath := localImageFilePath + path + "/" + size + "-" + filename
 	if !file.FileExists(filePath) {
 		if !file.FileExists(fileOrigin) {
 			c.Writer.Write([]byte("Error: Image Not found."))

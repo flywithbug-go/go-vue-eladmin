@@ -9,14 +9,13 @@ const (
 )
 
 type Application struct {
-	Id         int
-	AppId      string `json:"app_id"`
-	Name       string `json:"name"` //应用（组件）名称
-	Desc       string //项目描述
-	CreateTime int64  //创建时间
-	Icon       string `json:"icon"` //icon 地址
-
-	Owner string `json:"owner"` //负责人
+	Id         int    `json:"id,omitempty" bson:"id,omitempty"`
+	AppId      string `json:"app_id,omitempty" bson:"app_id,omitempty"`
+	Name       string `json:"name,omitempty" bson:"app_id,omitempty"`        //应用（组件）名称
+	Desc       string `json:"desc,omitempty" bson:"app_id,omitempty"`        //项目描述
+	CreateTime int64  `json:"create_time,omitempty" bson:"app_id,omitempty"` //创建时间
+	Icon       string `json:"icon,omitempty" bson:"app_id,omitempty"`        //icon 地址
+	Owner      string `json:"owner,omitempty" json:"owner,omitempty"`        //负责人
 }
 
 var (
@@ -48,9 +47,14 @@ func (a Application) Update(selector, update interface{}) error {
 }
 
 func (a Application) Remove(selector interface{}) error {
-	panic("implement me")
+	return mongo.Remove(db, appCollection, selector)
 }
 
 func (a Application) RemoveAll(selector interface{}) error {
-	panic("implement me")
+	return mongo.RemoveAll(db, appCollection, selector)
+}
+
+func (a *Application) ApplicationInsert() error {
+
+	return nil
 }
