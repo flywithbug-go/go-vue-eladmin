@@ -5,7 +5,6 @@ vue: client
 
 
 
-
 ``` bash
 # govendor add  dependencies
 go run main.go
