@@ -33,6 +33,13 @@ export function validateAlphabets(str) {
   return reg.test(str)
 }
 
+/* BundleId校验*/
+export function validateBundleId(str) {
+  const reg = /^[A-Za-z0-9](?:[-_.+])+$/
+  return reg.test(str)
+}
+
+
 /**
  * validate email
  * @param email

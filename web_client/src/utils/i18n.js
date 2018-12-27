@@ -9,3 +9,19 @@ export function generateTitle(title) {
   }
   return title
 }
+
+
+export function generateAppTitle(father,title) {
+  const hasKey = this.$te('route.' + title)
+  if (hasKey) {
+    const translatedTitle = this.$t( father + '.' + title)
+    return translatedTitle
+  }
+  return title
+}
+
+
+
+
+
+

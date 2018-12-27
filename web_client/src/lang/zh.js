@@ -160,12 +160,16 @@ export default {
   application: {
     table_id: "序号",
     table_name: "名称",
+    table_name_placeHolder: "请输入应用名字",
+    table_bundleId: "包名",
+    table_bundleId_warning: "请输入应用包名",
+    table_bundleId_placeHolder: "格式: com.xxx.xx",
     table_icon: "图标",
     table_desc: "描述",
+    table_desc_placeholder: "请输入描述内容",
     table_owner: "负责人",
     table_time: "时间",
     table_create_time: "创建时间",
     table_createTitle: "创建应用",
-    table_desc_placeholder: "请输入描述内容"
   }
 }

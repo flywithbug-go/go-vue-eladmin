@@ -160,12 +160,16 @@ export default {
   application: {
     table_id: "ID",
     table_name: "Name",
+    table_name_placeHolder: "Please input application name",
     table_icon: "Icon",
+    table_bundleId:"BundleId",
+    table_bundleId_warning: "Please input application BundleId",
+    table_bundleId_placeHolder: "Format: com.xxx.xx",
     table_desc: "Description",
+    table_desc_placeholder: "Please enter a description",
     table_owner: "Owner",
     table_time: "Time",
     table_create_time: "CreateTime",
     table_createTitle: "Create App",
-    table_desc_placeholder: "Please enter a description"
   }
 }
