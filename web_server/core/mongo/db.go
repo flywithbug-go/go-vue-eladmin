@@ -49,6 +49,7 @@ func FindAll(db, collection string, query, selector, results interface{}) error 
 	return c.Find(query).Select(selector).All(results)
 }
 
+//filterNull: 过滤空值对象。空值对象不更新
 func Update(db, collection string, selector, update interface{}, filterNull bool) error {
 	ms, c := connect(db, collection)
 	defer ms.Close()
@@ -61,6 +62,7 @@ func Update(db, collection string, selector, update interface{}, filterNull bool
 /*
 selector := bson.M{"name": "Tom"}
 data := bson.M{"$set": bson.M{"age": 22}}
+filterNull: 过滤空值对象。空值对象不更新
 */
 func UpdateAll(db, collection string, selector, data interface{}, filterNull bool) (changInfo *mgo.ChangeInfo, err error) {
 	ms, c := connect(db, collection)
