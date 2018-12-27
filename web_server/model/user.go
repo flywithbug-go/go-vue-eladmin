@@ -83,10 +83,8 @@ func (u *User) UserInsert() error {
 	if u.IsExist(bson.M{"email": u.Email}) {
 		return errors.New("email 已存在")
 	}
-	if u.UserId == "" {
-		u.Id, _ = mongo.GetIncrementId("user")
-		u.UserId = bson.NewObjectId().Hex()
-	}
+	u.Id, _ = mongo.GetIncrementId(userCollection)
+	u.UserId = bson.NewObjectId().Hex()
 	if u.Role == 0 {
 		u.Role = 2
 		u.Roles = makeUserRoles(u.Role)

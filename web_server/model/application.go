@@ -1,6 +1,11 @@
 package model
 
 import (
+	"time"
+
+	"gopkg.in/mgo.v2/bson"
+
+	"doc-manager/web_server/core/errors"
 	"doc-manager/web_server/core/mongo"
 )
 
@@ -9,17 +14,18 @@ const (
 )
 
 type Application struct {
-	Id         int    `json:"id,omitempty" bson:"id,omitempty"`
+	Id         int64  `json:"id,omitempty" bson:"id,omitempty"`
 	AppId      string `json:"app_id,omitempty" bson:"app_id,omitempty"`
 	Name       string `json:"name,omitempty" bson:"app_id,omitempty"`        //应用（组件）名称
 	Desc       string `json:"desc,omitempty" bson:"app_id,omitempty"`        //项目描述
 	CreateTime int64  `json:"create_time,omitempty" bson:"app_id,omitempty"` //创建时间
 	Icon       string `json:"icon,omitempty" bson:"app_id,omitempty"`        //icon 地址
 	Owner      string `json:"owner,omitempty" json:"owner,omitempty"`        //负责人
+	BundleId   string `json:"bundle_id,omitempty" bson:"bundle_id,omitempty"`
 }
 
 var (
-	app = Application{}
+	appC = Application{}
 )
 
 func (a Application) Insert(docs ...interface{}) error {
@@ -55,6 +61,23 @@ func (a Application) RemoveAll(selector interface{}) error {
 }
 
 func (a *Application) ApplicationInsert() error {
-
-	return nil
+	if a.BundleId == "" {
+		return errors.New("bundleId must fill")
+	}
+	if a.Icon == "" {
+		return errors.New("Icon must fill")
+	}
+	if a.Owner == "" {
+		return errors.New("Owner must fill")
+	}
+	if a.Name == "" {
+		return errors.New("Name must fill")
+	}
+	if len(a.Desc) < 10 {
+		return errors.New("Desc length must > 10")
+	}
+	a.AppId = bson.NewObjectId().Hex()
+	a.Id, _ = mongo.GetIncrementId(appCollection)
+	a.CreateTime = time.Now().Unix()
+	return appC.Insert(a)
 }
