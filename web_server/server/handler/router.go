@@ -76,12 +76,6 @@ func funcDoRouteRegister(method, route string, handler gin.HandlerFunc, r *gin.E
 
 var routers = []ginHandleFunc{
 	{
-		handler:    htmlHandler,
-		routerType: routerTypeNormal,
-		method:     "GET",
-		route:      "/doc/html",
-	},
-	{
 		handler:    registerHandler,
 		routerType: routerTypeNormal,
 		method:     "POST",
@@ -100,33 +94,39 @@ var routers = []ginHandleFunc{
 		method:     "POST",
 	},
 	{
-		handler:    getUserInfoHandler,
+		handler:    getUserInfoHandler, //获取当前用户信息
 		routerType: routerTypeNeedAuth,
 		method:     "GET",
 		route:      "/user/info",
 	},
 	{
-		handler:    updateUserHandler,
+		handler:    updateUserHandler, //更新当前用户信息
 		routerType: routerTypeNeedAuth,
 		method:     "POST",
 		route:      "/user/update",
 	},
 	{
-		handler:    getAllUserInfoHandler,
+		handler:    getAllUserInfoHandler, //获取所有用户
 		routerType: routerTypeNeedAuth,
 		method:     "GET",
 		route:      "/user/all",
 	},
 	{
-		handler:    uploadImageHandler,
+		handler:    uploadImageHandler, //上传图片
 		routerType: routerTypeNeedAuth,
 		method:     "POST",
 		route:      "/upload/image",
 	},
 	{
-		handler:    loadImageHandler,
+		handler:    loadImageHandler, //加载图片
 		routerType: routerTypeNormal,
 		method:     "GET",
 		route:      "/image/:path/:filename",
+	},
+	{
+		handler:    addApplicationHandler, //添加应用
+		routerType: routerTypeNeedAuth,
+		method:     "POST",
+		route:      "/app/add",
 	},
 }

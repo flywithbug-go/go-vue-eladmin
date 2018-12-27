@@ -17,7 +17,7 @@ const (
 )
 
 type User struct {
-	Id       int64     `json:"_id,omitempty" bson:"_id,omitempty"`
+	Id       int64     `json:"id,omitempty" bson:"_id,omitempty"`
 	UserId   string    `json:"user_id,omitempty" bson:"user_id,omitempty"`
 	Account  string    `json:"account,omitempty" bson:"account,omitempty"`
 	Password string    `json:"password,omitempty" bson:"password,omitempty"`
@@ -40,36 +40,36 @@ var (
 /*
 	OperationModel
 */
-func (u User) Insert(docs ...interface{}) error {
+func (u User) insert(docs ...interface{}) error {
 	return mongo.Insert(db, userCollection, docs...)
 }
 
-func (u User) IsExist(query interface{}) bool {
+func (u User) isExist(query interface{}) bool {
 	return mongo.IsExist(db, userCollection, query)
 }
 
-func (u User) FindOne(query, selector interface{}) (*User, error) {
+func (u User) findOne(query, selector interface{}) (*User, error) {
 	us := new(User)
 	err := mongo.FindOne(db, userCollection, query, selector, us)
 	return us, err
 }
 
-func (u User) FindAll(query, selector interface{}) (results *[]User, err error) {
+func (u User) findAll(query, selector interface{}) (results *[]User, err error) {
 	results = new([]User)
 	err = mongo.FindAll(db, userCollection, query, selector, results)
 	return results, err
 }
 
 //data := bson.M{"$set": bson.M{"age": 22}}
-func (u User) Update(selector, update interface{}) error {
+func (u User) update(selector, update interface{}) error {
 	return mongo.Update(db, userCollection, selector, update, true)
 }
 
-func (u User) Remove(selector interface{}) error {
+func (u User) remove(selector interface{}) error {
 	return mongo.Remove(db, userCollection, selector)
 }
 
-func (u User) RemoveAll(selector interface{}) error {
+func (u User) removeAll(selector interface{}) error {
 	return mongo.RemoveAll(db, userCollection, selector)
 }
 
@@ -77,10 +77,10 @@ func (u User) RemoveAll(selector interface{}) error {
 	userModify
 */
 func (u *User) UserInsert() error {
-	if u.IsExist(bson.M{"account": u.Account}) {
+	if u.isExist(bson.M{"account": u.Account}) {
 		return errors.New("account 已存在")
 	}
-	if u.IsExist(bson.M{"email": u.Email}) {
+	if u.isExist(bson.M{"email": u.Email}) {
 		return errors.New("email 已存在")
 	}
 	u.Id, _ = mongo.GetIncrementId(userCollection)
@@ -89,25 +89,28 @@ func (u *User) UserInsert() error {
 		u.Role = 2
 		u.Roles = makeUserRoles(u.Role)
 	}
-	return userC.Insert(u)
+	return userC.insert(u)
 }
 
 func UpdateUserInfo(u *User) error {
-	return userC.Update(bson.M{"user_id": u.UserId}, u)
+	selector := bson.M{"user_id": u.UserId}
+	u.UserId = ""
+	u.Account = ""
+	return userC.update(selector, u)
 }
 
 func FindAllUsers() (*[]User, error) {
-	return userC.FindAll(nil, bson.M{"password": 0})
+	return userC.findAll(nil, bson.M{"password": 0})
 }
 
 func FindByUserId(userId string) (u *User, err error) {
-	u, err = userC.FindOne(bson.M{"user_id": userId}, bson.M{"password": 0})
+	u, err = userC.findOne(bson.M{"user_id": userId}, bson.M{"password": 0})
 	u.Roles = makeUserRoles(u.Role)
 	return
 }
 
 func LoginUser(account, pass string) (user *User, err error) {
-	user, err = userC.FindOne(bson.M{"account": account, "password": pass}, bson.M{"password": 0})
+	user, err = userC.findOne(bson.M{"account": account, "password": pass}, bson.M{"password": 0})
 	user.Roles = makeUserRoles(user.Role)
 	return
 }
@@ -131,5 +134,5 @@ func AddAdminUser() error {
 	u.Phone = "phone"
 	u.RealName = "Jack"
 	u.Sex = 1
-	return u.Insert()
+	return u.insert()
 }

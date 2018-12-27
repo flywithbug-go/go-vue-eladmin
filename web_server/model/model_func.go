@@ -18,11 +18,11 @@ func DBName() string {
 }
 
 type OperationModel interface {
-	Insert(docs ...interface{}) error
-	IsExist(query interface{}) bool
-	FindOne(query, selector interface{}) (*interface{}, error)
-	FindAll(query, selector interface{}) (results *[]interface{}, err error)
-	Update(selector, update interface{}) error
-	Remove(selector interface{}) error
-	RemoveAll(selector interface{}) error
+	insert(docs ...interface{}) error
+	isExist(query interface{}) bool
+	findOne(query, selector interface{}) (*interface{}, error)
+	findAll(query, selector interface{}) (results *[]interface{}, err error)
+	update(selector, update interface{}) error
+	remove(selector interface{}) error
+	removeAll(selector interface{}) error
 }

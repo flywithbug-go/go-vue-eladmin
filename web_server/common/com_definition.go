@@ -28,3 +28,15 @@ func UserId(ctx *gin.Context) string {
 	}
 	return userId
 }
+
+func Account(ctx *gin.Context) string {
+	o, ok := ctx.Get(KeyAccount)
+	if !ok {
+		return ""
+	}
+	userId, ok := o.(string)
+	if !ok {
+		return ""
+	}
+	return userId
+}
