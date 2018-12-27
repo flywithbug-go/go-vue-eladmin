@@ -1,35 +1,11 @@
 package model
 
 import (
-	"doc-manager/web_server/core/mongo"
-	"encoding/json"
 	"fmt"
 	"testing"
+
+	"doc-manager/web_server/core/mongo"
 )
-
-func TestTodo(t *testing.T) {
-	mongo.DialMgo("127.0.0.1:27017")
-
-	todo := new(Todo)
-	todo.Title = "test"
-	todo.Completed = false
-	err := InsertTodo(todo)
-	if err != nil {
-		panic(err)
-	}
-	todos, err := FindAllTodos()
-	if err != nil {
-		panic(err)
-	}
-	tJson, _ := json.Marshal(todos)
-	fmt.Println(string(tJson))
-
-	//todo, err = FindTodoById(2)
-	//if err != nil {
-	//	panic(err)
-	//}
-	//fmt.Println(todo)
-}
 
 func TestUserFunctions(t *testing.T) {
 	mongo.DialMgo("127.0.0.1:27017")

@@ -21,7 +21,7 @@ type OperationModel interface {
 	Insert(docs ...interface{}) error
 	IsExist(query interface{}) bool
 	FindOne(query, selector interface{}) (*interface{}, error)
-	FindAll(query, selector interface{}) (result *[]interface{}, err error)
+	FindAll(query, selector interface{}) (results *[]interface{}, err error)
 	Update(selector, update interface{}) error
 	Remove(selector interface{}) error
 	RemoveAll(selector interface{}) error

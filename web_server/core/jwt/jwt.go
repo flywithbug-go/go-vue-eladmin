@@ -51,7 +51,6 @@ type CustomClaims struct {
 	jwt.StandardClaims
 	UserId  string `json:"user_id"`
 	Account string `json:"account"`
-	Token   string `json:"token"`
 }
 
 //创建claims

@@ -3,8 +3,6 @@ package middleware
 import (
 	"net/http"
 
-	"github.com/flywithbug/log4go"
-
 	"doc-manager/web_server/common"
 	"doc-manager/web_server/core/jwt"
 	"doc-manager/web_server/model"
@@ -16,12 +14,17 @@ import (
 func JWTAuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		aRes := model.NewResponse()
+		//header拿token
 		token := c.GetHeader(common.KeyUserToken)
 		if token == "" {
-			aRes.SetErrorInfo(http.StatusUnauthorized, "请求未携带token，无权限访问")
-			c.JSON(http.StatusUnauthorized, aRes)
-			c.Abort()
-			return
+			//cookie拿token
+			token, _ = c.Cookie(common.KeyUserToken)
+			if token == "" {
+				aRes.SetErrorInfo(http.StatusUnauthorized, "请求未携带token，无权限访问")
+				c.JSON(http.StatusUnauthorized, aRes)
+				c.Abort()
+				return
+			}
 		}
 		l, err := model.FindLoginByToken(token)
 		if err != nil {
@@ -50,9 +53,7 @@ func JWTAuthMiddleware() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
-		log4go.Info("claims-UserId:%s account:", claims.UserId, claims.Account)
-		c.Set(common.KeyUserToken, token)
 		c.Set(common.KeyUserId, claims.UserId)
-		c.Set(common.KeyJWTClaims, claims)
+		c.Set(common.KeyAccount, claims.Account)
 	}
 }

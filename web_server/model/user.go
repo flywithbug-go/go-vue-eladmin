@@ -21,7 +21,7 @@ type User struct {
 	UserId   string    `json:"user_id,omitempty" bson:"user_id,omitempty"`
 	Account  string    `json:"account,omitempty" bson:"account,omitempty"`
 	Password string    `json:"password,omitempty" bson:"password,omitempty"`
-	Avatar   string    `json:"avatar,omitempty bson:"avatar,omitempty"`
+	Avatar   string    `json:"avatar,omitempty" bson:"avatar,omitempty"`
 	Email    string    `json:"email,omitempty" bson:"email,omitempty"`
 	Phone    string    `json:"phone,omitempty" bson:"phone,omitempty"`
 	Sex      int       `json:"sex,omitempty" bson:"sex,omitempty"` // 0保密，1男 2女
@@ -34,7 +34,7 @@ type User struct {
 }
 
 var (
-	userC = User{}
+	userC = new(User)
 )
 
 /*
@@ -62,8 +62,6 @@ func (u User) FindAll(query, selector interface{}) (results *[]User, err error) 
 
 //data := bson.M{"$set": bson.M{"age": 22}}
 func (u User) Update(selector, update interface{}) error {
-	u.UserId = ""
-	u.Id = 0
 	return mongo.Update(db, userCollection, selector, update, true)
 }
 
