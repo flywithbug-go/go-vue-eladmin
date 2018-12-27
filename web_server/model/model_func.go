@@ -18,9 +18,11 @@ func DBName() string {
 }
 
 type OperationModel interface {
-	FindAll() ([]interface{}, error)
-	Insert() error
-	Update(id string) error
-	Remove(id string) error
-	FindById(id string) (interface{}, error)
+	Insert(docs ...interface{}) error
+	IsExist(query interface{}) bool
+	FindOne(query, selector interface{}) (*interface{}, error)
+	FindAll(query, selector interface{}, result *[]interface{}) error
+	Update(selector, update interface{}) error
+	Remove(selector interface{}) error
+	RemoveAll(selector interface{}) error
 }
