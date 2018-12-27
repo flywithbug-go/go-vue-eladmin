@@ -58,7 +58,7 @@ func (l *Login) Insert() error {
 //	return mongo.Update(db, todoCollection, bson.M{"_id": t.Id}, bson.M{"$set": bson.M{"title": t.Title, "completed": t.Completed, "updated_at": t.UpdatedAt}})
 func UpdateLoginStatus(token string, status int) error {
 	updateAt := time.Now().Unix()
-	return mongo.Update(db, loginCollection, bson.M{"token": token}, bson.M{"$set": bson.M{"status": status, "updated_at": updateAt}})
+	return mongo.Update(db, loginCollection, bson.M{"token": token}, bson.M{"status": status, "updated_at": updateAt}, true)
 }
 
 func FindLoginByToken(token string) (l *Login, err error) {

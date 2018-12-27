@@ -1,10 +1,13 @@
 package middleware
 
 import (
+	"net/http"
+
+	"github.com/flywithbug/log4go"
+
 	"doc-manager/web_server/common"
 	"doc-manager/web_server/core/jwt"
 	"doc-manager/web_server/model"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -47,6 +50,7 @@ func JWTAuthMiddleware() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
+		log4go.Info("claims-UserId:%s account:", claims.UserId, claims.Account)
 		c.Set(common.KeyUserToken, token)
 		c.Set(common.KeyUserId, claims.UserId)
 		c.Set(common.KeyJWTClaims, claims)

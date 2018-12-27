@@ -106,6 +106,12 @@ var routers = []ginHandleFunc{
 		route:      "/user/info",
 	},
 	{
+		handler:    updateUserHandler,
+		routerType: routerTypeNeedAuth,
+		method:     "POST",
+		route:      "/user/update",
+	},
+	{
 		handler:    getAllUserInfoHandler,
 		routerType: routerTypeNeedAuth,
 		method:     "GET",

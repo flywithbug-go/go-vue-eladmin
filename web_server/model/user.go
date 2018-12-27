@@ -1,10 +1,11 @@
 package model
 
 import (
-	"doc-manager/web_server/core/mongo"
 	"errors"
 
 	"gopkg.in/mgo.v2/bson"
+
+	"doc-manager/web_server/core/mongo"
 )
 
 type roleState int
@@ -16,9 +17,9 @@ const (
 )
 
 type User struct {
-	Id       int64     `json:"_id" bson:"_id,omitempty"`
-	UserId   string    `json:"user_id" bson:"user_id,omitempty"`
-	Account  string    `json:"account" bson:"account,omitempty"`
+	Id       int64     `json:"_id,omitempty" bson:"_id,omitempty"`
+	UserId   string    `json:"user_id,omitempty" bson:"user_id,omitempty"`
+	Account  string    `json:"account,omitempty" bson:"account,omitempty"`
 	Password string    `json:"password,omitempty" bson:"password,omitempty"`
 	Avatar   string    `json:"avatar,omitempty bson:"avatar,omitempty"`
 	Email    string    `json:"email,omitempty" bson:"email,omitempty"`
@@ -59,8 +60,11 @@ func (u User) FindAll(query, selector interface{}) (results *[]User, err error) 
 	return results, err
 }
 
+//data := bson.M{"$set": bson.M{"age": 22}}
 func (u User) Update(selector, update interface{}) error {
-	return mongo.Update(db, userCollection, selector, update)
+	u.UserId = ""
+	u.Id = 0
+	return mongo.Update(db, userCollection, selector, update, true)
 }
 
 func (u User) Remove(selector interface{}) error {
@@ -74,10 +78,6 @@ func (u User) RemoveAll(selector interface{}) error {
 /*
 	userModify
 */
-func FindAllUsers() (*[]User, error) {
-	return userC.FindAll(nil, bson.M{"password": 0})
-}
-
 func (u *User) UserInsert() error {
 	if u.IsExist(bson.M{"account": u.Account}) {
 		return errors.New("account 已存在")
@@ -96,15 +96,23 @@ func (u *User) UserInsert() error {
 	return userC.Insert(u)
 }
 
-func LoginUser(account, pass string) (user *User, err error) {
-	user, err = userC.FindOne(bson.M{"account": account, "password": pass}, bson.M{"password": 0})
-	user.Roles = makeUserRoles(user.Role)
-	return
+func UpdateUserInfo(u *User) error {
+	return userC.Update(bson.M{"user_id": u.UserId}, u)
+}
+
+func FindAllUsers() (*[]User, error) {
+	return userC.FindAll(nil, bson.M{"password": 0})
 }
 
 func FindByUserId(userId string) (u *User, err error) {
 	u, err = userC.FindOne(bson.M{"user_id": userId}, bson.M{"password": 0})
 	u.Roles = makeUserRoles(u.Role)
+	return
+}
+
+func LoginUser(account, pass string) (user *User, err error) {
+	user, err = userC.FindOne(bson.M{"account": account, "password": pass}, bson.M{"password": 0})
+	user.Roles = makeUserRoles(user.Role)
 	return
 }
 

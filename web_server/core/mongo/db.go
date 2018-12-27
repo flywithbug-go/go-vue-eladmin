@@ -2,6 +2,7 @@ package mongo
 
 import (
 	"gopkg.in/mgo.v2"
+	"gopkg.in/mgo.v2/bson"
 )
 
 var globalS *mgo.Session
@@ -48,9 +49,12 @@ func FindAll(db, collection string, query, selector, results interface{}) error 
 	return c.Find(query).Select(selector).All(results)
 }
 
-func Update(db, collection string, selector, update interface{}) error {
+func Update(db, collection string, selector, update interface{}, filterNull bool) error {
 	ms, c := connect(db, collection)
 	defer ms.Close()
+	if filterNull {
+		update = bson.M{"$set": update}
+	}
 	return c.Update(selector, update)
 }
 
@@ -58,11 +62,14 @@ func Update(db, collection string, selector, update interface{}) error {
 selector := bson.M{"name": "Tom"}
 data := bson.M{"$set": bson.M{"age": 22}}
 */
-func UpdateAll(db, collection string, selector, data interface{}) (*mgo.ChangeInfo, error) {
+func UpdateAll(db, collection string, selector, data interface{}, filterNull bool) (changInfo *mgo.ChangeInfo, err error) {
 	ms, c := connect(db, collection)
 	defer ms.Close()
-	changInfo, err := c.UpdateAll(selector, data)
-	return changInfo, err
+	if filterNull {
+		data = bson.M{"$set": data}
+	}
+	changInfo, err = c.UpdateAll(selector, data)
+	return
 }
 
 func Remove(db, collection string, selector interface{}) error {
