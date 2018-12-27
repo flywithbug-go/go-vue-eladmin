@@ -74,7 +74,8 @@
     <!--创建弹窗-->
     <el-dialog :title="$t('application.table_createTitle')" :visible.sync="dialogFormVisible">
 
-      <el-form ref="dataForm" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
+
         <el-form-item align="center">
           <label>上传图标</label>
         </el-form-item>
@@ -87,6 +88,7 @@
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload">
             <img v-if="imageUrl" :src="imageUrl" width="100%" class="avatar">
+            <img v-else="imageUrl" :src="imagePlaceHolder" width="100%" class="avatar">
           </el-upload>
         </el-form-item>
 
@@ -97,6 +99,11 @@
           <el-input :autosize="{ minRows: 2, maxRows: 4}" type="textarea" v-model="temp.desc" :placeholder="$t('application.table_desc_placeholder')"/>
         </el-form-item>
       </el-form>
+
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
+        <el-button type="primary" @click="dialogStatus==='create'? createData():updateDate()">{{ $t('table.confirm') }}</el-button>
+      </div>
 
     </el-dialog>
 
@@ -123,15 +130,20 @@
       list: null,
       total: 0,
       dialogFormVisible:false,
+      dialogStatus:'create',
       temp: {
         id: undefined,
         name: '',
-        icon: '',
         owner:'',
         time: new Date(),
         desc: ''
       },
-      imageUrl:require('../../assets/image_placeholder.png')
+      rules: {
+        name: [{required: true, message: 'name is required', trigger: 'blur'}],
+        imageUrl: [{required: true, message: 'image is required', trigger: 'blur'}],
+      },
+      imageUrl:'',
+      imagePlaceHolder:require('../../assets/image_placeholder.png'),
     }
   },
   created() {
@@ -150,15 +162,32 @@
       }
     },
     addAction() {
-      this.resetTemp()
+      this.dialogStatus = 'create'
       this.dialogFormVisible =  true
-      console.log('added');
+      this.$nextTick(() => {
+        this.$refs['dataForm'].clearValidate()
+      })
+    },
+    createData() {
+      if (this.imageUrl === ''){
+        this.$message.error('icon not uploaded')
+        return
+      }
+      this.$refs['dataForm'].validate((valid) => {
+        if (valid) {
+
+
+
+        }
+      })
+    },
+    updateDate() {
+
     },
     resetTemp() {
       this.temp = {
         id: undefined,
         name: '',
-        icon: '',
         owner:'',
         time: new Date(),
         desc: ''
@@ -192,7 +221,7 @@
         return Promise.reject();
       });
       return  isLt10M && isSize;
-    }
+    },
   }
 }
 </script>
