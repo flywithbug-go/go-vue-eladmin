@@ -3,11 +3,14 @@
 go: web_server （Backend）
 vue: web_client (Frontend)
 
-- **go主要框架**
-  - github.com/gin-gonic/gin
-  - github.com/dgrijalva/jwt-go
-  - github.com/flywithbug/log4go
-  - gopkg.in/mgo.v2
+- **go主要框架** 
+``` 
+  github.com/gin-gonic/gin
+  github.com/dgrijalva/jwt-go
+  github.com/flywithbug/log4go
+  gopkg.in/mgo.v2
+```
+  
   
 - **Vue主要框架**  
   - vue-router
