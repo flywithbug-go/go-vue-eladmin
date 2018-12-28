@@ -4,17 +4,23 @@ import (
 	"doc-manager/web_server/common"
 	"doc-manager/web_server/model"
 	"net/http"
+	"time"
 
 	"github.com/flywithbug/log4go"
 	"github.com/gin-gonic/gin"
 )
+
+type appPara struct {
+	model.Application
+	Time string `json:"time"`
+}
 
 func addApplicationHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
-	app := new(model.Application)
+	app := new(appPara)
 	err := c.BindJSON(app)
 	if err != nil {
 		log4go.Info(err.Error())
@@ -44,5 +50,8 @@ func addApplicationHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, err.Error())
 		return
 	}
+	timeLayout := "2006-01-02 15:04:05" //转化所需模板
+
+	app.Time = time.Unix(app.CreateTime, 0).Format(timeLayout)
 	aRes.AddResponseInfo("app", app)
 }

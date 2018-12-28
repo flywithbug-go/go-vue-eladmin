@@ -1,8 +1,8 @@
 import client from '../utils/fetch'
 
-export function addApplication(bundleId, icon, name, desc) {
+export function addApplicationRequest(bundleId, icon, name, desc) {
   const data = {
-    bundleId,
+    bundle_id:bundleId,
     icon,
     name,
     desc
@@ -13,3 +13,5 @@ export function addApplication(bundleId, icon, name, desc) {
     data
   })
 }
+
+

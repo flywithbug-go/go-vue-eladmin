@@ -118,7 +118,9 @@
   import fixedButton from '../../components/FixedButton';
   import global_ from '../../config'
   import store from '@/store'
-  import { generateAppTitle } from '../../utils/i18n'
+  import { addApplicationRequest } from  '../../api/app'
+
+
   export default {
     name: 'AppManager',
     components: {
@@ -140,6 +142,7 @@
           owner:'',
           desc: '',
           icon:'',
+          time: '',
           bundleId:''
         },
         rules: {
@@ -197,11 +200,6 @@
         imagePlaceHolder:require('../../assets/image_placeholder.png'),
       }
     },
-    computed: {
-      rulesName() {
-        return "请输入应用名称"
-      }
-    },
     created() {
       this.getList()
     },
@@ -231,9 +229,15 @@
         }
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
-
-
-
+            addApplicationRequest(
+              this.temp.bundleId,
+              this.temp.icon,
+              this.temp.name,
+              this.temp.desc).then(() => {
+              this.dialogFormVisible =  false
+              this.resetTemp()
+              this.getList()
+            })
           }
         })
       },
