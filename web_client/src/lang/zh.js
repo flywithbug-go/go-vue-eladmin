@@ -171,5 +171,7 @@ export default {
     table_time: "时间",
     table_create_time: "创建时间",
     table_createTitle: "创建应用",
+    table_app_icon: "应用图标",
+    table_app_icon_warning: "请上传应用图标",
   }
 }

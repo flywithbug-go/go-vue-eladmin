@@ -77,7 +77,7 @@
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
 
         <el-form-item align="center">
-          <label>上传图标</label>
+          <label>{{ $t('application.table_app_icon') }}</label>
         </el-form-item>
         <el-form-item  align="center" >
           <el-upload
@@ -226,7 +226,7 @@
       },
       createData() {
         if (this.temp.icon === ''){
-          this.$message.error('icon should upload first')
+          this.$message.error(this.$t('application.table_app_icon_warning'))
           return
         }
         this.$refs['dataForm'].validate((valid) => {
@@ -258,11 +258,12 @@
         }
       },
       beforeAvatarUpload(file) {
-        const isLt10M = file.size / 1024 / 1024 < 10;
+        const isLt10M = file.size / 1024 / 1024 < 2;
         if (!isLt10M) {
-          this.$message.error('上传头像图片大小不能超过 10MB!');
+          this.$message.error('图片大小不能超过 2MB!');
           return false
         }
+        //限定宽高比
         const isSize = new Promise(function (resolve, reject) {
           let _URL = window.URL || window.webkitURL;
           let img = new Image();
@@ -274,7 +275,7 @@
         }).then(() => {
           return file;
         }, () => {
-          this.$message.error('图片格式宽高比必须是1:1');
+          this.$message.error('图片宽高比需为1:1');
           return Promise.reject();
         });
         return  isLt10M && isSize;

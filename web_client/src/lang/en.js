@@ -171,5 +171,8 @@ export default {
     table_time: "Time",
     table_create_time: "CreateTime",
     table_createTitle: "Create App",
+    table_app_icon: "App Icon",
+    table_app_icon_warning: "Please upload application icon",
+
   }
 }
