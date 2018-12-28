@@ -3,7 +3,7 @@ Vue-todo
 go: webServer
 vue: client
 
-
+web_client:[learnFrom](https://github.com/PanJiaChen/vue-element-admin/blob/master/README.zh-CN.md)
 
 ``` bash
 # govendor add  dependencies
@@ -26,4 +26,45 @@ npm run build
 # build for production and view the bundle analyzer report
 npm run build --report
 
+## 功能
+
 ```
+- [x] 登录 / 注销
+
+- [x] 权限验证
+  - 页面权限
+  - 指令权限
+  - 二步登录
+
+
+- [x] 全局功能
+  - 国际化多语言
+  - 动态侧边栏（支持多级路由嵌套）
+  - 快捷导航(标签页)
+  - Screenfull全屏
+  - 自适应收缩侧边栏
+
+
+- [x] 错误页面
+  - 401
+  - 404
+
+- [] 数据管理
+  - App管理(Doing)
+  - 版本管理TODO）
+
+- 开发工具（TODO）
+  - 数据模型
+  - API管理
+
+```
+
+
+
+
+
+
+
+
+
+
