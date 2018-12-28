@@ -31,7 +31,5 @@ web_client/yarn-error.log*
 
 /vendor/*
 !/vendor/vendor.json
-resources/private_key
-resources/public_key.pub
 log/*
 config.json
