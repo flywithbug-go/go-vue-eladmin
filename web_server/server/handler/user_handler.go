@@ -139,7 +139,7 @@ func getAllUserInfoHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusUnauthorized, "users find error"+err.Error())
 		return
 	}
-	aRes.AddResponseInfo("users", users)
+	aRes.AddResponseInfo("list", users)
 }
 
 func updateUserHandler(c *gin.Context) {

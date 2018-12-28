@@ -4,7 +4,7 @@ import (
 	"doc-manager/web_server/common"
 	"doc-manager/web_server/model"
 	"net/http"
-	"time"
+	"strings"
 
 	"github.com/flywithbug/log4go"
 	"github.com/gin-gonic/gin"
@@ -50,8 +50,24 @@ func addApplicationHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, err.Error())
 		return
 	}
-	timeLayout := "2006-01-02 15:04:05" //转化所需模板
-
-	app.Time = time.Unix(app.CreateTime, 0).Format(timeLayout)
 	aRes.AddResponseInfo("app", app)
+}
+
+func getAllApplicationHandler(c *gin.Context) {
+	aRes := model.NewResponse()
+	defer func() {
+		c.JSON(http.StatusOK, aRes)
+	}()
+	userId := common.UserId(c)
+	if strings.EqualFold(userId, "") {
+		aRes.SetErrorInfo(http.StatusUnauthorized, "user not found")
+		return
+	}
+	applist, err := model.FindALlApplications()
+	if err != nil {
+		log4go.Info(err.Error())
+		aRes.SetErrorInfo(http.StatusUnauthorized, "apps find error"+err.Error())
+		return
+	}
+	aRes.AddResponseInfo("list", applist)
 }

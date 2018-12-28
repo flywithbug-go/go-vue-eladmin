@@ -109,7 +109,7 @@ var routers = []ginHandleFunc{
 		handler:    getAllUserInfoHandler, //获取所有用户
 		routerType: routerTypeNeedAuth,
 		method:     "GET",
-		route:      "/user/all",
+		route:      "/user/list",
 	},
 	{
 		handler:    uploadImageHandler, //上传图片
@@ -128,5 +128,11 @@ var routers = []ginHandleFunc{
 		routerType: routerTypeNeedAuth,
 		method:     "POST",
 		route:      "/app/add",
+	},
+	{
+		handler:    getAllApplicationHandler,
+		routerType: routerTypeNeedAuth,
+		method:     "GET",
+		route:      "/app/list",
 	},
 }

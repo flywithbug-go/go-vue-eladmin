@@ -101,3 +101,7 @@ func (a *Application) ApplicationUpdate() error {
 	a.Name = ""
 	return appC.update(query, a)
 }
+
+func FindALlApplications() (apps *[]Application, err error) {
+	return appC.findAll(nil, nil)
+}

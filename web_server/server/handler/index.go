@@ -16,7 +16,7 @@ func NoRoute(c *gin.Context) {
 	if (path[1] != "") && (path[1] == "api") {
 		aRes := model.NewResponse()
 		aRes.Code = http.StatusNotFound
-		aRes.Msg = "no route"
+		aRes.Msg = "not found"
 		c.JSON(http.StatusNotFound, aRes)
 	} else {
 		c.HTML(http.StatusOK, "index.html", "")
