@@ -51,13 +51,13 @@ npm run build --report
   - [x] 401 
   - [x] 404 
 
-- [] 数据管理 
-  - [] App管理(Doing)  
-  - [] 版本管理TODO） 
+- [ ] 数据管理 
+  - [ ] App管理(Doing)  
+  - [ ] 版本管理TODO） 
 
-- [] 开发工具（TODO ）
-  - [] 数据模型 
-  - [] API管理
+- [ ] 开发工具（TODO ）
+  - [ ] 数据模型 
+  - [ ] API管理
   
   
 ![frontend](frontend/10EF2717-74AB-4175-8FFF-324D7A8204E7.png)   
