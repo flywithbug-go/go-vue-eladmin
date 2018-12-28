@@ -1,7 +1,20 @@
-Vue-todo
+## 简介
 
-go: webServer
-vue: client
+go: web_server （Backend）
+vue: web_client (Frontend)
+
+- **go主要框架**
+  - github.com/gin-gonic/gin
+  - github.com/dgrijalva/jwt-go
+  - github.com/flywithbug/log4go
+  - gopkg.in/mgo.v2
+  
+- **Vue主要框架**  
+  - vue-router
+  - vuex
+  - axios
+  - vue-i18n
+  - element-ui
 
 web_client:[learnFrom](https://github.com/PanJiaChen/vue-element-admin/blob/master/README.zh-CN.md)
 
@@ -25,9 +38,6 @@ npm run build
 
 # build for production and view the bundle analyzer report
 npm run build --report
-
-
-
 ```
 
 -------------------------------
