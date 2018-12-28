@@ -61,6 +61,12 @@ func getAllApplicationHandler(c *gin.Context) {
 
 	limit, _ := strconv.Atoi(c.Query("limit"))
 	page, _ := strconv.Atoi(c.Query("page"))
+	sort := c.Query("sort")
+	if strings.EqualFold(sort, "+id") {
+		sort = "+_id"
+	} else if strings.EqualFold(sort, "-id") {
+		sort = "-_id"
+	}
 	if limit == 0 {
 		limit = 10
 	}
@@ -73,7 +79,7 @@ func getAllApplicationHandler(c *gin.Context) {
 		return
 	}
 	totalCount, _ := model.TotalCountApplication()
-	applist, err := model.FindPageApplications(page, limit)
+	applist, err := model.FindPageApplications(page, limit, sort)
 	if err != nil {
 		log4go.Info(err.Error())
 		aRes.SetErrorInfo(http.StatusUnauthorized, "apps find error"+err.Error())

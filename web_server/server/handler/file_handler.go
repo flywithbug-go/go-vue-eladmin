@@ -14,6 +14,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"time"
 
@@ -142,25 +143,28 @@ func PathExists(path string) (bool, error) {
 	return false, err
 }
 
-func scale(in io.Reader, out io.Writer, width, height, quality int) error {
+func scale(in io.Reader, out io.Writer, size, quality int) error {
 	origin, fm, err := image.Decode(in)
 	if err != nil {
 		return err
 	}
-	if width == 0 || height == 0 {
+	width := size
+	height := size
+	if size == 0 {
 		width = origin.Bounds().Max.X
 		height = origin.Bounds().Max.Y
+	} else {
+		height = origin.Bounds().Max.Y * (size / origin.Bounds().Max.X)
 	}
+
 	if quality == 0 {
 		quality = 100
 	}
 	canvas := resize.Thumbnail(uint(width), uint(height), origin, resize.Lanczos3)
 
-	//return jpeg.Encode(out, canvas, &jpeg.Options{quality})
-
 	switch fm {
 	case "jpeg":
-		return jpeg.Encode(out, canvas, &jpeg.Options{quality})
+		return jpeg.Encode(out, canvas, &jpeg.Options{Quality: quality})
 	case "png":
 		return png.Encode(out, canvas)
 	case "gif":
@@ -183,7 +187,9 @@ func loadImageHandler(c *gin.Context) {
 	size := c.Query("size")
 
 	fileOrigin := localImageFilePath + path + "/" + filename
-	if len(size) == 0 {
+	sizeW, err := strconv.Atoi(size)
+
+	if len(size) == 0 || err != nil {
 		http.ServeFile(c.Writer, c.Request, fileOrigin)
 		return
 	}
@@ -192,7 +198,6 @@ func loadImageHandler(c *gin.Context) {
 		http.ServeFile(c.Writer, c.Request, fileOrigin)
 		return
 	}
-
 	filePath := localImageFilePath + path + "/" + size + "-" + filename
 	if !file.FileExists(filePath) {
 		if !file.FileExists(fileOrigin) {
@@ -205,7 +210,10 @@ func loadImageHandler(c *gin.Context) {
 		fOut, _ := os.Create(filePath)
 		//log4go.Info(filename)
 		defer fOut.Close()
-		err := scale(fIn, fOut, 120, 120, 100)
+		if sizeW < 10 {
+			sizeW = 10
+		}
+		err := scale(fIn, fOut, sizeW, 100)
 		if err != nil {
 			log4go.Info(err.Error())
 			http.ServeFile(c.Writer, c.Request, fileOrigin)

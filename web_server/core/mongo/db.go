@@ -98,10 +98,10 @@ func RemoveAll(db, collection string, selector interface{}) error {
 	return err
 }
 
-func FindPage(db, collection string, page, limit int, query, selector, results interface{}) error {
+func FindPage(db, collection string, page, limit int, query, selector, results interface{}, fields ...string) error {
 	ms, c := connect(db, collection)
 	defer ms.Close()
-	return c.Find(query).Select(selector).Skip(page * limit).Limit(limit).All(results)
+	return c.Find(query).Select(selector).Sort(fields...).Skip(page * limit).Limit(limit).All(results)
 }
 
 func FindIter(db, collection string, query interface{}) *mgo.Iter {

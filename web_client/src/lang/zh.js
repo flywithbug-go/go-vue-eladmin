@@ -158,6 +158,8 @@ export default {
     closeAll: '关闭所有'
   },
   application: {
+    table_add: "添加",
+    table_edit: "编辑",
     table_id: "序号",
     table_name: "名称",
     table_name_bundleId: "名称(包名)",

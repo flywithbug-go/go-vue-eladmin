@@ -158,6 +158,8 @@ export default {
     closeAll: 'Close All'
   },
   application: {
+    table_add: "Add",
+    table_edit: "Edit",
     table_id: "ID",
     table_name: "Name",
     table_name_bundleId: "Name(BundleId)",

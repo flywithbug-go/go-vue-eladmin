@@ -51,9 +51,9 @@ func (a Application) totalCount(query, selector interface{}) (int, error) {
 	return mongo.TotalCount(db, appCollection, query, selector)
 }
 
-func (a Application) findPage(page, limit int, query, selector interface{}) (results *[]Application, err error) {
+func (a Application) findPage(page, limit int, query, selector interface{}, fields ...string) (results *[]Application, err error) {
 	results = new([]Application)
-	err = mongo.FindPage(db, appCollection, page, limit, query, selector, results)
+	err = mongo.FindPage(db, appCollection, page, limit, query, selector, results, fields...)
 	return
 }
 
@@ -120,6 +120,6 @@ func TotalCountApplication() (int, error) {
 	return appC.totalCount(nil, nil)
 }
 
-func FindPageApplications(page, limit int) (apps *[]Application, err error) {
-	return appC.findPage(page, limit, nil, nil)
+func FindPageApplications(page, limit int, fields ...string) (apps *[]Application, err error) {
+	return appC.findPage(page, limit, nil, nil, fields...)
 }

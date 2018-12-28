@@ -2,7 +2,7 @@
   <div class="app-container">
     <!--悬浮按钮-->
     <section class="content">
-      <fixed-button :bottom="3" @clickEvent="addAction" class="fixed-container">
+      <fixed-button :bottom="3" @clickEvent="handleCreate" class="fixed-container">
         <svg-icon icon-class="add" class="icon-add"></svg-icon>
       </fixed-button>
     </section>
@@ -15,6 +15,7 @@
               highlight-current-row
               style="width: 100%;"
               @sort-change="sortChange"
+              @row-click="clickRow"
               header-row-class-name="center">
       <el-table-column :label="$t('application.table_id')"
                        prop="id"
@@ -33,7 +34,6 @@
           <span style="color: #4a9ff9; font-weight: bolder;font-size: 18px;"> {{ scope.row.name }} </span>
         </template>
       </el-table-column>
-
       <el-table-column :label="$t('application.table_icon')"
                        prop="id"
                        align="center"
@@ -42,8 +42,6 @@
           <img :src="scope.row.icon" class="app-icon" width="auto" align="center">
         </template>
       </el-table-column>
-
-
       <el-table-column :label="$t('application.table_owner')"
                        prop="id"
                        align="center"
@@ -79,13 +77,15 @@
                 @pagination="getList">
     </pagination>
 
-
-
     <!--创建弹窗-->
-    <el-dialog :title="$t('application.table_createTitle')" :visible.sync="dialogFormVisible">
-
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
-
+    <el-dialog :title="textMap[dialogStatus]"
+               :visible.sync="dialogFormVisible">
+      <el-form ref="dataForm"
+               :rules="rules"
+               :model="temp"
+               label-position="left"
+               label-width="70px"
+               style="width: 400px; margin-left:50px;">
         <el-form-item align="center">
           <label>{{ $t('application.table_app_icon') }}</label>
         </el-form-item>
@@ -105,14 +105,20 @@
         <el-form-item :label="$t('application.table_name')" prop="name">
           <el-input v-model="temp.name"/>
         </el-form-item>
-        <el-form-item :label="$t('application.table_bundleId')"  prop="bundleId">
-          <el-input v-model="temp.bundleId" :placeholder="$t('application.table_bundleId_placeHolder')"/>
+        <el-form-item :label="$t('application.table_bundleId')"
+                      prop="bundleId">
+          <el-input v-model="temp.bundleId"
+                    :placeholder="$t('application.table_bundleId_placeHolder')">
+          </el-input>
         </el-form-item>
-        <el-form-item :label="$t('application.table_desc')" prop="desc">
-          <el-input :autosize="{ minRows: 2, maxRows: 4}" :placeholder="$t('application.table_desc_placeholder')" type="textarea" v-model="temp.desc" />
+        <el-form-item :label="$t('application.table_desc')"
+                      prop="desc">
+          <el-input :autosize="{ minRows: 2, maxRows: 4}"
+                    :placeholder="$t('application.table_desc_placeholder')"
+                    type="textarea"
+                    v-model="temp.desc"></el-input>
         </el-form-item>
       </el-form>
-
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
         <el-button type="primary" @click="dialogStatus==='create'? createData():updateDate()">{{ $t('table.confirm') }}</el-button>
@@ -149,13 +155,17 @@
         total: 10,
         dialogFormVisible:false,
         dialogStatus:'create',
+        textMap: {
+          update: this.$t('application.table_edit'),
+          create: this.$t('application.table_add'),
+        },
         listQuery: {
           page: 0,
           limit: 2,
           name: undefined,
           owner: undefined,
           time: undefined,
-          sort: '+id'
+          sort: '+_id'
         },
         temp: {
           id: undefined,
@@ -235,19 +245,35 @@
           this.list = response.list
           this.total = response.total
           this.listLoading = false
-          console.log(response)
-        }).catch((err) => {
-          console.error(err)
+        }).catch(() => {
           this.listLoading = false
         })
       },
-      sortChange(data) {
-        // const { prop, order } = data
-        // if (prop === 'id') {
-        //   this.sortByID(order)
-        // }
+      clickRow(data) {
+        this.temp = data
+        this.dialogStatus = 'update'
+        this.dialogFormVisible =  true
+
       },
-      addAction() {
+      sortChange(data) {
+        const { prop, order } = data
+        if (prop === 'id') {
+          this.sortByID(order)
+        }
+      },
+      sortByID(order) {
+        if (order === 'ascending') {
+          this.listQuery.sort = '+_id'
+        } else {
+          this.listQuery.sort = '-_id'
+        }
+        this.handleFilter()
+      },
+      handleFilter() {
+        this.listQuery.page = 1
+        this.getList()
+      },
+      handleCreate() {
         this.dialogStatus = 'create'
         this.dialogFormVisible =  true
         this.$nextTick(() => {
