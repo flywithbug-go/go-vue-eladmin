@@ -47,6 +47,12 @@ func (a Application) findAll(query, selector interface{}) (results *[]Applicatio
 	return results, err
 }
 
+func (a Application) findPage(page, limit int, query, selector interface{}) (results *[]Application, err error) {
+	results = new([]Application)
+	err = mongo.FindPage(db, appCollection, page, limit, query, selector, results)
+	return
+}
+
 func (a Application) update(selector, update interface{}) error {
 	return mongo.Update(db, userCollection, selector, update, true)
 }
@@ -104,4 +110,8 @@ func (a *Application) ApplicationUpdate() error {
 
 func FindALlApplications() (apps *[]Application, err error) {
 	return appC.findAll(nil, nil)
+}
+
+func FindPageApplications(page, limit int) (apps *[]Application, err error) {
+	return appC.findPage(page, limit, nil, nil)
 }

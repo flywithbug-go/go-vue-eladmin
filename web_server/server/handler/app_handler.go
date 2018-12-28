@@ -4,6 +4,7 @@ import (
 	"doc-manager/web_server/common"
 	"doc-manager/web_server/model"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/flywithbug/log4go"
@@ -57,12 +58,17 @@ func getAllApplicationHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
+	limit, _ := strconv.Atoi(c.Query("limit"))
+	page, _ := strconv.Atoi(c.Query("page"))
+	if limit == 0 {
+		limit = 10
+	}
 	userId := common.UserId(c)
 	if strings.EqualFold(userId, "") {
 		aRes.SetErrorInfo(http.StatusUnauthorized, "user not found")
 		return
 	}
-	applist, err := model.FindALlApplications()
+	applist, err := model.FindPageApplications(page, limit)
 	if err != nil {
 		log4go.Info(err.Error())
 		aRes.SetErrorInfo(http.StatusUnauthorized, "apps find error"+err.Error())
