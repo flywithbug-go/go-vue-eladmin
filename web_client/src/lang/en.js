@@ -158,6 +158,7 @@ export default {
     closeAll: 'Close All'
   },
   application: {
+    table_action: "Action",
     table_add: "Add",
     table_edit: "Edit",
     table_id: "ID",

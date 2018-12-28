@@ -158,6 +158,7 @@ export default {
     closeAll: '关闭所有'
   },
   application: {
+    table_action: "操作",
     table_add: "添加",
     table_edit: "编辑",
     table_id: "序号",

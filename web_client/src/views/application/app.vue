@@ -15,7 +15,6 @@
               highlight-current-row
               style="width: 100%;"
               @sort-change="sortChange"
-              @row-click="clickRow"
               header-row-class-name="center">
       <el-table-column :label="$t('application.table_id')"
                        prop="id"
@@ -34,10 +33,11 @@
           <span style="color: #4a9ff9; font-weight: bolder;font-size: 18px;"> {{ scope.row.name }} </span>
         </template>
       </el-table-column>
+
       <el-table-column :label="$t('application.table_icon')"
                        prop="id"
                        align="center"
-                       width="80px">
+                       width="100px">
         <template slot-scope="scope" >
           <img :src="scope.row.icon" class="app-icon" width="auto" align="center">
         </template>
@@ -68,6 +68,19 @@
           <span> {{ scope.row.desc }} </span>
         </template>
       </el-table-column>
+      <el-table-column :label="$t('application.table_action')"
+                       align="center"
+                       width="100px"
+                       class-name="small-padding fixed-width">
+        <template slot-scope="scope">
+          <el-button type="primary"
+                     size="mini"
+                     @click="handleUpdate(scope.row)">
+            {{ $t('application.table_edit') }}
+          </el-button>
+        </template>
+      </el-table-column>
+
     </el-table>
 <!--分页-->
     <pagination v-show="total>0"
@@ -249,7 +262,7 @@
           this.listLoading = false
         })
       },
-      clickRow(data) {
+      handleUpdate(data) {
         this.temp = data
         this.dialogStatus = 'update'
         this.dialogFormVisible =  true
@@ -381,8 +394,9 @@
     display: block;
   }
   .app-icon {
+    display: inline-block;
+    vertical-align: middle;
     width: 60px;
     height: 60px;
-    display: block;
   }
 </style>
