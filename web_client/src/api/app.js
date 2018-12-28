@@ -15,9 +15,10 @@ export function addApplicationRequest(bundleId, icon, name, desc) {
 }
 
 
-export function getApplicationlistRequest() {
+export function getApplicationlistRequest(query) {
   return client({
     url: '/app/list',
-    method: 'get'
+    method: 'get',
+    params: query
   })
 }

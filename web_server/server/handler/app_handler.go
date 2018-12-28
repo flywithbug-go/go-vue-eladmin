@@ -58,16 +58,21 @@ func getAllApplicationHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
+
 	limit, _ := strconv.Atoi(c.Query("limit"))
 	page, _ := strconv.Atoi(c.Query("page"))
 	if limit == 0 {
 		limit = 10
+	}
+	if page != 0 {
+		page--
 	}
 	userId := common.UserId(c)
 	if strings.EqualFold(userId, "") {
 		aRes.SetErrorInfo(http.StatusUnauthorized, "user not found")
 		return
 	}
+	totalCount, _ := model.TotalCountApplication()
 	applist, err := model.FindPageApplications(page, limit)
 	if err != nil {
 		log4go.Info(err.Error())
@@ -75,4 +80,5 @@ func getAllApplicationHandler(c *gin.Context) {
 		return
 	}
 	aRes.AddResponseInfo("list", applist)
+	aRes.AddResponseInfo("total", totalCount)
 }

@@ -31,8 +31,6 @@
                        width="160px">
         <template slot-scope="scope">
           <span style="color: #4a9ff9; font-weight: bolder;font-size: 18px;"> {{ scope.row.name }} </span>
-          <!--<br>-->
-          <!--<span> {{ scope.row.bundle_id }} </span>-->
         </template>
       </el-table-column>
 
@@ -73,6 +71,15 @@
         </template>
       </el-table-column>
     </el-table>
+<!--分页-->
+    <pagination v-show="total>0"
+                :total="total"
+                :page.sync="listQuery.page"
+                :limit.sync="listQuery.limit"
+                @pagination="getList">
+    </pagination>
+
+
 
     <!--创建弹窗-->
     <el-dialog :title="$t('application.table_createTitle')" :visible.sync="dialogFormVisible">
@@ -120,7 +127,8 @@
 <script>
   import fixedButton from '../../components/FixedButton';
   import global_ from '../../config'
-  import store from '@/store'
+  import store from '../../store'
+  import Pagination from '../../components/Pagination'
   import { addApplicationRequest,getApplicationlistRequest } from  '../../api/app'
   import { formatDate } from '../../utils/date';
 
@@ -128,7 +136,8 @@
   export default {
     name: 'AppManager',
     components: {
-      fixedButton
+      fixedButton,
+      Pagination
     },
     data() {
       return {
@@ -137,9 +146,17 @@
         headers: {'Authorization': store.getters.token},
         actionURL:global_.UploadImageURL,
         list: null,
-        total: 0,
+        total: 10,
         dialogFormVisible:false,
         dialogStatus:'create',
+        listQuery: {
+          page: 0,
+          limit: 2,
+          name: undefined,
+          owner: undefined,
+          time: undefined,
+          sort: '+id'
+        },
         temp: {
           id: undefined,
           name: '',
@@ -214,8 +231,9 @@
       },
       getList() {
         this.listLoading = true
-        getApplicationlistRequest().then(response => {
+        getApplicationlistRequest(this.listQuery).then(response => {
           this.list = response.list
+          this.total = response.total
           this.listLoading = false
           console.log(response)
         }).catch((err) => {
@@ -224,10 +242,10 @@
         })
       },
       sortChange(data) {
-        const { prop, order } = data
-        if (prop === 'id') {
-          this.sortByID(order)
-        }
+        // const { prop, order } = data
+        // if (prop === 'id') {
+        //   this.sortByID(order)
+        // }
       },
       addAction() {
         this.dialogStatus = 'create'

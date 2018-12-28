@@ -54,6 +54,12 @@ func FindAll(db, collection string, query, selector, results interface{}) error 
 	return c.Find(query).Select(selector).All(results)
 }
 
+func TotalCount(db, collection string, query, selector interface{}) (int, error) {
+	ms, c := connect(db, collection)
+	defer ms.Close()
+	return c.Find(query).Select(selector).Count()
+}
+
 //filterNull: 过滤空值对象。空值对象不更新
 func Update(db, collection string, selector, update interface{}, filterNull bool) error {
 	ms, c := connect(db, collection)
