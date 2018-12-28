@@ -7,7 +7,7 @@
 </template>
 
 <script>
-  import fixedIcon from '../../components/FixedIcon';
+  import fixedIcon from '../../components/FixedButton';
   export default {
     name: 'Dashboard',
     components: {

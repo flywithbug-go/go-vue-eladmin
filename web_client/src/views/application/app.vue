@@ -99,7 +99,7 @@
           <el-input v-model="temp.bundleId" :placeholder="$t('application.table_bundleId_placeHolder')"/>
         </el-form-item>
         <el-form-item :label="$t('application.table_desc')" prop="desc">
-          <el-input :autosize="{ minRows: 2, maxRows: 4}" type="textarea" v-model="temp.desc" :placeholder="$t('application.table_desc_placeholder')"/>
+          <el-input :autosize="{ minRows: 2, maxRows: 4}" :placeholder="$t('application.table_desc_placeholder')" type="textarea" v-model="temp.desc" />
         </el-form-item>
       </el-form>
 
@@ -182,7 +182,7 @@
           desc: [
             {
               required: true,
-              message: this.$t('application.table_desc_placeHolder'),
+              message: this.$t('application.table_desc_placeholder'),
             },
             {
               min: 10,
