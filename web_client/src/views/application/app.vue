@@ -30,9 +30,9 @@
                        align="center"
                        width="160px">
         <template slot-scope="scope">
-          <span> {{ scope.row.name }} </span>
-          <br>
-          <span> {{ scope.row.bundle_id }} </span>
+          <span style="color: #4a9ff9; font-weight: bolder;font-size: 18px;"> {{ scope.row.name }} </span>
+          <!--<br>-->
+          <!--<span> {{ scope.row.bundle_id }} </span>-->
         </template>
       </el-table-column>
 
