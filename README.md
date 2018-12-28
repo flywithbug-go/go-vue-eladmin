@@ -1,6 +1,6 @@
 ## 简介
 
-go: web_server （Backend）
+go: web_server （Backend）   
 vue: web_client (Frontend)
 
 - **go主要框架** 
@@ -12,12 +12,14 @@ vue: web_client (Frontend)
 ```
   
   
-- **Vue主要框架**  
-  - vue-router
-  - vuex
-  - axios
-  - vue-i18n
-  - element-ui
+- **Vue主要框架**   
+ ``` 
+  vue-router
+  vuex
+  axios
+  vue-i18n
+  element-ui
+ ```
 
 web_client:[learnFrom](https://github.com/PanJiaChen/vue-element-admin/blob/master/README.zh-CN.md)
 
