@@ -160,6 +160,7 @@ export default {
   application: {
     table_id: "ID",
     table_name: "Name",
+    table_name_bundleId: "Name(BundleId)",
     table_name_placeHolder: "Please input application name",
     table_icon: "Icon",
     table_bundleId:"BundleId",

@@ -160,6 +160,7 @@ export default {
   application: {
     table_id: "序号",
     table_name: "名称",
+    table_name_bundleId: "名称(包名)",
     table_name_placeHolder: "请输入应用名字",
     table_bundleId: "包名",
     table_bundleId_warning: "请输入应用包名",

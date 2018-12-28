@@ -15,3 +15,9 @@ export function addApplicationRequest(bundleId, icon, name, desc) {
 }
 
 
+export function getApplicationlistRequest() {
+  return client({
+    url: '/app/list',
+    method: 'get'
+  })
+}

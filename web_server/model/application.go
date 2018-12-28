@@ -15,11 +15,11 @@ const (
 type Application struct {
 	Id         int64  `json:"id,omitempty" bson:"_id,omitempty"`
 	AppId      string `json:"app_id,omitempty" bson:"app_id,omitempty"`
-	Name       string `json:"name,omitempty" bson:"name,omitempty"`               //应用（组件）名称
-	Desc       string `json:"desc,omitempty" bson:"desc,omitempty"`               //项目描述
-	CreateTime int64  `json:"create_time,omitempty" bson:"create_time,omitempty"` //创建时间
-	Icon       string `json:"icon,omitempty" bson:"icon,omitempty"`               //icon 地址
-	Owner      string `json:"owner,omitempty" json:"owner,omitempty"`             //负责人 user_id，初始为创建人
+	Name       string `json:"name,omitempty" bson:"name,omitempty"`        //应用（组件）名称
+	Desc       string `json:"desc,omitempty" bson:"desc,omitempty"`        //项目描述
+	CreateTime int64  `json:"time,omitempty" bson:"create_time,omitempty"` //创建时间
+	Icon       string `json:"icon,omitempty" bson:"icon,omitempty"`        //icon 地址
+	Owner      string `json:"owner,omitempty" json:"owner,omitempty"`      //负责人 user_id，初始为创建人
 	BundleId   string `json:"bundle_id,omitempty" bson:"bundle_id,omitempty"`
 }
 

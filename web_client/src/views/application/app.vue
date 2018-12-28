@@ -14,7 +14,8 @@
               fit
               highlight-current-row
               style="width: 100%;"
-              @sort-change="sortChange">
+              @sort-change="sortChange"
+              header-row-class-name="center">
       <el-table-column :label="$t('application.table_id')"
                        prop="id"
                        sortable="custom"
@@ -24,21 +25,23 @@
           <span> {{ scope.row.id }} </span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('application.table_name')"
+      <el-table-column :label="$t('application.table_name_bundleId')"
                        prop="id"
                        align="center"
-                       width="150px" >
+                       width="160px">
         <template slot-scope="scope">
           <span> {{ scope.row.name }} </span>
+          <br>
+          <span> {{ scope.row.bundle_id }} </span>
         </template>
       </el-table-column>
 
       <el-table-column :label="$t('application.table_icon')"
                        prop="id"
                        align="center"
-                       width="150px">
-        <template slot-scope="scope">
-          <span> {{ scope.row.icon }} </span>
+                       width="80px">
+        <template slot-scope="scope" >
+          <img :src="scope.row.icon" class="app-icon" width="auto" align="center">
         </template>
       </el-table-column>
 
@@ -52,12 +55,12 @@
       </template>
       </el-table-column>
 
-      <el-table-column :label="$t('application.table_time')"
+      <el-table-column :label="$t('application.table_create_time')"
                        prop="id"
                        align="center"
                        width="150px">
         <template slot-scope="scope">
-          <span> {{ scope.row.time }} </span>
+          <span> {{ formatDate(scope.row.time) }} </span>
         </template>
       </el-table-column>
 
@@ -118,7 +121,8 @@
   import fixedButton from '../../components/FixedButton';
   import global_ from '../../config'
   import store from '@/store'
-  import { addApplicationRequest } from  '../../api/app'
+  import { addApplicationRequest,getApplicationlistRequest } from  '../../api/app'
+  import { formatDate } from '../../utils/date';
 
 
   export default {
@@ -204,10 +208,20 @@
       this.getList()
     },
     methods: {
+      formatDate(time) {
+        let date = new Date(time*1000);
+        return formatDate(date, 'yyyy-MM-dd hh:mm');
+      },
       getList() {
-        setTimeout(() => {
+        this.listLoading = true
+        getApplicationlistRequest().then(response => {
+          this.list = response.list
           this.listLoading = false
-        }, 1.5 * 1000)
+          console.log(response)
+        }).catch((err) => {
+          console.error(err)
+          this.listLoading = false
+        })
       },
       sortChange(data) {
         const { prop, order } = data
@@ -230,7 +244,7 @@
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             addApplicationRequest(
-              this.temp.bundleId,
+              this.temp.bundle_id,
               this.temp.icon,
               this.temp.name,
               this.temp.desc).then(() => {
@@ -251,7 +265,7 @@
           owner:'',
           time: new Date(),
           desc: '',
-          bundleId:''
+          bundle_id:''
         }
       },
       handleAvatarSuccess(res) {
@@ -320,6 +334,11 @@
   .avatar {
     width: 178px;
     height: 178px;
+    display: block;
+  }
+  .app-icon {
+    width: 60px;
+    height: 60px;
     display: block;
   }
 </style>

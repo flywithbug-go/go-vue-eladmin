@@ -12,7 +12,6 @@ import (
 
 type appPara struct {
 	model.Application
-	Time string `json:"time"`
 }
 
 func addApplicationHandler(c *gin.Context) {
