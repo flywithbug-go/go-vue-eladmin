@@ -83,10 +83,10 @@ npm run build --report
   - [x] 404 
 
 - [ ] 数据管理 
-  - [ ] App管理(Doing)  
-  - [ ] 版本管理TODO） 
+  - [x] App管理
+  - [ ] 版本管理
 
-- [ ] 开发工具（TODO ）
+- [ ] 开发工具
   - [ ] 数据模型 
   - [ ] API管理
   
