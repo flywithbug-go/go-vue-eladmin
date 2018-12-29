@@ -24,6 +24,12 @@
                  @click="handleFilter">
         {{ $t('application.table_search') }}
       </el-button>
+      <el-button class="filter-item"
+                 style="margin-left: 10px;"
+                 type="primary"
+                 icon="el-icon-edit"
+                 @click="handleCreate">{{ $t('table.add') }}</el-button>
+
 
     </div>
 
