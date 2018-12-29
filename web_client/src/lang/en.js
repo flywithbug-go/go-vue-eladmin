@@ -161,6 +161,7 @@ export default {
     table_action: "Action",
     table_add: "Add",
     table_edit: "Edit",
+    table_search: 'Search',
     table_show: "",
     table_id: "ID",
     table_name: "Name",

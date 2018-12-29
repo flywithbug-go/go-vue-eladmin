@@ -130,7 +130,7 @@ var routers = []ginHandleFunc{
 		route:      "/app/add",
 	},
 	{
-		handler:    getAllApplicationHandler,
+		handler:    getApplicationsHandler,
 		routerType: routerTypeNeedAuth,
 		method:     "GET",
 		route:      "/app/list",

@@ -7,6 +7,8 @@ import (
 	"strconv"
 	"strings"
 
+	"gopkg.in/mgo.v2/bson"
+
 	"github.com/flywithbug/log4go"
 	"github.com/gin-gonic/gin"
 )
@@ -53,7 +55,7 @@ func addApplicationHandler(c *gin.Context) {
 	aRes.AddResponseInfo("app", app)
 }
 
-func getAllApplicationHandler(c *gin.Context) {
+func getApplicationsHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
@@ -62,6 +64,8 @@ func getAllApplicationHandler(c *gin.Context) {
 	limit, _ := strconv.Atoi(c.Query("limit"))
 	page, _ := strconv.Atoi(c.Query("page"))
 	sort := c.Query("sort")
+	name := c.Query("name")
+	owner := c.Query("owner")
 	if strings.EqualFold(sort, "+id") {
 		sort = "+_id"
 	} else if strings.EqualFold(sort, "-id") {
@@ -78,8 +82,16 @@ func getAllApplicationHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusUnauthorized, "user not found")
 		return
 	}
-	totalCount, _ := model.TotalCountApplication()
-	applist, err := model.FindPageApplications(page, limit, sort)
+	query := bson.M{}
+	if len(name) > 0 {
+		query["name"] = bson.M{"$regex": name}
+	}
+	if len(owner) > 0 {
+		query["owner"] = bson.M{"$regex": owner}
+	}
+
+	totalCount, _ := model.TotalCountApplication(query, nil)
+	applist, err := model.FindPageApplicationsFilter(page, limit, query, nil, sort)
 	if err != nil {
 		log4go.Info(err.Error())
 		aRes.SetErrorInfo(http.StatusUnauthorized, "apps find error"+err.Error())

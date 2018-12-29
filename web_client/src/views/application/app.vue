@@ -1,12 +1,33 @@
 <template>
   <div class="app-container">
-    <!--悬浮按钮-->
+
+    <!--悬浮添加按钮-->
     <section class="content">
       <fixed-button :bottom="3" @clickEvent="handleCreate" class="fixed-container">
         <svg-icon icon-class="add" class="icon-add"></svg-icon>
       </fixed-button>
     </section>
-<!--列表内容-->
+
+
+    <div class="filter-container">
+      <el-input :placeholder="$t('application.table_name')"
+                v-model="listQuery.name"
+                style="width: 200px;" class="filter-item"
+                @keyup.enter.native="handleFilter"></el-input>
+      <el-input :placeholder="$t('application.table_owner')"
+                v-model="listQuery.owner"
+                style="width: 200px;" class="filter-item"
+                @keyup.enter.native="handleFilter"></el-input>
+      <el-button v-waves class="filter-item"
+                 type="primary"
+                 icon="el-icon-search"
+                 @click="handleFilter">
+        {{ $t('application.table_search') }}
+      </el-button>
+
+    </div>
+
+    <!--列表内容-->
     <el-table v-loading="listLoading"
               :key="tableKey"
               :data="list"
@@ -88,7 +109,8 @@
       </el-table-column>
 
     </el-table>
-<!--分页-->
+
+    <!--分页-->
     <pagination v-show="total>0"
                 :total="total"
                 :page.sync="listQuery.page"
@@ -96,7 +118,7 @@
                 @pagination="getList">
     </pagination>
 
-    <!--创建弹窗-->
+    <!--创建弹窗添加修改-->
     <el-dialog :title="textMap[dialogStatus]"
                :visible.sync="dialogFormVisible">
       <el-form ref="dataForm"
@@ -143,7 +165,6 @@
         <el-button @click="dialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
         <el-button type="primary" @click="dialogStatus==='create'? createData():updateDate()">{{ $t('table.confirm') }}</el-button>
       </div>
-
     </el-dialog>
 
 
@@ -151,6 +172,7 @@
 </template>
 
 <script>
+  import waves from '@/directive/waves' // Waves directive
   import fixedButton from '../../components/FixedButton';
   import global_ from '../../config'
   import store from '../../store'
@@ -163,8 +185,9 @@
     name: 'AppManager',
     components: {
       fixedButton,
-      Pagination
+      Pagination,
     },
+    directives: { waves },
     data() {
       return {
         listLoading: true,
@@ -184,7 +207,6 @@
           limit: 2,
           name: '',
           owner: '',
-          time: 0,
           sort: '+_id'
         },
         temp: {
