@@ -100,14 +100,14 @@ func (a *Application) ApplicationInsert() error {
 	return appC.insert(a)
 }
 
-func UpdateApplication(a *Application) error {
-	selector := bson.M{"_id": a.Id}
-	a.AppId = ""
-	a.BundleId = ""
-	a.Owner = ""
-	a.CreateTime = 0
-	return appC.update(selector, a)
-}
+//func UpdateApplication(a *Application) error {
+//	selector := bson.M{"_id": a.Id}
+//	a.AppId = ""
+//	a.BundleId = ""
+//	a.Owner = ""
+//	a.CreateTime = 0
+//	return appC.update(selector, a)
+//}
 
 func (a *Application) UpdateApplication() error {
 	selector := bson.M{}
@@ -125,17 +125,17 @@ func (a *Application) UpdateApplication() error {
 	return appC.update(selector, a)
 }
 
-func FindALlApplications() (apps *[]Application, err error) {
-	return appC.findAll(nil, nil)
-}
+//func FindALlApplications() (apps *[]Application, err error) {
+//	return appC.findAll(nil, nil)
+//}
 
 func TotalCountApplication(query, selector interface{}) (int, error) {
 	return appC.totalCount(query, selector)
 }
 
-func FindPageApplications(page, limit int, fields ...string) (apps *[]Application, err error) {
-	return appC.findPage(page, limit, nil, nil, fields...)
-}
+//func FindPageApplications(page, limit int, fields ...string) (apps *[]Application, err error) {
+//	return appC.findPage(page, limit, nil, nil, fields...)
+//}
 func FindPageApplicationsFilter(page, limit int, query, selector interface{}, fields ...string) (apps *[]Application, err error) {
 	return appC.findPage(page, limit, query, selector, fields...)
 }

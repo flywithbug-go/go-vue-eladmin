@@ -28,10 +28,11 @@ type User struct {
 	RealName string    `json:"real_name,omitempty" bson:"real_name,omitempty"`
 	Name     string    `json:"name,omitempty" bson:"name,omitempty"` //昵称
 	Title    string    `json:"title,omitempty" bson:"title,omitempty"`
-	Role     roleState `json:"role,omitempty" bson:"role,omitempty"`   //用于前端路由配置 1 管理员， 2 普通用户，
+	Role     roleState `json:"role,omitempty" bson:"role,omitempty"`   //系统级的Role 于前端路由配置 1 管理员， 2 普通用户，
 	Roles    []string  `json:"roles,omitempty" bson:"roles,omitempty"` //角色数组
 	Status   int       `json:"status,omitempty" bson:"status,omitempty"`
 	Superior string    `json:"superior,omitempty" bson:"superior,omitempty"`
+	RoleId   string    `json:"role_id,omitempty" bson:"role_id,omitempty"` //角色库
 }
 
 var (

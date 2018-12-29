@@ -22,8 +22,10 @@ type OperationModel interface {
 	isExist(query interface{}) bool
 	findOne(query, selector interface{}) (*interface{}, error)
 	findAll(query, selector interface{}) (results *[]interface{}, err error)
-	totalCount(query, selector interface{}) (int, error)
 	update(selector, update interface{}) error
 	remove(selector interface{}) error
 	removeAll(selector interface{}) error
+
+	totalCount(query, selector interface{}) (int, error)
+	findPage(page, limit int, query, selector interface{}, fields ...string) (results *[]interface{}, err error)
 }
