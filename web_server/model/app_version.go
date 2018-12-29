@@ -2,6 +2,7 @@ package model
 
 import (
 	"doc-manager/web_server/core/mongo"
+	"errors"
 
 	"github.com/globalsign/mgo/bson"
 )
@@ -9,9 +10,7 @@ import (
 type appStatus int
 
 const (
-	appVersionCollection = "app_version"
-)
-const (
+	appVersionCollection              = "app_version"
 	appStatusTypePrepare    appStatus = iota //准备中
 	appStatusTypeDeveloping                  //开发中
 	appStatusTypeGray                        //灰度
@@ -19,11 +18,12 @@ const (
 )
 
 type AppVersion struct {
+	Id            int64     `json:"id,omitempty" bson:"_id,omitempty"`
 	AppId         string    `json:"app_id,omitempty" bson:"app_id,omitempty"` //所属AppId
 	Version       string    `json:"version,omitempty" bson:"version,omitempty"`
 	ParentVersion string    `json:"parent_version,omitempty" bson:"parent_version,omitempty"`
 	Platform      string    `json:"platform,omitempty" bson:"platform,omitempty"`           //(iOS,Android,H5,Server)["iOS","Android","H5","Server"]
-	Status        appStatus `json:"status,omitempty" bson:"status,omitempty"`               //状态    0(准备中) 1(开发中) 2(灰度) 3(已发布)
+	Status        appStatus `json:"status,omitempty" bson:"status,omitempty"`               //状态    1(准备中) 2(开发中) 3(灰度) 4(已发布)
 	ApprovalTime  int       `json:"approval_time,omitempty" bson:"approval_time,omitempty"` //立项时间
 	LockTime      int       `json:"lock_time,omitempty" bson:"lock_time,omitempty"`         //锁版时间
 	GrayTime      int       `json:"gray_time,omitempty" bson:"gray_time,omitempty"`         //灰度时间
@@ -78,6 +78,20 @@ func (app AppVersion) findPage(page, limit int, query, selector interface{}, fie
 }
 
 func (app *AppVersion) Insert() error {
+	if len(app.AppId) == 0 {
+		return errors.New("app_id must need")
+	}
+	if appVC.isExist(bson.M{"version": app.Version}) {
+		return errors.New("version exist")
+	}
+	if len(app.ParentVersion) > 0 {
+		if !appVC.isExist(bson.M{"parent_version": app.ParentVersion}) {
+			return errors.New("parent_version not exist")
+		}
+	}
+	app.Status = appStatusTypePrepare
+	app.AppStatus = makeStatusString(appStatusTypePrepare)
+
 	return appVC.insert(app)
 }
 
