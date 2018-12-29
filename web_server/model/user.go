@@ -78,7 +78,7 @@ func (u User) removeAll(selector interface{}) error {
 /*
 	userModify
 */
-func (u *User) UserInsert() error {
+func (u *User) Insert() error {
 	if u.isExist(bson.M{"account": u.Account}) {
 		return errors.New("account 已存在")
 	}
@@ -94,7 +94,7 @@ func (u *User) UserInsert() error {
 	return userC.insert(u)
 }
 
-func UpdateUserInfo(u *User) error {
+func (u *User) Update() error {
 	selector := bson.M{"user_id": u.UserId}
 	u.UserId = ""
 	u.Account = ""

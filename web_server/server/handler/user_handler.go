@@ -74,7 +74,7 @@ func registerHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "email can not be nil")
 		return
 	}
-	err = user.UserInsert()
+	err = user.Insert()
 	if err != nil {
 		aRes.SetErrorInfo(http.StatusBadRequest, err.Error())
 		return
@@ -155,7 +155,7 @@ func updateUserHandler(c *gin.Context) {
 		return
 	}
 	user.UserId = common.UserId(c)
-	err = model.UpdateUserInfo(user)
+	err = user.Update()
 	if err != nil {
 		log4go.Info(err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "db update failed: "+err.Error())

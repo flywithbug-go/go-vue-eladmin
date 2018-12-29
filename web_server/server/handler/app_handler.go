@@ -46,7 +46,7 @@ func addApplicationHandler(c *gin.Context) {
 		return
 	}
 	app.Owner = common.Account(c)
-	err = app.ApplicationInsert()
+	err = app.Insert()
 	if err != nil {
 		log4go.Error(err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, err.Error())
@@ -113,7 +113,7 @@ func updateApplicationHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid: "+err.Error())
 		return
 	}
-	err = app.UpdateApplication()
+	err = app.Update()
 	if err != nil {
 		log4go.Error(err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "update failed: "+err.Error())

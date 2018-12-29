@@ -71,7 +71,7 @@ func (a Application) removeAll(selector interface{}) error {
 	return mongo.RemoveAll(db, appCollection, selector)
 }
 
-func (a *Application) ApplicationInsert() error {
+func (a *Application) Insert() error {
 	if a.BundleId == "" {
 		return errors.New("bundleId must fill")
 	}
@@ -109,7 +109,7 @@ func (a *Application) ApplicationInsert() error {
 //	return appC.update(selector, a)
 //}
 
-func (a *Application) UpdateApplication() error {
+func (a *Application) Update() error {
 	selector := bson.M{}
 	if a.Id > 0 {
 		selector = bson.M{"_id": a.Id}
@@ -123,6 +123,17 @@ func (a *Application) UpdateApplication() error {
 	a.Owner = ""
 	a.CreateTime = 0
 	return appC.update(selector, a)
+}
+
+func FindApplicationById(id int) (*Application, error) {
+	return appC.findOne(bson.M{"_id": id}, nil)
+}
+
+func FindApplicationAppId(appId string) (*Application, error) {
+	return appC.findOne(bson.M{"app_id": appId}, nil)
+}
+func FindApplication(query, selector interface{}) (*Application, error) {
+	return appC.findOne(query, selector)
 }
 
 //func FindALlApplications() (apps *[]Application, err error) {

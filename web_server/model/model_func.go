@@ -18,14 +18,16 @@ func DBName() string {
 }
 
 type OperationModel interface {
-	insert(docs ...interface{}) error
 	isExist(query interface{}) bool
+	insert(docs ...interface{}) error
+	update(selector, update interface{}) error
 	findOne(query, selector interface{}) (*interface{}, error)
 	findAll(query, selector interface{}) (results *[]interface{}, err error)
-	update(selector, update interface{}) error
 	remove(selector interface{}) error
 	removeAll(selector interface{}) error
 
 	totalCount(query, selector interface{}) (int, error)
 	findPage(page, limit int, query, selector interface{}, fields ...string) (results *[]interface{}, err error)
+	Insert() error
+	Update() error
 }
