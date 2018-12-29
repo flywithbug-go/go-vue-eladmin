@@ -24,13 +24,13 @@ export function getApplicationlistRequest(query) {
 }
 
 
-export function updateApplicationRequest(data) {
-  // const data = {
-  //   icon,
-  //   name,
-  //   desc,
-  //   id,
-  // }
+export function updateApplicationRequest(icon, name, desc,id) {
+  const data = {
+    icon,
+    name,
+    desc,
+    id,
+  }
   return client({
     url: '/app/update',
     method: 'post',

@@ -94,19 +94,14 @@ func updateApplicationHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
-	app := new(model.Application)
+	app := new(appPara)
 	err := c.BindJSON(app)
 	if err != nil {
 		log4go.Error(err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid: "+err.Error())
 		return
 	}
-	if app.AppId == "" {
-		aRes.SetErrorInfo(http.StatusBadRequest, "appId invalid: ")
-		return
-	}
-
-	err = model.UpdateApplication(app)
+	err = app.UpdateApplication()
 	if err != nil {
 		log4go.Error(err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "update failed: "+err.Error())

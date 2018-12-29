@@ -109,6 +109,22 @@ func UpdateApplication(a *Application) error {
 	return appC.update(selector, a)
 }
 
+func (a *Application) UpdateApplication() error {
+	selector := bson.M{}
+	if a.Id > 0 {
+		selector = bson.M{"_id": a.Id}
+	} else if len(a.AppId) > 0 {
+		selector = bson.M{"app_id": a.AppId}
+	} else {
+		return errors.New("id & app_id is null")
+	}
+	a.AppId = ""
+	a.BundleId = ""
+	a.Owner = ""
+	a.CreateTime = 0
+	return appC.update(selector, a)
+}
+
 func FindALlApplications() (apps *[]Application, err error) {
 	return appC.findAll(nil, nil)
 }

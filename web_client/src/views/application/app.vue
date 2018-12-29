@@ -336,8 +336,7 @@
         }
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
-            console.log(this.temp)
-            updateApplicationRequest(this.temp).then(() => {
+            updateApplicationRequest(this.temp.icon, this.temp.name, this.temp.desc,this.temp.id).then(() => {
               for (const v of this.list) {
                 if (v.id === this.temp.id) {
                   const index = this.list.indexOf(v)
