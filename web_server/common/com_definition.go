@@ -5,13 +5,12 @@ import (
 )
 
 const (
-	KeyUserToken       = "Authorization"
-	KeyJWTClaims       = "_key_jwt_Claims"
-	KeyUserAgent       = "User-Agent"
-	KeyContextUserId   = "_key_ctx_userId_"
-	KeyContextAccount  = "_key_ctx_account_"
-	KeyContextUser     = "_key_ctx_user_"
-	KeyContextUserDBID = "_key_ctx_user_DBID"
+	KeyUserToken = "Authorization"
+	//KeyJWTClaims       = "_key_jwt_Claims"
+	KeyUserAgent      = "User-Agent"
+	KeyContextUserId  = "_key_ctx_userId_"
+	KeyContextAccount = "_key_ctx_account_"
+	//KeyContextUser     = "_key_ctx_user_"
 )
 
 func UserToken(ctx *gin.Context) string {

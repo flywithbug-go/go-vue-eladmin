@@ -29,7 +29,7 @@ func GetIp(r *http.Request) string {
 }
 
 /*
-组合数据 原转JSON(已修正不需要转JSON)
+组合数据
 */
 //FIXME 此处方法名需要重新命名 否则会产生干扰
 func SaveMapData(key string, data interface{}) interface{} {

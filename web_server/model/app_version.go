@@ -1,8 +1,10 @@
 package model
 
 import (
+	"doc-manager/web_server/common"
 	"doc-manager/web_server/core/mongo"
 	"errors"
+	"time"
 
 	"github.com/globalsign/mgo/bson"
 )
@@ -24,10 +26,10 @@ type AppVersion struct {
 	ParentVersion string    `json:"parent_version,omitempty" bson:"parent_version,omitempty"`
 	Platform      string    `json:"platform,omitempty" bson:"platform,omitempty"`           //(iOS,Android,H5,Server)["iOS","Android","H5","Server"]
 	Status        appStatus `json:"status,omitempty" bson:"status,omitempty"`               //状态    1(准备中) 2(开发中) 3(灰度) 4(已发布)
-	ApprovalTime  int       `json:"approval_time,omitempty" bson:"approval_time,omitempty"` //立项时间
-	LockTime      int       `json:"lock_time,omitempty" bson:"lock_time,omitempty"`         //锁版时间
-	GrayTime      int       `json:"gray_time,omitempty" bson:"gray_time,omitempty"`         //灰度时间
-	CreateTime    int       `json:"create_time,omitempty" bson:"create_time,omitempty"`     //添加时间
+	ApprovalTime  int64     `json:"approval_time,omitempty" bson:"approval_time,omitempty"` //立项时间
+	LockTime      int64     `json:"lock_time,omitempty" bson:"lock_time,omitempty"`         //锁版时间
+	GrayTime      int64     `json:"gray_time,omitempty" bson:"gray_time,omitempty"`         //灰度时间
+	CreateTime    int64     `json:"create_time,omitempty" bson:"create_time,omitempty"`     //添加时间
 	AppStatus     string    `json:"app_status,omitempty" bson:"app_status,omitempty"`       //app状态
 }
 
@@ -89,10 +91,30 @@ func (app *AppVersion) Insert() error {
 			return errors.New("parent_version not exist")
 		}
 	}
+	if app.ParentVersion == "" {
+		app.ParentVersion = "0"
+	}
+	app.CreateTime = time.Now().Unix()
 	app.Status = appStatusTypePrepare
 	app.AppStatus = makeStatusString(appStatusTypePrepare)
+	compareState, err := common.VersionCompare(app.Version, app.ParentVersion)
+	if err != nil {
+		return errors.New("version 不正确")
+	}
+	if compareState != common.CompareVersionStateGreater {
+		return errors.New("新版本号必须比旧版本号大")
+	}
 
 	return appVC.insert(app)
+}
+
+func (app *AppVersion) Update() error {
+	selector := bson.M{"_id": app.Id}
+	app.ParentVersion = ""
+	app.Version = ""
+	app.CreateTime = 0
+	app.AppStatus = makeStatusString(app.Status)
+	return appVC.update(selector, app)
 }
 
 func makeStatusString(status appStatus) string {

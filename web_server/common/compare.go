@@ -10,10 +10,10 @@ import (
 type CompareState int
 
 const (
-	VersionCompareStateFailed CompareState = iota
-	VersionCompareStateGreater
-	VersionCompareStateEqual
-	VersionCompareStateLess
+	CompareVersionStateFailed CompareState = iota
+	CompareVersionStateGreater
+	CompareVersionStateEqual
+	CompareVersionStateLess
 )
 
 var versionRe = regexp.MustCompile(`[\d.]`)
@@ -21,7 +21,7 @@ var versionRe = regexp.MustCompile(`[\d.]`)
 //版本号规则xx.xx.xx 只能有数字和点
 func VersionCompare(version1, version2 string) (CompareState, error) {
 	if !checkVersionOK(version1) || !checkVersionOK(version2) {
-		return VersionCompareStateFailed, errors.New("version string not ok")
+		return CompareVersionStateFailed, errors.New("version string not ok")
 	}
 	length1 := len(version1)
 	length2 := len(version2)
@@ -33,18 +33,18 @@ func VersionCompare(version1, version2 string) (CompareState, error) {
 	versionN2, _ := strconv.Atoi(strings.Replace(version2[0:min], ".", "", -1))
 
 	if versionN1 > versionN2 {
-		return VersionCompareStateGreater, nil
+		return CompareVersionStateGreater, nil
 	} else if versionN1 < versionN2 {
-		return VersionCompareStateLess, nil
+		return CompareVersionStateLess, nil
 	}
 	if length1 == length2 {
-		return VersionCompareStateEqual, nil
+		return CompareVersionStateEqual, nil
 	} else if length1 > length2 {
-		return VersionCompareStateGreater, nil
+		return CompareVersionStateGreater, nil
 	} else {
-		return VersionCompareStateLess, nil
+		return CompareVersionStateLess, nil
 	}
-	return VersionCompareStateFailed, nil
+	return CompareVersionStateFailed, nil
 }
 
 func checkVersionOK(version string) bool {
