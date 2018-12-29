@@ -53,7 +53,15 @@ func JWTAuthMiddleware() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
-		c.Set(common.KeyUserId, claims.UserId)
-		c.Set(common.KeyAccount, claims.Account)
+		//user, err := model.FindByUserId(claims.UserId)
+		//if err != nil {
+		//	aRes.SetErrorInfo(http.StatusUnauthorized, "未查询到User，无权限访问")
+		//	c.JSON(http.StatusUnauthorized, aRes)
+		//	c.Abort()
+		//	return
+		//}
+		//c.Set(common.KeyContextUser, user)
+		c.Set(common.KeyContextUserId, claims.UserId)
+		c.Set(common.KeyContextAccount, claims.Account)
 	}
 }

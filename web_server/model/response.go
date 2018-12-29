@@ -33,6 +33,10 @@ func (s *Response) SetSuccessInfo(code int, msg string) {
 	s.Msg = msg
 	//s.Data["msg"]=msg
 }
+func (s *Response) SetSuccess() {
+	s.Code = http.StatusOK
+	s.Msg = "success"
+}
 
 func (s *Response) SetResponseDataInfo(key string, value string) {
 	s.Data[key] = value

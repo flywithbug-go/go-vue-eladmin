@@ -158,7 +158,7 @@ func updateUserHandler(c *gin.Context) {
 	err = model.UpdateUserInfo(user)
 	if err != nil {
 		log4go.Info(err.Error())
-		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid: "+err.Error())
+		aRes.SetErrorInfo(http.StatusBadRequest, "db update failed: "+err.Error())
 		return
 	}
 	aRes.SetSuccessInfo(http.StatusOK, "success")

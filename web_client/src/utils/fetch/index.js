@@ -1,5 +1,5 @@
 import client from 'axios'
-import { MessageBox,Message } from 'element-ui'
+import { MessageBox,Message,Notification } from 'element-ui'
 import store from '@/store'
 import global_ from '../../config'
 
@@ -45,6 +45,7 @@ client.interceptors.response.use(response => {
     })
     return Promise.reject('token 失效')
   }
+
   Message({
     message: res.msg,
     type:'error',

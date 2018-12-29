@@ -155,7 +155,7 @@
   import global_ from '../../config'
   import store from '../../store'
   import Pagination from '../../components/Pagination'
-  import { addApplicationRequest,getApplicationlistRequest } from  '../../api/app'
+  import { addApplicationRequest,getApplicationlistRequest,updateApplicationRequest } from  '../../api/app'
   import { formatDate } from '../../utils/date';
 
 
@@ -182,19 +182,20 @@
         listQuery: {
           page: 0,
           limit: 2,
-          name: undefined,
-          owner: undefined,
-          time: undefined,
+          name: '',
+          owner: '',
+          time: 0,
           sort: '+_id'
         },
         temp: {
-          id: undefined,
+          id: 0,
           name: '',
           owner:'',
           desc: '',
           icon:'',
           time: '',
-          bundle_id:''
+          bundle_id:'',
+          app_id:''
         },
         rules: {
           name: [
@@ -269,11 +270,13 @@
           this.listLoading = false
         })
       },
-      handleUpdate(data) {
-        this.temp = data
+      handleUpdate(row) {
+        this.temp = Object.assign({}, row) // copy obj
         this.dialogStatus = 'update'
         this.dialogFormVisible =  true
-        console.log(this.temp)
+        this.$nextTick(() => {
+          this.$refs['dataForm'].clearValidate()
+        })
       },
       sortChange(data) {
         const { prop, order } = data
@@ -312,22 +315,53 @@
               this.temp.icon,
               this.temp.name,
               this.temp.desc).then(() => {
+              this.list.unshift(this.temp)
               this.dialogFormVisible =  false
               this.resetTemp()
-              this.getList()
+              // this.getList()
+              this.$notify({
+                title: '成功',
+                message: '创建成功',
+                type: 'success',
+                duration: 2000
+              })
             })
           }
         })
       },
       updateDate() {
-        console.log(this.temp)
+        if (this.temp.icon === ''){
+          this.$message.error(this.$t('application.table_app_icon_warning'))
+          return
+        }
+        this.$refs['dataForm'].validate((valid) => {
+          if (valid) {
+            console.log(this.temp)
+            updateApplicationRequest(this.temp).then(() => {
+              for (const v of this.list) {
+                if (v.id === this.temp.id) {
+                  const index = this.list.indexOf(v)
+                  this.list.splice(index, 1, this.temp)
+                  break
+                }
+              }
+              this.dialogFormVisible =  false
+              this.$notify({
+                title: '成功',
+                message: '创建成功',
+                type: 'success',
+                duration: 2000
+              })
+            })
+          }
+        })
       },
       resetTemp() {
         this.temp = {
           id: undefined,
           name: '',
           owner:'',
-          time: new Date(),
+          time: undefined,
           desc: '',
           bundle_id:''
         }

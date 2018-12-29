@@ -5,11 +5,13 @@ import (
 )
 
 const (
-	KeyUserToken = "Authorization"
-	KeyJWTClaims = "_key_jwt_Claims"
-	KeyUserAgent = "User-Agent"
-	KeyUserId    = "user_id"
-	KeyAccount   = "account"
+	KeyUserToken       = "Authorization"
+	KeyJWTClaims       = "_key_jwt_Claims"
+	KeyUserAgent       = "User-Agent"
+	KeyContextUserId   = "_key_ctx_userId_"
+	KeyContextAccount  = "_key_ctx_account_"
+	KeyContextUser     = "_key_ctx_user_"
+	KeyContextUserDBID = "_key_ctx_user_DBID"
 )
 
 func UserToken(ctx *gin.Context) string {
@@ -18,7 +20,7 @@ func UserToken(ctx *gin.Context) string {
 }
 
 func UserId(ctx *gin.Context) string {
-	o, ok := ctx.Get(KeyUserId)
+	o, ok := ctx.Get(KeyContextUserId)
 	if !ok {
 		return ""
 	}
@@ -30,7 +32,7 @@ func UserId(ctx *gin.Context) string {
 }
 
 func Account(ctx *gin.Context) string {
-	o, ok := ctx.Get(KeyAccount)
+	o, ok := ctx.Get(KeyContextAccount)
 	if !ok {
 		return ""
 	}
@@ -40,3 +42,16 @@ func Account(ctx *gin.Context) string {
 	}
 	return userId
 }
+
+//func User(ctx *gin.Context) (*model.User, bool) {
+//	o, ok := ctx.Get(KeyContextUser)
+//	if !ok {
+//		return nil, false
+//	}
+//	aUser, ok := o.(*model.User)
+//	if !ok {
+//		return nil, false
+//	}
+//	return aUser, true
+//
+//}

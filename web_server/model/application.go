@@ -10,8 +10,10 @@ import (
 
 const (
 	appCollection = "application"
+	role          = 1
 )
 
+//修改规则，等级
 type Application struct {
 	Id         int64  `json:"id,omitempty" bson:"_id,omitempty"`
 	AppId      string `json:"app_id,omitempty" bson:"app_id,omitempty"`
@@ -19,7 +21,7 @@ type Application struct {
 	Desc       string `json:"desc,omitempty" bson:"desc,omitempty"`        //项目描述
 	CreateTime int64  `json:"time,omitempty" bson:"create_time,omitempty"` //创建时间
 	Icon       string `json:"icon,omitempty" bson:"icon,omitempty"`        //icon 地址
-	Owner      string `json:"owner,omitempty" json:"owner,omitempty"`      //负责人 user_id，初始为创建人
+	Owner      string `json:"owner,omitempty" bson:"owner,omitempty"`      //负责人
 	BundleId   string `json:"bundle_id,omitempty" bson:"bundle_id,omitempty"`
 }
 
@@ -58,7 +60,7 @@ func (a Application) findPage(page, limit int, query, selector interface{}, fiel
 }
 
 func (a Application) update(selector, update interface{}) error {
-	return mongo.Update(db, userCollection, selector, update, true)
+	return mongo.Update(db, appCollection, selector, update, true)
 }
 
 func (a Application) remove(selector interface{}) error {
@@ -98,18 +100,13 @@ func (a *Application) ApplicationInsert() error {
 	return appC.insert(a)
 }
 
-func (a *Application) ApplicationUpdate() error {
-	query := bson.M{}
-	if len(a.AppId) > 0 {
-		query = bson.M{"app_id": a.AppId}
-	} else if a.Id > 0 {
-		query = bson.M{"_id": a.Id}
-	} else {
-		return errors.New("app_id or id not found")
-	}
+func UpdateApplication(a *Application) error {
+	selector := bson.M{"_id": a.Id}
+	a.AppId = ""
 	a.BundleId = ""
-	a.Name = ""
-	return appC.update(query, a)
+	a.Owner = ""
+	a.CreateTime = 0
+	return appC.update(selector, a)
 }
 
 func FindALlApplications() (apps *[]Application, err error) {

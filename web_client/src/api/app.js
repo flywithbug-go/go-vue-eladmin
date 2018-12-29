@@ -1,8 +1,8 @@
 import client from '../utils/fetch'
 
-export function addApplicationRequest(bundleId, icon, name, desc) {
+export function addApplicationRequest(bundle_id, icon, name, desc) {
   const data = {
-    bundle_id:bundleId,
+    bundle_id,
     icon,
     name,
     desc
@@ -22,3 +22,22 @@ export function getApplicationlistRequest(query) {
     params: query
   })
 }
+
+
+export function updateApplicationRequest(data) {
+  // const data = {
+  //   icon,
+  //   name,
+  //   desc,
+  //   id,
+  // }
+  return client({
+    url: '/app/update',
+    method: 'post',
+    data
+  })
+}
+
+
+
+
