@@ -30,7 +30,13 @@
                        align="center"
                        width="160px">
         <template slot-scope="scope">
-          <span style="color: #4a9ff9; font-weight: bolder;font-size: 18px;"> {{ scope.row.name }} </span>
+          <span style="color: #4a9ff9; font-weight: bolder;font-size: 18px;">
+            {{ scope.row.name }}
+          </span>
+          <br>
+          <span style="color: #2d2d2d; font-weight: bolder;font-size: 10px;">
+            {{ scope.row.bundle_id }}
+          </span>
         </template>
       </el-table-column>
 
@@ -119,11 +125,12 @@
           <el-input v-model="temp.name"/>
         </el-form-item>
         <el-form-item :label="$t('application.table_bundleId')"
-                      prop="bundleId">
-          <el-input v-model="temp.bundleId"
+                      prop="bundle_id">
+          <el-input :disabled="dialogStatus==='update'" v-model="temp.bundle_id"
                     :placeholder="$t('application.table_bundleId_placeHolder')">
           </el-input>
         </el-form-item>
+
         <el-form-item :label="$t('application.table_desc')"
                       prop="desc">
           <el-input :autosize="{ minRows: 2, maxRows: 4}"
@@ -187,7 +194,7 @@
           desc: '',
           icon:'',
           time: '',
-          bundleId:''
+          bundle_id:''
         },
         rules: {
           name: [
@@ -208,7 +215,7 @@
               message: '只允许输入汉字或者英文字母'
             }
           ],
-          bundleId: [
+          bundle_id: [
             {
               required: true,
               message: this.$t('application.table_bundleId_warning'),
@@ -266,7 +273,7 @@
         this.temp = data
         this.dialogStatus = 'update'
         this.dialogFormVisible =  true
-
+        console.log(this.temp)
       },
       sortChange(data) {
         const { prop, order } = data
@@ -313,7 +320,7 @@
         })
       },
       updateDate() {
-
+        console.log(this.temp)
       },
       resetTemp() {
         this.temp = {

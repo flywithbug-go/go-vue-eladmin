@@ -88,3 +88,17 @@ func getAllApplicationHandler(c *gin.Context) {
 	aRes.AddResponseInfo("list", applist)
 	aRes.AddResponseInfo("total", totalCount)
 }
+
+func updateApplicationHandler(c *gin.Context) {
+	aRes := model.NewResponse()
+	defer func() {
+		c.JSON(http.StatusOK, aRes)
+	}()
+	app := new(appPara)
+	err := c.BindJSON(app)
+	if err != nil {
+		log4go.Info(err.Error())
+		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid: "+err.Error())
+		return
+	}
+}
