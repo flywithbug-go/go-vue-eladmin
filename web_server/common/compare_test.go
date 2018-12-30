@@ -7,7 +7,7 @@ import (
 
 func TestVersionCompare(t *testing.T) {
 
-	result, err := VersionCompare("1.1.1", "1.1.2")
+	result, err := VersionCompare("1.1.1", "")
 	if err != nil {
 		panic(err)
 	}

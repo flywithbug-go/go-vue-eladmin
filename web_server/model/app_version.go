@@ -100,9 +100,10 @@ func (app *AppVersion) Insert() error {
 	app.CreateTime = time.Now().Unix()
 	app.Status = appStatusTypePrepare
 	app.AppStatus = makeStatusString(appStatusTypePrepare)
+
 	compareState, err := common.VersionCompare(app.Version, app.ParentVersion)
 	if err != nil {
-		return errors.New("version 不正确")
+		return err
 	}
 	if compareState != common.CompareVersionStateGreater {
 		return errors.New("new Version must bigger than ParentVersion")

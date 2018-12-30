@@ -18,8 +18,14 @@ const (
 
 var versionRe = regexp.MustCompile(`[\d.]`)
 
-//版本号规则xx.xx.xx 只能有数字和点
+//版本号规则xx.xx.xx 只能有数字和点 version1
 func VersionCompare(version1, version2 string) (CompareState, error) {
+	if len(version2) == 0 {
+		version2 = "0"
+	}
+	if len(version1) == 0 {
+		version1 = "0"
+	}
 	if !checkVersionOK(version1) || !checkVersionOK(version2) {
 		return CompareVersionStateFailed, errors.New("version string not ok")
 	}
