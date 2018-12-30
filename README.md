@@ -70,7 +70,7 @@ npm run build --report
   - [x] 国际化多语言
   - [x] 动态侧边栏（支持多级路由嵌套）
   - [x] 快捷导航(标签页)
-  - [x] Screenfull全屏
+  - [x] ScreenFull全屏
   - [x] 自适应收缩侧边栏
 
 
