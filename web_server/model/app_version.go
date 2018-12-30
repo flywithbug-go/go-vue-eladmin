@@ -168,3 +168,9 @@ func FindAppVersionById(Id int64) (appV *AppVersion, err error) {
 	appV.AppStatus = makeStatusString(appV.Status)
 	return
 }
+
+func FindAppVersionByVersion(version string) (appV *AppVersion, err error) {
+	appV, err = appVC.findOne(bson.M{"version": version}, nil)
+	appV.AppStatus = makeStatusString(appV.Status)
+	return
+}
