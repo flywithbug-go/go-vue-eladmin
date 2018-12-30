@@ -46,7 +46,9 @@ func getAppVersionlistHandler(c *gin.Context) {
 	sort := c.Query("sort")
 	if strings.EqualFold(sort, "-id") {
 		sort = "-_id"
-	} else {
+	} else if strings.EqualFold(sort, "+id") {
+		sort = "+_id"
+	} else if len(sort) == 0 {
 		sort = "+_id"
 	}
 	if limit == 0 {

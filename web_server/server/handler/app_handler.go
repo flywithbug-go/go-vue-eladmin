@@ -67,7 +67,9 @@ func getApplicationsHandler(c *gin.Context) {
 	owner := c.Query("owner")
 	if strings.EqualFold(sort, "-id") {
 		sort = "-_id"
-	} else {
+	} else if strings.EqualFold(sort, "+id") {
+		sort = "+_id"
+	} else if len(sort) == 0 {
 		sort = "+_id"
 	}
 	if limit == 0 {

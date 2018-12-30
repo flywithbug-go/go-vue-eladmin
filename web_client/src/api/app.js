@@ -40,7 +40,7 @@ export function updateApplicationRequest(icon, name, desc,id) {
 
 
 
-export function getAppVersionlistRequest(query) {
+export function getAppVersionListRequest(query) {
   return client({
     url: '/app/version/list',
     method: 'get',

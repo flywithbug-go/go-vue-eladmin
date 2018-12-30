@@ -75,7 +75,7 @@
 
 <script>
   import fixedButton from '../../components/FixedButton';
-  import {getAppVersionlistRequest} from '../../api/app';
+  import {getAppVersionListRequest} from '../../api/app';
   import { formatDate } from '../../utils/date';
 
   export default {
@@ -87,10 +87,10 @@
         total: 10,
         listQuery: {
           page: 0,
-          limit: 2,
+          limit: 10,
           name: '',
           owner: '',
-          sort: '+_id'
+          sort: '-id'
         },
       }
     },
@@ -110,8 +110,12 @@
       },
       getList() {
         this.listLoading = true
-        getAppVersionlistRequest(this.listLoading).then(responst => {
-
+        getAppVersionListRequest(this.listQuery).then(response => {
+          this.list = response.list
+          this.total = response.total
+          this.listLoading = false
+        }).catch(() => {
+          this.listLoading = false
         })
       },
       sortChange() {
