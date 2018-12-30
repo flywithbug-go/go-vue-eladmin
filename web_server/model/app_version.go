@@ -108,6 +108,9 @@ func (app *AppVersion) Insert() error {
 	if compareState != common.CompareVersionStateGreater {
 		return errors.New("new Version must bigger than ParentVersion")
 	}
+	if len(app.ParentVersion) == 0 {
+		app.ParentVersion = "-"
+	}
 	return appVC.insert(app)
 }
 
