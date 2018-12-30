@@ -1,8 +1,11 @@
 package handler
 
 import (
+	"doc-manager/web_server/common"
 	"doc-manager/web_server/model"
 	"net/http"
+	"strconv"
+	"strings"
 
 	"github.com/flywithbug/log4go"
 
@@ -31,4 +34,39 @@ func addAppVersionHandler(c *gin.Context) {
 		return
 	}
 	aRes.SetSuccess()
+}
+
+func getAppVersionlistHandler(c *gin.Context) {
+	aRes := model.NewResponse()
+	defer func() {
+		c.JSON(http.StatusOK, aRes)
+	}()
+	limit, _ := strconv.Atoi(c.Query("limit"))
+	page, _ := strconv.Atoi(c.Query("page"))
+	sort := c.Query("sort")
+	if strings.EqualFold(sort, "-id") {
+		sort = "-_id"
+	} else {
+		sort = "+_id"
+	}
+	if limit == 0 {
+		limit = 10
+	}
+	if page != 0 {
+		page--
+	}
+	userId := common.UserId(c)
+	if strings.EqualFold(userId, "") {
+		aRes.SetErrorInfo(http.StatusUnauthorized, "user not found")
+		return
+	}
+	totalCount, _ := model.TotalCountApplication(nil, nil)
+	applist, err := model.FindPageAppVersionFilter(page, limit, nil, nil, sort)
+	if err != nil {
+		log4go.Info(err.Error())
+		aRes.SetErrorInfo(http.StatusUnauthorized, "app version list find error"+err.Error())
+		return
+	}
+	aRes.AddResponseInfo("list", applist)
+	aRes.AddResponseInfo("total", totalCount)
 }

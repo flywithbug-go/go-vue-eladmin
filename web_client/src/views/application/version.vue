@@ -27,50 +27,47 @@
 
       <el-table-column :label="$t('appVersion.parentVN')" align="center" width="150px">
         <template slot-scope="scope">
-          <span>{{ scope.row.version }}</span>
+          <span>{{ scope.row.parent_version }}</span>
         </template>
       </el-table-column>
 
       <el-table-column :label="$t('appVersion.platform')" align="center" width="150px">
         <template slot-scope="scope">
-          <span>{{ scope.row.version }}</span>
+          <span>{{ scope.row.platform }}</span>
         </template>
       </el-table-column>
 
       <el-table-column :label="$t('appVersion.approvalTime')" align="center" width="150px">
         <template slot-scope="scope">
-          <span>{{ scope.row.version }}</span>
+          <span>{{ scope.row.approval_time }}</span>
         </template>
       </el-table-column>
 
       <el-table-column :label="$t('appVersion.lockTime')" align="center" width="150px">
         <template slot-scope="scope">
-          <span>{{ scope.row.version }}</span>
+          <span>{{ scope.row.lock_time }}</span>
         </template>
       </el-table-column>
 
       <el-table-column :label="$t('appVersion.grayTime')" align="center" width="150px">
         <template slot-scope="scope">
-          <span>{{ scope.row.version }}</span>
+          <span>{{ scope.row.gray_time }}</span>
         </template>
       </el-table-column>
 
       <el-table-column :label="$t('appVersion.status')" align="center" width="150px">
         <template slot-scope="scope">
-          <span>{{ scope.row.version }}</span>
+          <span>{{ scope.row.app_status }}</span>
         </template>
       </el-table-column>
 
       <el-table-column :label="$t('appVersion.createTime')" align="center" width="150px">
         <template slot-scope="scope">
-          <span>{{ scope.row.version }}</span>
+          <span>{{ scope.row.create_time }}</span>
         </template>
       </el-table-column>
 
-
     </el-table>
-
-
 
 
     </div>
