@@ -179,6 +179,15 @@ export default {
     table_createTitle: "Create App",
     table_app_icon: "App Icon",
     table_app_icon_warning: "Please upload application icon",
-
+  },
+  appVersion: {
+    versionN: "version NO.",
+    parentVN: "Parent Version NO.",
+    platform: "Platform",
+    approvalTime: "Approval time",
+    lockTime: "Lock Time",
+    grayTime: "Gray Time",
+    status: "Status",
+    createTime: "Create Time"
   }
 }

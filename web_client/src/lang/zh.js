@@ -179,5 +179,15 @@ export default {
     table_createTitle: "创建应用",
     table_app_icon: "应用图标",
     table_app_icon_warning: "请上传应用图标",
+  },
+  appVersion: {
+    versionN: "版本号",
+    parentVN: "父版本号",
+    platform: "平台",
+    approvalTime: "立项时间",
+    lockTime: "锁版时间",
+    grayTime: "灰度时间",
+    status: "状态",
+    createTime: "添加时间"
   }
 }

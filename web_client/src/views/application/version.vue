@@ -7,7 +7,68 @@
       </fixed-button>
     </section>
 
+    <el-table :data="list"
+              border
+              fit
+              highlight-current-row
+              style="width: 100%;"
+              @sort-change="sortChange"
+              header-row-class-name="center">
+      <el-table-column :label="$t('table.id')" prop="id" sortable="custom" align="center" width="65">
+        <template slot-scope="scope">
+          <span>{{ scope.row.id }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('appVersion.versionN')" align="center" width="150px">
+        <template slot-scope="scope">
+          <span>{{ scope.row.version }}</span>
+        </template>
+      </el-table-column>
 
+      <el-table-column :label="$t('appVersion.parentVN')" align="center" width="150px">
+        <template slot-scope="scope">
+          <span>{{ scope.row.version }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column :label="$t('appVersion.platform')" align="center" width="150px">
+        <template slot-scope="scope">
+          <span>{{ scope.row.version }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column :label="$t('appVersion.approvalTime')" align="center" width="150px">
+        <template slot-scope="scope">
+          <span>{{ scope.row.version }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column :label="$t('appVersion.lockTime')" align="center" width="150px">
+        <template slot-scope="scope">
+          <span>{{ scope.row.version }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column :label="$t('appVersion.grayTime')" align="center" width="150px">
+        <template slot-scope="scope">
+          <span>{{ scope.row.version }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column :label="$t('appVersion.status')" align="center" width="150px">
+        <template slot-scope="scope">
+          <span>{{ scope.row.version }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column :label="$t('appVersion.createTime')" align="center" width="150px">
+        <template slot-scope="scope">
+          <span>{{ scope.row.version }}</span>
+        </template>
+      </el-table-column>
+
+
+    </el-table>
 
 
 
@@ -19,11 +80,21 @@
   import fixedButton from '../../components/FixedButton';
   export default {
     name: "MetaData",
+    data() {
+      return {
+        listLoading: true,
+        list: null,
+        total: 10,
+      }
+    },
     components: {
       fixedButton
     },
     methods: {
       handleCreate() {
+
+      },
+      sortChange() {
 
       }
     }

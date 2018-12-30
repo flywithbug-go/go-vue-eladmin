@@ -202,6 +202,7 @@
         total: 10,
         dialogFormVisible:false,
         dialogStatus:'create',
+        dialogEditCount:0,
         textMap: {
           update: this.$t('application.table_edit'),
           create: this.$t('application.table_add'),
@@ -280,8 +281,10 @@
     },
     watch: {
       temp: {
-        handler:function (obj) {
-          console.log("watch:",obj)
+        handler:function () {
+          if (this.dialogStatus === 'update'){
+            this.dialogEditCount++
+          }
         },
         deep:true
       }
@@ -308,6 +311,7 @@
         this.temp = Object.assign({}, row) // copy obj
         this.dialogStatus = 'update'
         this.dialogFormVisible =  true
+        this.dialogEditCount = -1
         this.$nextTick(() => {
           this.$refs['dataForm'].clearValidate()
         })
@@ -367,10 +371,10 @@
         })
       },
       updateDate() {
-        if (this.temp.icon === ''){
-          this.$message.error(this.$t('application.table_app_icon_warning'))
-          return
-        }
+       if (this.dialogEditCount < 1){
+         this.dialogFormVisible =  false
+         return
+       }
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             updateApplicationRequest(this.temp.icon, this.temp.name, this.temp.desc,this.temp.id).then(() => {
