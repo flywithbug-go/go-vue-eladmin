@@ -21,7 +21,7 @@ const (
 
 type AppVersion struct {
 	Id            int64     `json:"id,omitempty" bson:"_id,omitempty"`
-	AppId         string    `json:"app_id,omitempty" bson:"app_id,omitempty"` //所属AppId
+	AppId         int64     `json:"app_id,omitempty" bson:"app_id,omitempty"` //所属App DB Id
 	Version       string    `json:"version,omitempty" bson:"version,omitempty"`
 	ParentVersion string    `json:"parent_version,omitempty" bson:"parent_version,omitempty"`
 	Platform      string    `json:"platform,omitempty" bson:"platform,omitempty"`           //(iOS,Android,H5,Server)["iOS","Android","H5","Server"]
@@ -31,7 +31,7 @@ type AppVersion struct {
 	GrayTime      int64     `json:"gray_time,omitempty" bson:"gray_time,omitempty"`         //灰度时间
 	CreateTime    int64     `json:"create_time,omitempty" bson:"create_time,omitempty"`     //添加时间
 	AppStatus     string    `json:"app_status,omitempty" bson:"app_status,omitempty"`       //app状态
-
+	Icon          string    `json:"icon,omitempty" bson:"icon,omitempty"`
 }
 
 var (
@@ -81,20 +81,24 @@ func (app AppVersion) findPage(page, limit int, query, selector interface{}, fie
 }
 
 func (app *AppVersion) Insert() error {
-	if len(app.AppId) == 0 {
-		return errors.New("app_id must need")
+
+	application, err := FindApplicationById(app.AppId)
+	if err != nil {
+		return err
 	}
+	app.Icon = application.Icon
+
 	if appVC.isExist(bson.M{"version": app.Version}) {
 		return errors.New("version exist")
 	}
 	if len(app.ParentVersion) > 0 {
-		if !appVC.isExist(bson.M{"parent_version": app.ParentVersion}) {
-			return errors.New("parent_version not exist")
+		if !appVC.isExist(bson.M{"ParentVersion": app.ParentVersion}) {
+			return errors.New("ParentVersion not exist")
 		}
 	}
-	if app.ParentVersion == "" {
-		app.ParentVersion = "0"
-	}
+
+	app.Id, _ = mongo.GetIncrementId(appVersionCollection)
+
 	app.CreateTime = time.Now().Unix()
 	app.Status = appStatusTypePrepare
 	app.AppStatus = makeStatusString(appStatusTypePrepare)
@@ -103,9 +107,8 @@ func (app *AppVersion) Insert() error {
 		return errors.New("version 不正确")
 	}
 	if compareState != common.CompareVersionStateGreater {
-		return errors.New("新版本号必须比旧版本号大")
+		return errors.New("new Version must bigger than ParentVersion")
 	}
-
 	return appVC.insert(app)
 }
 
@@ -139,8 +142,14 @@ func FindPageAppVersionFilter(page, limit int, query, selector interface{}, fiel
 	return appVC.findPage(page, limit, query, selector, fields...)
 }
 
-func FindAppVersionByAppId(appId string) (appV *AppVersion, err error) {
-	appV, err = appVC.findOne(bson.M{"app_id": appId}, nil)
+//func FindAppVersionByVersionId(appId string) (appV *AppVersion, err error) {
+//	appV, err = appVC.findOne(bson.M{"app_id": appId}, nil)
+//	appV.AppStatus = makeStatusString(appV.Status)
+//	return
+//}
+
+func FindAppVersionById(Id int64) (appV *AppVersion, err error) {
+	appV, err = appVC.findOne(bson.M{"_id": Id}, nil)
 	appV.AppStatus = makeStatusString(appV.Status)
 	return
 }

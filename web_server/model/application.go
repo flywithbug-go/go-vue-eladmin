@@ -128,7 +128,7 @@ func (a *Application) Update() error {
 	return appC.update(selector, a)
 }
 
-func FindApplicationById(id int) (*Application, error) {
+func FindApplicationById(id int64) (*Application, error) {
 	return appC.findOne(bson.M{"_id": id}, nil)
 }
 
