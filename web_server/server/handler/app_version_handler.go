@@ -27,7 +27,7 @@ func addAppVersionHandler(c *gin.Context) {
 	}
 	err = appV.Insert()
 	if err != nil {
-		aRes.SetErrorInfo(http.StatusInternalServerError, "db invalid: "+err.Error())
+		aRes.SetErrorInfo(http.StatusInternalServerError, "para invalid: "+err.Error())
 		return
 	}
 	aRes.SetSuccess()

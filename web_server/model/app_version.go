@@ -5,12 +5,17 @@ import (
 	"doc-manager/web_server/core/mongo"
 	"errors"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/globalsign/mgo/bson"
 )
 
 type appStatus int
+
+var (
+	appPlatformMap = map[string]string{"IOS": "iOS", "ANDROID": "Android", "H5": "H5", "SERVER": "Server"}
+)
 
 const (
 	appVersionCollection              = "app_version"
@@ -87,20 +92,28 @@ func (app *AppVersion) Insert() error {
 		return fmt.Errorf("appID:%d,%s", app.AppId, err.Error())
 	}
 	app.Icon = application.Icon
-
-	if appVC.isExist(bson.M{"version": app.Version}) {
+	if app.isExist(bson.M{"version": app.Version}) {
 		return fmt.Errorf("version exist")
 	}
 	if len(app.ParentVersion) > 0 {
-		if !appVC.isExist(bson.M{"ParentVersion": app.ParentVersion}) {
-			return errors.New("ParentVersion not exist")
+		if !app.isExist(bson.M{"version": app.ParentVersion}) {
+			return errors.New("parent_version not exist")
+		}
+	}
+	app.Platform = strings.Replace(app.Platform, " ", "", -1)
+	if len(app.Platform) > 0 {
+		platformList := strings.Split(app.Platform, ",")
+		for _, platform := range platformList {
+			_, ok := appPlatformMap[strings.ToUpper(platform)]
+			if !ok {
+				return fmt.Errorf("platform must like (iOS,Android,H5,Server) ")
+			}
 		}
 	}
 	app.Id, _ = mongo.GetIncrementId(appVersionCollection)
 	app.CreateTime = time.Now().Unix()
 	app.Status = appStatusTypePrepare
 	app.AppStatus = makeStatusString(appStatusTypePrepare)
-
 	compareState, err := common.VersionCompare(app.Version, app.ParentVersion)
 	if err != nil {
 		return err
