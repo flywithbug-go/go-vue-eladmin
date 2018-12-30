@@ -143,13 +143,13 @@ func FindApplication(query, selector interface{}) (*Application, error) {
 //	return appC.findAll(nil, nil)
 //}
 
-func TotalCountApplication(query, selector interface{}) (int, error) {
-	return appC.totalCount(query, selector)
-}
-
 //func FindPageApplications(page, limit int, fields ...string) (apps *[]Application, err error) {
 //	return appC.findPage(page, limit, nil, nil, fields...)
 //}
+
+func TotalCountApplication(query, selector interface{}) (int, error) {
+	return appC.totalCount(query, selector)
+}
 func FindPageApplicationsFilter(page, limit int, query, selector interface{}, fields ...string) (apps *[]Application, err error) {
 	return appC.findPage(page, limit, query, selector, fields...)
 }

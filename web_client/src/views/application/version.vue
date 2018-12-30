@@ -75,6 +75,9 @@
 
 <script>
   import fixedButton from '../../components/FixedButton';
+  import {getAppVersionlistRequest} from '../../api/app';
+  import { formatDate } from '../../utils/date';
+
   export default {
     name: "MetaData",
     data() {
@@ -82,18 +85,53 @@
         listLoading: true,
         list: null,
         total: 10,
+        listQuery: {
+          page: 0,
+          limit: 2,
+          name: '',
+          owner: '',
+          sort: '+_id'
+        },
       }
     },
     components: {
       fixedButton
     },
+    created() {
+      this.getList()
+    },
     methods: {
+      formatDate(time) {
+        let date = new Date(time*1000);
+        return formatDate(date, 'yyyy-MM-dd hh:mm');
+      },
       handleCreate() {
 
       },
-      sortChange() {
+      getList() {
+        this.listLoading = true
+        getAppVersionlistRequest(this.listLoading).then(responst => {
 
-      }
+        })
+      },
+      sortChange() {
+        const { prop, order } = data
+        if (prop === 'id') {
+          this.sortByID(order)
+        }
+      },
+      sortByID(order) {
+        if (order === 'ascending') {
+          this.listQuery.sort = '+_id'
+        } else {
+          this.listQuery.sort = '-_id'
+        }
+        this.handleFilter()
+      },
+      handleFilter() {
+        this.listQuery.page = 1
+        this.getList()
+      },
     }
   }
 </script>

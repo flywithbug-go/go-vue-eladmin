@@ -60,7 +60,7 @@ func getAppVersionlistHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusUnauthorized, "user not found")
 		return
 	}
-	totalCount, _ := model.TotalCountApplication(nil, nil)
+	totalCount, _ := model.TotalCountAppVersion(nil, nil)
 	applist, err := model.FindPageAppVersionFilter(page, limit, nil, nil, sort)
 	if err != nil {
 		log4go.Info(err.Error())

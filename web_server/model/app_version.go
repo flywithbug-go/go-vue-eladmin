@@ -153,6 +153,9 @@ func makeStatusString(status appStatus) string {
 	return statusString
 }
 
+func TotalCountAppVersion(query, selector interface{}) (int, error) {
+	return appVC.totalCount(query, selector)
+}
 func FindPageAppVersionFilter(page, limit int, query, selector interface{}, fields ...string) (apps *[]AppVersion, err error) {
 	return appVC.findPage(page, limit, query, selector, fields...)
 }
