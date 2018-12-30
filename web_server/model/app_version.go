@@ -4,6 +4,7 @@ import (
 	"doc-manager/web_server/common"
 	"doc-manager/web_server/core/mongo"
 	"errors"
+	"fmt"
 	"time"
 
 	"github.com/globalsign/mgo/bson"
@@ -81,24 +82,21 @@ func (app AppVersion) findPage(page, limit int, query, selector interface{}, fie
 }
 
 func (app *AppVersion) Insert() error {
-
 	application, err := FindApplicationById(app.AppId)
 	if err != nil {
-		return err
+		return fmt.Errorf("appID:%d,%s", app.AppId, err.Error())
 	}
 	app.Icon = application.Icon
 
 	if appVC.isExist(bson.M{"version": app.Version}) {
-		return errors.New("version exist")
+		return fmt.Errorf("version exist")
 	}
 	if len(app.ParentVersion) > 0 {
 		if !appVC.isExist(bson.M{"ParentVersion": app.ParentVersion}) {
 			return errors.New("ParentVersion not exist")
 		}
 	}
-
 	app.Id, _ = mongo.GetIncrementId(appVersionCollection)
-
 	app.CreateTime = time.Now().Unix()
 	app.Status = appStatusTypePrepare
 	app.AppStatus = makeStatusString(appStatusTypePrepare)
