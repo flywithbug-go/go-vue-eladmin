@@ -31,6 +31,7 @@ type AppVersion struct {
 	GrayTime      int64     `json:"gray_time,omitempty" bson:"gray_time,omitempty"`         //灰度时间
 	CreateTime    int64     `json:"create_time,omitempty" bson:"create_time,omitempty"`     //添加时间
 	AppStatus     string    `json:"app_status,omitempty" bson:"app_status,omitempty"`       //app状态
+
 }
 
 var (

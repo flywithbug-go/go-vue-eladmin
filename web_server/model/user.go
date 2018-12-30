@@ -8,31 +8,32 @@ import (
 	"doc-manager/web_server/core/mongo"
 )
 
-type roleState int
-
 const (
-	userCollection                = "user"
-	roleStateTypeNormal roleState = iota //普通用户
-	roleStateTypeAdmin                   //管理员
+	userCollection         = "user"
+	roleStateTypeForbidden = -1 //禁用
+	roleStateTypeAdmin     = 1  //管理员
+	roleStateTypeDeveloper = 2  //开发者
+	roleStateTypeNormal    = 3  //普通用户
+	roleStateTypeRootAdmin = 11 //最高管理员
 )
 
 type User struct {
-	Id       int64     `json:"id,omitempty" bson:"_id,omitempty"`
-	UserId   string    `json:"user_id,omitempty" bson:"user_id,omitempty"`
-	Account  string    `json:"account,omitempty" bson:"account,omitempty"`
-	Password string    `json:"password,omitempty" bson:"password,omitempty"`
-	Avatar   string    `json:"avatar,omitempty" bson:"avatar,omitempty"`
-	Email    string    `json:"email,omitempty" bson:"email,omitempty"`
-	Phone    string    `json:"phone,omitempty" bson:"phone,omitempty"`
-	Sex      int       `json:"sex,omitempty" bson:"sex,omitempty"` // 0保密，1男 2女
-	RealName string    `json:"real_name,omitempty" bson:"real_name,omitempty"`
-	Name     string    `json:"name,omitempty" bson:"name,omitempty"` //昵称
-	Title    string    `json:"title,omitempty" bson:"title,omitempty"`
-	Role     roleState `json:"role,omitempty" bson:"role,omitempty"`   //系统级的Role 于前端路由配置 1 管理员， 2 普通用户，
-	Roles    []string  `json:"roles,omitempty" bson:"roles,omitempty"` //角色数组
-	Status   int       `json:"status,omitempty" bson:"status,omitempty"`
-	Superior string    `json:"superior,omitempty" bson:"superior,omitempty"`
-	RoleId   string    `json:"role_id,omitempty" bson:"role_id,omitempty"` //角色库
+	Id       int64  `json:"id,omitempty" bson:"_id,omitempty"`
+	UserId   string `json:"user_id,omitempty" bson:"user_id,omitempty"`
+	Account  string `json:"account,omitempty" bson:"account,omitempty"`
+	Password string `json:"password,omitempty" bson:"password,omitempty"`
+	Avatar   string `json:"avatar,omitempty" bson:"avatar,omitempty"`
+	Email    string `json:"email,omitempty" bson:"email,omitempty"`
+	Phone    string `json:"phone,omitempty" bson:"phone,omitempty"`
+	Sex      int    `json:"sex,omitempty" bson:"sex,omitempty"` // 0保密，1男 2女
+	RealName string `json:"real_name,omitempty" bson:"real_name,omitempty"`
+	Name     string `json:"name,omitempty" bson:"name,omitempty"` //昵称
+	Title    string `json:"title,omitempty" bson:"title,omitempty"`
+	Role     int    `json:"role,omitempty" bson:"role,omitempty"`   //系统级的Role 于前端路由配置 1 管理员， 2 普通用户，
+	Roles    string `json:"roles,omitempty" bson:"roles,omitempty"` //角色名称
+	Status   int    `json:"status,omitempty" bson:"status,omitempty"`
+	Superior string `json:"superior,omitempty" bson:"superior,omitempty"`
+	RoleId   string `json:"role_id,omitempty" bson:"role_id,omitempty"` //角色库
 }
 
 var (
@@ -117,14 +118,20 @@ func LoginUser(account, pass string) (user *User, err error) {
 	return
 }
 
-func makeUserRoles(role roleState) []string {
-	if role == roleStateTypeNormal {
-		return []string{"normal"}
-	} else if role == roleStateTypeAdmin {
-		return []string{"admin"}
-	} else {
-		return []string{}
+func makeUserRoles(role int) string {
+	switch role {
+	case roleStateTypeRootAdmin:
+		return "最高管理员"
+	case roleStateTypeAdmin:
+		return "管理员"
+	case roleStateTypeDeveloper:
+		return "开发者"
+	case roleStateTypeNormal:
+		return "普通用户"
+	case roleStateTypeForbidden:
+		return "被禁用户"
 	}
+	return "未定义用户"
 }
 
 func AddAdminUser() error {

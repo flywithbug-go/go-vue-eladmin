@@ -14,15 +14,18 @@ const (
 )
 
 //修改规则，等级
+// role 等级为1 的用户可以编辑
 type Application struct {
-	Id         int64  `json:"id,omitempty" bson:"_id,omitempty"`
-	AppId      string `json:"app_id,omitempty" bson:"app_id,omitempty"`
-	Name       string `json:"name,omitempty" bson:"name,omitempty"`        //应用（组件）名称
-	Desc       string `json:"desc,omitempty" bson:"desc,omitempty"`        //项目描述
-	CreateTime int64  `json:"time,omitempty" bson:"create_time,omitempty"` //创建时间
-	Icon       string `json:"icon,omitempty" bson:"icon,omitempty"`        //icon 地址
-	Owner      string `json:"owner,omitempty" bson:"owner,omitempty"`      //负责人
-	BundleId   string `json:"bundle_id,omitempty" bson:"bundle_id,omitempty"`
+	Id         int64    `json:"id,omitempty" bson:"_id,omitempty"`
+	AppId      string   `json:"app_id,omitempty" bson:"app_id,omitempty"`
+	Name       string   `json:"name,omitempty" bson:"name,omitempty"`        //应用（组件）名称
+	Desc       string   `json:"desc,omitempty" bson:"desc,omitempty"`        //项目描述
+	CreateTime int64    `json:"time,omitempty" bson:"create_time,omitempty"` //创建时间
+	Icon       string   `json:"icon,omitempty" bson:"icon,omitempty"`        //icon 地址
+	Owner      string   `json:"owner,omitempty" bson:"owner,omitempty"`      //负责人
+	BundleId   string   `json:"bundle_id,omitempty" bson:"bundle_id,omitempty"`
+	Manager    []string `json:"manager,omitempty" bson:"manager,omitempty"` //管理者 account 数组
+	Editable   bool     //当前用户是否可以编辑
 }
 
 var (
