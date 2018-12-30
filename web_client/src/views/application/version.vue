@@ -19,51 +19,64 @@
           <span>{{ scope.row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('appVersion.versionN')" align="center" width="150px">
+      <el-table-column :label="$t('appVersion.versionN')" align="center" min-width="80px">
         <template slot-scope="scope">
           <span>{{ scope.row.version }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column :label="$t('appVersion.parentVN')" align="center" width="150px">
+      <el-table-column :label="$t('appVersion.parentVN')" align="center" min-width="80px">
         <template slot-scope="scope">
           <span>{{ scope.row.parent_version }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column :label="$t('appVersion.platform')" align="center" width="150px">
+      <el-table-column :label="$t('appVersion.platform')" align="center" min-width="150px">
         <template slot-scope="scope">
           <span>{{ scope.row.platform }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column :label="$t('appVersion.approvalTime')" align="center" width="150px">
+      <el-table-column :label="$t('appVersion.approvalTime')" align="center" min-width="150px">
         <template slot-scope="scope">
           <span>{{ scope.row.approval_time }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column :label="$t('appVersion.lockTime')" align="center" width="150px">
+      <el-table-column :label="$t('appVersion.lockTime')" align="center" min-width="150px">
         <template slot-scope="scope">
           <span>{{ scope.row.lock_time }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column :label="$t('appVersion.grayTime')" align="center" width="150px">
+      <el-table-column :label="$t('appVersion.grayTime')" align="center" min-width="150px">
         <template slot-scope="scope">
           <span>{{ scope.row.gray_time }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column :label="$t('appVersion.status')" align="center" width="150px">
+      <el-table-column :label="$t('appVersion.status')" align="center" min-width="80px">
         <template slot-scope="scope">
           <span>{{ scope.row.app_status }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column :label="$t('appVersion.createTime')" align="center" width="150px">
+      <el-table-column :label="$t('appVersion.createTime')" align="center" min-width="150px">
         <template slot-scope="scope">
           <span>{{ scope.row.create_time }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column :label="$t('application.table_action')"
+                       align="center"
+                       width="100px"
+                       class-name="small-padding fixed-width">
+        <template slot-scope="scope">
+          <el-button type="primary"
+                     size="mini"
+                     @click="handleUpdate(scope.row)">
+            {{ $t('application.table_edit') }}
+          </el-button>
         </template>
       </el-table-column>
 
