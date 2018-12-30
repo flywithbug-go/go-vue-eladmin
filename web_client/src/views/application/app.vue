@@ -35,7 +35,6 @@
 
     <!--列表内容-->
     <el-table v-loading="listLoading"
-              :key="tableKey"
               :data="list"
               border
               fit
@@ -197,7 +196,6 @@
     data() {
       return {
         listLoading: true,
-        tableKey: 0,
         headers: {'Authorization': store.getters.token},
         actionURL:global_.UploadImageURL,
         list: null,
@@ -280,6 +278,14 @@
         imagePlaceHolder:require('../../assets/image_placeholder.png'),
       }
     },
+    watch: {
+      temp: {
+        handler:function (obj) {
+          console.log("watch:",obj)
+        },
+        deep:true
+      }
+    },
     created() {
       this.getList()
     },
@@ -325,6 +331,9 @@
         this.getList()
       },
       handleCreate() {
+        if (this.dialogStatus === 'update'){
+          this.resetTemp()
+        }
         this.dialogStatus = 'create'
         this.dialogFormVisible =  true
         this.$nextTick(() => {
@@ -375,7 +384,7 @@
               this.dialogFormVisible =  false
               this.$notify({
                 title: '成功',
-                message: '创建成功',
+                message: '修改成功',
                 type: 'success',
                 duration: 2000
               })
