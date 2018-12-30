@@ -174,3 +174,7 @@ func FindAppVersionByVersion(version string) (appV *AppVersion, err error) {
 	appV.AppStatus = makeStatusString(appV.Status)
 	return
 }
+
+func FindAllAppVersion(query, selector interface{}) (results *[]AppVersion, err error) {
+	return appVC.findAll(query, selector)
+}
