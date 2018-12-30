@@ -92,11 +92,11 @@ func (app *AppVersion) Insert() error {
 		return fmt.Errorf("appID:%d,%s", app.AppId, err.Error())
 	}
 	app.Icon = application.Icon
-	if app.isExist(bson.M{"version": app.Version}) {
+	if app.isExist(bson.M{"version": app.Version, "app_id": app.AppId}) {
 		return fmt.Errorf("version exist")
 	}
 	if len(app.ParentVersion) > 0 {
-		if !app.isExist(bson.M{"version": app.ParentVersion}) {
+		if !app.isExist(bson.M{"version": app.ParentVersion, "app_id": app.AppId}) {
 			return errors.New("parent_version not exist")
 		}
 	}
