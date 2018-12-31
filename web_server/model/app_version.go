@@ -138,6 +138,9 @@ func (app *AppVersion) Insert() error {
 }
 
 func (app *AppVersion) Update() error {
+	if app.Status > appStatusTypeRelease {
+		return errors.New("status not right")
+	}
 	selector := bson.M{"_id": app.Id}
 	if app.Status > 1 {
 		//状态大于1时，可以更新锁版时间，灰度时间，状态，和发布时间
@@ -147,13 +150,17 @@ func (app *AppVersion) Update() error {
 		} else {
 			app.ReleaseTime = 0
 		}
+		if app.Status > appStatusTypePrepare {
+			app.ApprovalTime = 0
+		}
+		if app.Status > appStatusTypeDeveloping {
+			app.LockTime = 0
+		}
+		if app.Status > appStatusTypeGray {
+			app.GrayTime = 0
+		}
 		app.AppId = 0
-		return appVC.update(selector,
-			bson.M{"status": app.Status,
-				"app_status":   app.AppStatus,
-				"gray_time":    app.GrayTime,
-				"lock_time":    app.LockTime,
-				"release_time": app.ReleaseTime})
+		return appVC.update(selector, app)
 	} else {
 		app.ReleaseTime = 0
 		//判断非当前version id的版本号是否存在

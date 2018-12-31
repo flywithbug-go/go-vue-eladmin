@@ -199,10 +199,12 @@ export default {
     developing: "开发中",
     gray:"灰度",
     release: "已发布",
-    changeStatus:"更改状态",
+    changeStatus:"状态",
     develop: "开发",
     releasing: "发布",
     cancel: "取消",
     confirm: "确定",
+    confirmChange:"切换状态到",
+    confirmDelete:"确定要删除当前版本？"
   }
 }

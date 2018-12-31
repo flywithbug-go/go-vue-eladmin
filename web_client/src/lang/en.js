@@ -204,6 +204,7 @@ export default {
     releasing: "Releasing",
     cancel: "Cancel",
     confirm: "Confirm",
-
+    confirmChange:"Change to ",
+    confirmDelete:"Delete current version？"
   }
 }
