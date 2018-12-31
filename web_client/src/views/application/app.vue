@@ -35,13 +35,11 @@
         type="primary"
         icon="el-icon-edit"
         @click="handleCreate">{{ $t('table.add') }}</el-button>
-
     </div>
 
     <!--列表内容-->
     <el-table
       v-loading="listLoading"
-      :key="tableKey"
       :data="list"
       border
       fit
@@ -156,10 +154,10 @@
           <el-upload
             :action="actionURL"
             :show-file-list="false"
+            class="avatar-uploader"
             :headers="headers"
             :on-success="handleAvatarSuccess"
-            :before-upload="beforeAvatarUpload"
-            class="avatar-uploader">
+            :before-upload="beforeAvatarUpload">
             <img v-if="temp.icon" :src="temp.icon" width="100%" class="avatar">
             <img v-if="!temp.icon" :src="imagePlaceHolder" width="100%" class="avatar">
           </el-upload>
@@ -215,13 +213,14 @@ export default {
   data() {
     return {
       listLoading: true,
-      tableKey: 0,
       headers: { 'Authorization': store.getters.token },
       actionURL: global_.UploadImageURL,
+      imagePlaceHolder: require('../../assets/image_placeholder.png'),
       list: null,
       total: 10,
       dialogFormVisible: false,
       dialogStatus: 'create',
+      dialogEditCount: 0,
       textMap: {
         update: this.$t('application.table_edit'),
         create: this.$t('application.table_add')
@@ -295,7 +294,16 @@ export default {
           }
         ]
       },
-      imagePlaceHolder: require('../../assets/image_placeholder.png')
+    }
+  },
+  watch: {
+    temp: {
+      handler: function() {
+        if (this.dialogStatus === 'update') {
+          this.dialogEditCount++
+        }
+      },
+      deep: true
     }
   },
   created() {
@@ -320,6 +328,7 @@ export default {
       this.temp = Object.assign({}, row) // copy obj
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
+      this.dialogEditCount = -1
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
@@ -343,6 +352,9 @@ export default {
       this.getList()
     },
     handleCreate() {
+      if (this.dialogStatus === 'update') {
+        this.resetTemp()
+      }
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
       this.$nextTick(() => {
@@ -376,8 +388,8 @@ export default {
       })
     },
     updateDate() {
-      if (this.temp.icon === '') {
-        this.$message.error(this.$t('application.table_app_icon_warning'))
+      if (this.dialogEditCount < 1) {
+        this.dialogFormVisible = false
         return
       }
       this.$refs['dataForm'].validate((valid) => {
@@ -393,7 +405,7 @@ export default {
             this.dialogFormVisible = false
             this.$notify({
               title: '成功',
-              message: '创建成功',
+              message: '修改成功',
               type: 'success',
               duration: 2000
             })
