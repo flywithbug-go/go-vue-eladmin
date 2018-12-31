@@ -55,7 +55,7 @@ para:
 	"gray_time":1546744371
 }
 */
-export function addAppVersionRequest(app_id,version,parent_version,platform,approval_time,lock_time,gray_time) {
+export function addAppVersionRequest(app_id, version, parent_version, platform, approval_time, lock_time, gray_time) {
   const data = {
     app_id,
     version,
@@ -71,7 +71,7 @@ export function addAppVersionRequest(app_id,version,parent_version,platform,appr
     data
   })
 }
-export function updateAppVersionRequest(id,app_id,version,parent_version,platform,approval_time,lock_time,gray_time) {
+export function updateAppVersionRequest(id, app_id, version, parent_version, platform, approval_time, lock_time, gray_time) {
   const data = {
     id,
     app_id,
@@ -89,7 +89,7 @@ export function updateAppVersionRequest(id,app_id,version,parent_version,platfor
   })
 }
 
-export function updateStatusAppVersionRequest(id,status) {
+export function updateStatusAppVersionRequest(id, status) {
   const data = {
     id,
     status

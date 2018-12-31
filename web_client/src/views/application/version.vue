@@ -15,11 +15,11 @@
       style="width: 100%;"
       header-row-class-name="center"
       @sort-change="sortChange">
-      <el-table-column :label="$t('table.id')" prop="id" sortable="custom" align="center" width="65">
-        <template slot-scope="scope">
-          <span>{{ scope.row.id }}</span>
-        </template>
-      </el-table-column>
+      <!--<el-table-column :label="$t('table.id')" prop="id" sortable="custom" align="center" width="65">-->
+      <!--<template slot-scope="scope">-->
+      <!--<span>{{ scope.row.id }}</span>-->
+      <!--</template>-->
+      <!--</el-table-column>-->
       <el-table-column :label="$t('appVersion.versionN')" align="center" min-width="90px">
         <template slot-scope="scope">
           <span>{{ scope.row.version }}</span>
@@ -32,7 +32,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column :label="$t('appVersion.platform')" align="center" min-width="90px">
+      <el-table-column :label="$t('appVersion.platform')" align="center" min-width="150px">
         <template slot-scope="scope">
           <span>{{ formatPlatform(scope.row.platform) }}</span>
         </template>
@@ -62,14 +62,14 @@
       </el-table-column>
       <el-table-column :label="$t('appVersion.status')" align="center" min-width="80px">
         <template slot-scope="scope">
-          <el-tag :type=formatTagString(scope.row.status)>{{ scope.row.app_status }}</el-tag>
+          <el-tag :type="formatTagString(scope.row.status)">{{ scope.row.app_status }}</el-tag>
         </template>
       </el-table-column>
 
       <el-table-column
         :label="$t('application.table_action')"
         align="center"
-        min-width="180px"
+        min-width="200px"
         class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -82,37 +82,38 @@
 
           <el-popover
             v-show="scope.row.status < 4"
+            v-model="scope.row.pop_status"
             placement="top"
             width="160px"
-            trigger="click" align="center" v-model=scope.row.pop_status >
+            trigger="click"
+            align="center" >
             <p align="center">
               <span>{{ formatStatusButtonConfirmString(scope.row.status) }}</span>
-              <span style="color:#c03639; font-weight: bolder;font-size: 18px">{{formatStatusString(scope.row.status)}}</span>
+              <span style="color:#c03639; font-weight: bolder;font-size: 18px">{{ formatStatusString(scope.row.status) }}</span>
               <span>？</span>
             </p>
             <div style="text-align: center; margin: 0">
               <el-button size="mini" type="text" @click="cancelPopover(scope.row)">{{ $t('selector.cancel') }}</el-button>
               <el-button type="primary" size="mini" @click="confirmPopover(scope.row)">{{ $t('selector.confirm') }}</el-button>
             </div>
-            <el-button style="width: 80px" type="success" size="mini" slot="reference">{{ $t('selector.changeStatus') }}</el-button>
+            <el-button slot="reference" style="width: 60px" type="success" size="mini">{{ $t('selector.changeStatus') }}</el-button>
           </el-popover>
 
           <el-popover
+            v-model="scope.row.pop_de_status"
             placement="top"
             width="160px"
             trigger="click"
-            align="center"
-            v-model=scope.row.pop_de_status >
+            align="center" >
             <p align="center">
-              <span>{{ $t('selector.confirmDelete')}}</span>
+              <span>{{ $t('selector.confirmDelete') }}</span>
             </p>
             <div style="text-align: center; margin: 0">
               <el-button size="mini" type="text" @click="cancelPopover(scope.row)">{{ $t('selector.cancel') }}</el-button>
               <el-button type="primary" size="mini" @click="deleteVersionPopover(scope.row)">{{ $t('selector.confirm') }}</el-button>
             </div>
-            <el-button style="width: 80px" type="danger" size="mini" slot="reference">{{ $t('table.delete') }}</el-button>
+            <el-button slot="reference" style="width: 60px" type="danger" size="mini">{{ $t('table.delete') }}</el-button>
           </el-popover>
-
 
         </template>
       </el-table-column>
@@ -201,7 +202,6 @@
           </el-select>
         </el-form-item>
 
-
       </el-form>
 
       <div slot="footer" class="dialog-footer">
@@ -216,7 +216,7 @@
 
 <script>
 import fixedButton from '../../components/FixedButton'
-import { getAppVersionListRequest, addAppVersionRequest,updateAppVersionRequest ,updateStatusAppVersionRequest} from '../../api/app'
+import { getAppVersionListRequest, addAppVersionRequest, updateAppVersionRequest, updateStatusAppVersionRequest } from '../../api/app'
 import { formatDate } from '../../utils/date'
 import ElTableFooter from 'element-ui'
 
@@ -239,7 +239,7 @@ export default {
         update: this.$t('application.table_edit'),
         create: this.$t('application.table_add')
       },
-      popoverMap:{},
+      popoverMap: {},
       platformOptions: [{
         value: 'iOS',
         label: 'iOS'
@@ -327,7 +327,7 @@ export default {
         name: '',
         owner: '',
         sort: '-id',
-        app_id:0,
+        app_id: 0
       }
     }
   },
@@ -346,9 +346,9 @@ export default {
   },
   methods: {
     formatStatusString(status) {
-      switch (status+1) {
+      switch (status + 1) {
         case 1:
-         return this.$t('selector.preparing')
+          return this.$t('selector.preparing')
         case 2:
           return this.$t('selector.developing')
         case 3:
@@ -361,7 +361,7 @@ export default {
     },
     formatStatusButtonConfirmString(status) {
       switch (status) {
-        case 1,2,3:
+        case 1, 2, 3:
           return this.$t('selector.confirmChange')
         case 4:
           return this.$t('table.delete')
@@ -371,27 +371,26 @@ export default {
     formatTagString(status) {
       switch (status) {
         case 1:
-          return "info"
+          return 'info'
         case 2:
-          return "success"
+          return 'success'
         case 3:
-          return "warning"
+          return 'warning'
         case 4:
-          return "danger"
+          return 'danger'
       }
-      return ""
+      return ''
     },
-    deleteVersionPopover(data){
-      data.pop_de_status=false
-
+    deleteVersionPopover(data) {
+      data.pop_de_status = false
     },
     cancelPopover(data) {
       data.pop_status = false
-      data.pop_de_status=false
+      data.pop_de_status = false
     },
-    confirmPopover(data){
+    confirmPopover(data) {
       data.pop_status = false
-      updateStatusAppVersionRequest(data.id,data.status+1).then(() => {
+      updateStatusAppVersionRequest(data.id, data.status + 1).then(() => {
         this.getList()
         this.$notify({
           title: '成功',
@@ -400,7 +399,6 @@ export default {
           duration: 2000
         })
       })
-
     },
     formatPlatform(list) {
       if (list) {
@@ -437,10 +435,10 @@ export default {
         version: data.version,
         parent_version: data.parent_version,
         platform: data.platform ? data.platform : [],
-        approval_time: data.approval_time ? new Date(data.approval_time * 1000):new Date(),
-        lock_time: data.lock_time ? new Date(data.lock_time * 1000):new Date(),
-        gray_time: data.gray_time ? new Date(data.gray_time * 1000):new Date(),
-        create_time: data.create_time ? new Date(data.create_time * 1000):new Date(),
+        approval_time: data.approval_time ? new Date(data.approval_time * 1000) : new Date(),
+        lock_time: data.lock_time ? new Date(data.lock_time * 1000) : new Date(),
+        gray_time: data.gray_time ? new Date(data.gray_time * 1000) : new Date(),
+        create_time: data.create_time ? new Date(data.create_time * 1000) : new Date(),
         status: data.status,
         app_status: data.app_status,
         app_id: data.app_id
@@ -450,11 +448,11 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           if (this.temp.approval_time > this.temp.lock_time) {
-            this.$message.error("立项时间必须早于锁版时间")
+            this.$message.error('立项时间必须早于锁版时间')
             return
           }
           if (this.temp.lock_time > this.temp.gray_time) {
-            this.$message.error("锁版时间必须早于灰度时间")
+            this.$message.error('锁版时间必须早于灰度时间')
             return
           }
           addAppVersionRequest(
@@ -462,9 +460,9 @@ export default {
             this.temp.version,
             this.temp.parent_version,
             this.temp.platform,
-            this.temp.approval_time.valueOf()/1000,
-            this.temp.lock_time.valueOf()/1000,
-            this.temp.gray_time.valueOf()/1000).then(() => {
+            this.temp.approval_time.valueOf() / 1000,
+            this.temp.lock_time.valueOf() / 1000,
+            this.temp.gray_time.valueOf() / 1000).then(() => {
             this.dialogFormVisible = false
             this.getList()
             this.$notify({
@@ -492,7 +490,7 @@ export default {
             this.$message.error('锁版时间必须早于灰度时间')
             return
           }
-          if (this.temp.parent_version === '-'){
+          if (this.temp.parent_version === '-') {
             this.temp.parent_version = ''
           }
           updateAppVersionRequest(
@@ -501,9 +499,9 @@ export default {
             this.temp.version,
             this.temp.parent_version,
             this.temp.platform,
-            this.temp.approval_time.getTime()/1000,
-            this.temp.lock_time.getTime()/1000,
-            this.temp.gray_time.getTime()/1000).then(() => {
+            this.temp.approval_time.getTime() / 1000,
+            this.temp.lock_time.getTime() / 1000,
+            this.temp.gray_time.getTime() / 1000).then(() => {
             this.getList()
             this.dialogFormVisible = false
             this.$notify({
@@ -512,9 +510,8 @@ export default {
               type: 'success',
               duration: 2000
             })
-
           })
-}
+        }
       })
     },
     handleCreate() {
