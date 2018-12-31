@@ -1,31 +1,31 @@
 <template>
   <section class="content">
-    <fixed-icon :bottom="3" @clickEvent="chat" class="fixed-container">
-      <svg-icon icon-class="add" class="icon-add"></svg-icon>
+    <fixed-icon :bottom="3" class="fixed-container" @clickEvent="chat">
+      <svg-icon icon-class="add" class="icon-add"/>
     </fixed-icon>
   </section>
 </template>
 
 <script>
-  import fixedIcon from '../../components/FixedButton';
-  export default {
-    name: 'Dashboard',
-    components: {
-      fixedIcon
-    },
-    data () {
-      return {
-      };
-    },
-    methods: {
-      chat() { // 图标点击事件
-        console.log('你好');
-      },
-    },
-    mounted() {
-      document.title = 'Dashboard';
-    },
-  };
+import fixedIcon from '../../components/FixedButton'
+export default {
+  name: 'Dashboard',
+  components: {
+    fixedIcon
+  },
+  data() {
+    return {
+    }
+  },
+  mounted() {
+    document.title = 'Dashboard'
+  },
+  methods: {
+    chat() { // 图标点击事件
+      console.log('你好')
+    }
+  }
+}
 
 </script>
 

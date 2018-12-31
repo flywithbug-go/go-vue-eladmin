@@ -1,58 +1,61 @@
 <template>
-    <div class="login-container">
-      <el-form ref="loginForm"
-               :model="loginForm"
-               class="login-form"
-               auto-complete="on"
-               label-position="left">
-        <div class="title-container">
-          <lang-select class="set-language"></lang-select>
-          <h3 class="title" >{{ $t('login.title') }}</h3>
-        </div>
-        <el-form-item prop="account">
-          <span class="svg-container">
-            <svg-icon icon-class="user"></svg-icon>
-          </span>
-          <el-input v-model="loginForm.account"
-                    :placeholder="$t('login.username')"
-                    name="account"
-                    type="text"
-                    auto-complete="on" ></el-input>
-        </el-form-item>
+  <div class="login-container">
+    <el-form
+      ref="loginForm"
+      :model="loginForm"
+      class="login-form"
+      auto-complete="on"
+      label-position="left">
+      <div class="title-container">
+        <lang-select class="set-language"/>
+        <h3 class="title" >{{ $t('login.title') }}</h3>
+      </div>
+      <el-form-item prop="account">
+        <span class="svg-container">
+          <svg-icon icon-class="user"/>
+        </span>
+        <el-input
+          v-model="loginForm.account"
+          :placeholder="$t('login.username')"
+          name="account"
+          type="text"
+          auto-complete="on" />
+      </el-form-item>
 
-        <el-form-item prop="password">
-          <span class="svg-container">
-            <svg-icon icon-class="password"/>
-          </span>
-          <el-input :type="passwordType"
-                    v-model="loginForm.password"
-                    :placeholder="$t('login.password')"
-                    auto-complete="on"
-                    @keyup.enter.native="handleLogin"></el-input>
-          <span class="show-pwd" @click="showPwd">
-            <svg-icon :icon-class="pwdIcon"/>
-          </span>
-        </el-form-item>
-        <el-button :loading="loading"
-                   type="primary"
-                   :disabled="loginBtnDisable"
-                   style="width: 100%; margin-bottom: 30px;"
-                   @click.native.prevent="handleLogin">
-          {{ $t('login.logIn') }}
-        </el-button>
+      <el-form-item prop="password">
+        <span class="svg-container">
+          <svg-icon icon-class="password"/>
+        </span>
+        <el-input
+          :type="passwordType"
+          v-model="loginForm.password"
+          :placeholder="$t('login.password')"
+          auto-complete="on"
+          @keyup.enter.native="handleLogin"/>
+        <span class="show-pwd" @click="showPwd">
+          <svg-icon :icon-class="pwdIcon"/>
+        </span>
+      </el-form-item>
+      <el-button
+        :loading="loading"
+        :disabled="loginBtnDisable"
+        type="primary"
+        style="width: 100%; margin-bottom: 30px;"
+        @click.native.prevent="handleLogin">
+        {{ $t('login.logIn') }}
+      </el-button>
 
+    </el-form>
 
-      </el-form>
-
-    </div>
+  </div>
 </template>
 
 <script>
-  import LangSelect from '../../components/LangSelect/'
+import LangSelect from '../../components/LangSelect/'
 export default {
-  name: "Login",
+  name: 'Login',
   components: {
-    LangSelect,
+    LangSelect
   },
   data() {
     const validateUsername = (rule, value, callback) => {
@@ -78,9 +81,9 @@ export default {
         account: [{ required: true, trigger: 'blur', validator: validateUsername }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }]
       },
-      loginDisable:true,
+      loginDisable: true,
       passwordType: 'password',
-      pwdIcon:'eye',
+      pwdIcon: 'eye',
       loading: false,
       showDialog: false,
       redirect: undefined
@@ -88,7 +91,7 @@ export default {
   },
   computed: {
     loginBtnDisable() {
-      if (this.loginForm.password.length < 4 || this.loginForm.account.length < 4){
+      if (this.loginForm.password.length < 4 || this.loginForm.account.length < 4) {
         return true
       }
       return false
@@ -100,7 +103,7 @@ export default {
         this.redirect = route.query && route.query.redirect
       },
       immediate: true
-    },
+    }
   },
   methods: {
     showPwd() {
@@ -114,12 +117,12 @@ export default {
     },
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
-        if (valid){
+        if (valid) {
           this.loading = true
-          this.$store.dispatch('LoginByAccount',this.loginForm).then(()=> {
+          this.$store.dispatch('LoginByAccount', this.loginForm).then(() => {
             this.loading = false
-            this.$router.push({path: this.redirect || '/'})
-          }) .catch(() => {
+            this.$router.push({ path: this.redirect || '/' })
+          }).catch(() => {
             this.loading = false
           })
         } else {
@@ -131,7 +134,6 @@ export default {
   }
 }
 </script>
-
 
 <style rel="stylesheet/scss" lang="scss">
   /* 修复input 背景不协调 和光标变色 */
@@ -166,7 +168,7 @@ export default {
         height: 47px;
         caret-color: $cursor;
         &:-webkit-autofill {
-          -webkit-box-shadow: 0 0 0px 1000px $bg inset !important;
+          box-shadow: 0 0 0px 1000px $bg inset !important;
           -webkit-text-fill-color: $cursor !important;
         }
       }

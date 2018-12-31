@@ -12,10 +12,10 @@ export function loginByAccount(account, password) {
   })
 }
 
-export  function getUserInfo() {
+export function getUserInfo() {
   return client({
     url: '/user/info',
-    method: 'get',
+    method: 'get'
   })
 }
 

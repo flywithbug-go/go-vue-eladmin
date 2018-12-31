@@ -14,7 +14,6 @@ export function addApplicationRequest(bundle_id, icon, name, desc) {
   })
 }
 
-
 export function getApplicationlistRequest(query) {
   return client({
     url: '/app/list',
@@ -23,13 +22,12 @@ export function getApplicationlistRequest(query) {
   })
 }
 
-
-export function updateApplicationRequest(icon, name, desc,id) {
+export function updateApplicationRequest(icon, name, desc, id) {
   const data = {
     icon,
     name,
     desc,
-    id,
+    id
   }
   return client({
     url: '/app/update',
@@ -38,8 +36,6 @@ export function updateApplicationRequest(icon, name, desc,id) {
   })
 }
 
-
-
 export function getAppVersionListRequest(query) {
   return client({
     url: '/app/version/list',
@@ -47,8 +43,4 @@ export function getAppVersionListRequest(query) {
     params: query
   })
 }
-
-
-
-
 

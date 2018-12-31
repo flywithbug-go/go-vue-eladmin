@@ -21,11 +21,11 @@ Vue.config.productionTip = false
 
 Vue.use(Element, {
   size: localStorage.getItem('size') || 'medium',
-  i18n: (key, value) => i18n.t(key,value)
+  i18n: (key, value) => i18n.t(key, value)
 })
 
 Object.keys(filters).forEach(key => {
-  Vue.filter(key,filters[key])
+  Vue.filter(key, filters[key])
 })
 /* eslint-disable no-new */
 new Vue({
@@ -33,5 +33,5 @@ new Vue({
   router,
   store,
   i18n,
-  render: h => h(App),
+  render: h => h(App)
 })
