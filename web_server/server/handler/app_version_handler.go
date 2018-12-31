@@ -7,6 +7,8 @@ import (
 	"strconv"
 	"strings"
 
+	"gopkg.in/mgo.v2/bson"
+
 	"github.com/flywithbug/log4go"
 
 	"github.com/gin-gonic/gin"
@@ -41,6 +43,7 @@ func getAppVersionListHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
+	appId, _ := strconv.Atoi(c.Query("app_id"))
 	limit, _ := strconv.Atoi(c.Query("limit"))
 	page, _ := strconv.Atoi(c.Query("page"))
 	sort := c.Query("sort")
@@ -62,8 +65,12 @@ func getAppVersionListHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusUnauthorized, "user not found")
 		return
 	}
-	totalCount, _ := model.TotalCountAppVersion(nil, nil)
-	appList, err := model.FindPageAppVersionFilter(page, limit, nil, nil, sort)
+	query := bson.M{}
+	if appId > 0 {
+		query = bson.M{"app_id": appId}
+	}
+	totalCount, _ := model.TotalCountAppVersion(query, nil)
+	appList, err := model.FindPageAppVersionFilter(page, limit, query, nil, sort)
 	if err != nil {
 		log4go.Info(err.Error())
 		aRes.SetErrorInfo(http.StatusUnauthorized, "app version list find error"+err.Error())

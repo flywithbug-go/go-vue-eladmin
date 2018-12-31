@@ -181,8 +181,9 @@ export default {
     table_app_icon_warning: "Please upload application icon",
   },
   appVersion: {
-    versionN: "version NO.",
+    versionN: "New version NO.",
     parentVN: "Parent Version NO.",
+    parentVNPlaceholder: "Parent Version NO.(Must already exist)",
     platform: "Platform",
     approvalTime: "Approval time",
     lockTime: "Lock Time",

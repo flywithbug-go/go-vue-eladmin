@@ -200,7 +200,7 @@ import fixedButton from '../../components/FixedButton'
 import global_ from '../../config'
 import store from '../../store'
 import Pagination from '../../components/Pagination'
-import { addApplicationRequest, getApplicationlistRequest, updateApplicationRequest } from '../../api/app'
+import { addApplicationRequest, getApplicationlListRequest, updateApplicationRequest } from '../../api/app'
 import { formatDate } from '../../utils/date'
 
 export default {
@@ -316,7 +316,7 @@ export default {
     },
     getList() {
       this.listLoading = true
-      getApplicationlistRequest(this.listQuery).then(response => {
+      getApplicationlListRequest(this.listQuery).then(response => {
         this.list = response.list
         this.total = response.total
         this.listLoading = false

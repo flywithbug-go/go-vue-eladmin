@@ -101,12 +101,16 @@ func (app *AppVersion) Insert() error {
 			return errors.New("parent_version not exist")
 		}
 	}
+	if len(app.Platform) == 0 {
+		return errors.New("platform must choose")
+	}
 	for _, platform := range app.Platform {
 		_, ok := appPlatformMap[strings.ToUpper(platform)]
 		if !ok {
 			return fmt.Errorf("platform must like (iOS,Android,H5,Server) ")
 		}
 	}
+
 	app.Id, _ = mongo.GetIncrementId(appVersionCollection)
 	app.CreateTime = time.Now().Unix()
 	app.Status = appStatusTypePrepare

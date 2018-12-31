@@ -34,7 +34,7 @@
 
       <el-table-column :label="$t('appVersion.platform')" align="center" min-width="150px">
         <template slot-scope="scope">
-          <span>{{  formatPlatform(scope.row.platform) }}</span>
+          <span>{{ formatPlatform(scope.row.platform) }}</span>
         </template>
       </el-table-column>
 
@@ -99,7 +99,6 @@
             {{ $t('selector.releasing') }}
           </el-button>
 
-
         </template>
       </el-table-column>
 
@@ -119,7 +118,7 @@
         :rules="rules"
         :model="temp"
         label-position="left"
-        label-width="70px"
+        label-width="80px"
         style="width: 400px; margin-left:50px;">
 
         <el-form-item
@@ -137,12 +136,12 @@
           <el-input
             :disabled="dialogStatus==='update' && temp.status > 1"
             v-model="temp.parent_version"
-            :placeholder="$t('appVersion.parentVN')"/>
+            :placeholder="$t('appVersion.parentVNPlaceholder')"/>
         </el-form-item>
 
         <el-form-item
           :label="$t('appVersion.approvalTime')"
-          prop="timestamp">
+          prop="approval_time">
           <el-date-picker
             :disabled="dialogStatus==='update' && temp.status > 1"
             v-model="temp.approval_time"
@@ -152,30 +151,32 @@
 
         <el-form-item
           :label="$t('appVersion.lockTime')"
-          prop="timestamp">
+          prop="lock_time">
           <el-date-picker
             :disabled="dialogStatus==='update' && temp.status > 1"
             v-model="temp.lock_time"
+            format="yyyy-MM-dd"
             :placeholder="$t('appVersion.lockTime')"
             type="date"/>
         </el-form-item>
 
         <el-form-item
           :label="$t('appVersion.grayTime')"
-          prop="timestamp">
+          prop="gray_time">
           <el-date-picker
             :disabled="dialogStatus==='update' && temp.status > 1"
             v-model="temp.gray_time"
+            format="yyyy-MM-dd"
             :placeholder="$t('appVersion.grayTime')"
             type="date"/>
         </el-form-item>
 
         <el-form-item :label="$t('appVersion.platform')" prop="platform">
           <el-select
-            clearable
             :disabled="dialogStatus==='update' && temp.status > 1"
             v-model="temp.platform"
             :placeholder="$t('selector.placeholder')"
+            clearable
             multiple>
             <el-option
               v-for="item in platformOptions"
@@ -186,18 +187,18 @@
         </el-form-item>
 
         <!--<el-form-item-->
-          <!--v-show="dialogStatus==='update'"-->
-          <!--:label="$t('appVersion.status')"-->
-          <!--prop="status">-->
-          <!--<el-select-->
-            <!--v-model="temp.app_status"-->
-            <!--:placeholder="$t('selector.placeholder')">-->
-            <!--<el-option-->
-              <!--v-for="item in statusOptions"-->
-              <!--:key="item.value"-->
-              <!--:label="item.label"-->
-              <!--:value="item.value"/>-->
-          <!--</el-select>-->
+        <!--v-show="dialogStatus==='update'"-->
+        <!--:label="$t('appVersion.status')"-->
+        <!--prop="status">-->
+        <!--<el-select-->
+        <!--v-model="temp.app_status"-->
+        <!--:placeholder="$t('selector.placeholder')">-->
+        <!--<el-option-->
+        <!--v-for="item in statusOptions"-->
+        <!--:key="item.value"-->
+        <!--:label="item.label"-->
+        <!--:value="item.value"/>-->
+        <!--</el-select>-->
         <!--</el-form-item>-->
 
       </el-form>
@@ -262,29 +263,57 @@ export default {
         value: '4',
         label: this.$t('selector.release')
       }],
-      platformValues: [],
       rules: {
         version: [
           {
             required: true,
-            message: '请输入版本号.格式:1.0.0'
+            message: '必填,格式:1.0.0',
+            trigger: 'blur'
           },
           {
             pattern: /^\d+(.)\d+(.)\d+$/,
-            message: '输入格式1.0.0,只能是`数字`和 `.`'
+            message: '输入格式1.0.0,只能是`数字`和 `.`',
+            trigger: 'blur'
           }
+        ],
+        approval_time: [
+          {
+            required: true,
+            message: '必选',
+            trigger: 'change'
+          },
+        ],
+        lock_time: [
+          {
+            required: true,
+            message: '必选',
+            trigger: 'change'
+          },
+        ],
+        gray_time: [
+          {
+            required: true,
+            message: '必选',
+            trigger: 'change'
+          },
+        ],
+        platform: [
+          {
+            required: true,
+            message: '必选',
+            trigger: 'change'
+          },
         ]
       },
-
       temp: {
         id: 0,
         version: '',
         parent_version: '',
-        platform: '',
-        approval_time: undefined,
-        lock_time: undefined,
-        gray_time: undefined,
-        create_time: undefined,
+        platform: [],
+        approval_time: new Date(),
+        lock_time: new Date(),
+        gray_time: new Date(),
+        create_time: new Date(),
         status: 0,
         app_status: '',
         app_id: 0
@@ -302,20 +331,17 @@ export default {
     this.getList()
   },
   methods: {
-    formatPlatform (list) {
-      if (list){
+    formatPlatform(list) {
+      if (list) {
         return list.join(',')
       }
       return '-'
-    },
-    handleNodeClick(data) {
-      console.log(data)
     },
     formatDate(time) {
       if (!time || time === 0) {
         return '-'
       }
-      const date = new Date(time *1000)
+      const date = new Date(time * 1000)
       return formatDate(date, 'yyyy-MM-dd')
     },
 
@@ -324,7 +350,7 @@ export default {
         id: 0,
         version: '',
         parent_version: '',
-        platform: '',
+        platform: [],
         approval_time: undefined,
         lock_time: undefined,
         gray_time: undefined,
@@ -339,21 +365,33 @@ export default {
         id: data.id,
         version: data.version,
         parent_version: data.parent_version,
-        platform: data.platform,
-        approval_time: data.approval_time *1000,
-        lock_time:  data.lock_time *1000,
-        gray_time:  data.gray_time *1000,
-        create_time:  data.create_time *1000,
+        platform: data.platform ? data.platform : [],
+        approval_time: data.approval_time?new Date(data.approval_time * 1000):new Date(),
+        lock_time: data.lock_time? new Date(data.lock_time * 1000):new Date(),
+        gray_time: data.gray_time? new Date(data.gray_time * 1000):new Date(),
+        create_time: data.create_time? new Date(data.create_time * 1000):new Date(),
         status: data.status,
         app_status: data.app_status,
         app_id: data.app_id
       }
     },
     createData() {
+      this.$refs['dataForm'].validate((valid) => {
+        if (valid) {
+          if (this.temp.approval_time > this.temp.lock_time) {
+            this.$message.error("立项时间必须早于锁版时间")
+            return
+          }
+          if (this.temp.lock_time > this.temp.gray_time) {
+            this.$message.error("锁版时间必须早于灰度时间")
+            return
+          }
 
+        }
+      })
     },
     updateDate() {
-
+      console.log('updateDate:', this.temp)
     },
     handleCreate() {
       this.resetTemp()

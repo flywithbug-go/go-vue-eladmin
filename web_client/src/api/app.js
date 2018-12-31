@@ -14,7 +14,7 @@ export function addApplicationRequest(bundle_id, icon, name, desc) {
   })
 }
 
-export function getApplicationlistRequest(query) {
+export function getApplicationlListRequest(query) {
   return client({
     url: '/app/list',
     method: 'get',
@@ -41,6 +41,14 @@ export function getAppVersionListRequest(query) {
     url: '/app/version/list',
     method: 'get',
     params: query
+  })
+}
+
+export function updateAppVersionRequest(app_id,version,) {
+  return client({
+    url: '/app/update',
+    method: 'post',
+    data
   })
 }
 
