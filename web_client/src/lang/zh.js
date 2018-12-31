@@ -188,13 +188,15 @@ export default {
     lockTime: "锁版时间",
     grayTime: "灰度时间",
     status: "状态",
-    createTime: "添加时间"
+    createTime: "添加时间",
+    operate: "编辑"
   },
   selector: {
     placeholder: "请选择",
     preparing: "准备中",
     developing: "开发中",
     gray:"灰度",
-    release: "已发布"
+    release: "已发布",
+    changeStatus:"更改状态"
   }
 }

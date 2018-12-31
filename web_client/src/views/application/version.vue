@@ -15,18 +15,19 @@
       style="width: 100%;"
       header-row-class-name="center"
       @sort-change="sortChange">
+
       <el-table-column :label="$t('table.id')" prop="id" sortable="custom" align="center" width="65">
         <template slot-scope="scope">
           <span>{{ scope.row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('appVersion.versionN')" align="center" min-width="80px">
+      <el-table-column :label="$t('appVersion.versionN')" align="center" min-width="90px">
         <template slot-scope="scope">
           <span>{{ scope.row.version }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column :label="$t('appVersion.parentVN')" align="center" min-width="80px">
+      <el-table-column :label="$t('appVersion.parentVN')" align="center" min-width="90px">
         <template slot-scope="scope">
           <span>{{ scope.row.parent_version }}</span>
         </template>
@@ -34,7 +35,7 @@
 
       <el-table-column :label="$t('appVersion.platform')" align="center" min-width="150px">
         <template slot-scope="scope">
-          <span>{{ scope.row.platform }}</span>
+          <span>{{ scope.row.platforms }}</span>
         </template>
       </el-table-column>
 
@@ -62,12 +63,6 @@
         </template>
       </el-table-column>
 
-      <el-table-column :label="$t('appVersion.createTime')" align="center" min-width="150px">
-        <template slot-scope="scope">
-          <span>{{ formatDate(scope.row.create_time) }}</span>
-        </template>
-      </el-table-column>
-
       <el-table-column
         :label="$t('application.table_action')"
         align="center"
@@ -78,8 +73,15 @@
             type="primary"
             size="mini"
             @click="handleUpdate(scope.row)">
-            {{ $t('application.table_edit') }}
+            {{ $t('appVersion.operate') }}
           </el-button>
+
+        </template>
+      </el-table-column>
+
+      <el-table-column :label="$t('appVersion.createTime')" align="center" min-width="150px">
+        <template slot-scope="scope">
+          <span>{{ formatDate(scope.row.create_time) }}</span>
         </template>
       </el-table-column>
 
@@ -100,74 +102,86 @@
           :label="$t('appVersion.versionN')"
           prop="version">
           <el-input
-            :disabled="dialogStatus==='update'"
+            :disabled="dialogStatus==='update' && temp.status > 1"
             v-model="temp.version"
-            :placeholder="$t('appVersion.versionN')"></el-input>
+            :placeholder="$t('appVersion.versionN')"/>
         </el-form-item>
 
         <el-form-item
           :label="$t('appVersion.parentVN')"
           prop="parent_version">
           <el-input
-            :disabled="dialogStatus==='update'"
+            :disabled="dialogStatus==='update' && temp.status > 1"
             v-model="temp.parent_version"
-            :placeholder="$t('appVersion.parentVN')"></el-input>
+            :placeholder="$t('appVersion.parentVN')"/>
         </el-form-item>
 
-        <el-form-item :label="$t('appVersion.approvalTime')"
-                      prop="timestamp">
-          <el-date-picker v-model="temp.approval_time"
-                          type="date"
-                          :placeholder="$t('appVersion.approvalTime')">
-          </el-date-picker>
+        <el-form-item
+          :label="$t('appVersion.approvalTime')"
+          prop="timestamp">
+          <el-date-picker
+            :disabled="dialogStatus==='update' && temp.status > 1"
+            v-model="temp.approval_time"
+            :placeholder="$t('appVersion.approvalTime')"
+            type="date"/>
         </el-form-item>
 
-        <el-form-item :label="$t('appVersion.lockTime')"
-                      prop="timestamp">
-          <el-date-picker v-model="temp.lock_time"
-                          type="date"
-                          :placeholder="$t('appVersion.lockTime')">
-          </el-date-picker>
+        <el-form-item
+          :label="$t('appVersion.lockTime')"
+          prop="timestamp">
+          <el-date-picker
+            :disabled="dialogStatus==='update' && temp.status > 1"
+            v-model="temp.lock_time"
+            :placeholder="$t('appVersion.lockTime')"
+            type="date"/>
         </el-form-item>
 
-        <el-form-item :label="$t('appVersion.grayTime')"
-                      prop="timestamp">
-          <el-date-picker v-model="temp.gray_time"
-                          type="date"
-                          :placeholder="$t('appVersion.grayTime')">
-          </el-date-picker>
+        <el-form-item
+          :label="$t('appVersion.grayTime')"
+          prop="timestamp">
+          <el-date-picker
+            :disabled="dialogStatus==='update' && temp.status > 1"
+            v-model="temp.gray_time"
+            :placeholder="$t('appVersion.grayTime')"
+            type="date"/>
         </el-form-item>
-
 
         <el-form-item :label="$t('appVersion.platform')" prop="platform">
           <el-select
+            clearable
+            :disabled="dialogStatus==='update' && temp.status > 1"
             v-model="platformValues"
-            multiple
-            :placeholder="$t('selector.placeholder')">
+            :placeholder="$t('selector.placeholder')"
+            multiple>
             <el-option
               v-for="item in platformOptions"
               :key="item.value"
               :label="item.label"
-              :value="item.value">
-            </el-option>
+              :value="item.value"/>
           </el-select>
         </el-form-item>
 
-        <el-form-item :label="$t('appVersion.status')"
-                      prop="status" v-show="dialogStatus==='update'">
+        <el-form-item
+          v-show="dialogStatus==='update'"
+          :label="$t('appVersion.status')"
+          prop="status">
           <el-select
-            v-model="statusValues"
+            v-model="temp.app_status"
             :placeholder="$t('selector.placeholder')">
             <el-option
               v-for="item in statusOptions"
               :key="item.value"
               :label="item.label"
-              :value="item.value">
-            </el-option>
+              :value="item.value"/>
           </el-select>
         </el-form-item>
 
       </el-form>
+
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
+        <el-button type="primary" @click="dialogStatus==='create'? createData():updateDate()">{{ $t('table.confirm') }}</el-button>
+      </div>
 
     </el-dialog>
 
@@ -178,10 +192,12 @@
 import fixedButton from '../../components/FixedButton'
 import { getAppVersionListRequest } from '../../api/app'
 import { formatDate } from '../../utils/date'
+import ElTableFooter from 'element-ui'
 
 export default {
   name: 'MetaData',
   components: {
+    ElTableFooter,
     fixedButton
   },
   data() {
@@ -221,10 +237,18 @@ export default {
         value: '4',
         label: this.$t('selector.release')
       }],
-      statusValues: [],
       platformValues: [],
       rules: {
-
+        version: [
+          {
+            required: true,
+            message: '请输入版本号.格式:1.0.0'
+          },
+          {
+            pattern: /^\d+(.)\d+(.)\d+$/,
+            message: '输入格式1.0.0,只能是`数字`和 `.`'
+          }
+        ]
       },
       temp: {
         id: 0,
@@ -252,6 +276,9 @@ export default {
     this.getList()
   },
   methods: {
+    handleNodeClick(data) {
+      console.log(data)
+    },
     formatDate(time) {
       if (!time || time === 0) {
         return '-'
@@ -259,7 +286,30 @@ export default {
       const date = new Date(time * 1000)
       return formatDate(date, 'yyyy-MM-dd hh:mm')
     },
+
+    resetTemp() {
+      this.temp = {
+        id: 0,
+        version: '',
+        parent_version: '',
+        platform: '',
+        approval_time: '',
+        lock_time: '',
+        gray_time: '',
+        create_time: '',
+        status: 0,
+        app_status: '',
+        app_id: 0
+      }
+    },
+    createData() {
+
+    },
+    updateDate() {
+
+    },
     handleCreate() {
+      this.resetTemp()
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
       this.$nextTick(() => {

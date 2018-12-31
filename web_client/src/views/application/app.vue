@@ -154,10 +154,10 @@
           <el-upload
             :action="actionURL"
             :show-file-list="false"
-            class="avatar-uploader"
             :headers="headers"
             :on-success="handleAvatarSuccess"
-            :before-upload="beforeAvatarUpload">
+            :before-upload="beforeAvatarUpload"
+            class="avatar-uploader">
             <img v-if="temp.icon" :src="temp.icon" width="100%" class="avatar">
             <img v-if="!temp.icon" :src="imagePlaceHolder" width="100%" class="avatar">
           </el-upload>
@@ -293,7 +293,7 @@ export default {
             message: '请输入不多于200个字符'
           }
         ]
-      },
+      }
     }
   },
   watch: {

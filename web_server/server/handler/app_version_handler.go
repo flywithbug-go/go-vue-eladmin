@@ -72,3 +72,18 @@ func getAppVersionListHandler(c *gin.Context) {
 	aRes.AddResponseInfo("list", appList)
 	aRes.AddResponseInfo("total", totalCount)
 }
+
+func updateAppVersionHandler(c *gin.Context) {
+	aRes := model.NewResponse()
+	defer func() {
+		c.JSON(http.StatusOK, aRes)
+	}()
+	appV := new(appVersionPara)
+	err := c.BindJSON(appV)
+	if err != nil {
+		log4go.Info(err.Error())
+		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid: "+err.Error())
+		return
+	}
+
+}

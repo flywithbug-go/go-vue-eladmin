@@ -188,13 +188,16 @@ export default {
     lockTime: "Lock Time",
     grayTime: "Gray Time",
     status: "Status",
-    createTime: "Create Time"
+    createTime: "Create Time",
+    operate: "Edit"
   },
   selector: {
     placeholder: "Please select",
     preparing: "Preparing",
     developing: "Developing",
     gray:"Gray",
-    release: "Release"
+    release: "Release",
+    changeStatus:"Change status"
+
   }
 }
