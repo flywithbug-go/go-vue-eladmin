@@ -3,6 +3,7 @@ package model
 import (
 	"doc-manager/web_server/common"
 	"doc-manager/web_server/core/mongo"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"strings"
@@ -18,11 +19,15 @@ var (
 )
 
 const (
-	appVersionCollection              = "app_version"
-	appStatusTypePrepare    appStatus = iota //准备中 待开发
-	appStatusTypeDeveloping                  //开发中 待灰度
-	appStatusTypeGray                        //灰度  待发布
-	appStatusTypeRelease                     //已发布  已发布不能再更改
+	appVersionCollection = "app_version"
+)
+
+const (
+	appStatusTypeUnDetermined appStatus = iota //待定
+	appStatusTypePrepare                       //准备中 待开发
+	appStatusTypeDeveloping                    //开发中 待灰度
+	appStatusTypeGray                          //灰度  待发布
+	appStatusTypeRelease                       //已发布  已发布不能再更改
 )
 
 type AppVersion struct {
@@ -39,6 +44,11 @@ type AppVersion struct {
 	AppStatus     string    `json:"app_status,omitempty" bson:"app_status,omitempty"`       //app状态
 	ReleaseTime   int64     `json:"release_time,omitempty" bson:"release_time,omitempty"`
 	Icon          string    `json:"icon,omitempty" bson:"icon,omitempty"`
+}
+
+func (app AppVersion) ToJson() string {
+	js, _ := json.Marshal(app)
+	return string(js)
 }
 
 var (
@@ -130,26 +140,67 @@ func (app *AppVersion) Insert() error {
 
 func (app *AppVersion) Update() error {
 	selector := bson.M{"_id": app.Id}
-	app.ParentVersion = ""
-	app.Version = ""
-	app.CreateTime = 0
-	app.AppStatus = makeStatusString(app.Status)
+	if app.Status > 1 {
+		app.ParentVersion = ""
+		app.Version = ""
+		app.CreateTime = 0
+		app.Icon = ""
+		app.Platform = nil
+	} else {
+		if app.isExist(bson.M{"version": app.Version, "app_id": app.AppId, "_id": bson.M{"$ne": app.Id}}) {
+			return fmt.Errorf("version exist")
+		}
+		if len(app.ParentVersion) > 0 {
+			if !app.isExist(bson.M{"version": app.ParentVersion, "app_id": app.AppId}) {
+				return errors.New("parent_version not exist")
+			}
+		}
+		if len(app.Platform) == 0 {
+			return errors.New("platform must choose")
+		}
+		for _, platform := range app.Platform {
+			_, ok := appPlatformMap[strings.ToUpper(platform)]
+			if !ok {
+				return fmt.Errorf("platform must like (iOS,Android,H5,Server) ")
+			}
+		}
+		compareState, err := common.VersionCompare(app.Version, app.ParentVersion)
+		if err != nil {
+			return err
+		}
+		if compareState != common.CompareVersionStateGreater {
+			return errors.New("new Version must bigger than ParentVersion")
+		}
+		if len(app.ParentVersion) == 0 {
+			app.ParentVersion = "-"
+		}
+	}
+	app.AppId = 0
+	if app.Status > 0 {
+		app.AppStatus = makeStatusString(app.Status)
+	}
 	return appVC.update(selector, app)
 }
 
 func makeStatusString(status appStatus) string {
-	statusString := "未知"
+	statusString := "待定"
 	switch status {
 	case appStatusTypePrepare:
 		statusString = "准备中"
+		break
 	case appStatusTypeDeveloping:
 		statusString = "开发中"
+		break
 	case appStatusTypeGray:
 		statusString = "灰度"
+		break
 	case appStatusTypeRelease:
 		statusString = "已发布"
-	default:
+		break
+	case appStatusTypeUnDetermined:
 		statusString = "待定"
+		break
+	default:
 	}
 	return statusString
 }

@@ -32,6 +32,28 @@ func addAppVersionHandler(c *gin.Context) {
 	}
 	err = appV.Insert()
 	if err != nil {
+		log4go.Info(err.Error())
+		aRes.SetErrorInfo(http.StatusInternalServerError, "para invalid: "+err.Error())
+		return
+	}
+	aRes.SetSuccess()
+}
+
+func updateAppVersionHandler(c *gin.Context) {
+	aRes := model.NewResponse()
+	defer func() {
+		c.JSON(http.StatusOK, aRes)
+	}()
+	appV := new(appVersionPara)
+	err := c.BindJSON(appV)
+	if err != nil {
+		log4go.Info(err.Error())
+		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid: "+err.Error())
+		return
+	}
+	err = appV.Update()
+	if err != nil {
+		log4go.Info(err.Error())
 		aRes.SetErrorInfo(http.StatusInternalServerError, "para invalid: "+err.Error())
 		return
 	}
@@ -62,6 +84,7 @@ func getAppVersionListHandler(c *gin.Context) {
 	}
 	userId := common.UserId(c)
 	if strings.EqualFold(userId, "") {
+		log4go.Info("user not found")
 		aRes.SetErrorInfo(http.StatusUnauthorized, "user not found")
 		return
 	}
@@ -78,19 +101,4 @@ func getAppVersionListHandler(c *gin.Context) {
 	}
 	aRes.AddResponseInfo("list", appList)
 	aRes.AddResponseInfo("total", totalCount)
-}
-
-func updateAppVersionHandler(c *gin.Context) {
-	aRes := model.NewResponse()
-	defer func() {
-		c.JSON(http.StatusOK, aRes)
-	}()
-	appV := new(appVersionPara)
-	err := c.BindJSON(appV)
-	if err != nil {
-		log4go.Info(err.Error())
-		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid: "+err.Error())
-		return
-	}
-
 }

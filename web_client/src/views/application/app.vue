@@ -246,51 +246,62 @@ export default {
         name: [
           {
             required: true,
-            message: this.$t('application.table_name_placeHolder')
+            message: this.$t('application.table_name_placeHolder'),
+            trigger: 'blur'
           },
           {
             max: 10,
-            message: '请输入不多于10个字符'
+            message: '请输入不多于10个字符',
+            trigger: 'blur'
           },
           {
             min: 2,
-            message: '请输入不少于2个字符'
+            message: '请输入不少于2个字符',
+            trigger: 'blur'
           },
           {
             pattern: /^[A-Za-z\u4e00-\u9fa5]+$/,
-            message: '只允许输入汉字或者英文字母'
+            message: '只允许输入汉字或者英文字母',
+            trigger: 'blur'
           }
         ],
         bundle_id: [
           {
             required: true,
-            message: this.$t('application.table_bundleId_warning')
+            message: this.$t('application.table_bundleId_warning'),
+            trigger: 'blur'
           },
           {
             pattern: /^(com).[A-Za-z0-9.-]+(.)[A-Za-z0-9.-]+$/,
-            message: '(格式：com.xxx.xxx)'
+            message: '(格式：com.xxx.xxx)',
+            trigger: 'blur'
           },
           {
             min: 10,
-            message: '请输入不少于10个字符'
+            message: '请输入不少于10个字符',
+            trigger: 'blur'
           },
           {
             max: 30,
-            message: '请输入不多于30个字符'
+            message: '请输入不多于30个字符',
+            trigger: 'blur'
           }
         ],
         desc: [
           {
             required: true,
-            message: this.$t('application.table_desc_placeholder')
+            message: this.$t('application.table_desc_placeholder'),
+            trigger: 'blur'
           },
           {
             min: 10,
-            message: '请输入不少于10个字符'
+            message: '请输入不少于10个字符',
+            trigger: 'blur'
           },
           {
             max: 200,
-            message: '请输入不多于200个字符'
+            message: '请输入不多于200个字符',
+            trigger: 'blur'
           }
         ]
       }

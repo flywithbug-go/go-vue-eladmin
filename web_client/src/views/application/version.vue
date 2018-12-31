@@ -155,8 +155,8 @@
           <el-date-picker
             :disabled="dialogStatus==='update' && temp.status > 1"
             v-model="temp.lock_time"
-            format="yyyy-MM-dd"
             :placeholder="$t('appVersion.lockTime')"
+            format="yyyy-MM-dd"
             type="date"/>
         </el-form-item>
 
@@ -166,8 +166,8 @@
           <el-date-picker
             :disabled="dialogStatus==='update' && temp.status > 1"
             v-model="temp.gray_time"
-            format="yyyy-MM-dd"
             :placeholder="$t('appVersion.grayTime')"
+            format="yyyy-MM-dd"
             type="date"/>
         </el-form-item>
 
@@ -215,7 +215,7 @@
 
 <script>
 import fixedButton from '../../components/FixedButton'
-import { getAppVersionListRequest } from '../../api/app'
+import { getAppVersionListRequest, addAppVersionRequest,updateAppVersionRequest } from '../../api/app'
 import { formatDate } from '../../utils/date'
 import ElTableFooter from 'element-ui'
 
@@ -281,28 +281,28 @@ export default {
             required: true,
             message: '必选',
             trigger: 'change'
-          },
+          }
         ],
         lock_time: [
           {
             required: true,
             message: '必选',
             trigger: 'change'
-          },
+          }
         ],
         gray_time: [
           {
             required: true,
             message: '必选',
             trigger: 'change'
-          },
+          }
         ],
         platform: [
           {
             required: true,
             message: '必选',
             trigger: 'change'
-          },
+          }
         ]
       },
       temp: {
@@ -316,7 +316,7 @@ export default {
         create_time: new Date(),
         status: 0,
         app_status: '',
-        app_id: 0
+        app_id: 10000
       },
       listQuery: {
         page: 0,
@@ -357,7 +357,7 @@ export default {
         create_time: undefined,
         status: 0,
         app_status: '',
-        app_id: 0
+        app_id: 10000
       }
     },
     handleTempTime(data) {
@@ -366,10 +366,10 @@ export default {
         version: data.version,
         parent_version: data.parent_version,
         platform: data.platform ? data.platform : [],
-        approval_time: data.approval_time?new Date(data.approval_time * 1000):new Date(),
-        lock_time: data.lock_time? new Date(data.lock_time * 1000):new Date(),
-        gray_time: data.gray_time? new Date(data.gray_time * 1000):new Date(),
-        create_time: data.create_time? new Date(data.create_time * 1000):new Date(),
+        approval_time: data.approval_time ? new Date(data.approval_time * 1000):new Date(),
+        lock_time: data.lock_time ? new Date(data.lock_time * 1000):new Date(),
+        gray_time: data.gray_time ? new Date(data.gray_time * 1000):new Date(),
+        create_time: data.create_time ? new Date(data.create_time * 1000):new Date(),
         status: data.status,
         app_status: data.app_status,
         app_id: data.app_id
@@ -386,12 +386,59 @@ export default {
             this.$message.error("锁版时间必须早于灰度时间")
             return
           }
-
+          addAppVersionRequest(
+            this.temp.app_id,
+            this.temp.version,
+            this.temp.parent_version,
+            this.temp.platform,
+            this.temp.approval_time.valueOf()/1000,
+            this.temp.lock_time.valueOf()/1000,
+            this.temp.gray_time.valueOf()/1000).then(() => {
+            this.dialogFormVisible = false
+            this.getList()
+            this.$notify({
+              title: '成功',
+              message: '创建成功',
+              type: 'success',
+              duration: 2000
+            })
+          })
         }
       })
     },
     updateDate() {
-      console.log('updateDate:', this.temp)
+      this.$refs['dataForm'].validate((valid) => {
+        if (valid) {
+          if (this.temp.approval_time > this.temp.lock_time) {
+            this.$message.error('立项时间必须早于锁版时间')
+            return
+          }
+          if (this.temp.lock_time > this.temp.gray_time) {
+            this.$message.error('锁版时间必须早于灰度时间')
+            return
+          }
+          console.log("updateDate:",this.temp)
+          updateAppVersionRequest(
+            this.temp.id,
+            this.temp.app_id,
+            this.temp.version,
+            this.temp.parent_version,
+            this.temp.platform,
+            this.temp.approval_time.getTime()/1000,
+            this.temp.lock_time.getTime()/1000,
+            this.temp.gray_time.getTime()/1000).then(() => {
+            this.getList()
+            this.dialogFormVisible = false
+            this.$notify({
+              title: '成功',
+              message: '修改成功',
+              type: 'success',
+              duration: 2000
+            })
+
+          })
+}
+      })
     },
     handleCreate() {
       this.resetTemp()

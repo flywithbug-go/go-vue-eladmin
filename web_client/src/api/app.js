@@ -43,12 +43,50 @@ export function getAppVersionListRequest(query) {
     params: query
   })
 }
-
-export function updateAppVersionRequest(app_id,version,) {
+/*
+para:
+{
+	"app_id":10001,
+	"version":"1.0.2",
+	"parent_version":"1.0.0",
+	"platform":["iOS","Android"],
+	"approval_time":1546244371,
+	"lock_time":1546444371,
+	"gray_time":1546744371
+}
+*/
+export function addAppVersionRequest(app_id,version,parent_version,platform,approval_time,lock_time,gray_time) {
+  const data = {
+    app_id,
+    version,
+    parent_version,
+    platform,
+    approval_time,
+    lock_time,
+    gray_time
+  }
   return client({
-    url: '/app/update',
+    url: '/app/version/add',
     method: 'post',
     data
   })
 }
+export function updateAppVersionRequest(id,app_id,version,parent_version,platform,approval_time,lock_time,gray_time) {
+  const data = {
+    id,
+    app_id,
+    version,
+    parent_version,
+    platform,
+    approval_time,
+    lock_time,
+    gray_time
+  }
+  return client({
+    url: '/app/version/update',
+    method: 'post',
+    data
+  })
+}
+
 
