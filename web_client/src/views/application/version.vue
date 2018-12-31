@@ -69,7 +69,7 @@
       <el-table-column
         :label="$t('application.table_action')"
         align="center"
-        min-width="150px"
+        min-width="180px"
         class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -80,33 +80,35 @@
             {{ $t('appVersion.operate') }}
           </el-button>
 
-          <el-button
-            v-show="scope.row.status === 1"
-            type="warning"
-            size="mini"
-            @click="handleUpdate(scope.row)">
-            {{ $t('selector.develop') }}
-          </el-button>
+          <el-popover
+            placement="top"
+            width="160px"
+            trigger="click" align="center" v-model=scope.row.pop_status >
+            <p align="center">
+              <span>切换到</span>
+              <span style="color: #3c763d; font-weight: bolder;">开发中</span>
+              <span>么？</span>
+            </p>
+            <div style="text-align: center; margin: 0">
+              <el-button size="mini" type="text" @click="reloadPopover(scope.row)">取消</el-button>
+              <el-button type="primary" size="mini" @click="reloadPopover(scope.row)">确定</el-button>
+            </div>
+            <el-button style="width: 80px" type="success" size="mini" slot="reference">{{ $t('selector.changeStatus') }}</el-button>
+          </el-popover>
 
-          <el-button
-            v-show="scope.row.status === 2"
-            type="warning"
-            size="mini"
-            @click="handleUpdate(scope.row)">
-            {{ $t('selector.gray') }}
-          </el-button>
-          <el-button
-            v-show="scope.row.status === 3"
-            type="warning"
-            size="mini"
-            @click="handleUpdate(scope.row)">
-            {{ $t('selector.releasing') }}
-          </el-button>
+
+          <!--<el-button-->
+            <!--v-show="scope.row.status === 1"-->
+            <!--type="warning"-->
+            <!--size="mini"-->
+            <!--@click="handleUpdate(scope.row)">-->
+            <!--{{ $t('selector.changeStatus') }}-->
+          <!--</el-button>-->
 
         </template>
       </el-table-column>
 
-      <el-table-column :label="$t('appVersion.createTime')" align="center" min-width="150px">
+      <el-table-column :label="$t('appVersion.createTime')" align="center" width="100px">
         <template slot-scope="scope">
           <span>{{ formatDate(scope.row.create_time) }}</span>
         </template>
@@ -242,6 +244,7 @@ export default {
         update: this.$t('application.table_edit'),
         create: this.$t('application.table_add')
       },
+      popoverMap:{},
       platformOptions: [{
         value: 'iOS',
         label: 'iOS'
@@ -346,6 +349,10 @@ export default {
     this.getList()
   },
   methods: {
+    reloadPopover(data){
+      console.log("reloadPopover",data)
+      data.pop_status = false
+    },
     formatPlatform(list) {
       if (list) {
         return list.join(',')
