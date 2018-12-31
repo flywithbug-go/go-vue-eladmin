@@ -19,10 +19,10 @@ var (
 
 const (
 	appVersionCollection              = "app_version"
-	appStatusTypePrepare    appStatus = iota //准备中
-	appStatusTypeDeveloping                  //开发中
-	appStatusTypeGray                        //灰度
-	appStatusTypeRelease                     //已发布
+	appStatusTypePrepare    appStatus = iota //准备中 待开发
+	appStatusTypeDeveloping                  //开发中 待灰度
+	appStatusTypeGray                        //灰度  待发布
+	appStatusTypeRelease                     //已发布  已发布不能再更改
 )
 
 type AppVersion struct {

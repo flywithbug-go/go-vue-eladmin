@@ -197,7 +197,9 @@ export default {
     developing: "Developing",
     gray:"Gray",
     release: "Release",
-    changeStatus:"Change status"
+    changeStatus:"Change status",
+    develop: "Develop",
+    releasing: "Releasing"
 
   }
 }

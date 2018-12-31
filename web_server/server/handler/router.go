@@ -153,4 +153,10 @@ var routers = []ginHandleFunc{
 		method:     "GET",
 		route:      "/app/version/list",
 	},
+	{
+		handler:    updateAppVersionHandler,
+		routerType: routerTypeNeedAuth,
+		method:     "POST",
+		route:      "/app/version/update",
+	},
 }

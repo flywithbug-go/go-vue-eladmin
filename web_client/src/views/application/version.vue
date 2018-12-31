@@ -65,15 +65,40 @@
       <el-table-column
         :label="$t('application.table_action')"
         align="center"
-        width="100px"
+        min-width="150px"
         class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
+            v-show="scope.row.status === 1"
             type="primary"
             size="mini"
             @click="handleUpdate(scope.row)">
             {{ $t('appVersion.operate') }}
           </el-button>
+
+          <el-button
+            v-show="scope.row.status === 1"
+            type="warning"
+            size="mini"
+            @click="handleUpdate(scope.row)">
+            {{ $t('selector.develop') }}
+          </el-button>
+
+          <el-button
+            v-show="scope.row.status === 2"
+            type="warning"
+            size="mini"
+            @click="handleUpdate(scope.row)">
+            {{ $t('selector.gray') }}
+          </el-button>
+          <el-button
+            v-show="scope.row.status === 3"
+            type="warning"
+            size="mini"
+            @click="handleUpdate(scope.row)">
+            {{ $t('selector.releasing') }}
+          </el-button>
+
 
         </template>
       </el-table-column>
@@ -160,20 +185,20 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item
-          v-show="dialogStatus==='update'"
-          :label="$t('appVersion.status')"
-          prop="status">
-          <el-select
-            v-model="temp.app_status"
-            :placeholder="$t('selector.placeholder')">
-            <el-option
-              v-for="item in statusOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"/>
-          </el-select>
-        </el-form-item>
+        <!--<el-form-item-->
+          <!--v-show="dialogStatus==='update'"-->
+          <!--:label="$t('appVersion.status')"-->
+          <!--prop="status">-->
+          <!--<el-select-->
+            <!--v-model="temp.app_status"-->
+            <!--:placeholder="$t('selector.placeholder')">-->
+            <!--<el-option-->
+              <!--v-for="item in statusOptions"-->
+              <!--:key="item.value"-->
+              <!--:label="item.label"-->
+              <!--:value="item.value"/>-->
+          <!--</el-select>-->
+        <!--</el-form-item>-->
 
       </el-form>
 

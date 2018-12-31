@@ -197,6 +197,8 @@ export default {
     developing: "开发中",
     gray:"灰度",
     release: "已发布",
-    changeStatus:"更改状态"
+    changeStatus:"更改状态",
+    develop: "开发",
+    releasing: "发布"
   }
 }
