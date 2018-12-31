@@ -10,19 +10,19 @@
     <div class="filter-container" align="center" style="margin-bottom: 10px">
       <label style="color: #2d2f33">选择App</label>
       <el-select
-        v-model="listQuery.app_id" @change="handleFilter">
+        v-model="listQuery.app_id"
+        @change="handleFilter">
         <el-option
           v-for="item in simpleAppList"
           :key="item.id"
           :label=" '('+(item.id)+')'+item.name"
-          :value="item.id">
-        </el-option>
+          :value="item.id"/>
       </el-select>
 
-      <img :src="this.currentSimpleApp?this.currentSimpleApp.icon:''"
-           style="height: 40px; display: inline-block">
+      <img
+        :src="this.currentSimpleApp?this.currentSimpleApp.icon:''"
+        style="height: 40px; display: inline-block">
     </div>
-
 
     <el-table
       :data="list"
@@ -256,8 +256,8 @@ export default {
         update: this.$t('application.table_edit'),
         create: this.$t('application.table_add')
       },
-      simpleAppList:null,
-      currentSimpleApp:null,
+      simpleAppList: null,
+      currentSimpleApp: null,
       platformOptions: [{
         value: 'iOS',
         label: 'iOS'
@@ -363,7 +363,7 @@ export default {
     this.getSimpleAppList()
   },
   methods: {
-    getSimpleAppList(){
+    getSimpleAppList() {
       this.listLoading = true
       getSimpleApplicationListRequest().then(response => {
         this.simpleAppList = response.list
@@ -371,7 +371,7 @@ export default {
         this.listQuery.app_id = this.currentSimpleApp.id
         this.getList()
       }).catch((err) => {
-        console.log("err",err)
+        console.log('err', err)
         this.listLoading = false
       })
     },
