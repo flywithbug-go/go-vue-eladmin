@@ -181,7 +181,7 @@ export default {
     table_app_icon_warning: "请上传应用图标",
   },
   appVersion: {
-    versionN: "新版本号",
+    versionN: "版本号",
     parentVN: "父版本号",
     parentVNPlaceholder:"父版本号(必须已存在）",
     platform: "平台",

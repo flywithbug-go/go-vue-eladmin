@@ -18,6 +18,9 @@
           :value="item.id">
         </el-option>
       </el-select>
+
+      <img :src="this.currentSimpleApp?this.currentSimpleApp.icon:''"
+           style="height: 40px; display: inline-block">
     </div>
 
 
@@ -26,14 +29,14 @@
       border
       fit
       highlight-current-row
-      style="width: 100%;"
+      style="width: 100%; "
       header-row-class-name="center"
       @sort-change="sortChange">
-      <el-table-column :label="$t('table.id')" prop="id" sortable="custom" align="center" width="65">
-      <template slot-scope="scope">
-      <span>{{ scope.row.id }}</span>
-      </template>
-      </el-table-column>
+      <!--<el-table-column :label="$t('table.id')" prop="id" sortable="custom" align="center" width="65">-->
+      <!--<template slot-scope="scope">-->
+      <!--<span>{{ scope.row.id }}</span>-->
+      <!--</template>-->
+      <!--</el-table-column>-->
       <el-table-column :label="$t('appVersion.versionN')" align="center" min-width="90px">
         <template slot-scope="scope">
           <span>{{ scope.row.version }}</span>
@@ -254,7 +257,7 @@ export default {
         create: this.$t('application.table_add')
       },
       simpleAppList:null,
-      simpleAppLoading:true,
+      currentSimpleApp:null,
       platformOptions: [{
         value: 'iOS',
         label: 'iOS'
@@ -360,23 +363,16 @@ export default {
     this.getSimpleAppList()
   },
   methods: {
-    handleSelectorFilter() {
-
-    },
     getSimpleAppList(){
       this.listLoading = true
-      this.simpleAppLoading = true
       getSimpleApplicationListRequest().then(response => {
         this.simpleAppList = response.list
-        this.simpleAppLoading = false
-        this.listQuery.app_id = this.simpleAppList[0].id
-        console.log("listQuery",this.listQuery)
-        console.log("simpleAppList",this.simpleAppList)
+        this.currentSimpleApp = this.simpleAppList[0]
+        this.listQuery.app_id = this.currentSimpleApp.id
         this.getList()
       }).catch((err) => {
         console.log("err",err)
         this.listLoading = false
-        this.simpleAppLoading = false
       })
     },
     getList() {
@@ -591,6 +587,7 @@ export default {
       this.handleFilter()
     },
     handleFilter() {
+      this.currentSimpleApp = this.simpleAppList.filter(item => item.id == this.listQuery.app_id)[0]
       this.listQuery.page = 1
       this.getList()
     }

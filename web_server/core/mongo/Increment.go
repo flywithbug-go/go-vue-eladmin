@@ -13,10 +13,18 @@ const (
 	IncrementIdsStarValue   = 10000
 )
 
+var (
+	IncrementDBStarId int64 = IncrementIdsStarValue
+)
+
 var incrementDBName = "increment"
 
 func SetIncrementDBName(dbName string) {
 	incrementDBName = dbName
+}
+
+func SetIncrementDBStarId(startId int64) {
+	IncrementDBStarId = startId
 }
 
 func DBName() string {
@@ -35,7 +43,7 @@ type incrementIds struct {
 func createIncrementIds(incrementName string) error {
 	cou := incrementIds{
 		Id:            incrementName,
-		SequenceValue: IncrementIdsStarValue,
+		SequenceValue: IncrementDBStarId,
 	}
 	return Insert(incrementDBName, collectionsIncrementIds, cou)
 }
@@ -56,7 +64,7 @@ func GetIncrementId(incrementName string) (int64, error) {
 			log4go.Error(err.Error())
 			return -1, err
 		}
-		increment.SequenceValue = IncrementIdsStarValue
+		increment.SequenceValue = IncrementDBStarId
 	}
 	return increment.SequenceValue, nil
 }
