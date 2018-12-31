@@ -237,6 +237,7 @@ export default {
       total: 10,
       dialogFormVisible: false,
       dialogStatus: 'create',
+      dialogEditCount: 0,
       textMap: {
         update: this.$t('application.table_edit'),
         create: this.$t('application.table_add')
@@ -331,6 +332,16 @@ export default {
       }
     }
   },
+  watch: {
+    temp: {
+      handler: function() {
+        if (this.dialogStatus === 'update') {
+          this.dialogEditCount++
+        }
+      },
+      deep: true
+    }
+  },
   created() {
     this.getList()
   },
@@ -411,6 +422,10 @@ export default {
       })
     },
     updateDate() {
+      if (this.dialogEditCount < 1) {
+        this.dialogFormVisible = false
+        return
+      }
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           if (this.temp.approval_time > this.temp.lock_time) {
@@ -447,7 +462,9 @@ export default {
       })
     },
     handleCreate() {
-      this.resetTemp()
+      if (this.dialogStatus === 'update') {
+        this.resetTemp()
+      }
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
       this.$nextTick(() => {
@@ -458,6 +475,7 @@ export default {
       this.temp = this.handleTempTime(data)
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
+      this.dialogEditCount = -1
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
