@@ -15,7 +15,6 @@
       style="width: 100%;"
       header-row-class-name="center"
       @sort-change="sortChange">
-
       <el-table-column :label="$t('table.id')" prop="id" sortable="custom" align="center" width="65">
         <template slot-scope="scope">
           <span>{{ scope.row.id }}</span>
@@ -35,7 +34,7 @@
 
       <el-table-column :label="$t('appVersion.platform')" align="center" min-width="150px">
         <template slot-scope="scope">
-          <span>{{ scope.row.platform.join(',') }}</span>
+          <span>{{  formatPlatform(scope.row.platform) }}</span>
         </template>
       </el-table-column>
 
@@ -150,7 +149,7 @@
           <el-select
             clearable
             :disabled="dialogStatus==='update' && temp.status > 1"
-            v-model="platformValues"
+            v-model="temp.platform"
             :placeholder="$t('selector.placeholder')"
             multiple>
             <el-option
@@ -200,6 +199,7 @@ export default {
     ElTableFooter,
     fixedButton
   },
+
   data() {
     return {
       listLoading: true,
@@ -250,15 +250,16 @@ export default {
           }
         ]
       },
+
       temp: {
         id: 0,
         version: '',
         parent_version: '',
         platform: '',
-        approval_time: '',
-        lock_time: '',
-        gray_time: '',
-        create_time: '',
+        approval_time: undefined,
+        lock_time: undefined,
+        gray_time: undefined,
+        create_time: undefined,
         status: 0,
         app_status: '',
         app_id: 0
@@ -276,6 +277,12 @@ export default {
     this.getList()
   },
   methods: {
+    formatPlatform (list) {
+      if (list){
+        return list.join(',')
+      }
+      return '-'
+    },
     handleNodeClick(data) {
       console.log(data)
     },
@@ -283,8 +290,8 @@ export default {
       if (!time || time === 0) {
         return '-'
       }
-      const date = new Date(time * 1000)
-      return formatDate(date, 'yyyy-MM-dd hh:mm')
+      const date = new Date(time *1000)
+      return formatDate(date, 'yyyy-MM-dd')
     },
 
     resetTemp() {
@@ -293,13 +300,28 @@ export default {
         version: '',
         parent_version: '',
         platform: '',
-        approval_time: '',
-        lock_time: '',
-        gray_time: '',
-        create_time: '',
+        approval_time: undefined,
+        lock_time: undefined,
+        gray_time: undefined,
+        create_time: undefined,
         status: 0,
         app_status: '',
         app_id: 0
+      }
+    },
+    handleTempTime(data) {
+      return {
+        id: data.id,
+        version: data.version,
+        parent_version: data.parent_version,
+        platform: data.platform,
+        approval_time: data.approval_time *1000,
+        lock_time:  data.lock_time *1000,
+        gray_time:  data.gray_time *1000,
+        create_time:  data.create_time *1000,
+        status: data.status,
+        app_status: data.app_status,
+        app_id: data.app_id
       }
     },
     createData() {
@@ -317,7 +339,7 @@ export default {
       })
     },
     handleUpdate(data) {
-      this.temp = Object.assign({}, data) // copy obj
+      this.temp = this.handleTempTime(data)
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
