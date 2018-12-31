@@ -32,30 +32,34 @@
         </template>
       </el-table-column>
 
-      <el-table-column :label="$t('appVersion.platform')" align="center" min-width="150px">
+      <el-table-column :label="$t('appVersion.platform')" align="center" min-width="90px">
         <template slot-scope="scope">
           <span>{{ formatPlatform(scope.row.platform) }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column :label="$t('appVersion.approvalTime')" align="center" min-width="150px">
+      <el-table-column :label="$t('appVersion.approvalTime')" align="center" min-width="90px">
         <template slot-scope="scope">
           <span>{{ formatDate(scope.row.approval_time) }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column :label="$t('appVersion.lockTime')" align="center" min-width="150px">
+      <el-table-column :label="$t('appVersion.lockTime')" align="center" min-width="90px">
         <template slot-scope="scope">
           <span>{{ formatDate(scope.row.lock_time) }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column :label="$t('appVersion.grayTime')" align="center" min-width="150px">
+      <el-table-column :label="$t('appVersion.grayTime')" align="center" min-width="90px">
         <template slot-scope="scope">
           <span>{{ formatDate(scope.row.gray_time) }}</span>
         </template>
       </el-table-column>
-
+      <el-table-column :label="$t('appVersion.ReleaseTime')" align="center" min-width="90px">
+        <template slot-scope="scope">
+          <span>{{ formatDate(scope.row.release_time) }}</span>
+        </template>
+      </el-table-column>
       <el-table-column :label="$t('appVersion.status')" align="center" min-width="80px">
         <template slot-scope="scope">
           <span>{{ scope.row.app_status }}</span>
@@ -417,7 +421,9 @@ export default {
             this.$message.error('锁版时间必须早于灰度时间')
             return
           }
-          console.log("updateDate:",this.temp)
+          if (this.temp.parent_version === '-'){
+            this.temp.parent_version = ''
+          }
           updateAppVersionRequest(
             this.temp.id,
             this.temp.app_id,

@@ -186,10 +186,11 @@ export default {
     parentVNPlaceholder: "Parent Version NO.(Must already exist)",
     platform: "Platform",
     approvalTime: "Approval time",
-    lockTime: "Lock Time",
-    grayTime: "Gray Time",
+    lockTime: "Lock time",
+    grayTime: "Gray time",
+    ReleaseTime:"Release time",
     status: "Status",
-    createTime: "Create Time",
+    createTime: "Create time",
     operate: "Edit"
   },
   selector: {

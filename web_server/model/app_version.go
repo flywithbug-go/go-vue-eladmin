@@ -42,7 +42,7 @@ type AppVersion struct {
 	GrayTime      int64     `json:"gray_time,omitempty" bson:"gray_time,omitempty"`         //灰度时间
 	CreateTime    int64     `json:"create_time,omitempty" bson:"create_time,omitempty"`     //添加时间
 	AppStatus     string    `json:"app_status,omitempty" bson:"app_status,omitempty"`       //app状态
-	ReleaseTime   int64     `json:"release_time,omitempty" bson:"release_time,omitempty"`
+	ReleaseTime   int64     `json:"release_time,omitempty" bson:"release_time"`
 	Icon          string    `json:"icon,omitempty" bson:"icon,omitempty"`
 }
 
@@ -141,13 +141,24 @@ func (app *AppVersion) Insert() error {
 func (app *AppVersion) Update() error {
 	selector := bson.M{"_id": app.Id}
 	if app.Status > 1 {
-		app.ParentVersion = ""
-		app.Version = ""
-		app.CreateTime = 0
-		app.Icon = ""
-		app.Platform = nil
+		//状态大于1时，可以更新锁版时间，灰度时间，状态，和发布时间
+		app.AppStatus = makeStatusString(app.Status)
+		if app.Status == appStatusTypeRelease {
+			app.ReleaseTime = time.Now().Unix()
+		} else {
+			app.ReleaseTime = 0
+		}
+		app.AppId = 0
+		return appVC.update(selector,
+			bson.M{"status": app.Status,
+				"app_status":   app.AppStatus,
+				"gray_time":    app.GrayTime,
+				"lock_time":    app.LockTime,
+				"release_time": app.ReleaseTime})
 	} else {
+		app.ReleaseTime = 0
 		//判断非当前version id的版本号是否存在
+
 		if app.isExist(bson.M{"version": app.Version, "app_id": app.AppId, "_id": bson.M{"$ne": app.Id}}) {
 			return fmt.Errorf("version exist")
 		}
@@ -177,9 +188,6 @@ func (app *AppVersion) Update() error {
 		}
 	}
 	app.AppId = 0
-	if app.Status > 0 {
-		app.AppStatus = makeStatusString(app.Status)
-	}
 	return appVC.update(selector, app)
 }
 

@@ -187,6 +187,7 @@ export default {
     platform: "平台",
     approvalTime: "立项时间",
     lockTime: "锁版时间",
+    ReleaseTime:"发布时间",
     grayTime: "灰度时间",
     status: "状态",
     createTime: "添加时间",

@@ -89,4 +89,15 @@ export function updateAppVersionRequest(id,app_id,version,parent_version,platfor
   })
 }
 
+export function updateStatusAppVersionRequest(id,status) {
+  const data = {
+    id,
+    status
+  }
+  return client({
+    url: '/app/version/update',
+    method: 'post',
+    data
+  })
+}
 
