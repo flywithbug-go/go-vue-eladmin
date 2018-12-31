@@ -147,6 +147,7 @@ func (app *AppVersion) Update() error {
 		app.Icon = ""
 		app.Platform = nil
 	} else {
+		//判断非当前version id的版本号是否存在
 		if app.isExist(bson.M{"version": app.Version, "app_id": app.AppId, "_id": bson.M{"$ne": app.Id}}) {
 			return fmt.Errorf("version exist")
 		}
