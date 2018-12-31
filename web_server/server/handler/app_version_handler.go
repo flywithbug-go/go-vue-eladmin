@@ -36,7 +36,7 @@ func addAppVersionHandler(c *gin.Context) {
 	aRes.SetSuccess()
 }
 
-func getAppVersionlistHandler(c *gin.Context) {
+func getAppVersionListHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
@@ -63,12 +63,12 @@ func getAppVersionlistHandler(c *gin.Context) {
 		return
 	}
 	totalCount, _ := model.TotalCountAppVersion(nil, nil)
-	applist, err := model.FindPageAppVersionFilter(page, limit, nil, nil, sort)
+	appList, err := model.FindPageAppVersionFilter(page, limit, nil, nil, sort)
 	if err != nil {
 		log4go.Info(err.Error())
 		aRes.SetErrorInfo(http.StatusUnauthorized, "app version list find error"+err.Error())
 		return
 	}
-	aRes.AddResponseInfo("list", applist)
+	aRes.AddResponseInfo("list", appList)
 	aRes.AddResponseInfo("total", totalCount)
 }

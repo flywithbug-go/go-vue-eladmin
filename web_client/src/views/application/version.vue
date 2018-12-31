@@ -85,6 +85,26 @@
 
     </el-table>
 
+    <el-dialog
+      :title="textMap[dialogStatus]"
+      :visible.sync="dialogFormVisible">
+      <el-form ref="dataForm"
+               :rules="rules"
+               :model="temp"
+               label-position="left"
+               label-width="70px"
+               style="width: 400px; margin-left:50px;">
+
+      </el-form>
+
+
+    </el-dialog>
+
+
+
+
+
+
   </div>
 </template>
 
@@ -103,6 +123,28 @@ export default {
       listLoading: true,
       list: null,
       total: 10,
+      dialogFormVisible: false,
+      dialogStatus: 'create',
+      textMap: {
+        update: this.$t('application.table_edit'),
+        create: this.$t('application.table_add')
+      },
+      rules: {
+
+      },
+      temp: {
+        id: 0,
+        version: '',
+        parent_version: '',
+        platform: '',
+        approval_time: '',
+        lock_time: '',
+        gray_time: '',
+        create_time:'',
+        status: 0,
+        app_status:'',
+        app_id:0,
+      },
       listQuery: {
         page: 0,
         limit: 10,
@@ -124,7 +166,11 @@ export default {
       return formatDate(date, 'yyyy-MM-dd hh:mm')
     },
     handleCreate() {
-
+      this.dialogStatus = 'create'
+      this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs['dataForm'].clearValidate()
+      })
     },
     getList() {
       this.listLoading = true

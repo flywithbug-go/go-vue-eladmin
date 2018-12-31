@@ -148,7 +148,7 @@ var routers = []ginHandleFunc{
 		route:      "/app/version/add",
 	},
 	{
-		handler:    getAppVersionlistHandler,
+		handler:    getAppVersionListHandler,
 		routerType: routerTypeNeedAuth,
 		method:     "GET",
 		route:      "/app/version/list",

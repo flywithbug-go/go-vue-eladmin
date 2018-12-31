@@ -161,7 +161,7 @@
             :before-upload="beforeAvatarUpload"
             class="avatar-uploader">
             <img v-if="temp.icon" :src="temp.icon" width="100%" class="avatar">
-            <img v-else="temp.icon" :src="imagePlaceHolder" width="100%" class="avatar">
+            <img v-if="!temp.icon" :src="imagePlaceHolder" width="100%" class="avatar">
           </el-upload>
         </el-form-item>
 
