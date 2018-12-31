@@ -189,5 +189,12 @@ export default {
     grayTime: "灰度时间",
     status: "状态",
     createTime: "添加时间"
+  },
+  selector: {
+    placeholder: "请选择",
+    preparing: "准备中",
+    developing: "开发中",
+    gray:"灰度",
+    release: "已发布"
   }
 }

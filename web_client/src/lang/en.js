@@ -189,5 +189,12 @@ export default {
     grayTime: "Gray Time",
     status: "Status",
     createTime: "Create Time"
+  },
+  selector: {
+    placeholder: "Please select",
+    preparing: "Preparing",
+    developing: "Developing",
+    gray:"Gray",
+    release: "Release"
   }
 }

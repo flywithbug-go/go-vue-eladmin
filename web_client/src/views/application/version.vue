@@ -88,22 +88,88 @@
     <el-dialog
       :title="textMap[dialogStatus]"
       :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm"
-               :rules="rules"
-               :model="temp"
-               label-position="left"
-               label-width="70px"
-               style="width: 400px; margin-left:50px;">
+      <el-form
+        ref="dataForm"
+        :rules="rules"
+        :model="temp"
+        label-position="left"
+        label-width="70px"
+        style="width: 400px; margin-left:50px;">
+
+        <el-form-item
+          :label="$t('appVersion.versionN')"
+          prop="version">
+          <el-input
+            :disabled="dialogStatus==='update'"
+            v-model="temp.version"
+            :placeholder="$t('appVersion.versionN')"></el-input>
+        </el-form-item>
+
+        <el-form-item
+          :label="$t('appVersion.parentVN')"
+          prop="parent_version">
+          <el-input
+            :disabled="dialogStatus==='update'"
+            v-model="temp.parent_version"
+            :placeholder="$t('appVersion.parentVN')"></el-input>
+        </el-form-item>
+
+        <el-form-item :label="$t('appVersion.approvalTime')"
+                      prop="timestamp">
+          <el-date-picker v-model="temp.approval_time"
+                          type="date"
+                          :placeholder="$t('appVersion.approvalTime')">
+          </el-date-picker>
+        </el-form-item>
+
+        <el-form-item :label="$t('appVersion.lockTime')"
+                      prop="timestamp">
+          <el-date-picker v-model="temp.lock_time"
+                          type="date"
+                          :placeholder="$t('appVersion.lockTime')">
+          </el-date-picker>
+        </el-form-item>
+
+        <el-form-item :label="$t('appVersion.grayTime')"
+                      prop="timestamp">
+          <el-date-picker v-model="temp.gray_time"
+                          type="date"
+                          :placeholder="$t('appVersion.grayTime')">
+          </el-date-picker>
+        </el-form-item>
+
+
+        <el-form-item :label="$t('appVersion.platform')" prop="platform">
+          <el-select
+            v-model="platformValues"
+            multiple
+            :placeholder="$t('selector.placeholder')">
+            <el-option
+              v-for="item in platformOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+
+        <el-form-item :label="$t('appVersion.status')"
+                      prop="status" v-show="dialogStatus==='update'">
+          <el-select
+            v-model="statusValues"
+            :placeholder="$t('selector.placeholder')">
+            <el-option
+              v-for="item in statusOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
 
       </el-form>
 
-
     </el-dialog>
-
-
-
-
-
 
   </div>
 </template>
@@ -129,6 +195,34 @@ export default {
         update: this.$t('application.table_edit'),
         create: this.$t('application.table_add')
       },
+      platformOptions: [{
+        value: 'iOS',
+        label: 'iOS'
+      }, {
+        value: 'Android',
+        label: 'Android'
+      }, {
+        value: 'H5',
+        label: 'H5'
+      }, {
+        value: 'Server',
+        label: 'Server'
+      }],
+      statusOptions: [{
+        value: '1',
+        label: this.$t('selector.preparing')
+      }, {
+        value: '2',
+        label: this.$t('selector.developing')
+      }, {
+        value: '3',
+        label: this.$t('selector.gray')
+      }, {
+        value: '4',
+        label: this.$t('selector.release')
+      }],
+      statusValues: [],
+      platformValues: [],
       rules: {
 
       },
@@ -140,10 +234,10 @@ export default {
         approval_time: '',
         lock_time: '',
         gray_time: '',
-        create_time:'',
+        create_time: '',
         status: 0,
-        app_status:'',
-        app_id:0,
+        app_status: '',
+        app_id: 0
       },
       listQuery: {
         page: 0,
@@ -167,6 +261,14 @@ export default {
     },
     handleCreate() {
       this.dialogStatus = 'create'
+      this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs['dataForm'].clearValidate()
+      })
+    },
+    handleUpdate(data) {
+      this.temp = Object.assign({}, data) // copy obj
+      this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
