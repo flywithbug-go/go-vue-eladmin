@@ -30,7 +30,7 @@ type AppVersion struct {
 	AppId         int64     `json:"app_id,omitempty" bson:"app_id,omitempty"` //所属App DB Id
 	Version       string    `json:"version,omitempty" bson:"version,omitempty"`
 	ParentVersion string    `json:"parent_version,omitempty" bson:"parent_version,omitempty"`
-	Platforms     []string  `json:"platforms,omitempty" bson:"platforms,omitempty"`         //(iOS,Android,H5,Server)["iOS","Android","H5","Server"]
+	Platform      []string  `json:"platform,omitempty" bson:"platform,omitempty"`           //(iOS,Android,H5,Server)["iOS","Android","H5","Server"]
 	Status        appStatus `json:"status,omitempty" bson:"status,omitempty"`               //状态    1(准备中) 2(开发中) 3(灰度) 4(已发布)
 	ApprovalTime  int64     `json:"approval_time,omitempty" bson:"approval_time,omitempty"` //立项时间
 	LockTime      int64     `json:"lock_time,omitempty" bson:"lock_time,omitempty"`         //锁版时间
@@ -101,7 +101,7 @@ func (app *AppVersion) Insert() error {
 			return errors.New("parent_version not exist")
 		}
 	}
-	for _, platform := range app.Platforms {
+	for _, platform := range app.Platform {
 		_, ok := appPlatformMap[strings.ToUpper(platform)]
 		if !ok {
 			return fmt.Errorf("platform must like (iOS,Android,H5,Server) ")

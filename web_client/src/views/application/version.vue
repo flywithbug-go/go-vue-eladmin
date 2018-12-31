@@ -35,7 +35,7 @@
 
       <el-table-column :label="$t('appVersion.platform')" align="center" min-width="150px">
         <template slot-scope="scope">
-          <span>{{ scope.row.platforms }}</span>
+          <span>{{ scope.row.platform.join(',') }}</span>
         </template>
       </el-table-column>
 
