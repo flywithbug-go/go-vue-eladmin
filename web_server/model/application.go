@@ -24,8 +24,8 @@ type Application struct {
 	Icon       string   `json:"icon,omitempty" bson:"icon,omitempty"`        //icon 地址
 	Owner      string   `json:"owner,omitempty" bson:"owner,omitempty"`      //负责人
 	BundleId   string   `json:"bundle_id,omitempty" bson:"bundle_id,omitempty"`
-	Manager    []string `json:"manager,omitempty" bson:"manager,omitempty"` //管理者 account 数组
-	Editable   bool     //当前用户是否可以编辑
+	Manager    []string `json:"manager,omitempty" bson:"manager,omitempty"`   //管理者 account 数组
+	Editable   bool     `json:"editable,omitempty" bson:"editable,omitempty"` //当前用户是否可以编辑
 }
 
 var (
@@ -139,9 +139,9 @@ func FindApplication(query, selector interface{}) (*Application, error) {
 	return appC.findOne(query, selector)
 }
 
-//func FindALlApplications() (apps *[]Application, err error) {
-//	return appC.findAll(nil, nil)
-//}
+func FindAllApplications(query, selector interface{}) (apps *[]Application, err error) {
+	return appC.findAll(query, selector)
+}
 
 //func FindPageApplications(page, limit int, fields ...string) (apps *[]Application, err error) {
 //	return appC.findPage(page, limit, nil, nil, fields...)

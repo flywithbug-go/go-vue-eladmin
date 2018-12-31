@@ -227,7 +227,7 @@ export default {
       },
       listQuery: {
         page: 0,
-        limit: 2,
+        limit: 10,
         name: '',
         owner: '',
         sort: '+_id'

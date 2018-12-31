@@ -22,6 +22,13 @@ export function getApplicationlListRequest(query) {
   })
 }
 
+export function getSimpleApplicationListRequest() {
+  return client({
+    url: '/app/list/simple',
+    method: 'get'
+  })
+}
+
 export function updateApplicationRequest(icon, name, desc, id) {
   const data = {
     icon,

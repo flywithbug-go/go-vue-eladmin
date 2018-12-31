@@ -7,6 +7,20 @@
       </fixed-button>
     </section>
 
+    <div class="filter-container" align="center" style="margin-bottom: 10px">
+      <label style="color: #2d2f33">选择App</label>
+      <el-select
+        v-model="listQuery.app_id" @change="handleFilter">
+        <el-option
+          v-for="item in simpleAppList"
+          :key="item.id"
+          :label=" '('+(item.id)+')'+item.name"
+          :value="item.id">
+        </el-option>
+      </el-select>
+    </div>
+
+
     <el-table
       :data="list"
       border
@@ -15,11 +29,11 @@
       style="width: 100%;"
       header-row-class-name="center"
       @sort-change="sortChange">
-      <!--<el-table-column :label="$t('table.id')" prop="id" sortable="custom" align="center" width="65">-->
-      <!--<template slot-scope="scope">-->
-      <!--<span>{{ scope.row.id }}</span>-->
-      <!--</template>-->
-      <!--</el-table-column>-->
+      <el-table-column :label="$t('table.id')" prop="id" sortable="custom" align="center" width="65">
+      <template slot-scope="scope">
+      <span>{{ scope.row.id }}</span>
+      </template>
+      </el-table-column>
       <el-table-column :label="$t('appVersion.versionN')" align="center" min-width="90px">
         <template slot-scope="scope">
           <span>{{ scope.row.version }}</span>
@@ -216,7 +230,7 @@
 
 <script>
 import fixedButton from '../../components/FixedButton'
-import { getAppVersionListRequest, addAppVersionRequest, updateAppVersionRequest, updateStatusAppVersionRequest } from '../../api/app'
+import { getSimpleApplicationListRequest, getAppVersionListRequest, addAppVersionRequest, updateAppVersionRequest, updateStatusAppVersionRequest } from '../../api/app'
 import { formatDate } from '../../utils/date'
 import ElTableFooter from 'element-ui'
 
@@ -239,7 +253,8 @@ export default {
         update: this.$t('application.table_edit'),
         create: this.$t('application.table_add')
       },
-      popoverMap: {},
+      simpleAppList:null,
+      simpleAppLoading:true,
       platformOptions: [{
         value: 'iOS',
         label: 'iOS'
@@ -319,7 +334,7 @@ export default {
         create_time: new Date(),
         status: 0,
         app_status: '',
-        app_id: 10000
+        app_id: 0
       },
       listQuery: {
         page: 0,
@@ -342,9 +357,37 @@ export default {
     }
   },
   created() {
-    this.getList()
+    this.getSimpleAppList()
   },
   methods: {
+    handleSelectorFilter() {
+
+    },
+    getSimpleAppList(){
+      this.listLoading = true
+      this.simpleAppLoading = true
+      getSimpleApplicationListRequest().then(response => {
+        this.simpleAppList = response.list
+        this.simpleAppLoading = false
+        this.listQuery.app_id = this.simpleAppList[0].id
+        console.log("listQuery",this.listQuery)
+        console.log("simpleAppList",this.simpleAppList)
+        this.getList()
+      }).catch((err) => {
+        console.log("err",err)
+        this.listLoading = false
+        this.simpleAppLoading = false
+      })
+    },
+    getList() {
+      getAppVersionListRequest(this.listQuery).then(response => {
+        this.list = response.list
+        this.total = response.total
+        this.listLoading = false
+      }).catch(() => {
+        this.listLoading = false
+      })
+    },
     formatStatusString(status) {
       switch (status + 1) {
         case 1:
@@ -531,16 +574,6 @@ export default {
       this.dialogEditCount = -1
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
-      })
-    },
-    getList() {
-      this.listLoading = true
-      getAppVersionListRequest(this.listQuery).then(response => {
-        this.list = response.list
-        this.total = response.total
-        this.listLoading = false
-      }).catch(() => {
-        this.listLoading = false
       })
     },
     sortChange(data) {
