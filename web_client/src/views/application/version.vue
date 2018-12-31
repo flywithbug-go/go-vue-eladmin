@@ -85,13 +85,13 @@
             width="160px"
             trigger="click" align="center" v-model=scope.row.pop_status >
             <p align="center">
-              <span>切换到</span>
-              <span style="color: #3c763d; font-weight: bolder;">开发中</span>
+              <span>切换状态到</span>
+              <span style="color:#c03639; font-weight: bolder;font-size: 18px">{{formatStatusString(scope.row.status)}}</span>
               <span>么？</span>
             </p>
             <div style="text-align: center; margin: 0">
-              <el-button size="mini" type="text" @click="reloadPopover(scope.row)">取消</el-button>
-              <el-button type="primary" size="mini" @click="reloadPopover(scope.row)">确定</el-button>
+              <el-button size="mini" type="text" @click="cancelPopover(scope.row)">{{ $t('selector.cancel') }}</el-button>
+              <el-button type="primary" size="mini" @click="confirmPopover(scope.row)">{{ $t('selector.confirm') }}</el-button>
             </div>
             <el-button style="width: 80px" type="success" size="mini" slot="reference">{{ $t('selector.changeStatus') }}</el-button>
           </el-popover>
@@ -192,20 +192,6 @@
           </el-select>
         </el-form-item>
 
-        <!--<el-form-item-->
-        <!--v-show="dialogStatus==='update'"-->
-        <!--:label="$t('appVersion.status')"-->
-        <!--prop="status">-->
-        <!--<el-select-->
-        <!--v-model="temp.app_status"-->
-        <!--:placeholder="$t('selector.placeholder')">-->
-        <!--<el-option-->
-        <!--v-for="item in statusOptions"-->
-        <!--:key="item.value"-->
-        <!--:label="item.label"-->
-        <!--:value="item.value"/>-->
-        <!--</el-select>-->
-        <!--</el-form-item>-->
 
       </el-form>
 
@@ -349,9 +335,26 @@ export default {
     this.getList()
   },
   methods: {
-    reloadPopover(data){
-      console.log("reloadPopover",data)
+    formatStatusString(status) {
+      switch (status+1) {
+        case 1:
+         return this.$t('selector.preparing')
+        case 2:
+          return this.$t('selector.developing')
+        case 3:
+          return this.$t('selector.gray')
+        case 4:
+          return this.$t('selector.release')
+      }
+      return this.$t('selector.release')
+    },
+    cancelPopover(data) {
       data.pop_status = false
+    },
+    confirmPopover(data){
+      data.pop_status = false
+
+
     },
     formatPlatform(list) {
       if (list) {

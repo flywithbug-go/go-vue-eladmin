@@ -201,6 +201,8 @@ export default {
     release: "已发布",
     changeStatus:"更改状态",
     develop: "开发",
-    releasing: "发布"
+    releasing: "发布",
+    cancel: "取消",
+    confirm: "确定",
   }
 }

@@ -201,7 +201,9 @@ export default {
     release: "Release",
     changeStatus:"Change status",
     develop: "Develop",
-    releasing: "Releasing"
+    releasing: "Releasing",
+    cancel: "Cancel",
+    confirm: "Confirm",
 
   }
 }
