@@ -1,60 +1,3 @@
-
-## Getting started
-
-```bash
-# clone the project 到go的 src目录下
-git clone https://github.com/flywithbug-docmanager/docmanager.git doc-manager
-
-启动本地Mongo服务
-//go版本管理使用的是govendor 更新依赖
-go run main.go
-
-# install dependency
-cd web_client
-npm install
-
-# develop
-npm run dev
-
-
-
-```
-
-This will automatically open http://localhost:9527.
-
-## Build
-
-```bash
-# build for test environment
-npm run build:sit
-
-# build for production environment
-npm run build:prod
-```
-
-## Advanced
-
-```bash
-# --report to build with bundle size analytics
-npm run build:prod --report
-
-# --generate a bundle size analytics. default: bundle-report.html
-npm run build:prod --generate_report
-
-# --preview to start a server in local to preview
-npm run build:prod --preview
-
-# lint code
-npm run lint
-
-# auto fix
-npm run lint -- --fix
-```
-
-
-#### 项目结构
-
-``` 
 .
 ├── LICENSE
 ├── README.md
@@ -73,6 +16,48 @@ npm run lint -- --fix
 │   ├── index.js
 │   ├── prod.env.js
 │   └── sit.env.js
+├── dist
+│   ├── favicon.ico
+│   ├── index.html
+│   └── static
+│       ├── css
+│       │   ├── app.eaa2858f.css
+│       │   ├── chunk-35cf.15ac22f5.css
+│       │   ├── chunk-3fb2.b803fe38.css
+│       │   ├── chunk-401d.fb2cb1da.css
+│       │   ├── chunk-4da9.8df2d56d.css
+│       │   ├── chunk-5c89.9f9ca2e8.css
+│       │   ├── chunk-626b.64862291.css
+│       │   ├── chunk-7691.895f3241.css
+│       │   ├── chunk-elementUI.c5f2f1e8.css
+│       │   └── chunk-libs.6c5fa19c.css
+│       ├── fonts
+│       │   └── element-icons.6f0a763.ttf
+│       ├── img
+│       │   ├── 401.089007e.gif
+│       │   └── 404.a57b6f3.png
+│       ├── js
+│       │   ├── 7zzA.acd9b7e4.js
+│       │   ├── app.c688458b.js
+│       │   ├── chunk-35cf.aad5aff3.js
+│       │   ├── chunk-3fb2.d2ad125f.js
+│       │   ├── chunk-401d.efd1960a.js
+│       │   ├── chunk-4da9.56b533b0.js
+│       │   ├── chunk-5c89.b3bbce99.js
+│       │   ├── chunk-626b.2b8c8f6e.js
+│       │   ├── chunk-7691.6e26e542.js
+│       │   ├── chunk-elementUI.eda1a8bc.js
+│       │   └── chunk-libs.4d0b8f2d.js
+│       └── tinymce4.7.5
+│           ├── langs
+│           │   └── zh_CN.js
+│           ├── plugins
+│           │   ├── codesample
+│           │   ├── emoticons
+│           │   └── visualblocks
+│           ├── skins
+│           │   └── lightgray
+│           └── tinymce.min.js
 ├── favicon.ico
 ├── index.html
 ├── package-lock.json
@@ -144,6 +129,51 @@ npm run lint -- --fix
 │   ├── icons
 │   │   ├── index.js
 │   │   ├── svg
+│   │   │   ├── 404.svg
+│   │   │   ├── add.svg
+│   │   │   ├── application.svg
+│   │   │   ├── bug.svg
+│   │   │   ├── chart.svg
+│   │   │   ├── clipboard.svg
+│   │   │   ├── component.svg
+│   │   │   ├── dashboard.svg
+│   │   │   ├── documentation.svg
+│   │   │   ├── drag.svg
+│   │   │   ├── edit.svg
+│   │   │   ├── email.svg
+│   │   │   ├── example.svg
+│   │   │   ├── excel.svg
+│   │   │   ├── eye.svg
+│   │   │   ├── eye_open.svg
+│   │   │   ├── form.svg
+│   │   │   ├── guide\ 2.svg
+│   │   │   ├── guide.svg
+│   │   │   ├── icon.svg
+│   │   │   ├── image_placeholder.svg
+│   │   │   ├── international.svg
+│   │   │   ├── language.svg
+│   │   │   ├── link.svg
+│   │   │   ├── list.svg
+│   │   │   ├── lock.svg
+│   │   │   ├── message.svg
+│   │   │   ├── metadata.svg
+│   │   │   ├── money.svg
+│   │   │   ├── nested.svg
+│   │   │   ├── password.svg
+│   │   │   ├── people.svg
+│   │   │   ├── peoples.svg
+│   │   │   ├── qq.svg
+│   │   │   ├── shopping.svg
+│   │   │   ├── size.svg
+│   │   │   ├── star.svg
+│   │   │   ├── tab.svg
+│   │   │   ├── table.svg
+│   │   │   ├── theme.svg
+│   │   │   ├── tree.svg
+│   │   │   ├── user.svg
+│   │   │   ├── version.svg
+│   │   │   ├── wechat.svg
+│   │   │   └── zip.svg
 │   │   └── svgo.yml
 │   ├── lang
 │   │   ├── en.js
@@ -238,5 +268,3 @@ npm run lint -- --fix
         └── tinymce.min.js
 
 80 directories, 187 files
-
-```
