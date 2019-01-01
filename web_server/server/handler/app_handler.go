@@ -128,11 +128,14 @@ func getAllSimpleAppHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
-	arrList, err := model.FindAllApplications(nil, bson.M{"_id": 1, "name": 1, "icon": 1, "owner": 1})
+	arrList, err := model.FindAllApplications(nil, bson.M{"_id": 1, "name": 1, "icon": 1, "owner": 1, "editable": 1})
 	if err != nil {
 		log4go.Info(err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "update failed: "+err.Error())
 		return
+	}
+	for i := 0; i < len(arrList); i++ {
+		arrList[i].Editable = true
 	}
 	aRes.AddResponseInfo("list", arrList)
 }

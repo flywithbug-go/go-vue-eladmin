@@ -40,15 +40,15 @@ func (a Application) isExist(query interface{}) bool {
 	return mongo.IsExist(db, appCollection, query)
 }
 
-func (a Application) findOne(query, selector interface{}) (*Application, error) {
-	ap := new(Application)
-	err := mongo.FindOne(db, appCollection, query, selector, ap)
+func (a Application) findOne(query, selector interface{}) (Application, error) {
+	ap := Application{}
+	err := mongo.FindOne(db, appCollection, query, selector, &ap)
 	return ap, err
 }
 
-func (a Application) findAll(query, selector interface{}) (results *[]Application, err error) {
-	results = new([]Application)
-	err = mongo.FindAll(db, appCollection, query, selector, results)
+func (a Application) findAll(query, selector interface{}) (results []Application, err error) {
+	results = []Application{}
+	err = mongo.FindAll(db, appCollection, query, selector, &results)
 	return results, err
 }
 
@@ -56,9 +56,9 @@ func (a Application) totalCount(query, selector interface{}) (int, error) {
 	return mongo.TotalCount(db, appCollection, query, selector)
 }
 
-func (a Application) findPage(page, limit int, query, selector interface{}, fields ...string) (results *[]Application, err error) {
-	results = new([]Application)
-	err = mongo.FindPage(db, appCollection, page, limit, query, selector, results, fields...)
+func (a Application) findPage(page, limit int, query, selector interface{}, fields ...string) (results []Application, err error) {
+	results = []Application{}
+	err = mongo.FindPage(db, appCollection, page, limit, query, selector, &results, fields...)
 	return
 }
 
@@ -128,18 +128,18 @@ func (a *Application) Update() error {
 	return appC.update(selector, a)
 }
 
-func FindApplicationById(id int64) (*Application, error) {
+func FindApplicationById(id int64) (Application, error) {
 	return appC.findOne(bson.M{"_id": id}, nil)
 }
 
-func FindApplicationAppId(appId string) (*Application, error) {
+func FindApplicationAppId(appId string) (Application, error) {
 	return appC.findOne(bson.M{"app_id": appId}, nil)
 }
-func FindApplication(query, selector interface{}) (*Application, error) {
+func FindApplication(query, selector interface{}) (Application, error) {
 	return appC.findOne(query, selector)
 }
 
-func FindAllApplications(query, selector interface{}) (apps *[]Application, err error) {
+func FindAllApplications(query, selector interface{}) (apps []Application, err error) {
 	return appC.findAll(query, selector)
 }
 
@@ -150,6 +150,6 @@ func FindAllApplications(query, selector interface{}) (apps *[]Application, err 
 func TotalCountApplication(query, selector interface{}) (int, error) {
 	return appC.totalCount(query, selector)
 }
-func FindPageApplicationsFilter(page, limit int, query, selector interface{}, fields ...string) (apps *[]Application, err error) {
+func FindPageApplicationsFilter(page, limit int, query, selector interface{}, fields ...string) (apps []Application, err error) {
 	return appC.findPage(page, limit, query, selector, fields...)
 }
