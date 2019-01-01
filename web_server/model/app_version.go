@@ -43,7 +43,6 @@ type AppVersion struct {
 	CreateTime    int64     `json:"create_time,omitempty" bson:"create_time,omitempty"`     //添加时间
 	AppStatus     string    `json:"app_status,omitempty" bson:"app_status,omitempty"`       //app状态
 	ReleaseTime   int64     `json:"release_time,omitempty" bson:"release_time"`
-	Icon          string    `json:"icon,omitempty" bson:"icon,omitempty"`
 }
 
 func (app AppVersion) ToJson() string {
@@ -98,11 +97,9 @@ func (app AppVersion) findPage(page, limit int, query, selector interface{}, fie
 }
 
 func (app *AppVersion) Insert() error {
-	application, err := FindApplicationById(app.AppId)
-	if err != nil {
-		return fmt.Errorf("appID:%d,%s", app.AppId, err.Error())
+	if !appC.isExist(bson.M{"_id": app.AppId}) {
+		return fmt.Errorf("appID:%d not found", app.AppId)
 	}
-	app.Icon = application.Icon
 	if app.isExist(bson.M{"version": app.Version, "app_id": app.AppId}) {
 		return fmt.Errorf("version exist")
 	}
