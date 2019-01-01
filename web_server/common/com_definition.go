@@ -18,14 +18,14 @@ func UserToken(ctx *gin.Context) string {
 	return token
 }
 
-func UserId(ctx *gin.Context) string {
+func UserId(ctx *gin.Context) int64 {
 	o, ok := ctx.Get(KeyContextUserId)
 	if !ok {
-		return ""
+		return -1
 	}
-	userId, ok := o.(string)
+	userId, ok := o.(int64)
 	if !ok {
-		return ""
+		return -1
 	}
 	return userId
 }

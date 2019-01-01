@@ -79,7 +79,7 @@ func getApplicationsHandler(c *gin.Context) {
 		page--
 	}
 	userId := common.UserId(c)
-	if strings.EqualFold(userId, "") {
+	if userId <= 0 {
 		aRes.SetErrorInfo(http.StatusUnauthorized, "user not found")
 		return
 	}
@@ -92,13 +92,13 @@ func getApplicationsHandler(c *gin.Context) {
 	}
 
 	totalCount, _ := model.TotalCountApplication(query, nil)
-	applist, err := model.FindPageApplicationsFilter(page, limit, query, nil, sort)
+	appList, err := model.FindPageApplicationsFilter(page, limit, query, nil, sort)
 	if err != nil {
 		log4go.Info(err.Error())
 		aRes.SetErrorInfo(http.StatusUnauthorized, "apps find error"+err.Error())
 		return
 	}
-	aRes.AddResponseInfo("list", applist)
+	aRes.AddResponseInfo("list", appList)
 	aRes.AddResponseInfo("total", totalCount)
 }
 

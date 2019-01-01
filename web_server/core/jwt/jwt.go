@@ -49,12 +49,12 @@ var (
 //自定义载荷
 type CustomClaims struct {
 	jwt.StandardClaims
-	UserId  string `json:"user_id"`
+	UserId  int64  `json:"user_id"`
 	Account string `json:"account"`
 }
 
 //创建claims
-func NewCustomClaims(userId, account string) CustomClaims {
+func NewCustomClaims(userId int64, account string) CustomClaims {
 	now := time.Now().Unix()
 	claims := CustomClaims{
 		UserId:  userId,

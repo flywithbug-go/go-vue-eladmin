@@ -18,7 +18,7 @@ const (
 )
 
 type Login struct {
-	UserId     string `bson:"user_id"`     // 用户ID
+	UserId     int64  `bson:"user_id"`     // 用户ID
 	Token      string `bson:"token"`       // 用户TOKEN
 	CreateTime int64  `bson:"create_time"` // 登录日期
 	LoginIp    string `bson:"login_ip"`    // 登录IP
@@ -28,9 +28,9 @@ type Login struct {
 	UpdatedAt  int64  `json:"updated_at,omitempty" bson:"updated_at"`
 }
 
-func UserLogin(userId, userAgent, token, ip string) (l *Login, err error) {
+func UserLogin(userID int64, userAgent, token, ip string) (l *Login, err error) {
 	l = new(Login)
-	l.UserId = userId
+	l.UserId = userID
 	l.UserAgent = userAgent
 	l.Token = token
 	l.CreateTime = time.Now().Unix()
@@ -48,7 +48,7 @@ func (l Login) FindAll() ([]Login, error) {
 }
 
 func (l *Login) Insert() error {
-	if l.UserId == "" {
+	if l.UserId == 0 {
 		return errors.New("user_id can not be nil")
 	}
 	return mongo.Insert(db, loginCollection, l)

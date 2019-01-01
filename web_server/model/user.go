@@ -18,7 +18,6 @@ const (
 
 type User struct {
 	Id       int64  `json:"id,omitempty" bson:"_id,omitempty"`
-	UserId   string `json:"user_id,omitempty" bson:"user_id,omitempty"`
 	Account  string `json:"account,omitempty" bson:"account,omitempty"`
 	Password string `json:"password,omitempty" bson:"password,omitempty"`
 	Avatar   string `json:"avatar,omitempty" bson:"avatar,omitempty"`
@@ -82,14 +81,11 @@ func (u *User) Insert() error {
 		return errors.New("email 已存在")
 	}
 	u.Id, _ = mongo.GetIncrementId(userCollection)
-	u.UserId = bson.NewObjectId().Hex()
-
 	return userC.insert(u)
 }
 
 func (u *User) Update() error {
-	selector := bson.M{"user_id": u.UserId}
-	u.UserId = ""
+	selector := bson.M{"_id": u.Id}
 	u.Account = ""
 	return userC.update(selector, u)
 }
@@ -98,8 +94,8 @@ func FindAllUsers() ([]User, error) {
 	return userC.findAll(nil, bson.M{"password": 0})
 }
 
-func FindByUserId(userId string) (u User, err error) {
-	u, err = userC.findOne(bson.M{"user_id": userId}, bson.M{"password": 0})
+func FindByUserId(userId int64) (u User, err error) {
+	u, err = userC.findOne(bson.M{"_id": userId}, bson.M{"password": 0})
 	return
 }
 

@@ -1,12 +1,10 @@
 package handler
 
 import (
-	"net/http"
-	"strings"
-
 	"doc-manager/web_server/common"
 	"doc-manager/web_server/core/jwt"
 	"doc-manager/web_server/model"
+	"net/http"
 
 	"github.com/flywithbug/log4go"
 	"github.com/gin-gonic/gin"
@@ -25,13 +23,12 @@ func loginHandler(c *gin.Context) {
 		return
 	}
 	user, err = model.LoginUser(user.Account, user.Password)
-
 	if err != nil {
 		log4go.Error(err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "account or password not right")
 		return
 	}
-	claims := jwt.NewCustomClaims(user.UserId, user.Account)
+	claims := jwt.NewCustomClaims(user.Id, user.Account)
 	token, err := jwt.GenerateToken(claims)
 	if err != nil {
 		log4go.Error(err.Error())
@@ -39,7 +36,7 @@ func loginHandler(c *gin.Context) {
 		return
 	}
 	userAg := c.GetHeader(common.KeyUserAgent)
-	_, err = model.UserLogin(user.UserId, userAg, token, c.ClientIP())
+	_, err = model.UserLogin(user.Id, userAg, token, c.ClientIP())
 	if err != nil {
 		log4go.Error(err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "token generate error"+err.Error())
@@ -108,7 +105,7 @@ func getUserInfoHandler(c *gin.Context) {
 		c.JSON(aRes.Code, aRes)
 	}()
 	userId := common.UserId(c)
-	if strings.EqualFold(userId, "") {
+	if userId <= 0 {
 		log4go.Info("user not found")
 		aRes.SetErrorInfo(http.StatusUnauthorized, "user not found")
 		return
@@ -122,17 +119,16 @@ func getUserInfoHandler(c *gin.Context) {
 	aRes.AddResponseInfo("user", user)
 }
 
-func getAllUserInfoHandler(c *gin.Context) {
+func getUserListInfoHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
 		c.JSON(aRes.Code, aRes)
 	}()
-	userId := common.UserId(c)
-	if strings.EqualFold(userId, "") {
-		aRes.SetErrorInfo(http.StatusUnauthorized, "user not found")
-		return
-	}
-
+	//userId := common.UserId(c)
+	//if userId <= 0 {
+	//	aRes.SetErrorInfo(http.StatusUnauthorized, "user not found")
+	//	return
+	//}
 	users, err := model.FindAllUsers()
 	if err != nil {
 		log4go.Info(err.Error())
@@ -154,7 +150,7 @@ func updateUserHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
-	user.UserId = common.UserId(c)
+	user.Id = common.UserId(c)
 	err = user.Update()
 	if err != nil {
 		log4go.Info(err.Error())

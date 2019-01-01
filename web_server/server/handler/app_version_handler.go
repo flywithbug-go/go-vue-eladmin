@@ -83,7 +83,7 @@ func getAppVersionListHandler(c *gin.Context) {
 		page--
 	}
 	userId := common.UserId(c)
-	if strings.EqualFold(userId, "") {
+	if userId <= 0 {
 		log4go.Info("user not found")
 		aRes.SetErrorInfo(http.StatusUnauthorized, "user not found")
 		return

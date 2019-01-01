@@ -106,7 +106,7 @@ var routers = []ginHandleFunc{
 		route:      "/user/update",
 	},
 	{
-		handler:    getAllUserInfoHandler, //获取所有用户
+		handler:    getUserListInfoHandler, //获取所有用户
 		routerType: routerTypeNeedAuth,
 		method:     "GET",
 		route:      "/user/list",
