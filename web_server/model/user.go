@@ -1,11 +1,10 @@
 package model
 
 import (
+	"doc-manager/web_server/core/mongo"
 	"errors"
 
 	"gopkg.in/mgo.v2/bson"
-
-	"doc-manager/web_server/core/mongo"
 )
 
 const (
@@ -51,15 +50,15 @@ func (u User) isExist(query interface{}) bool {
 	return mongo.IsExist(db, userCollection, query)
 }
 
-func (u User) findOne(query, selector interface{}) (*User, error) {
-	us := new(User)
-	err := mongo.FindOne(db, userCollection, query, selector, us)
+func (u User) findOne(query, selector interface{}) (User, error) {
+	us := User{}
+	err := mongo.FindOne(db, userCollection, query, selector, &us)
 	return us, err
 }
 
-func (u User) findAll(query, selector interface{}) (results *[]User, err error) {
-	results = new([]User)
-	err = mongo.FindAll(db, userCollection, query, selector, results)
+func (u User) findAll(query, selector interface{}) (results []User, err error) {
+	results = []User{}
+	err = mongo.FindAll(db, userCollection, query, selector, &results)
 	return results, err
 }
 
@@ -102,17 +101,17 @@ func (u *User) Update() error {
 	return userC.update(selector, u)
 }
 
-func FindAllUsers() (*[]User, error) {
+func FindAllUsers() ([]User, error) {
 	return userC.findAll(nil, bson.M{"password": 0})
 }
 
-func FindByUserId(userId string) (u *User, err error) {
+func FindByUserId(userId string) (u User, err error) {
 	u, err = userC.findOne(bson.M{"user_id": userId}, bson.M{"password": 0})
 	u.Roles = makeUserRoles(u.Role)
 	return
 }
 
-func LoginUser(account, pass string) (user *User, err error) {
+func LoginUser(account, pass string) (user User, err error) {
 	user, err = userC.findOne(bson.M{"account": account, "password": pass}, bson.M{"password": 0})
 	user.Roles = makeUserRoles(user.Role)
 	return
