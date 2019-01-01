@@ -7,7 +7,7 @@
       </fixed-button>
     </section>
 
-    <div class="filter-container" align="center" style="margin-bottom: 10px">
+    <div class="filter-container" align="center" style="margin-bottom: 20px">
       <label style="color: #2d2f33">选择App</label>
       <el-select
         v-model="listQuery.app_id"
@@ -20,8 +20,8 @@
       </el-select>
 
       <img
-        :src="this.currentSimpleApp?this.currentSimpleApp.icon:''"
-        style="height: 40px; display: inline-block">
+        :src="this.currentSimpleApp?this.currentSimpleApp.icon:imagePlaceHolder"
+        style="height: 50px; display: inline-block; margin-bottom: -15px;margin-left: 10px">
     </div>
 
     <el-table
@@ -252,6 +252,7 @@ export default {
       dialogFormVisible: false,
       dialogStatus: 'create',
       dialogEditCount: 0,
+      imagePlaceHolder: require('../../assets/image_placeholder.png'),
       textMap: {
         update: this.$t('application.table_edit'),
         create: this.$t('application.table_add')
