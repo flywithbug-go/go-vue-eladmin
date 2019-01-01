@@ -15,8 +15,8 @@
 使用PanJiaChen的:[vue-element-admin](https://github.com/PanJiaChen/vue-element-admin/blob/master/README.zh-CN.md)搭好的基础框架
 
 
-go: web_server （Backend）   
-vue: web_client (Frontend)
+Backend(go):
+Frontend(vue)
 
 - **go主要框架** 
 ``` 
