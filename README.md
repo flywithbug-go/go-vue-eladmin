@@ -7,7 +7,7 @@
     <img src="https://img.shields.io/badge/element--ui-2.4.6-brightgreen.svg" alt="element-ui">
   </a>
   <a href="https://travis-ci.org/PanJiaChen/vue-element-admin" rel="nofollow">
-    <img src="https://travis-ci.org/PanJiaChen/vue-element-admin.svg?branch=master" alt="vue-element-admin">
+    <img src="https://github.com/PanJiaChen/vue-element-admin/blob/master/favicon.ico" alt="vue-element-admin">
   </a>
 </p>
 
