@@ -28,10 +28,7 @@ type User struct {
 	RealName string `json:"real_name,omitempty" bson:"real_name,omitempty"`
 	Name     string `json:"name,omitempty" bson:"name,omitempty"` //昵称
 	Title    string `json:"title,omitempty" bson:"title,omitempty"`
-	Role     int    `json:"role,omitempty" bson:"role,omitempty"`   //系统级的Role 于前端路由配置 1 管理员， 2 普通用户，
-	Roles    string `json:"roles,omitempty" bson:"roles,omitempty"` //角色名称
 	Status   int    `json:"status,omitempty" bson:"status,omitempty"`
-	Superior string `json:"superior,omitempty" bson:"superior,omitempty"`
 }
 
 var (
@@ -86,10 +83,7 @@ func (u *User) Insert() error {
 	}
 	u.Id, _ = mongo.GetIncrementId(userCollection)
 	u.UserId = bson.NewObjectId().Hex()
-	if u.Role == 0 {
-		u.Role = 2
-		u.Roles = makeUserRoles(u.Role)
-	}
+
 	return userC.insert(u)
 }
 
@@ -106,13 +100,11 @@ func FindAllUsers() ([]User, error) {
 
 func FindByUserId(userId string) (u User, err error) {
 	u, err = userC.findOne(bson.M{"user_id": userId}, bson.M{"password": 0})
-	u.Roles = makeUserRoles(u.Role)
 	return
 }
 
 func LoginUser(account, pass string) (user User, err error) {
 	user, err = userC.findOne(bson.M{"account": account, "password": pass}, bson.M{"password": 0})
-	user.Roles = makeUserRoles(user.Role)
 	return
 }
 
