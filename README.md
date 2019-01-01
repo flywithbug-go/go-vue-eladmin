@@ -35,8 +35,7 @@ vue: web_client (Frontend)
   element-ui
  ```
 
-使用vue-element-admin搭好的基础框架:[vue-element-admin](https://github.com/PanJiaChen/vue-element-admin/blob/master/README.zh-CN.md)
-
+使用PanJiaChen的:[vue-element-admin](https://github.com/PanJiaChen/vue-element-admin/blob/master/README.zh-CN.md)搭好的基础框架
 ``` bash
 # govendor add  dependencies
 go run main.go
