@@ -1,11 +1,10 @@
 package middleware
 
 import (
-	"net/http"
-
-	"doc-manager/web_server/common"
 	"doc-manager/web_server/core/jwt"
 	"doc-manager/web_server/model"
+	"doc-manager/web_server/server/common"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -15,10 +14,10 @@ func JWTAuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		aRes := model.NewResponse()
 		//header拿token
-		token := c.GetHeader(common.KeyUserToken)
+		token := c.GetHeader(common.KeyAuthorization)
 		if token == "" {
 			//cookie拿token
-			token, _ = c.Cookie(common.KeyUserToken)
+			token, _ = c.Cookie(common.KeyAuthorization)
 			if token == "" {
 				aRes.SetErrorInfo(http.StatusUnauthorized, "请求未携带token，无权限访问")
 				c.JSON(http.StatusUnauthorized, aRes)
@@ -53,14 +52,14 @@ func JWTAuthMiddleware() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
-		//user, err := model.FindByUserId(claims.UserId)
-		//if err != nil {
-		//	aRes.SetErrorInfo(http.StatusUnauthorized, "未查询到User，无权限访问")
-		//	c.JSON(http.StatusUnauthorized, aRes)
-		//	c.Abort()
-		//	return
-		//}
-		//c.Set(common.KeyContextUser, user)
+		user, err := model.FindByUserId(claims.UserId)
+		if err != nil {
+			aRes.SetErrorInfo(http.StatusUnauthorized, "未查询到User，无权限访问")
+			c.JSON(http.StatusUnauthorized, aRes)
+			c.Abort()
+			return
+		}
+		c.Set(common.KeyContextUser, user)
 		c.Set(common.KeyContextUserId, claims.UserId)
 		c.Set(common.KeyContextAccount, claims.Account)
 	}
