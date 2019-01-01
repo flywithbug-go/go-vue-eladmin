@@ -17,7 +17,6 @@ const (
 // role 等级为1 的用户可以编辑
 type Application struct {
 	Id         int64    `json:"id,omitempty" bson:"_id,omitempty"`
-	AppId      string   `json:"app_id,omitempty" bson:"app_id,omitempty"`
 	Name       string   `json:"name,omitempty" bson:"name,omitempty"`        //应用（组件）名称
 	Desc       string   `json:"desc,omitempty" bson:"desc,omitempty"`        //项目描述
 	CreateTime int64    `json:"time,omitempty" bson:"create_time,omitempty"` //创建时间
@@ -99,7 +98,6 @@ func (a *Application) Insert() error {
 	if appC.isExist(bson.M{"name": a.Name}) {
 		return errors.New("name already exist")
 	}
-	a.AppId = bson.NewObjectId().Hex()
 	a.Id, _ = mongo.GetIncrementId(appCollection)
 	a.CreateTime = time.Now().Unix()
 	return appC.insert(a)
@@ -118,12 +116,9 @@ func (a *Application) Update() error {
 	selector := bson.M{}
 	if a.Id > 0 {
 		selector = bson.M{"_id": a.Id}
-	} else if len(a.AppId) > 0 {
-		selector = bson.M{"app_id": a.AppId}
 	} else {
 		return errors.New("id & app_id is null")
 	}
-	a.AppId = ""
 	a.BundleId = ""
 	a.Owner = ""
 	a.CreateTime = 0
