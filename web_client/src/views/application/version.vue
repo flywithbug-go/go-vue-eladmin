@@ -19,9 +19,10 @@
           :value="item.id"/>
       </el-select>
 
-      <img
-        :src="this.currentSimpleApp?this.currentSimpleApp.icon:imagePlaceHolder"
-        style="height: 50px; display: inline-block; margin-bottom: -15px;margin-left: 10px">
+      <img  :src="this.currentSimpleApp?this.currentSimpleApp.icon:imagePlaceHolder"
+            style="height: 50px; display: inline-block; margin-bottom: -15px;margin-left: 10px">
+      <span style="color: #2d2f33">{{ $t('application.table_owner') }}:</span>
+      <label style="color: #2d2f33">{{ this.currentSimpleApp?this.currentSimpleApp.owner:'' }}</label>
     </div>
 
     <el-table
