@@ -24,8 +24,10 @@ type Application struct {
 	Icon       string   `json:"icon,omitempty" bson:"icon,omitempty"`        //icon 地址
 	Owner      string   `json:"owner,omitempty" bson:"owner,omitempty"`      //负责人
 	BundleId   string   `json:"bundle_id,omitempty" bson:"bundle_id,omitempty"`
-	Manager    []string `json:"manager,omitempty" bson:"manager,omitempty"`   //管理者 account 数组
+	Manager    []string `json:"manager,omitempty" bson:"manager,omitempty"` //管理者 account 数组
+	Role       int      `json:"role" bson:"role"`
 	Editable   bool     `json:"editable,omitempty" bson:"editable,omitempty"` //当前用户是否可以编辑
+
 }
 
 var (

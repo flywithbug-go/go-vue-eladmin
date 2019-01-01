@@ -1,6 +1,8 @@
 package common
 
 import (
+	"doc-manager/web_server/model"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -42,14 +44,14 @@ func Account(ctx *gin.Context) string {
 	return userId
 }
 
-//func User(ctx *gin.Context) (*model.User, bool) {
-//	o, ok := ctx.Get(KeyContextUser)
-//	if !ok {
-//		return nil, false
-//	}
-//	aUser, ok := o.(*model.User)
-//	if !ok {
-//		return nil, false
-//	}
-//	return aUser, true
-//}
+func User(ctx *gin.Context) (*model.User, bool) {
+	o, ok := ctx.Get(KeyContextUser)
+	if !ok {
+		return nil, false
+	}
+	aUser, ok := o.(*model.User)
+	if !ok {
+		return nil, false
+	}
+	return aUser, true
+}

@@ -32,7 +32,6 @@ type User struct {
 	Roles    string `json:"roles,omitempty" bson:"roles,omitempty"` //角色名称
 	Status   int    `json:"status,omitempty" bson:"status,omitempty"`
 	Superior string `json:"superior,omitempty" bson:"superior,omitempty"`
-	RoleId   string `json:"role_id,omitempty" bson:"role_id,omitempty"` //角色库
 }
 
 var (
@@ -135,6 +134,7 @@ func makeUserRoles(role int) string {
 
 func AddAdminUser() error {
 	u := new(User)
+
 	u.Account = "admin"
 	u.Password = "flywithbug123"
 	u.Email = "flywithbug@gmail.com"
