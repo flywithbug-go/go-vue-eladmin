@@ -1,9 +1,8 @@
 package handler
 
 import (
-	"strings"
-
 	"doc-manager/web_server/server/middleware"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -164,5 +163,11 @@ var routers = []ginHandleFunc{
 		routerType: routerTypeNeedAuth,
 		method:     "GET",
 		route:      "app/list/simple",
+	},
+	{
+		handler:    addRoleHandler,
+		routerType: routerTypeNeedAuth,
+		method:     "POST",
+		route:      "route/add",
 	},
 }
