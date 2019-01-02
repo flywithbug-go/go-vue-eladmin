@@ -137,3 +137,194 @@ npm run build --report
 
 ``` 
 
+
+
+
+#### Client 项目结构
+
+``` 
+.
+├── LICENSE
+├── README.md
+├── Tree.md
+├── build
+│   ├── build.js
+│   ├── check-versions.js
+│   ├── logo.png
+│   ├── utils.js
+│   ├── vue-loader.conf.js
+│   ├── webpack.base.conf.js
+│   ├── webpack.dev.conf.js
+│   └── webpack.prod.conf.js
+├── config
+│   ├── dev.env.js
+│   ├── index.js
+│   ├── prod.env.js
+│   └── sit.env.js
+├── favicon.ico
+├── index.html
+├── package-lock.json
+├── package.json
+├── src
+│   ├── App.vue
+│   ├── api
+│   │   ├── app.js
+│   │   └── user.js
+│   ├── assets
+│   │   ├── 401_images
+│   │   │   └── 401.gif
+│   │   ├── 404_images
+│   │   │   ├── 404.png
+│   │   │   └── 404_cloud.png
+│   │   ├── custom-theme
+│   │   │   ├── fonts
+│   │   │   │   ├── element-icons.ttf
+│   │   │   │   └── element-icons.woff
+│   │   │   └── index.css
+│   │   ├── image_placeholder.png
+│   │   └── logo.png
+│   ├── components
+│   │   ├── Breadcrumb
+│   │   │   └── index.vue
+│   │   ├── ErrorLog
+│   │   │   └── index.vue
+│   │   ├── FixedButton
+│   │   │   └── index.vue
+│   │   ├── Hamburger
+│   │   │   └── index.vue
+│   │   ├── HelloWorld.vue
+│   │   ├── LangSelect
+│   │   │   └── index.vue
+│   │   ├── Pagination
+│   │   │   └── index.vue
+│   │   ├── Screenfull
+│   │   │   └── index.vue
+│   │   ├── ScrollPane
+│   │   │   └── index.vue
+│   │   ├── Share
+│   │   │   └── dropdownMenu.vue
+│   │   ├── SizeSelect
+│   │   │   └── index.vue
+│   │   ├── SvgIcon
+│   │   │   └── index.vue
+│   │   └── ThemePicker
+│   │       └── index.vue
+│   ├── config
+│   │   └── index.js
+│   ├── directive
+│   │   ├── clipboard
+│   │   │   ├── clipboard.js
+│   │   │   └── index.js
+│   │   ├── el-dragDialog
+│   │   │   ├── drag.js
+│   │   │   └── index.js
+│   │   ├── permission
+│   │   │   ├── index.js
+│   │   │   └── permission.js
+│   │   ├── sticky.js
+│   │   └── waves
+│   │       ├── index.js
+│   │       ├── waves.css
+│   │       └── waves.js
+│   ├── errorLog.js
+│   ├── filters
+│   │   └── index.js
+│   ├── icons
+│   │   ├── index.js
+│   │   ├── svg
+│   │   └── svgo.yml
+│   ├── lang
+│   │   ├── en.js
+│   │   ├── index.js
+│   │   └── zh.js
+│   ├── main.js
+│   ├── permission.js
+│   ├── router
+│   │   ├── index.js
+│   │   └── modules
+│   │       └── metadata.js
+│   ├── store
+│   │   ├── getters.js
+│   │   ├── index.js
+│   │   └── modules
+│   │       ├── app.js
+│   │       ├── errorLog.js
+│   │       ├── permission.js
+│   │       ├── tagsView.js
+│   │       └── user.js
+│   ├── styles
+│   │   ├── btn.scss
+│   │   ├── element-ui.scss
+│   │   ├── index.scss
+│   │   ├── mixin.scss
+│   │   ├── sidebar.scss
+│   │   ├── transition.scss
+│   │   └── variables.scss
+│   ├── utils
+│   │   ├── auth.js
+│   │   ├── clipboard.js
+│   │   ├── createUniqueString.js
+│   │   ├── date.js
+│   │   ├── fetch
+│   │   │   └── index.js
+│   │   ├── i18n.js
+│   │   ├── index.js
+│   │   ├── openWindow.js
+│   │   ├── permission.js
+│   │   ├── scrollTo.js
+│   │   └── validate.js
+│   └── views
+│       ├── application
+│       │   ├── app.vue
+│       │   └── version.vue
+│       ├── dashboard
+│       │   └── index.vue
+│       ├── documentation
+│       │   └── index.vue
+│       ├── errorPage
+│       │   ├── 401.vue
+│       │   └── 404.vue
+│       ├── layout
+│       │   ├── Layout.vue
+│       │   ├── components
+│       │   │   ├── AppMain.vue
+│       │   │   ├── Navbar.vue
+│       │   │   ├── Sidebar
+│       │   │   ├── TagsView.vue
+│       │   │   └── index.js
+│       │   └── mixin
+│       │       └── ResizeHandler.js
+│       ├── login
+│       │   ├── authredirect.vue
+│       │   └── index.vue
+│       ├── redirect
+│       │   └── index.vue
+│       ├── svg-icons
+│       │   ├── index.vue
+│       │   └── requireIcons.js
+│       └── user
+│           └── user.vue
+└── static
+    └── tinymce4.7.5
+        ├── langs
+        │   └── zh_CN.js
+        ├── plugins
+        │   ├── codesample
+        │   │   └── css
+        │   ├── emoticons
+        │   │   └── img
+        │   └── visualblocks
+        │       └── css
+        ├── skins
+        │   └── lightgray
+        │       ├── content.inline.min.css
+        │       ├── content.min.css
+        │       ├── fonts
+        │       ├── img
+        │       ├── skin.min.css
+        │       └── skin.min.css.map
+        └── tinymce.min.js
+
+80 directories, 187 files
+
+```
