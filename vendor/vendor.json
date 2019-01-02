@@ -9,6 +9,12 @@
 			"revisionTime": "2017-10-19T21:57:19Z"
 		},
 		{
+			"checksumSHA1": "QCf1loXeH0Yy6RFICtWA+bOvsyI=",
+			"path": "github.com/flywithbug/file",
+			"revision": "f7e4359feae41aa0e32a06fb15eb5c6bfb91a134",
+			"revisionTime": "2017-11-29T15:13:56Z"
+		},
+		{
 			"checksumSHA1": "Fyzy4Gx/mG3NGDHHDJ0tvQs4O64=",
 			"path": "github.com/flywithbug/log4go",
 			"revision": "be8bdf300a5884e8edba6a271810ad41b16c8e30",
@@ -69,6 +75,18 @@
 			"revisionTime": "2018-08-30T10:17:45Z"
 		},
 		{
+			"checksumSHA1": "6z9MgcvNbdVGsAIvv6BHA1uALQA=",
+			"path": "github.com/nfnt/resize",
+			"revision": "83c6a9932646f83e3267f353373d47347b6036b2",
+			"revisionTime": "2018-02-21T19:10:11Z"
+		},
+		{
+			"checksumSHA1": "As1PSFJop3xi3W8tAYSm/8YesAQ=",
+			"path": "github.com/pborman/uuid",
+			"revision": "c65b2f87fee37d1c7854c9164a450713c28d50cd",
+			"revisionTime": "2018-01-22T19:00:07Z"
+		},
+		{
 			"checksumSHA1": "zmC8/3V4ls53DJlNTKDZwPSC/dA=",
 			"path": "github.com/satori/go.uuid",
 			"revision": "5bf94b69c6b68ee1b541973bb8e1144db23a194b",
@@ -91,6 +109,12 @@
 			"path": "golang.org/x/crypto/acme/autocert",
 			"revision": "027cca12c2d63e3d62b670d901e8a2c95854feec",
 			"revisionTime": "2018-06-16T23:55:11Z"
+		},
+		{
+			"checksumSHA1": "fxb3DNsxWefntdMn2I98U5ZpTXU=",
+			"path": "golang.org/x/image/bmp",
+			"revision": "c73c2afc3b812cdd6385de5a50616511c4a3d458",
+			"revisionTime": "2018-07-06T05:06:37Z"
 		},
 		{
 			"checksumSHA1": "pKXJRU/9qHCRo+GYpqW87E2djHE=",

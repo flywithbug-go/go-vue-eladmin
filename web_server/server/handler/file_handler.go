@@ -21,7 +21,6 @@ import (
 	"github.com/flywithbug/file"
 	"github.com/flywithbug/log4go"
 	"github.com/nfnt/resize"
-	"github.com/pborman/uuid"
 	"golang.org/x/image/bmp"
 
 	"doc-manager/web_server/model"
@@ -110,25 +109,6 @@ func uploadImageHandler(c *gin.Context) {
 	}
 	avatarPath := fmt.Sprintf("/%s/%s", month, fileName)
 	aRes.SetResponseDataInfo("imagePath", avatarPath)
-}
-
-func makeFilePath(ext string) (string, error) {
-	month := time.Now().Format("2006-01")
-	local := localImageFilePath + month + "/"
-	name := uuid.New()
-	fileName := name + ext
-	//判断文件夹是否存在
-	bExit, err := PathExists(local)
-	if err != nil {
-		return "", err
-	}
-	if !bExit {
-		err = os.Mkdir(local, os.ModePerm)
-		if err != nil {
-			return "", err
-		}
-	}
-	return local + fileName, nil
 }
 
 // 判断文件夹是否存在
