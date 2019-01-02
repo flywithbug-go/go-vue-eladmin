@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Layout from '../views/layout/Layout'
 import metadataRouter from './modules/metadata'
+import  userRouter from './modules/user'
 
 Vue.use(Router)
 
@@ -59,6 +60,7 @@ export default new Router({
 })
 
 export const asyncRouterMap = [
+  userRouter,
   metadataRouter,
   {
     path: '/icon',

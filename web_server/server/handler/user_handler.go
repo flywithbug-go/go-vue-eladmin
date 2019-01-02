@@ -10,6 +10,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type UserRole struct {
+	model.User
+	Roles []string `json:"roles"`
+}
+
 func loginHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
@@ -116,7 +121,10 @@ func getUserInfoHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusUnauthorized, "user not found:"+err.Error())
 		return
 	}
-	aRes.AddResponseInfo("user", user)
+	roleUser := UserRole{}
+	roleUser.User = user
+	roleUser.Roles = []string{"admin"}
+	aRes.AddResponseInfo("user", roleUser)
 }
 
 func getUserListInfoHandler(c *gin.Context) {

@@ -3,6 +3,7 @@ export default {
     versionManager:'VersionManager',
     index: 'Home',
     appManager:'AppManager',
+    userManager: 'UserManager',
     metadata: 'Metadata',
     dashboard: 'Dashboard',
     introduction: 'Introduction',
