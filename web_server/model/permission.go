@@ -10,8 +10,11 @@ import (
 )
 
 const (
-	permissionCollection = "role"
-	PermissionType       = 1
+	permissionCollection            = "permission"
+	PermissionTypeCURD   typeStatus = iota //增删改查
+	PermissionTypeUR                       //改查
+	PermissionTypeR                        //查看
+	PermissionTypeNone                     //无权限
 )
 
 //权限表 type

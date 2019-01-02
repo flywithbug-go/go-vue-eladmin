@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	rolePermissionCollection = "user_role"
+	rolePermissionCollection = "role_permission"
 )
 
 type RolePermission struct {
@@ -71,13 +71,13 @@ func (r RolePermission) Insert() error {
 	}
 	r.Id, _ = mongo.GetIncrementId(rolePermissionCollection)
 	if r.isExist(bson.M{"permission_Id": r.PermissionId, "role_id": r.RoleId}) {
-		return fmt.Errorf("permission_Id role exist")
+		return fmt.Errorf("permission_id role exist")
 	}
 	return r.insert(r)
 }
 
 func (r RolePermission) Update() error {
-	if r.isExist(bson.M{"permission_Id": r.PermissionId, "role_id": r.RoleId, "_id": bson.M{"$ne": r.Id}}) {
+	if r.isExist(bson.M{"permission_id": r.PermissionId, "role_id": r.RoleId, "_id": bson.M{"$ne": r.Id}}) {
 		return fmt.Errorf("角色已存在")
 	}
 	return r.update(bson.M{"_id": r.Id}, r)
