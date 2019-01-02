@@ -18,6 +18,8 @@ func DBName() string {
 }
 
 type OperationModel interface {
+	ToJson() string
+
 	isExist(query interface{}) bool
 	insert(docs ...interface{}) error
 	update(selector, update interface{}) error

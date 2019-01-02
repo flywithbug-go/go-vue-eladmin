@@ -2,6 +2,7 @@ package model
 
 import (
 	"doc-manager/web_server/core/mongo"
+	"encoding/json"
 	"errors"
 	"time"
 
@@ -28,6 +29,11 @@ type Application struct {
 var (
 	appC = Application{}
 )
+
+func (a Application) ToJson() string {
+	js, _ := json.Marshal(a)
+	return string(js)
+}
 
 func (a Application) insert(docs ...interface{}) error {
 	return mongo.Insert(db, appCollection, docs...)

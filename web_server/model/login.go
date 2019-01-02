@@ -2,6 +2,7 @@ package model
 
 import (
 	"doc-manager/web_server/core/mongo"
+	"encoding/json"
 	"errors"
 	"time"
 
@@ -27,6 +28,11 @@ type Login struct {
 	Forbidden  bool   `bson:"forbidden"`   //false 表示未禁言
 	UserAgent  string `bson:"user_agent"`  //用户UA
 	UpdatedAt  int64  `json:"updated_at,omitempty" bson:"updated_at"`
+}
+
+func (l Login) ToJson() string {
+	js, _ := json.Marshal(l)
+	return string(js)
 }
 
 func UserLogin(userID int64, userAgent, token, ip string) (l *Login, err error) {

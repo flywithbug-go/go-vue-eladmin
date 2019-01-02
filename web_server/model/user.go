@@ -2,6 +2,7 @@ package model
 
 import (
 	"doc-manager/web_server/core/mongo"
+	"encoding/json"
 	"errors"
 
 	"gopkg.in/mgo.v2/bson"
@@ -33,6 +34,11 @@ type User struct {
 var (
 	userC = new(User)
 )
+
+func (u User) ToJson() string {
+	js, _ := json.Marshal(u)
+	return string(js)
+}
 
 /*
 	OperationModel
