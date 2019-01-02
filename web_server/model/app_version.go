@@ -3,7 +3,6 @@ package model
 import (
 	"doc-manager/web_server/common"
 	"doc-manager/web_server/core/mongo"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"strings"
@@ -43,11 +42,6 @@ type AppVersion struct {
 	CreateTime    int64     `json:"create_time,omitempty" bson:"create_time,omitempty"`     //添加时间
 	AppStatus     string    `json:"app_status,omitempty" bson:"app_status,omitempty"`       //app状态
 	ReleaseTime   int64     `json:"release_time,omitempty" bson:"release_time"`
-}
-
-func (app AppVersion) ToJson() string {
-	js, _ := json.Marshal(app)
-	return string(js)
 }
 
 var (

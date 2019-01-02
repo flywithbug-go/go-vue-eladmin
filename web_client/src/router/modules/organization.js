@@ -5,6 +5,7 @@ const userRouter = {
   path: '/user',
   component: Layout,
   redirect: 'index',
+  name:"organizationStruct",
   meta: {
     title: 'organizationStruct',
     icon: 'user'
@@ -12,13 +13,15 @@ const userRouter = {
   children: [
     {
       path: 'user',
-      component: () => import('../../views/user/user'),
+      name:"user",
+      component: () => import('../../views/organization/user'),
       meta: { title: 'userManager', noCache: true, icon: 'user' }
     },
     {
       path: 'permission',
-      component: () => import('../../views/user/user'),
-      meta: { title: 'permissionManager', noCache: true, icon: 'user' }
+      name: 'permission',
+      component: () => import('../../views/organization/permission'),
+      meta: { title: 'permissionManager', noCache: true, icon: 'permission' }
     },
   ]
 }

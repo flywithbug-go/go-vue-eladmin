@@ -11,13 +11,14 @@ import (
 type state int
 
 const (
-	//StatusNormal    = 0
-	StatusLogin     = 1
-	StatusLogout    = 2
 	loginCollection = "login"
+	//StatusNormal    = 0
+	StatusLogin  = 1
+	StatusLogout = 2
 )
 
 type Login struct {
+	Id         int64  `json:"id,omitempty" bson:"_id,omitempty"`
 	UserId     int64  `bson:"user_id"`     // 用户ID
 	Token      string `bson:"token"`       // 用户TOKEN
 	CreateTime int64  `bson:"create_time"` // 登录日期
@@ -30,6 +31,7 @@ type Login struct {
 
 func UserLogin(userID int64, userAgent, token, ip string) (l *Login, err error) {
 	l = new(Login)
+	l.Id, _ = mongo.GetIncrementId(loginCollection)
 	l.UserId = userID
 	l.UserAgent = userAgent
 	l.Token = token
@@ -49,7 +51,7 @@ func (l Login) FindAll() ([]Login, error) {
 
 func (l *Login) Insert() error {
 	if l.UserId == 0 {
-		return errors.New("user_id can not be nil")
+		return errors.New("user_id can not be 0")
 	}
 	return mongo.Insert(db, loginCollection, l)
 }

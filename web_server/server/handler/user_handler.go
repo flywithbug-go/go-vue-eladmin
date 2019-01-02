@@ -28,11 +28,13 @@ func loginHandler(c *gin.Context) {
 		return
 	}
 	user, err = model.LoginUser(user.Account, user.Password)
+
 	if err != nil {
 		log4go.Error(err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "account or password not right")
 		return
 	}
+	log4go.Info("%v", user)
 	claims := jwt.NewCustomClaims(user.Id, user.Account)
 	token, err := jwt.GenerateToken(claims)
 	if err != nil {

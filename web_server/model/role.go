@@ -4,7 +4,7 @@ package model
 type Role struct {
 	Id          int64  `json:"id,omitempty" bson:"_id,omitempty"`
 	Name        string `json:"name,omitempty"` //角色名称 CEO，CTO，主管，经理，程序员等。
-	RoleCode    int    `json:"role_code"`      //角色编码
+	Code        int    `json:"code"`           //角色编码
+	DelFlag     bool   `json:"del_flag"`       //是否被删除
 	Description string `json:"description"`
-	DelFlag     bool   `json:"del_flag"` //是否被删除
 }
