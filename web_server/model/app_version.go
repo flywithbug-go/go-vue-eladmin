@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/globalsign/mgo/bson"
+	"gopkg.in/mgo.v2/bson"
 )
 
 type appStatus int
