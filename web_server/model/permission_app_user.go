@@ -13,6 +13,7 @@ const (
 	userAppPermissionCollection = "user_app_permission"
 )
 
+//用户关联App的管理权限
 type UserAppPermission struct {
 	Id              int64 `json:"id" bson:"_id"`
 	UserId          int64

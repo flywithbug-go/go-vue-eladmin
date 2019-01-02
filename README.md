@@ -74,9 +74,14 @@ npm run build --report
   - [ ] API管理
   
   
+### 用户权限
+
+![user_permission](/frontend/user_permission.png)
   
 ### 页面示例
 ![frontend](frontend/10EF2717-74AB-4175-8FFF-324D7A8204E7.png)   
+
+
 
 
 
