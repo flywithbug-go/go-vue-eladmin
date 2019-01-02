@@ -36,13 +36,13 @@ func (r UserRole) update(selector, update interface{}) error {
 	return mongo.Update(db, roleCollection, selector, update, true)
 }
 
-func (r UserRole) findOne(query, selector interface{}) (interface{}, error) {
-	ap := Role{}
+func (r UserRole) findOne(query, selector interface{}) (UserRole, error) {
+	ap := UserRole{}
 	err := mongo.FindOne(db, roleCollection, query, selector, &ap)
 	return ap, err
 }
-func (r UserRole) findAll(query, selector interface{}) (results []Role, err error) {
-	results = []Role{}
+func (r UserRole) findAll(query, selector interface{}) (results []UserRole, err error) {
+	results = []UserRole{}
 	err = mongo.FindAll(db, roleCollection, query, selector, &results)
 	return results, err
 }
@@ -59,13 +59,16 @@ func (r UserRole) totalCount(query, selector interface{}) (int, error) {
 	return mongo.TotalCount(db, roleCollection, query, selector)
 }
 
-func (r UserRole) findPage(page, limit int, query, selector interface{}, fields ...string) (results []Role, err error) {
-	results = []Role{}
+func (r UserRole) findPage(page, limit int, query, selector interface{}, fields ...string) (results []UserRole, err error) {
+	results = []UserRole{}
 	err = mongo.FindPage(db, roleCollection, page, limit, query, selector, &results, fields...)
 	return
 }
 
 func (r UserRole) Insert() error {
+	if r.UserId == 0 || r.RoleId == 0 {
+		return errors.New("userId & RoleId Needed")
+	}
 	r.Id, _ = mongo.GetIncrementId(roleCollection)
 	if r.isExist(bson.M{"user_id": r.UserId, "role_id": r.RoleId}) {
 		return fmt.Errorf("user role exist")
