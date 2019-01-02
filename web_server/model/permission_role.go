@@ -37,7 +37,7 @@ func (r RolePermission) update(selector, update interface{}) error {
 }
 
 func (r RolePermission) findOne(query, selector interface{}) (RolePermission, error) {
-	ap := Role{}
+	ap := RolePermission{}
 	err := mongo.FindOne(db, rolePermissionCollection, query, selector, &ap)
 	return ap, err
 }
