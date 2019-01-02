@@ -1,5 +1,14 @@
 package model
 
+import (
+	"doc-manager/web_server/core/mongo"
+	"encoding/json"
+	"errors"
+	"fmt"
+
+	"gopkg.in/mgo.v2/bson"
+)
+
 const (
 	roleCollection = "role"
 )
@@ -11,4 +20,73 @@ type Role struct {
 	Code        string `json:"code"`           //角色编码
 	DelFlag     bool   `json:"del_flag"`       //是否被删除
 	Description string `json:"description"`
+}
+
+func (r Role) ToJson() string {
+	js, _ := json.Marshal(r)
+	return string(js)
+}
+
+func (r Role) isExist(query interface{}) bool {
+	return mongo.IsExist(db, roleCollection, query)
+}
+
+func (r Role) insert(docs ...interface{}) error {
+	return mongo.Insert(db, roleCollection, docs...)
+}
+
+func (r Role) update(selector, update interface{}) error {
+	return mongo.Update(db, roleCollection, selector, update, true)
+}
+
+func (r Role) findOne(query, selector interface{}) (interface{}, error) {
+	ap := Role{}
+	err := mongo.FindOne(db, roleCollection, query, selector, &ap)
+	return ap, err
+}
+func (r Role) findAll(query, selector interface{}) (results []Role, err error) {
+	results = []Role{}
+	err = mongo.FindAll(db, roleCollection, query, selector, &results)
+	return results, err
+}
+
+func (r Role) remove(selector interface{}) error {
+	return mongo.Remove(db, roleCollection, selector)
+}
+
+func (r Role) removeAll(selector interface{}) error {
+	return mongo.RemoveAll(db, roleCollection, selector)
+}
+
+func (r Role) totalCount(query, selector interface{}) (int, error) {
+	return mongo.TotalCount(db, roleCollection, query, selector)
+}
+
+func (r Role) findPage(page, limit int, query, selector interface{}, fields ...string) (results []Role, err error) {
+	results = []Role{}
+	err = mongo.FindPage(db, roleCollection, page, limit, query, selector, &results, fields...)
+	return
+}
+
+func (r Role) Insert() error {
+	r.Id, _ = mongo.GetIncrementId(roleCollection)
+	if r.isExist(bson.M{"code": r.Code}) {
+		return fmt.Errorf("code exist")
+	}
+
+	if r.isExist(bson.M{"name": r.Name}) {
+		return fmt.Errorf("name exist")
+	}
+	return r.insert(r)
+}
+
+func (r Role) Update() error {
+	return r.update(bson.M{"_id": r.Id}, r)
+}
+
+func (r Role) Remove() error {
+	if r.Id == 0 {
+		return errors.New("id is 0")
+	}
+	return appC.remove(bson.M{"_id": r.Id})
 }

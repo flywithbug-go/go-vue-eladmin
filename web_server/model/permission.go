@@ -4,12 +4,14 @@ import (
 	"doc-manager/web_server/core/mongo"
 	"encoding/json"
 	"errors"
+	"fmt"
 
 	"gopkg.in/mgo.v2/bson"
 )
 
 const (
 	permissionCollection = "role"
+	PermissionType       = 1
 )
 
 //权限表 type
@@ -73,11 +75,19 @@ func (p Permission) findPage(page, limit int, query, selector interface{}, field
 }
 
 func (p Permission) Insert() error {
-	panic("implement me")
+	p.Id, _ = mongo.GetIncrementId(permissionCollection)
+	if p.isExist(bson.M{"code": p.Code}) {
+		return fmt.Errorf("code exist")
+	}
+
+	if p.isExist(bson.M{"name": p.Name}) {
+		return fmt.Errorf("name exist")
+	}
+	return p.insert(p)
 }
 
 func (p Permission) Update() error {
-	panic("implement me")
+	return p.update(bson.M{"_id": p.Id}, p)
 }
 
 func (p Permission) Remove() error {

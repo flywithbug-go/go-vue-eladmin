@@ -12,8 +12,6 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
-type appStatus int
-
 var (
 	appPlatformMap = map[string]string{"IOS": "iOS", "ANDROID": "Android", "H5": "H5", "SERVER": "Server"}
 )
@@ -23,26 +21,26 @@ const (
 )
 
 const (
-	appStatusTypeUnDetermined appStatus = iota //待定
-	appStatusTypePrepare                       //准备中 待开发
-	appStatusTypeDeveloping                    //开发中 待灰度
-	appStatusTypeGray                          //灰度  待发布
-	appStatusTypeRelease                       //已发布  已发布不能再更改
+	appStatusTypeUnDetermined typeStatus = iota //待定
+	appStatusTypePrepare                        //准备中 待开发
+	appStatusTypeDeveloping                     //开发中 待灰度
+	appStatusTypeGray                           //灰度  待发布
+	appStatusTypeRelease                        //已发布  已发布不能再更改
 )
 
 type AppVersion struct {
-	Id            int64     `json:"id,omitempty" bson:"_id,omitempty"`
-	AppId         int64     `json:"app_id,omitempty" bson:"app_id,omitempty"` //所属App DB Id
-	Version       string    `json:"version,omitempty" bson:"version,omitempty"`
-	ParentVersion string    `json:"parent_version,omitempty" bson:"parent_version,omitempty"`
-	Platform      []string  `json:"platform,omitempty" bson:"platform,omitempty"`           //(iOS,Android,H5,Server)["iOS","Android","H5","Server"]
-	Status        appStatus `json:"status,omitempty" bson:"status,omitempty"`               //状态    1(准备中) 2(开发中) 3(灰度) 4(已发布)
-	ApprovalTime  int64     `json:"approval_time,omitempty" bson:"approval_time,omitempty"` //立项时间
-	LockTime      int64     `json:"lock_time,omitempty" bson:"lock_time,omitempty"`         //锁版时间
-	GrayTime      int64     `json:"gray_time,omitempty" bson:"gray_time,omitempty"`         //灰度时间
-	CreateTime    int64     `json:"create_time,omitempty" bson:"create_time,omitempty"`     //添加时间
-	AppStatus     string    `json:"app_status,omitempty" bson:"app_status,omitempty"`       //app状态
-	ReleaseTime   int64     `json:"release_time,omitempty" bson:"release_time"`
+	Id            int64      `json:"id,omitempty" bson:"_id,omitempty"`
+	AppId         int64      `json:"app_id,omitempty" bson:"app_id,omitempty"` //所属App DB Id
+	Version       string     `json:"version,omitempty" bson:"version,omitempty"`
+	ParentVersion string     `json:"parent_version,omitempty" bson:"parent_version,omitempty"`
+	Platform      []string   `json:"platform,omitempty" bson:"platform,omitempty"`           //(iOS,Android,H5,Server)["iOS","Android","H5","Server"]
+	Status        typeStatus `json:"status,omitempty" bson:"status,omitempty"`               //状态    1(准备中) 2(开发中) 3(灰度) 4(已发布)
+	ApprovalTime  int64      `json:"approval_time,omitempty" bson:"approval_time,omitempty"` //立项时间
+	LockTime      int64      `json:"lock_time,omitempty" bson:"lock_time,omitempty"`         //锁版时间
+	GrayTime      int64      `json:"gray_time,omitempty" bson:"gray_time,omitempty"`         //灰度时间
+	CreateTime    int64      `json:"create_time,omitempty" bson:"create_time,omitempty"`     //添加时间
+	AppStatus     string     `json:"app_status,omitempty" bson:"app_status,omitempty"`       //app状态
+	ReleaseTime   int64      `json:"release_time,omitempty" bson:"release_time"`
 }
 
 func (app AppVersion) ToJson() string {
@@ -193,7 +191,7 @@ func (app *AppVersion) Update() error {
 	return appVC.update(selector, app)
 }
 
-func makeStatusString(status appStatus) string {
+func makeStatusString(status typeStatus) string {
 	statusString := "待定"
 	switch status {
 	case appStatusTypePrepare:
