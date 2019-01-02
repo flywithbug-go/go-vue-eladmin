@@ -5,23 +5,20 @@ const userRouter = {
   path: '/user',
   component: Layout,
   redirect: 'index',
-  name: 'userManager',
   meta: {
-    title: 'userManager',
+    title: 'organizationStruct',
     icon: 'user'
   },
   children: [
     {
       path: 'user',
       component: () => import('../../views/user/user'),
-      name: 'userManager',
       meta: { title: 'userManager', noCache: true, icon: 'user' }
     },
     {
-      path: 'user',
+      path: 'permission',
       component: () => import('../../views/user/user'),
-      name: 'userManager',
-      meta: { title: 'userManager', noCache: true, icon: 'user' }
+      meta: { title: 'permissionManager', noCache: true, icon: 'user' }
     },
   ]
 }
