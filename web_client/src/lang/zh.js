@@ -125,5 +125,6 @@ export default {
     confirm: "确定",
     confirmChange:"切换状态到",
     confirmDelete:"确定要删除当前版本？"
-  }
+  },
+
 }

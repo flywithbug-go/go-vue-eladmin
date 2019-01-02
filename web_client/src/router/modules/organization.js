@@ -8,7 +8,7 @@ const userRouter = {
   name:"organizationStruct",
   meta: {
     title: 'organizationStruct',
-    icon: 'user'
+    icon: 'organization'
   },
   children: [
     {
@@ -22,6 +22,12 @@ const userRouter = {
       name: 'permission',
       component: () => import('../../views/organization/permission'),
       meta: { title: 'permissionManager', noCache: true, icon: 'permission' }
+    },
+    {
+      path: 'role',
+      name: 'role',
+      component: () => import('../../views/organization/role'),
+      meta: { title: 'roleManager', noCache: true, icon: 'role' }
     },
   ]
 }
