@@ -32,4 +32,6 @@ type OperationModel interface {
 	findPage(page, limit int, query, selector interface{}, fields ...string) (results []interface{}, err error)
 	Insert() error
 	Update() error
+	Remove() error
+	RemoveAll() error
 }

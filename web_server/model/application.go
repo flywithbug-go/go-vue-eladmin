@@ -114,7 +114,7 @@ func (a *Application) Insert() error {
 //	return appC.update(selector, a)
 //}
 
-func (a *Application) Update() error {
+func (a Application) Update() error {
 	selector := bson.M{}
 	if a.Id > 0 {
 		selector = bson.M{"_id": a.Id}
@@ -125,6 +125,13 @@ func (a *Application) Update() error {
 	a.Owner = ""
 	a.CreateTime = 0
 	return appC.update(selector, a)
+}
+
+func (a Application) Remove() error {
+	if a.Id == 0 {
+		return errors.New("id is 0")
+	}
+	return appC.remove(bson.M{"_id": a.Id})
 }
 
 func FindApplicationById(id int64) (Application, error) {
