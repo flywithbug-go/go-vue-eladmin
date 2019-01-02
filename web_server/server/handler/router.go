@@ -168,6 +168,12 @@ var routers = []ginHandleFunc{
 		handler:    addRoleHandler,
 		routerType: routerTypeNeedAuth,
 		method:     "POST",
-		route:      "route/add",
+		route:      "role/add",
+	},
+	{
+		handler:    addPermissionHandler,
+		routerType: routerTypeNeedAuth,
+		method:     "POST",
+		route:      "permission/add",
 	},
 }

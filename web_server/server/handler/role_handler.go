@@ -9,17 +9,21 @@ import (
 )
 
 func addRoleHandler(c *gin.Context) {
-
 	aRes := model.NewResponse()
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
-	user := model.User{}
-	err := c.BindJSON(&user)
+	para := model.Role{}
+	err := c.BindJSON(&para)
 	if err != nil {
 		log4go.Info(err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
-
+	err = para.Insert()
+	if err != nil {
+		log4go.Info(err.Error())
+		aRes.SetErrorInfo(http.StatusInternalServerError, "server invalid"+err.Error())
+		return
+	}
 }

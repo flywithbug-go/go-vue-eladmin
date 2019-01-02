@@ -73,7 +73,6 @@ func (r Role) Insert() error {
 	if r.isExist(bson.M{"code": r.Code}) {
 		return fmt.Errorf("code exist")
 	}
-
 	if r.isExist(bson.M{"name": r.Name}) {
 		return fmt.Errorf("name exist")
 	}
