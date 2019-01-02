@@ -1,16 +1,4 @@
 
-<p align="center">
-  <a href="https://github.com/vuejs/vue">
-    <img src="https://img.shields.io/badge/vue-2.5.17-brightgreen.svg" alt="vue">
-  </a>
-  <a href="https://github.com/ElemeFE/element">
-    <img src="https://img.shields.io/badge/element--ui-2.4.6-brightgreen.svg" alt="element-ui">
-  </a>
-  <a href="https://travis-ci.org/PanJiaChen/vue-element-admin" rel="nofollow">
-    <img src="https://github.com/PanJiaChen/vue-element-admin/blob/master/favicon.ico" alt="vue-element-admin" style="height="20px">
-  </a>
-</p>
-
 ## 简介
 使用PanJiaChen的:[vue-element-admin](https://github.com/PanJiaChen/vue-element-admin/blob/master/README.zh-CN.md)搭好的基础框架
 
@@ -92,7 +80,7 @@ npm run build --report
 
 
 
-# 项目布局
+### Server项目布局
 
 ```
 .
