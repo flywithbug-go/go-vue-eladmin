@@ -14,16 +14,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type appVersionPara struct {
-	model.AppVersion
-}
-
 func addAppVersionHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
-	appV := new(appVersionPara)
+	appV := new(model.AppVersion)
 	err := c.BindJSON(appV)
 	if err != nil {
 		log4go.Info(err.Error())
@@ -44,7 +40,7 @@ func updateAppVersionHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
-	appV := new(appVersionPara)
+	appV := new(model.AppVersion)
 	err := c.BindJSON(appV)
 	if err != nil {
 		log4go.Info(err.Error())
@@ -109,7 +105,7 @@ func removeAppVersionHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
-	appV := new(appVersionPara)
+	appV := new(model.AppVersion)
 	err := c.BindJSON(appV)
 	if err != nil {
 		log4go.Info(err.Error())

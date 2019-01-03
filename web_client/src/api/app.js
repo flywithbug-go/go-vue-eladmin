@@ -70,8 +70,7 @@ export function addAppVersionRequest(app_id, version, parent_version, platform, 
     platform,
     approval_time,
     lock_time,
-    gray_time,
-    release_time
+    gray_time
   }
   return client({
     url: '/app/version/add',

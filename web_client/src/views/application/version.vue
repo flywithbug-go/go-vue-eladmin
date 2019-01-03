@@ -33,11 +33,11 @@
       style="width: 100%; "
       header-row-class-name="center"
       @sort-change="sortChange">
-      <!--<el-table-column :label="$t('table.id')" prop="id" sortable="custom" align="center" width="65">-->
-      <!--<template slot-scope="scope">-->
-      <!--<span>{{ scope.row.id }}</span>-->
-      <!--</template>-->
-      <!--</el-table-column>-->
+      <el-table-column :label="$t('table.id')" prop="id" sortable="custom" align="center" width="65">
+      <template slot-scope="scope">
+      <span>{{ scope.row.id }}</span>
+      </template>
+      </el-table-column>
       <el-table-column :label="$t('appVersion.versionN')" align="center" min-width="90px">
         <template slot-scope="scope">
           <span>{{ scope.row.version }}</span>
@@ -279,11 +279,11 @@ export default {
         version: '',
         parent_version: '',
         platform: [],
-        approval_time: new Date(),
-        lock_time: new Date(),
-        gray_time: new Date(),
-        create_time: new Date(),
-        release_time:new Date(),
+        approval_time: undefined,
+        lock_time: undefined,
+        gray_time: undefined,
+        create_time: undefined,
+        release_time:undefined,
         status: 0,
         app_status: '',
         app_id: 0
@@ -429,13 +429,15 @@ export default {
     formatTagString(status) {
       switch (status) {
         case 1:
-          return 'info'
+          return ''
         case 2:
           return 'success'
         case 3:
           return 'warning'
         case 4:
           return 'danger'
+        case 5:
+          return 'info'
       }
       return ''
     },
@@ -511,7 +513,7 @@ export default {
             return
           }
           addAppVersionRequest(
-            this.temp.app_id,
+            this.listQuery.app_id,
             this.temp.version,
             this.temp.parent_version,
             this.temp.platform,
@@ -520,6 +522,7 @@ export default {
             this.temp.gray_time.valueOf() / 1000).then(() => {
             this.dialogFormVisible = false
             this.getList()
+            this.resetTemp()
             this.$notify({
               title: '成功',
               message: '创建成功',
@@ -560,10 +563,10 @@ export default {
             this.$message.error('灰度时间必须早于发布时间')
             return
           }
-          let gray_time = 0
-          let lock_time = 0
-          let approval_time = 0
-          let release_time = 0
+          let gray_time = parseInt("0")
+          let lock_time = parseInt("0")
+          let approval_time = parseInt("0")
+          let release_time = parseInt("0")
           if (this.temp.status < 2){
             approval_time =  this.temp.approval_time.getTime() / 1000
           }

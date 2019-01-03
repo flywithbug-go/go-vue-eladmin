@@ -95,7 +95,9 @@ func (app AppVersion) findPage(page, limit int, query, selector interface{}, fie
 }
 
 func (app *AppVersion) Insert() error {
-	if !app.isExist(bson.M{"_id": app.AppId}) {
+	var application = Application{}
+	log4go.Info(app.ToJson())
+	if !application.isExist(bson.M{"_id": app.AppId}) {
 		return fmt.Errorf("appID:%d not found", app.AppId)
 	}
 	if app.isExist(bson.M{"version": app.Version, "app_id": app.AppId}) {
