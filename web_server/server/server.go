@@ -4,19 +4,19 @@ import (
 	"doc-manager/web_server/server/handler"
 	"doc-manager/web_server/server/middleware"
 	"fmt"
-	"github.com/gin-gonic/contrib/static"
 	"time"
+
+	"github.com/gin-gonic/contrib/static"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
-func StartServer(port , staticPath, rPrefix , authPrefix string) {
+func StartServer(port, staticPath, rPrefix, authPrefix string) {
 	r := gin.New()
 	r.Use(middleware.Logger(), gin.Recovery())
 	r.Use(static.Serve("/", static.LocalFile(staticPath, true)))
 	r.LoadHTMLGlob(staticPath + "/index.html")
-	r.NoRoute(handler.NoRoute)
 	cors.Default()
 	r.Use(cors.New(cors.Config{
 		AllowAllOrigins:  true,
