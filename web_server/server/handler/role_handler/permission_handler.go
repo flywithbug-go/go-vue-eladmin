@@ -1,6 +1,7 @@
 package role_handler
 
 import (
+	"errors"
 	"net/http"
 	"strconv"
 	"vue-admin/web_server/model"
@@ -14,14 +15,36 @@ func addPermissionHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
-	para := model.Permission{}
-	err := c.BindJSON(&para)
+	p := model.Permission{}
+	err := c.BindJSON(&p)
 	if err != nil {
 		log4go.Info(err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
-	err = para.Insert()
+
+	if len(p.Code) == 0 {
+		err = errors.New("code is null")
+		aRes.SetErrorInfo(http.StatusBadRequest, "code is null"+err.Error())
+		return
+	}
+	if p.Type == 0 {
+		err = errors.New("type should . 0")
+		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
+		return
+	}
+	if len(p.Name) == 0 {
+		err = errors.New("name not be null")
+		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
+		return
+	}
+	if len(p.Description) == 0 {
+		err = errors.New("desc should not be null")
+		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
+		return
+	}
+
+	err = p.Insert()
 	if err != nil {
 		log4go.Info(err.Error())
 		aRes.SetErrorInfo(http.StatusInternalServerError, "server invalid"+err.Error())

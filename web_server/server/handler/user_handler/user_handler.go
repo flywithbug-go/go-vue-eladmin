@@ -28,7 +28,6 @@ func loginHandler(c *gin.Context) {
 		return
 	}
 	user, err = model.LoginUser(user.Account, user.Password)
-
 	if err != nil {
 		log4go.Error(err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "account or password not right")

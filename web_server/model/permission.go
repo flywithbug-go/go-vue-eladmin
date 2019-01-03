@@ -14,10 +14,11 @@ const (
 )
 
 const (
-	PermissionTypeNone typeStatus = iota //无权限
-	PermissionTypeRWAD                   //增删改查
-	PermissionTypeRW                     //改查
-	PermissionTypeR                      //查看
+	PermissionTypeUndetermined typeStatus = iota
+	PermissionTypeNone                    //无权限
+	PermissionTypeRWAD                    //增删改查
+	PermissionTypeRW                      //改查
+	PermissionTypeR                       //查看
 )
 
 //权限表 type
@@ -86,7 +87,6 @@ func (p Permission) Insert() error {
 	if p.isExist(bson.M{"code": p.Code}) {
 		return fmt.Errorf("code exist")
 	}
-
 	if p.isExist(bson.M{"name": p.Name}) {
 		return fmt.Errorf("name exist")
 	}
