@@ -26,10 +26,11 @@ Frontend(vue)
 
 ``` bash
 # govendor add  dependencies
+cd web_server
 go run main.go
 
 # serve with hot reload at localhost:6201
-open  http://localhost:6203 
+open  http://localhost:6201
 
 cd web_client
 

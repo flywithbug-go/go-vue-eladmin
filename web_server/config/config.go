@@ -22,8 +22,7 @@ type Config struct {
 
 	LogPath string `json:"log_path"`
 
-	ApiPort string `json:"api_port"` //httpServer
-	WebPort string `json:"web_port"` //httpServer
+	Port string `json:"port"` //httpServer
 
 	StaticPath   string     `json:"static_path"`
 	DBConfig     DBConfig   `json:"db_config"`     //数据库配置
