@@ -7,8 +7,6 @@
       </fixed-button>
     </section>
 
-
-
     <div class="filter-container" align="center" style="margin-bottom: 20px">
       <label style="color: #2d2f33">选择App</label>
       <el-select
@@ -28,7 +26,7 @@
       <label style="color: #2d2f33">{{ currentSimpleApp?currentSimpleApp.owner:'' }}</label>
     </div>
 
-<!--列表-->
+    <!--列表-->
     <el-table
       :data="list"
       border
@@ -155,7 +153,6 @@
       :page.sync="listQuery.page"
       :limit.sync="listQuery.limit"
       @pagination="getList"/>
-
 
     <el-dialog
       :title="textMap[dialogStatus]"
