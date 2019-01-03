@@ -90,12 +90,15 @@ func (p Permission) Insert() error {
 }
 
 func (p Permission) Update() error {
+	if p.Id == 0 {
+		return errors.New("id needed ")
+	}
 	return p.update(bson.M{"_id": p.Id}, p)
 }
 
 func (p Permission) Remove() error {
 	if p.Id == 0 {
-		return errors.New("id is 0")
+		return errors.New("id needed ")
 	}
 	return p.remove(bson.M{"_id": p.Id})
 }

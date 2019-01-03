@@ -35,7 +35,7 @@ var FileRouters = []common.GinHandleFunc{
 	},
 
 	{
-		Handler:    updateRoleHandler,
+		Handler:    updatePermissionHandler,
 		RouterType: common.RouterTypeNeedAuth,
 		Method:     "POST",
 		Route:      "/permission/update",
