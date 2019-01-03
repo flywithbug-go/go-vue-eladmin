@@ -516,7 +516,9 @@ export default {
       }
     },
     removeAppVersion(data) {
-
+      removeAppVersionRequest(data.id).then(() => {
+        this.getList()
+      })
     },
     createData() {
       this.$refs['dataForm'].validate((valid) => {

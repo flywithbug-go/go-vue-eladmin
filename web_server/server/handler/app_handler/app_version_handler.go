@@ -105,8 +105,8 @@ func removeAppVersionHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
-	appV := new(model.AppVersion)
-	err := c.BindJSON(appV)
+	appV := model.AppVersion{}
+	err := c.BindJSON(&appV)
 	if err != nil {
 		log4go.Info(err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid: "+err.Error())

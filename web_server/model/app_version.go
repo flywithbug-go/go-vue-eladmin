@@ -94,6 +94,11 @@ func (app AppVersion) findPage(page, limit int, query, selector interface{}, fie
 	return
 }
 
+func (app AppVersion) FindOne() (AppVersion, error) {
+	app, err := app.findOne(bson.M{"_id": app.Id}, nil)
+	return app, err
+}
+
 func (app *AppVersion) Insert() error {
 	var application = Application{}
 	log4go.Info(app.ToJson())
@@ -136,7 +141,13 @@ func (app *AppVersion) Insert() error {
 
 func (app AppVersion) Remove() error {
 	selector := bson.M{"_id": app.Id}
-
+	app, err := app.findOne(selector, nil)
+	if err != nil {
+		return err
+	}
+	if app.Status != appStatusTypePrepare {
+		return errors.New("版本已锁定，不能删除")
+	}
 	return app.remove(selector)
 }
 
