@@ -17,19 +17,17 @@ func Conf() *Config {
 }
 
 type Config struct {
-	PrivateKeyPath string `json:"private_key_path"`
-	PublicKeyPath  string `json:"public_key_path"`
-
-	LogPath string `json:"log_path"`
-
-	Port string `json:"port"` //httpServer
-
-	StaticPath   string     `json:"static_path"`
-	DBConfig     DBConfig   `json:"db_config"`     //数据库配置
-	RouterPrefix string     `json:"router_prefix"` //api前缀
-	AuthPrefix   string     `json:"auth_prefix"`   //白名单
-	MailConfig   MailConfig `json:"mail_config"`   //邮箱
-	AppConfig    AppConfig  `json:"app_config"`
+	PrivateKeyPath string     `json:"private_key_path"`
+	PublicKeyPath  string     `json:"public_key_path"`
+	LogPath        string     `json:"log_path"`
+	LocalFilePath  string     `json:"local_file_path"`
+	Port           string     `json:"port"` //httpServer
+	StaticPath     string     `json:"static_path"`
+	DBConfig       DBConfig   `json:"db_config"`     //数据库配置
+	RouterPrefix   string     `json:"router_prefix"` //api前缀
+	AuthPrefix     string     `json:"auth_prefix"`   //白名单
+	MailConfig     MailConfig `json:"mail_config"`   //邮箱
+	AppConfig      AppConfig  `json:"app_config"`
 }
 
 type AppConfig struct {

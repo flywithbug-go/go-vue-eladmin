@@ -2,19 +2,21 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"vue-admin/web_server/config"
 	"vue-admin/web_server/core/jwt"
 	"vue-admin/web_server/core/mongo"
 	"vue-admin/web_server/model"
 	"vue-admin/web_server/server"
+	"vue-admin/web_server/server/handler/file_handler"
 
 	log "github.com/flywithbug/log4go"
 )
 
 //log 启动配置
-func SetLog(conf *config.Config) {
+func setLog() {
 	w := log.NewFileWriter()
-	w.SetPathPattern(conf.LogPath)
+	w.SetPathPattern(config.Conf().LogPath)
 	c := log.NewConsoleWriter()
 	c.SetColor(true)
 	log.Register(w)
@@ -23,7 +25,17 @@ func SetLog(conf *config.Config) {
 	log.SetLayout("2006-01-02 15:04:05")
 }
 
-func main() {
+func setFileConfig() {
+	file_handler.SetLocalImageFilePath(config.Conf().LocalFilePath)
+}
+
+func setJWTKey() {
+	//signingKey read
+	jwt.ReadSigningKey(config.Conf().PrivateKeyPath, config.Conf().PublicKeyPath)
+}
+
+func init() {
+	fmt.Println("----------------init----------------")
 	//配置文件
 	configPath := flag.String("config", "config.json", "Configuration file to use")
 	flag.Parse()
@@ -31,21 +43,23 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	conf := config.Conf()
+}
 
-	//signingKey read
-	jwt.ReadSigningKey(conf.PrivateKeyPath, conf.PublicKeyPath)
-
-	SetLog(conf)
+func main() {
+	//log配置
+	setLog()
 	defer log.Close()
+	//文件存储位置
+	setFileConfig()
+
+	//jwt验证
+	setJWTKey()
+
 	//mongodb启动连接
 	//设置数据库名字
-	model.SetDBName(conf.DBConfig.DBName)
-	mongo.DialMgo(conf.DBConfig.Url)
-	//go func() {
-	//	//静态文件服务
-	//	server.StartWeb(conf.WebPort, conf.StaticPath)
-	//}()
+	model.SetDBName(config.Conf().DBConfig.DBName)
+	mongo.DialMgo(config.Conf().DBConfig.Url)
+
 	//启动ApiServer服务
-	server.StartServer(conf.Port, conf.StaticPath, conf.RouterPrefix, conf.AuthPrefix)
+	server.StartServer(config.Conf().Port, config.Conf().StaticPath, config.Conf().RouterPrefix, config.Conf().AuthPrefix)
 }

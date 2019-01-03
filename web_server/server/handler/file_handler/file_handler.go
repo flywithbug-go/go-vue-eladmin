@@ -28,7 +28,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-const localImageFilePath = "./image/"
+var (
+	localImageFilePath = "../image/"
+)
+
+func SetLocalImageFilePath(path string) {
+	localImageFilePath = path
+}
 
 func uploadImageHandler(c *gin.Context) {
 	aRes := model.NewResponse()
@@ -60,7 +66,6 @@ func uploadImageHandler(c *gin.Context) {
 	//文件路径
 	localFilePath := localPath + fileName
 	bExit, err := PathExists(localFilePath)
-
 	if err != nil {
 		log4go.Info(err.Error())
 		aRes.SetErrorInfo(http.StatusInternalServerError, fmt.Sprintf("system err : %s", err.Error()))

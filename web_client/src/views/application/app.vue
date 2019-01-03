@@ -383,8 +383,8 @@ export default {
             this.temp.bundle_id,
             this.temp.icon,
             this.temp.name,
-            this.temp.desc).then(() => {
-            this.list.unshift(this.temp)
+            this.temp.desc).then((response) => {
+            this.list.unshift(response.app)
             this.dialogFormVisible = false
             this.resetTemp()
             // this.getList()
