@@ -1,4 +1,4 @@
-package handler
+package file_handler
 
 import (
 	"crypto/md5"

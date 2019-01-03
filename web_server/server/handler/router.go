@@ -1,38 +1,37 @@
 package handler
 
 import (
+	"doc-manager/web_server/server/handler/app_handler"
+	"doc-manager/web_server/server/handler/common"
+	"doc-manager/web_server/server/handler/file_handler"
+
+	"doc-manager/web_server/server/handler/user_handler"
+
 	"doc-manager/web_server/server/middleware"
 	"strings"
 
 	"github.com/gin-gonic/gin"
 )
 
-type stateType int
-
-const (
-	routerTypeNormal stateType = iota
-	routerTypeNeedAuth
+var (
+	routerList []common.GinHandleFunc
 )
-
-type ginHandleFunc struct {
-	handler    gin.HandlerFunc
-	routerType stateType
-	method     string
-	route      string
-}
 
 //host:port/auth_prefix/prefix/path
 func RegisterRouters(r *gin.Engine, prefix string, authPrefix string) {
 	jwtR := r.Group(prefix + authPrefix)
 	jwtR.Use(middleware.JWTAuthMiddleware())
-	for _, v := range routers {
-		route := strings.ToLower(v.route)
-		switch v.routerType {
-		case routerTypeNeedAuth:
-			funcDoRouteNeedAuthRegister(strings.ToUpper(v.method), route, v.handler, jwtR)
-		case routerTypeNormal:
+
+	addAllRouters()
+
+	for _, v := range routerList {
+		route := strings.ToLower(v.Route)
+		switch v.RouterType {
+		case common.RouterTypeNeedAuth:
+			funcDoRouteNeedAuthRegister(strings.ToUpper(v.Method), route, v.Handler, jwtR)
+		case common.RouterTypeNormal:
 			route = strings.ToLower(prefix + route)
-			funcDoRouteRegister(strings.ToUpper(v.method), route, v.handler, r)
+			funcDoRouteRegister(strings.ToUpper(v.Method), route, v.Handler, r)
 		}
 	}
 }
@@ -73,107 +72,24 @@ func funcDoRouteRegister(method, route string, handler gin.HandlerFunc, r *gin.E
 	}
 }
 
-var routers = []ginHandleFunc{
+var defaultRouters = []common.GinHandleFunc{
 	{
-		handler:    registerHandler,
-		routerType: routerTypeNormal,
-		method:     "POST",
-		route:      "/register",
+		Handler:    addRoleHandler,
+		RouterType: common.RouterTypeNeedAuth,
+		Method:     "POST",
+		Route:      "role/add",
 	},
 	{
-		handler:    loginHandler,
-		routerType: routerTypeNormal,
-		method:     "POST",
-		route:      "/login",
+		Handler:    addPermissionHandler,
+		RouterType: common.RouterTypeNeedAuth,
+		Method:     "POST",
+		Route:      "permission/add",
 	},
-	{
-		handler:    logoutHandler,
-		routerType: routerTypeNeedAuth,
-		route:      "/logout",
-		method:     "POST",
-	},
-	{
-		handler:    getUserInfoHandler, //获取当前用户信息
-		routerType: routerTypeNeedAuth,
-		method:     "GET",
-		route:      "/user/info",
-	},
-	{
-		handler:    updateUserHandler, //更新当前用户信息
-		routerType: routerTypeNeedAuth,
-		method:     "POST",
-		route:      "/user/update",
-	},
-	{
-		handler:    getUserListInfoHandler, //获取所有用户
-		routerType: routerTypeNeedAuth,
-		method:     "GET",
-		route:      "/user/list",
-	},
-	{
-		handler:    uploadImageHandler, //上传图片
-		routerType: routerTypeNeedAuth,
-		method:     "POST",
-		route:      "/upload/image",
-	},
-	{
-		handler:    loadImageHandler, //加载图片
-		routerType: routerTypeNormal,
-		method:     "GET",
-		route:      "/image/:path/:filename",
-	},
-	{
-		handler:    addApplicationHandler, //添加应用
-		routerType: routerTypeNeedAuth,
-		method:     "POST",
-		route:      "/app/add",
-	},
-	{
-		handler:    getApplicationsHandler,
-		routerType: routerTypeNeedAuth,
-		method:     "GET",
-		route:      "/app/list",
-	},
-	{
-		handler:    updateApplicationHandler,
-		routerType: routerTypeNeedAuth,
-		method:     "POST",
-		route:      "/app/update",
-	},
-	{
-		handler:    addAppVersionHandler,
-		routerType: routerTypeNeedAuth,
-		method:     "POST",
-		route:      "/app/version/add",
-	},
-	{
-		handler:    getAppVersionListHandler,
-		routerType: routerTypeNeedAuth,
-		method:     "GET",
-		route:      "/app/version/list",
-	},
-	{
-		handler:    updateAppVersionHandler,
-		routerType: routerTypeNeedAuth,
-		method:     "POST",
-		route:      "/app/version/update",
-	},
-	{
-		handler:    getAllSimpleAppHandler,
-		routerType: routerTypeNeedAuth,
-		method:     "GET",
-		route:      "app/list/simple",
-	},
-	{
-		handler:    addRoleHandler,
-		routerType: routerTypeNeedAuth,
-		method:     "POST",
-		route:      "role/add",
-	},
-	{
-		handler:    addPermissionHandler,
-		routerType: routerTypeNeedAuth,
-		method:     "POST",
-		route:      "permission/add",
-	},
+}
+
+func addAllRouters() {
+	routerList = append(routerList, defaultRouters...)
+	routerList = append(routerList, user_handler.UserRouters...)
+	routerList = append(routerList, file_handler.FileRouters...)
+	routerList = append(routerList, app_handler.AppRouters...)
 }

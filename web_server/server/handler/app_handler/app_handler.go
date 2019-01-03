@@ -1,4 +1,4 @@
-package handler
+package app_handler
 
 import (
 	"doc-manager/web_server/common"

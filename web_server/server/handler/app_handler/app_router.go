@@ -1,0 +1,48 @@
+package app_handler
+
+import "doc-manager/web_server/server/handler/common"
+
+var AppRouters = []common.GinHandleFunc{
+	{
+		Handler:    addApplicationHandler, //添加应用
+		RouterType: common.RouterTypeNeedAuth,
+		Method:     "POST",
+		Route:      "/app/add",
+	},
+	{
+		Handler:    getApplicationsHandler,
+		RouterType: common.RouterTypeNeedAuth,
+		Method:     "GET",
+		Route:      "/app/list",
+	},
+	{
+		Handler:    updateApplicationHandler,
+		RouterType: common.RouterTypeNeedAuth,
+		Method:     "POST",
+		Route:      "/app/update",
+	},
+	{
+		Handler:    addAppVersionHandler,
+		RouterType: common.RouterTypeNeedAuth,
+		Method:     "POST",
+		Route:      "/app/version/add",
+	},
+	{
+		Handler:    getAppVersionListHandler,
+		RouterType: common.RouterTypeNeedAuth,
+		Method:     "GET",
+		Route:      "/app/version/list",
+	},
+	{
+		Handler:    updateAppVersionHandler,
+		RouterType: common.RouterTypeNeedAuth,
+		Method:     "POST",
+		Route:      "/app/version/update",
+	},
+	{
+		Handler:    getAllSimpleAppHandler,
+		RouterType: common.RouterTypeNeedAuth,
+		Method:     "GET",
+		Route:      "app/list/simple",
+	},
+}
