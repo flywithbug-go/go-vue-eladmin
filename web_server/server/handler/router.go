@@ -4,6 +4,7 @@ import (
 	"doc-manager/web_server/server/handler/app_handler"
 	"doc-manager/web_server/server/handler/common"
 	"doc-manager/web_server/server/handler/file_handler"
+	"doc-manager/web_server/server/handler/role_handler"
 
 	"doc-manager/web_server/server/handler/user_handler"
 
@@ -72,24 +73,9 @@ func funcDoRouteRegister(method, route string, handler gin.HandlerFunc, r *gin.E
 	}
 }
 
-var defaultRouters = []common.GinHandleFunc{
-	{
-		Handler:    addRoleHandler,
-		RouterType: common.RouterTypeNeedAuth,
-		Method:     "POST",
-		Route:      "role/add",
-	},
-	{
-		Handler:    addPermissionHandler,
-		RouterType: common.RouterTypeNeedAuth,
-		Method:     "POST",
-		Route:      "permission/add",
-	},
-}
-
 func addAllRouters() {
-	routerList = append(routerList, defaultRouters...)
 	routerList = append(routerList, user_handler.UserRouters...)
 	routerList = append(routerList, file_handler.FileRouters...)
 	routerList = append(routerList, app_handler.AppRouters...)
+	routerList = append(routerList, role_handler.FileRouters...)
 }

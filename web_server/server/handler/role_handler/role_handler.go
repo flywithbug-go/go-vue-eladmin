@@ -1,4 +1,4 @@
-package handler
+package role_handler
 
 import (
 	"doc-manager/web_server/model"
