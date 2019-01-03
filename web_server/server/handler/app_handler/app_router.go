@@ -43,6 +43,6 @@ var AppRouters = []common.GinHandleFunc{
 		Handler:    getAllSimpleAppHandler,
 		RouterType: common.RouterTypeNeedAuth,
 		Method:     "GET",
-		Route:      "app/list/simple",
+		Route:      "/app/list/simple",
 	},
 }

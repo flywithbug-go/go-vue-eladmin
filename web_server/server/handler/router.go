@@ -1,11 +1,11 @@
 package handler
 
 import (
-	"doc-manager/web_server/server/handler/app_handler"
 	"doc-manager/web_server/server/handler/common"
+
+	"doc-manager/web_server/server/handler/app_handler"
 	"doc-manager/web_server/server/handler/file_handler"
 	"doc-manager/web_server/server/handler/role_handler"
-
 	"doc-manager/web_server/server/handler/user_handler"
 
 	"doc-manager/web_server/server/middleware"
@@ -74,6 +74,7 @@ func funcDoRouteRegister(method, route string, handler gin.HandlerFunc, r *gin.E
 	}
 }
 
+//添加route 到RouterList
 func addAllRouters() {
 	routerList = append(routerList, user_handler.UserRouters...)
 	routerList = append(routerList, file_handler.FileRouters...)

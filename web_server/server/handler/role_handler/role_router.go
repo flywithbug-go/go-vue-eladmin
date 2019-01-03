@@ -7,12 +7,44 @@ var FileRouters = []common.GinHandleFunc{
 		Handler:    addRoleHandler,
 		RouterType: common.RouterTypeNeedAuth,
 		Method:     "POST",
-		Route:      "role/add",
+		Route:      "/role/add",
+	},
+	{
+		Handler:    getRoleHandler,
+		RouterType: common.RouterTypeNeedAuth,
+		Method:     "GET",
+		Route:      "/role",
+	},
+	{
+		Handler:    updateRoleHandler,
+		RouterType: common.RouterTypeNeedAuth,
+		Method:     "POST",
+		Route:      "/role/update",
+	},
+	{
+		Handler:    deleteRoleHandler,
+		RouterType: common.RouterTypeNeedAuth,
+		Method:     "POST",
+		Route:      "/role/delete",
 	},
 	{
 		Handler:    addPermissionHandler,
 		RouterType: common.RouterTypeNeedAuth,
 		Method:     "POST",
-		Route:      "permission/add",
+		Route:      "/permission/add",
+	},
+
+	{
+		Handler:    updateRoleHandler,
+		RouterType: common.RouterTypeNeedAuth,
+		Method:     "POST",
+		Route:      "/permission/update",
+	},
+
+	{
+		Handler:    deletePermissionHandler,
+		RouterType: common.RouterTypeNeedAuth,
+		Method:     "POST",
+		Route:      "/permission/delete",
 	},
 }

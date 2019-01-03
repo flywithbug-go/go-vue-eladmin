@@ -38,7 +38,7 @@ func (r Role) update(selector, update interface{}) error {
 	return mongo.Update(db, roleCollection, selector, update, true)
 }
 
-func (r Role) findOne(query, selector interface{}) (interface{}, error) {
+func (r Role) findOne(query, selector interface{}) (Role, error) {
 	ap := Role{}
 	err := mongo.FindOne(db, roleCollection, query, selector, &ap)
 	return ap, err
@@ -67,6 +67,10 @@ func (r Role) findPage(page, limit int, query, selector interface{}, fields ...s
 	return
 }
 
+func (r Role) FindOne() (role Role, err error) {
+	role, err = r.findOne(bson.M{"_id": r.Id}, nil)
+	return
+}
 func (r Role) Insert() error {
 	r.Id, _ = mongo.GetIncrementId(roleCollection)
 	if r.isExist(bson.M{"code": r.Code}) {

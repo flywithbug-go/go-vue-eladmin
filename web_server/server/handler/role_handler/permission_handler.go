@@ -27,3 +27,44 @@ func addPermissionHandler(c *gin.Context) {
 		return
 	}
 }
+
+func updatePermissionHandler(c *gin.Context) {
+	aRes := model.NewResponse()
+	defer func() {
+		c.JSON(http.StatusOK, aRes)
+	}()
+	para := model.Permission{}
+	err := c.BindJSON(&para)
+	if err != nil {
+		log4go.Info(err.Error())
+		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
+		return
+	}
+	err = para.Update()
+	if err != nil {
+		log4go.Info(err.Error())
+		aRes.SetErrorInfo(http.StatusBadRequest, "invalid: "+err.Error())
+		return
+	}
+}
+
+func deletePermissionHandler(c *gin.Context) {
+	aRes := model.NewResponse()
+	defer func() {
+		c.JSON(http.StatusOK, aRes)
+	}()
+	//need id
+	para := model.Permission{}
+	err := c.BindJSON(&para)
+	if err != nil {
+		log4go.Info(err.Error())
+		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
+		return
+	}
+	err = para.Remove()
+	if err != nil {
+		log4go.Info(err.Error())
+		aRes.SetErrorInfo(http.StatusBadRequest, "invalid: "+err.Error())
+		return
+	}
+}
