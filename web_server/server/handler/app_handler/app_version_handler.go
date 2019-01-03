@@ -72,9 +72,9 @@ func getAppVersionListHandler(c *gin.Context) {
 	} else if len(sort) == 0 {
 		sort = "+_id"
 	}
-	if limit == 0 {
-		limit = 10
-	}
+	//if limit == 0 {
+	//	limit = 10
+	//}
 	if page != 0 {
 		page--
 	}

@@ -7,6 +7,8 @@
       </fixed-button>
     </section>
 
+
+
     <div class="filter-container" align="center" style="margin-bottom: 20px">
       <label style="color: #2d2f33">选择App</label>
       <el-select
@@ -19,12 +21,14 @@
           :value="item.id"/>
       </el-select>
 
-      <img  :src="this.currentSimpleApp?this.currentSimpleApp.icon:imagePlaceHolder"
-            style="height: 50px; display: inline-block; margin-bottom: -15px;margin-left: 10px">
+      <img
+        :src="currentSimpleApp?currentSimpleApp.icon:imagePlaceHolder"
+        style="height: 50px; display: inline-block; margin-bottom: -15px;margin-left: 10px">
       <span style="color: #2d2f33">{{ $t('application.table_owner') }}:</span>
-      <label style="color: #2d2f33">{{ this.currentSimpleApp?this.currentSimpleApp.owner:'' }}</label>
+      <label style="color: #2d2f33">{{ currentSimpleApp?currentSimpleApp.owner:'' }}</label>
     </div>
 
+<!--列表-->
     <el-table
       :data="list"
       border
@@ -34,9 +38,9 @@
       header-row-class-name="center"
       @sort-change="sortChange">
       <el-table-column :label="$t('table.id')" prop="id" sortable="custom" align="center" width="65">
-      <template slot-scope="scope">
-      <span>{{ scope.row.id }}</span>
-      </template>
+        <template slot-scope="scope">
+          <span>{{ scope.row.id }}</span>
+        </template>
       </el-table-column>
       <el-table-column :label="$t('appVersion.versionN')" align="center" min-width="90px">
         <template slot-scope="scope">
@@ -144,6 +148,15 @@
 
     </el-table>
 
+    <!--分页-->
+    <pagination
+      v-show="total>0"
+      :total="total"
+      :page.sync="listQuery.page"
+      :limit.sync="listQuery.limit"
+      @pagination="getList"/>
+
+
     <el-dialog
       :title="textMap[dialogStatus]"
       :visible.sync="dialogFormVisible">
@@ -245,12 +258,14 @@
 
 <script>
 import fixedButton from '../../components/FixedButton'
+import Pagination from '../../components/Pagination'
+
 import {
   getSimpleApplicationListRequest,
   getAppVersionListRequest,
   addAppVersionRequest,
   updateAppVersionRequest,
-  updateStatusAppVersionRequest,removeAppVersionRequest } from '../../api/app'
+  updateStatusAppVersionRequest, removeAppVersionRequest } from '../../api/app'
 import { formatDate } from '../../utils/date'
 import ElTableFooter from 'element-ui'
 
@@ -258,7 +273,8 @@ export default {
   name: 'MetaData',
   components: {
     ElTableFooter,
-    fixedButton
+    fixedButton,
+    Pagination
   },
 
   data() {
@@ -283,7 +299,7 @@ export default {
         lock_time: undefined,
         gray_time: undefined,
         create_time: undefined,
-        release_time:undefined,
+        release_time: undefined,
         status: 0,
         app_status: '',
         app_id: 0
@@ -365,10 +381,11 @@ export default {
             trigger: 'change'
           }
         ]
-      },
+      }
 
     }
   },
+
   watch: {
     temp: {
       handler: function() {
@@ -414,7 +431,7 @@ export default {
         case 5:
           return this.$t('selector.workDone')
         default:
-          return "title undefined"
+          return 'title undefined'
       }
     },
     formatStatusButtonConfirmString(status) {
@@ -492,7 +509,7 @@ export default {
         lock_time: data.lock_time ? new Date(data.lock_time * 1000) : new Date(),
         gray_time: data.gray_time ? new Date(data.gray_time * 1000) : new Date(),
         create_time: data.create_time ? new Date(data.create_time * 1000) : new Date(),
-        release_time:data.release_time ? new Date(data.release_time * 1000) : new Date(),
+        release_time: data.release_time ? new Date(data.release_time * 1000) : new Date(),
         status: data.status,
         app_status: data.app_status,
         app_id: data.app_id
@@ -533,7 +550,7 @@ export default {
         }
       })
     },
-    updateStatus(data){
+    updateStatus(data) {
       updateStatusAppVersionRequest(data.id, data.status + 1).then(() => {
         this.getList()
         this.$notify({
@@ -551,37 +568,38 @@ export default {
       }
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          if (this.temp.approval_time > this.temp.lock_time) {
-            this.$message.error('立项时间必须早于锁版时间')
-            return
-          }
-          if (this.temp.lock_time > this.temp.gray_time) {
-            this.$message.error('锁版时间必须早于灰度时间')
-            return
-          }
-          if (this.temp.gray_time > this.temp.release_time && this.temp.status < 4){
-            this.$message.error('灰度时间必须早于发布时间')
-            return
-          }
-          let gray_time = parseInt("0")
-          let lock_time = parseInt("0")
-          let approval_time = parseInt("0")
-          let release_time = parseInt("0")
-          if (this.temp.status < 2){
-            approval_time =  this.temp.approval_time.getTime() / 1000
+          let gray_time = parseInt('0')
+          let lock_time = parseInt('0')
+          let approval_time = parseInt('0')
+          let release_time = parseInt('0')
+          if (this.temp.status < 2) {
+            approval_time = this.temp.approval_time.getTime() / 1000
           }
           if (this.temp.status < 3) {
             lock_time = this.temp.lock_time.getTime() / 1000
+            if (this.temp.approval_time > this.temp.lock_time) {
+              this.$message.error('立项时间必须早于锁版时间')
+              return
+            }
           }
-          if (this.temp.status < 4){
-            gray_time= this.temp.gray_time.getTime() / 1000
+          if (this.temp.status < 4) {
+            gray_time = this.temp.gray_time.getTime() / 1000
+            if (this.temp.lock_time > this.temp.gray_time) {
+              this.$message.error('锁版时间必须早于灰度时间')
+              return
+            }
           }
           if (this.temp.status == 5) {
-            release_time = this.temp.release_time.valueOf() /1000
+            if (this.temp.gray_time > this.temp.release_time && this.temp.status >= 4) {
+              this.$message.error('灰度时间必须早于发布时间')
+              return
+            }
+            release_time = this.temp.release_time.valueOf() / 1000
           }
           if (this.temp.parent_version === '-') {
             this.temp.parent_version = ''
           }
+
           this.dialogFormVisible = false
           updateAppVersionRequest(
             this.temp.id,
