@@ -1,10 +1,10 @@
 package server
 
 import (
-	"doc-manager/web_server/server/handler"
-	"doc-manager/web_server/server/middleware"
 	"fmt"
 	"time"
+	"vue-admin/web_server/server/handler"
+	"vue-admin/web_server/server/middleware"
 
 	"github.com/gin-gonic/contrib/static"
 

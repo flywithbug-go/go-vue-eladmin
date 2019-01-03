@@ -1,11 +1,12 @@
 package server
 
 import (
-	"doc-manager/web_server/server/middleware"
 	"fmt"
+	"net/http"
+	"vue-admin/web_server/server/middleware"
+
 	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 func StartWeb(port, staticPath string) {
@@ -19,7 +20,6 @@ func StartWeb(port, staticPath string) {
 		panic(fmt.Errorf("server启动失败 %s", err.Error()))
 	}
 }
-
 
 func NoRoute(c *gin.Context) {
 	c.HTML(http.StatusOK, "index.html", "")

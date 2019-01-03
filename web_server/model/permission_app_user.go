@@ -1,10 +1,10 @@
 package model
 
 import (
-	"doc-manager/web_server/core/mongo"
 	"encoding/json"
 	"errors"
 	"fmt"
+	"vue-admin/web_server/core/mongo"
 
 	"gopkg.in/mgo.v2/bson"
 )

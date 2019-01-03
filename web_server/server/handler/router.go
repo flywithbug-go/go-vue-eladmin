@@ -1,15 +1,15 @@
 package handler
 
 import (
-	"doc-manager/web_server/server/handler/common"
+	"vue-admin/web_server/server/handler/common"
 
-	"doc-manager/web_server/server/handler/app_handler"
-	"doc-manager/web_server/server/handler/file_handler"
-	"doc-manager/web_server/server/handler/role_handler"
-	"doc-manager/web_server/server/handler/user_handler"
+	"vue-admin/web_server/server/handler/app_handler"
+	"vue-admin/web_server/server/handler/file_handler"
+	"vue-admin/web_server/server/handler/role_handler"
+	"vue-admin/web_server/server/handler/user_handler"
 
-	"doc-manager/web_server/server/middleware"
 	"strings"
+	"vue-admin/web_server/server/middleware"
 
 	"github.com/gin-gonic/gin"
 )

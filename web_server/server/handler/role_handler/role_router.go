@@ -1,6 +1,6 @@
 package role_handler
 
-import "doc-manager/web_server/server/handler/common"
+import "vue-admin/web_server/server/handler/common"
 
 var FileRouters = []common.GinHandleFunc{
 	{
@@ -33,7 +33,12 @@ var FileRouters = []common.GinHandleFunc{
 		Method:     "POST",
 		Route:      "/permission/add",
 	},
-
+	{
+		Handler:    getPermissionHandler,
+		RouterType: common.RouterTypeNeedAuth,
+		Method:     "GET",
+		Route:      "/permission",
+	},
 	{
 		Handler:    updatePermissionHandler,
 		RouterType: common.RouterTypeNeedAuth,

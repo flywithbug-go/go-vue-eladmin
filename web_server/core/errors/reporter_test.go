@@ -3,7 +3,7 @@ package errors_test
 
 import (
 	"testing"
-	"doc-manager/web_server/core/errors"
+	"vue-admin/web_server/core/errors"
 )
 
 func TestReporterAdd(t *testing.T) {

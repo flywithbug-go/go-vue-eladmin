@@ -1,10 +1,10 @@
 package middleware
 
 import (
-	"doc-manager/web_server/common"
-	"doc-manager/web_server/core/jwt"
-	"doc-manager/web_server/model"
 	"net/http"
+	"vue-admin/web_server/common"
+	"vue-admin/web_server/core/jwt"
+	"vue-admin/web_server/model"
 
 	"github.com/gin-gonic/gin"
 )

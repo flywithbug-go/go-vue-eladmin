@@ -1,10 +1,10 @@
 package handler
 
 import (
-	"doc-manager/web_server/model"
 	"fmt"
 	"net/http"
 	"strings"
+	"vue-admin/web_server/model"
 
 	"github.com/gin-gonic/gin"
 )

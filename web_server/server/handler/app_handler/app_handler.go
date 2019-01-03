@@ -1,11 +1,11 @@
 package app_handler
 
 import (
-	"doc-manager/web_server/common"
-	"doc-manager/web_server/model"
 	"net/http"
 	"strconv"
 	"strings"
+	"vue-admin/web_server/common"
+	"vue-admin/web_server/model"
 
 	"gopkg.in/mgo.v2/bson"
 

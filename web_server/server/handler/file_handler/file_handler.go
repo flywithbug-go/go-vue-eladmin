@@ -23,7 +23,7 @@ import (
 	"github.com/nfnt/resize"
 	"golang.org/x/image/bmp"
 
-	"doc-manager/web_server/model"
+	"vue-admin/web_server/model"
 
 	"github.com/gin-gonic/gin"
 )

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"doc-manager/web_server/core/mongo"
+	"vue-admin/web_server/core/mongo"
 )
 
 func TestUserFunctions(t *testing.T) {

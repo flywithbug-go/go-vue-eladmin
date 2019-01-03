@@ -20,6 +20,8 @@ type Config struct {
 	PrivateKeyPath string `json:"private_key_path"`
 	PublicKeyPath  string `json:"public_key_path"`
 
+	LogPath string `json:"log_path"`
+
 	ApiPort string `json:"api_port"` //httpServer
 	WebPort string `json:"web_port"` //httpServer
 

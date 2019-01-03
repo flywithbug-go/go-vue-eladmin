@@ -1,6 +1,6 @@
 package user_handler
 
-import "doc-manager/web_server/server/handler/common"
+import "vue-admin/web_server/server/handler/common"
 
 var UserRouters = []common.GinHandleFunc{
 

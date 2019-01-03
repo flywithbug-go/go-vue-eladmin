@@ -1,20 +1,20 @@
 package main
 
 import (
-	"doc-manager/web_server/config"
-	"doc-manager/web_server/core/jwt"
-	"doc-manager/web_server/core/mongo"
-	"doc-manager/web_server/model"
-	"doc-manager/web_server/server"
 	"flag"
+	"vue-admin/web_server/config"
+	"vue-admin/web_server/core/jwt"
+	"vue-admin/web_server/core/mongo"
+	"vue-admin/web_server/model"
+	"vue-admin/web_server/server"
 
 	log "github.com/flywithbug/log4go"
 )
 
 //log 启动配置
-func SetLog() {
+func SetLog(conf *config.Config) {
 	w := log.NewFileWriter()
-	w.SetPathPattern("./log/log-%Y%M%D.log")
+	w.SetPathPattern(conf.LogPath)
 	c := log.NewConsoleWriter()
 	c.SetColor(true)
 	log.Register(w)
@@ -36,7 +36,7 @@ func main() {
 	//signingKey read
 	jwt.ReadSigningKey(conf.PrivateKeyPath, conf.PublicKeyPath)
 
-	SetLog()
+	SetLog(conf)
 	defer log.Close()
 	//mongodb启动连接
 	//设置数据库名字
@@ -47,5 +47,5 @@ func main() {
 	//	server.StartWeb(conf.WebPort, conf.StaticPath)
 	//}()
 	//启动ApiServer服务
-	server.StartServer(conf.ApiPort,conf.StaticPath, conf.RouterPrefix, conf.AuthPrefix)
+	server.StartServer(conf.ApiPort, conf.StaticPath, conf.RouterPrefix, conf.AuthPrefix)
 }

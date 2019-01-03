@@ -1,20 +1,23 @@
 package model
 
 import (
-	"doc-manager/web_server/core/mongo"
 	"encoding/json"
 	"errors"
 	"fmt"
+	"vue-admin/web_server/core/mongo"
 
 	"gopkg.in/mgo.v2/bson"
 )
 
 const (
-	permissionCollection            = "permission"
-	PermissionTypeCURD   typeStatus = iota //增删改查
-	PermissionTypeUR                       //改查
-	PermissionTypeR                        //查看
-	PermissionTypeNone                     //无权限
+	permissionCollection = "permission"
+)
+
+const (
+	PermissionTypeNone typeStatus = iota //无权限
+	PermissionTypeRWAD                   //增删改查
+	PermissionTypeRW                     //改查
+	PermissionTypeR                      //查看
 )
 
 //权限表 type
@@ -24,7 +27,8 @@ const (
 
 type Permission struct {
 	Id          int64  `json:"id,omitempty" bson:"_id,omitempty"`
-	Type        int    `json:"type,omitempty" bson:"type,omitempty"`         //
+	Type        int    `json:"type,omitempty" bson:"type,omitempty"` //
+	TypeStatus  string `json:"type_status,omitempty" bson:"type_status,omitempty"`
 	Name        string `json:"name,omitempty" bson:"name,omitempty"`         //
 	Code        string `json:"code,omitempty" bson:"code,omitempty"`         //
 	DelFlag     bool   `json:"del_flag,omitempty" bson:"del_flag,omitempty"` //
@@ -48,7 +52,7 @@ func (p Permission) update(selector, update interface{}) error {
 	return mongo.Update(db, permissionCollection, selector, update, true)
 }
 
-func (p Permission) findOne(query, selector interface{}) (interface{}, error) {
+func (p Permission) findOne(query, selector interface{}) (Permission, error) {
 	ap := Permission{}
 	err := mongo.FindOne(db, permissionCollection, query, selector, &ap)
 	return ap, err
@@ -87,6 +91,11 @@ func (p Permission) Insert() error {
 		return fmt.Errorf("name exist")
 	}
 	return p.insert(p)
+}
+
+func (p Permission) FindOne() (per Permission, err error) {
+	per, err = p.findOne(bson.M{"_id": p.Id}, nil)
+	return
 }
 
 func (p Permission) Update() error {

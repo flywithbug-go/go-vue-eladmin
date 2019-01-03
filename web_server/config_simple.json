@@ -4,6 +4,7 @@
   "static_path":"./web_client/dist/",
   "private_key_path":"**/private_key",
   "public_key_path":"**/public_key.pub",
+  "log_path":"./log/log-%Y%M%D.log",
   "mail_config":{
     "host":"smtp.163.com",
     "port":465,

@@ -4,7 +4,7 @@ package errors_test
 import (
 	"fmt"
 	"testing"
-	"doc-manager/web_server/core/errors"
+	"vue-admin/web_server/core/errors"
 )
 
 var errMessage = "User with mail: %s already exists"
