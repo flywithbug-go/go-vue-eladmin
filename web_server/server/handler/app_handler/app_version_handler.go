@@ -32,7 +32,7 @@ func addAppVersionHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusInternalServerError, "para invalid: "+err.Error())
 		return
 	}
-	aRes.SetSuccess()
+	aRes.AddResponseInfo("app", appV)
 }
 
 func updateAppVersionHandler(c *gin.Context) {

@@ -506,7 +506,7 @@ export default {
         lock_time: data.lock_time ? new Date(data.lock_time * 1000) : new Date(),
         gray_time: data.gray_time ? new Date(data.gray_time * 1000) : new Date(),
         create_time: data.create_time ? new Date(data.create_time * 1000) : new Date(),
-        release_time: data.release_time ? new Date(data.release_time * 1000) : new Date(),
+        release_time: data.release_time ? new Date(data.release_time * 1000) : 0,
         status: data.status,
         app_status: data.app_status,
         app_id: data.app_id
@@ -528,6 +528,7 @@ export default {
             this.$message.error('锁版时间必须早于灰度时间')
             return
           }
+
           addAppVersionRequest(
             this.listQuery.app_id,
             this.temp.version,
@@ -535,9 +536,9 @@ export default {
             this.temp.platform,
             this.temp.approval_time.valueOf() / 1000,
             this.temp.lock_time.valueOf() / 1000,
-            this.temp.gray_time.valueOf() / 1000).then(() => {
+            this.temp.gray_time.valueOf() / 1000).then((response) => {
+            this.list.unshift(response.app)
             this.dialogFormVisible = false
-            this.getList()
             this.resetTemp()
             this.$notify({
               title: '成功',
@@ -571,18 +572,23 @@ export default {
           let lock_time = parseInt('0')
           let approval_time = parseInt('0')
           let release_time = parseInt('0')
+          let parent_version = this.temp.parent_version
+
+          this.temp.lock_time = this.temp.lock_time.getTime() / 1000
+          this.temp.gray_time = this.temp.gray_time.getTime() / 1000
+          this.temp.approval_time = this.temp.approval_time.getTime() / 1000
           if (this.temp.status < 2) {
-            approval_time = this.temp.approval_time.getTime() / 1000
+            approval_time = this.temp.approval_time
           }
           if (this.temp.status < 3) {
-            lock_time = this.temp.lock_time.getTime() / 1000
+            lock_time = this.temp.lock_time
             if (this.temp.approval_time > this.temp.lock_time) {
               this.$message.error('立项时间必须早于锁版时间')
               return
             }
           }
           if (this.temp.status < 4) {
-            gray_time = this.temp.gray_time.getTime() / 1000
+            gray_time = this.temp.gray_time
             if (this.temp.lock_time > this.temp.gray_time) {
               this.$message.error('锁版时间必须早于灰度时间')
               return
@@ -593,24 +599,33 @@ export default {
               this.$message.error('灰度时间必须早于发布时间')
               return
             }
-            release_time = this.temp.release_time.valueOf() / 1000
-          }
-          if (this.temp.parent_version === '-') {
-            this.temp.parent_version = ''
+            this.temp.release_time = this.temp.release_time.valueOf() / 1000
+            release_time = this.temp.release_time
           }
 
-          this.dialogFormVisible = false
+          if (this.temp.parent_version === '-') {
+            parent_version = ''
+          }
+
           updateAppVersionRequest(
             this.temp.id,
             this.temp.app_id,
             this.temp.version,
-            this.temp.parent_version,
+            parent_version,
             this.temp.platform,
             approval_time,
             lock_time,
             gray_time,
             release_time).then(() => {
-            this.getList()
+            for (const v of this.list) {
+              if (v.id === this.temp.id) {
+                const index = this.list.indexOf(v)
+                this.list.splice(index, 1, this.temp)
+                break
+              }
+            }
+            this.resetTemp()
+            this.dialogFormVisible = false
             this.$notify({
               title: '成功',
               message: '修改成功',
@@ -618,6 +633,7 @@ export default {
               duration: 2000
             })
           })
+
         }
       })
     },

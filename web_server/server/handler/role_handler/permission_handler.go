@@ -1,7 +1,6 @@
 package role_handler
 
 import (
-	"errors"
 	"net/http"
 	"strconv"
 	"vue-admin/web_server/model"
@@ -24,23 +23,19 @@ func addPermissionHandler(c *gin.Context) {
 	}
 
 	if len(p.Code) == 0 {
-		err = errors.New("code is null")
-		aRes.SetErrorInfo(http.StatusBadRequest, "code is null"+err.Error())
+		aRes.SetErrorInfo(http.StatusBadRequest, "code is null")
 		return
 	}
 	if p.Type == 0 {
-		err = errors.New("type should . 0")
-		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
+		aRes.SetErrorInfo(http.StatusBadRequest, "type should . 0")
 		return
 	}
 	if len(p.Name) == 0 {
-		err = errors.New("name not be null")
-		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
+		aRes.SetErrorInfo(http.StatusBadRequest, "name not be null")
 		return
 	}
 	if len(p.Description) == 0 {
-		err = errors.New("desc should not be null")
-		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
+		aRes.SetErrorInfo(http.StatusBadRequest, "desc should not be null")
 		return
 	}
 
