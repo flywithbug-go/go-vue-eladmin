@@ -16,16 +16,29 @@ var AppRouters = []common.GinHandleFunc{
 		Route:      "/app/list",
 	},
 	{
+		Handler:    getAllSimpleAppHandler,
+		RouterType: common.RouterTypeNeedAuth,
+		Method:     "GET",
+		Route:      "/app/list/simple",
+	},
+	{
 		Handler:    updateApplicationHandler,
 		RouterType: common.RouterTypeNeedAuth,
 		Method:     "POST",
 		Route:      "/app/update",
 	},
+
 	{
 		Handler:    addAppVersionHandler,
 		RouterType: common.RouterTypeNeedAuth,
 		Method:     "POST",
 		Route:      "/app/version/add",
+	},
+	{
+		Handler:    removeAppVersionHandler,
+		RouterType: common.RouterTypeNeedAuth,
+		Method:     "POST",
+		Route:      "/app/version/remove",
 	},
 	{
 		Handler:    getAppVersionListHandler,
@@ -38,11 +51,5 @@ var AppRouters = []common.GinHandleFunc{
 		RouterType: common.RouterTypeNeedAuth,
 		Method:     "POST",
 		Route:      "/app/version/update",
-	},
-	{
-		Handler:    getAllSimpleAppHandler,
-		RouterType: common.RouterTypeNeedAuth,
-		Method:     "GET",
-		Route:      "/app/list/simple",
 	},
 }

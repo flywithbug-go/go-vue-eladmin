@@ -67,7 +67,7 @@ func updatePermissionHandler(c *gin.Context) {
 	}
 }
 
-func deletePermissionHandler(c *gin.Context) {
+func removePermissionHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
 		c.JSON(http.StatusOK, aRes)

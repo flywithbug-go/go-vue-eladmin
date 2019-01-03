@@ -70,7 +70,8 @@ export function addAppVersionRequest(app_id, version, parent_version, platform, 
     platform,
     approval_time,
     lock_time,
-    gray_time
+    gray_time,
+    release_time
   }
   return client({
     url: '/app/version/add',
@@ -78,7 +79,7 @@ export function addAppVersionRequest(app_id, version, parent_version, platform, 
     data
   })
 }
-export function updateAppVersionRequest(id, app_id, version, parent_version, platform, approval_time, lock_time, gray_time) {
+export function updateAppVersionRequest(id, app_id, version, parent_version, platform, approval_time, lock_time, gray_time,release_time) {
   const data = {
     id,
     app_id,
@@ -87,7 +88,8 @@ export function updateAppVersionRequest(id, app_id, version, parent_version, pla
     platform,
     approval_time,
     lock_time,
-    gray_time
+    gray_time,
+    release_time
   }
   return client({
     url: '/app/version/update',
@@ -95,6 +97,20 @@ export function updateAppVersionRequest(id, app_id, version, parent_version, pla
     data
   })
 }
+
+
+export function removeAppVersionRequest(id) {
+  const data = {
+    id
+  }
+  return client({
+    url: '/app/version/remove',
+    method: 'post',
+    data
+  })
+}
+
+
 
 export function updateStatusAppVersionRequest(id, status) {
   const data = {

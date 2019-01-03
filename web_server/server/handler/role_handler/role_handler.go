@@ -71,7 +71,7 @@ func updateRoleHandler(c *gin.Context) {
 	}
 }
 
-func deleteRoleHandler(c *gin.Context) {
+func removeRoleHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
 		c.JSON(http.StatusOK, aRes)

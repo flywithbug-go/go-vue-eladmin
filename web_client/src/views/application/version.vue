@@ -73,7 +73,7 @@
           <span>{{ formatDate(scope.row.gray_time) }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('appVersion.ReleaseTime')" align="center" min-width="90px">
+      <el-table-column :label="$t('appVersion.releaseTime')" align="center" min-width="90px">
         <template slot-scope="scope">
           <span>{{ formatDate(scope.row.release_time) }}</span>
         </template>
@@ -91,7 +91,6 @@
         class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
-            v-show="scope.row.status < 4"
             type="primary"
             size="mini"
             @click="handleUpdate(scope.row)">
@@ -99,7 +98,7 @@
           </el-button>
 
           <el-popover
-            v-show="scope.row.status < 4"
+            v-show="scope.row.status < 5"
             v-model="scope.row.pop_status"
             placement="top"
             width="160px"
@@ -118,6 +117,7 @@
           </el-popover>
 
           <el-popover
+            v-show="scope.row.status < 2"
             v-model="scope.row.pop_de_status"
             placement="top"
             width="160px"
@@ -205,6 +205,17 @@
             type="date"/>
         </el-form-item>
 
+        <el-form-item
+          v-show="temp.status > 3"
+          :label="$t('appVersion.releaseTime')"
+          prop="release_time">
+          <el-date-picker
+            v-model="temp.release_time"
+            :placeholder="$t('appVersion.releaseTime')"
+            format="yyyy-MM-dd"
+            type="date"/>
+        </el-form-item>
+
         <el-form-item :label="$t('appVersion.platform')" prop="platform">
           <el-select
             :disabled="dialogStatus==='update' && temp.status > 1"
@@ -234,7 +245,12 @@
 
 <script>
 import fixedButton from '../../components/FixedButton'
-import { getSimpleApplicationListRequest, getAppVersionListRequest, addAppVersionRequest, updateAppVersionRequest, updateStatusAppVersionRequest } from '../../api/app'
+import {
+  getSimpleApplicationListRequest,
+  getAppVersionListRequest,
+  addAppVersionRequest,
+  updateAppVersionRequest,
+  updateStatusAppVersionRequest,removeAppVersionRequest } from '../../api/app'
 import { formatDate } from '../../utils/date'
 import ElTableFooter from 'element-ui'
 
@@ -257,6 +273,28 @@ export default {
       textMap: {
         update: this.$t('application.table_edit'),
         create: this.$t('application.table_add')
+      },
+      temp: {
+        id: 0,
+        version: '',
+        parent_version: '',
+        platform: [],
+        approval_time: new Date(),
+        lock_time: new Date(),
+        gray_time: new Date(),
+        create_time: new Date(),
+        release_time:new Date(),
+        status: 0,
+        app_status: '',
+        app_id: 0
+      },
+      listQuery: {
+        page: 0,
+        limit: 10,
+        name: '',
+        owner: '',
+        sort: '-id',
+        app_id: 0
       },
       simpleAppList: null,
       currentSimpleApp: null,
@@ -328,27 +366,7 @@ export default {
           }
         ]
       },
-      temp: {
-        id: 0,
-        version: '',
-        parent_version: '',
-        platform: [],
-        approval_time: new Date(),
-        lock_time: new Date(),
-        gray_time: new Date(),
-        create_time: new Date(),
-        status: 0,
-        app_status: '',
-        app_id: 0
-      },
-      listQuery: {
-        page: 0,
-        limit: 10,
-        name: '',
-        owner: '',
-        sort: '-id',
-        app_id: 0
-      }
+
     }
   },
   watch: {
@@ -372,9 +390,6 @@ export default {
         this.currentSimpleApp = this.simpleAppList[0]
         this.listQuery.app_id = this.currentSimpleApp.id
         this.getList()
-      }).catch((err) => {
-        console.log('err', err)
-        this.listLoading = false
       })
     },
     getList() {
@@ -397,16 +412,18 @@ export default {
         case 4:
           return this.$t('selector.release')
         case 5:
-          return this.$t('selector.release')
+          return this.$t('selector.workDone')
+        default:
+          return "title undefined"
       }
     },
     formatStatusButtonConfirmString(status) {
-      switch (status) {
-        case 1, 2, 3:
-          return this.$t('selector.confirmChange')
-        case 4:
-          return this.$t('table.delete')
-      }
+      // switch (status) {
+      //   case 1, 2, 3:
+      //     return this.$t('selector.confirmChange')
+      //   case 4:
+      //     return this.$t('table.delete')
+      // }
       return this.$t('selector.confirmChange')
     },
     formatTagString(status) {
@@ -424,6 +441,7 @@ export default {
     },
     deleteVersionPopover(data) {
       data.pop_de_status = false
+      this.removeAppVersion(data)
     },
     cancelPopover(data) {
       data.pop_status = false
@@ -431,15 +449,7 @@ export default {
     },
     confirmPopover(data) {
       data.pop_status = false
-      updateStatusAppVersionRequest(data.id, data.status + 1).then(() => {
-        this.getList()
-        this.$notify({
-          title: '成功',
-          message: '创建成功',
-          type: 'success',
-          duration: 2000
-        })
-      })
+      this.updateStatus(data)
     },
     formatPlatform(list) {
       if (list) {
@@ -480,10 +490,14 @@ export default {
         lock_time: data.lock_time ? new Date(data.lock_time * 1000) : new Date(),
         gray_time: data.gray_time ? new Date(data.gray_time * 1000) : new Date(),
         create_time: data.create_time ? new Date(data.create_time * 1000) : new Date(),
+        release_time:data.release_time ? new Date(data.release_time * 1000) : new Date(),
         status: data.status,
         app_status: data.app_status,
         app_id: data.app_id
       }
+    },
+    removeAppVersion(data) {
+
     },
     createData() {
       this.$refs['dataForm'].validate((valid) => {
@@ -516,6 +530,17 @@ export default {
         }
       })
     },
+    updateStatus(data){
+      updateStatusAppVersionRequest(data.id, data.status + 1).then(() => {
+        this.getList()
+        this.$notify({
+          title: '成功',
+          message: '创建成功',
+          type: 'success',
+          duration: 2000
+        })
+      })
+    },
     updateDate() {
       if (this.dialogEditCount < 1) {
         this.dialogFormVisible = false
@@ -531,20 +556,41 @@ export default {
             this.$message.error('锁版时间必须早于灰度时间')
             return
           }
+          if (this.temp.gray_time > this.temp.release_time && this.temp.status < 4){
+            this.$message.error('灰度时间必须早于发布时间')
+            return
+          }
+          let gray_time = 0
+          let lock_time = 0
+          let approval_time = 0
+          let release_time = 0
+          if (this.temp.status < 2){
+            approval_time =  this.temp.approval_time.getTime() / 1000
+          }
+          if (this.temp.status < 3) {
+            lock_time = this.temp.lock_time.getTime() / 1000
+          }
+          if (this.temp.status < 4){
+            gray_time= this.temp.gray_time.getTime() / 1000
+          }
+          if (this.temp.status == 5) {
+            release_time = this.temp.release_time.valueOf() /1000
+          }
           if (this.temp.parent_version === '-') {
             this.temp.parent_version = ''
           }
+          this.dialogFormVisible = false
           updateAppVersionRequest(
             this.temp.id,
             this.temp.app_id,
             this.temp.version,
             this.temp.parent_version,
             this.temp.platform,
-            this.temp.approval_time.getTime() / 1000,
-            this.temp.lock_time.getTime() / 1000,
-            this.temp.gray_time.getTime() / 1000).then(() => {
+            approval_time,
+            lock_time,
+            gray_time,
+            release_time).then(() => {
             this.getList()
-            this.dialogFormVisible = false
             this.$notify({
               title: '成功',
               message: '修改成功',

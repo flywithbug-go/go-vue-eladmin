@@ -22,10 +22,10 @@ var FileRouters = []common.GinHandleFunc{
 		Route:      "/role/update",
 	},
 	{
-		Handler:    deleteRoleHandler,
+		Handler:    removeRoleHandler,
 		RouterType: common.RouterTypeNeedAuth,
 		Method:     "POST",
-		Route:      "/role/delete",
+		Route:      "/role/remove",
 	},
 	{
 		Handler:    addPermissionHandler,
@@ -47,9 +47,9 @@ var FileRouters = []common.GinHandleFunc{
 	},
 
 	{
-		Handler:    deletePermissionHandler,
+		Handler:    removePermissionHandler,
 		RouterType: common.RouterTypeNeedAuth,
 		Method:     "POST",
-		Route:      "/permission/delete",
+		Route:      "/permission/remove",
 	},
 }

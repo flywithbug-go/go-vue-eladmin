@@ -193,7 +193,7 @@ export default {
     approvalTime: "Approval time",
     lockTime: "Lock time",
     grayTime: "Gray time",
-    ReleaseTime:"Release time",
+    releaseTime:"Release time",
     status: "Status",
     createTime: "Create time",
     operate: "Edit"
@@ -204,6 +204,7 @@ export default {
     developing: "Developing",
     gray:"Gray",
     release: "Release",
+    workDone: "Work done",
     changeStatus:"Change status",
     develop: "Develop",
     releasing: "Releasing",

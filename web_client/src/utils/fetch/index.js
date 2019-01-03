@@ -53,7 +53,6 @@ client.interceptors.response.use(response => {
   })
   return Promise.reject(res.msg)
 },error => {
-  console.log('err:' + error)
   Message({
     message: error.message,
     type:'error',

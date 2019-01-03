@@ -9,6 +9,8 @@ import (
 	"vue-admin/web_server/common"
 	"vue-admin/web_server/core/mongo"
 
+	"github.com/flywithbug/log4go"
+
 	"gopkg.in/mgo.v2/bson"
 )
 
@@ -26,6 +28,8 @@ const (
 	appStatusTypeDeveloping                     //开发中 待灰度
 	appStatusTypeGray                           //灰度  待发布
 	appStatusTypeRelease                        //已发布  已发布不能再更改
+	appStatusTypeWorkDone                       //工作全部结束
+
 )
 
 type AppVersion struct {
@@ -40,7 +44,7 @@ type AppVersion struct {
 	GrayTime      int64      `json:"gray_time,omitempty" bson:"gray_time,omitempty"`         //灰度时间
 	CreateTime    int64      `json:"create_time,omitempty" bson:"create_time,omitempty"`     //添加时间
 	AppStatus     string     `json:"app_status,omitempty" bson:"app_status,omitempty"`       //app状态
-	ReleaseTime   int64      `json:"release_time,omitempty" bson:"release_time"`
+	ReleaseTime   int64      `json:"release_time,omitempty" bson:"release_time,omitempty"`
 }
 
 func (app AppVersion) ToJson() string {
@@ -128,18 +132,34 @@ func (app *AppVersion) Insert() error {
 	return app.insert(app)
 }
 
-func (app *AppVersion) Update() error {
-	if app.Status > appStatusTypeRelease {
+func (app AppVersion) Remove() error {
+	selector := bson.M{"_id": app.Id}
+
+	return app.remove(selector)
+}
+
+func (app AppVersion) Update() error {
+	appOld, _ := app.findOne(bson.M{"_id": app.Id}, nil)
+	if app.Status > appStatusTypeWorkDone || app.Status < appStatusTypeUnDetermined {
 		return errors.New("status not right")
 	}
+	if app.Status < appOld.Status {
+		app.Status = appOld.Status
+	}
 	selector := bson.M{"_id": app.Id}
+	log4go.Info(app.ToJson())
 	if app.Status > 1 {
 		//状态大于1时，可以更新锁版时间，灰度时间，状态，和发布时间
 		app.AppStatus = makeStatusString(app.Status)
+		if app.Status == appStatusTypeWorkDone {
+			if app.ReleaseTime == 0 {
+				app.ReleaseTime = time.Now().Unix()
+			}
+		}
 		if app.Status == appStatusTypeRelease {
-			app.ReleaseTime = time.Now().Unix()
-		} else {
-			app.ReleaseTime = 0
+			if app.ReleaseTime == 0 {
+				app.ReleaseTime = time.Now().Unix()
+			}
 		}
 		if app.Status > appStatusTypePrepare {
 			app.ApprovalTime = 0
@@ -202,10 +222,14 @@ func makeStatusString(status typeStatus) string {
 	case appStatusTypeRelease:
 		statusString = "已发布"
 		break
+	case appStatusTypeWorkDone:
+		statusString = "Done"
+		break
 	case appStatusTypeUnDetermined:
 		statusString = "待定"
 		break
 	default:
+		statusString = "未定义状态"
 	}
 	return statusString
 }

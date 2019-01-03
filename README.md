@@ -75,7 +75,7 @@ npm run build --report
   - [ ] API管理
   
   
-### 用户权限 
+### 用户权限设计 
 ![user_permission](/frontend/user_permission.png)
   
 ### 页面示例
