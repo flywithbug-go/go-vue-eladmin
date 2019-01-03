@@ -24,11 +24,11 @@ const (
 
 type Permission struct {
 	Id          int64  `json:"id,omitempty" bson:"_id,omitempty"`
-	Type        int    `json:"type"`           //
-	Name        string `json:"name,omitempty"` //
-	Code        string `json:"code"`           //
-	DelFlag     bool   `json:"del_flag"`       //
-	Description string `json:"description"`
+	Type        int    `json:"type,omitempty" bson:"type,omitempty"`         //
+	Name        string `json:"name,omitempty" bson:"name,omitempty"`         //
+	Code        string `json:"code,omitempty" bson:"code,omitempty"`         //
+	DelFlag     bool   `json:"del_flag,omitempty" bson:"del_flag,omitempty"` //
+	Description string `json:"description,omitempty" bson:"description,omitempty"`
 }
 
 func (p Permission) ToJson() string {

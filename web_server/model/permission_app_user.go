@@ -15,9 +15,9 @@ const (
 
 //用户关联App的管理权限
 type UserAppPermission struct {
-	Id              int64 `json:"id" bson:"_id"`
-	UserId          int64
-	AppPermissionId int64 `json:"app_permission_id"`
+	Id              int64 `json:"id,omitempty" bson:"_id,omitempty"`
+	UserId          int64 `json:"user_id,omitempty" bson:"user_id,omitempty"`
+	AppPermissionId int64 `json:"app_permission_id,omitempty" bson:"app_permission_id,omitempty"`
 }
 
 func (r UserAppPermission) ToJson() string {
