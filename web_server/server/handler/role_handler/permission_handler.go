@@ -13,7 +13,7 @@ import (
 func addPermissionHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.JSON(http.StatusOK, aRes)
+		c.JSON(aRes.Code, aRes)
 	}()
 	p := model.Permission{}
 	err := c.BindJSON(&p)
@@ -55,7 +55,7 @@ func addPermissionHandler(c *gin.Context) {
 func getPermissionHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.JSON(http.StatusOK, aRes)
+		c.JSON(aRes.Code, aRes)
 	}()
 	ids := c.Query("id")
 	var mInfo = model.Permission{}
@@ -73,7 +73,7 @@ func getPermissionHandler(c *gin.Context) {
 func updatePermissionHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.JSON(http.StatusOK, aRes)
+		c.JSON(aRes.Code, aRes)
 	}()
 	para := model.Permission{}
 	err := c.BindJSON(&para)
@@ -93,7 +93,7 @@ func updatePermissionHandler(c *gin.Context) {
 func removePermissionHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.JSON(http.StatusOK, aRes)
+		c.JSON(aRes.Code, aRes)
 	}()
 	//need id
 	para := model.Permission{}

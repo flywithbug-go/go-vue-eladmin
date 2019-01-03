@@ -18,7 +18,7 @@ type UserRole struct {
 func loginHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.JSON(http.StatusOK, aRes)
+		c.JSON(aRes.Code, aRes)
 	}()
 	user := model.User{}
 	err := c.BindJSON(&user)

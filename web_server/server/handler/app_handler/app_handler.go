@@ -20,7 +20,7 @@ type appPara struct {
 func addApplicationHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.JSON(http.StatusOK, aRes)
+		c.JSON(aRes.Code, aRes)
 	}()
 	app := new(appPara)
 	err := c.BindJSON(app)
@@ -58,7 +58,7 @@ func addApplicationHandler(c *gin.Context) {
 func getApplicationsHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.JSON(http.StatusOK, aRes)
+		c.JSON(aRes.Code, aRes)
 	}()
 	limit, _ := strconv.Atoi(c.Query("limit"))
 	page, _ := strconv.Atoi(c.Query("page"))
@@ -85,12 +85,11 @@ func getApplicationsHandler(c *gin.Context) {
 	}
 	query := bson.M{}
 	if len(name) > 0 {
-		query["name"] = bson.M{"$regex": name}
+		query["name"] = bson.M{"$regex": name, "$options": "i"}
 	}
 	if len(owner) > 0 {
-		query["owner"] = bson.M{"$regex": owner}
+		query["owner"] = bson.M{"$regex": owner, "$options": "i"}
 	}
-
 	var app = model.Application{}
 	totalCount, _ := app.TotalCount(query, nil)
 	appList, err := app.FindPageFilter(page, limit, query, nil, sort)
@@ -106,7 +105,7 @@ func getApplicationsHandler(c *gin.Context) {
 func updateApplicationHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.JSON(http.StatusOK, aRes)
+		c.JSON(aRes.Code, aRes)
 	}()
 	app := new(model.Application)
 	err := c.BindJSON(app)
@@ -127,7 +126,7 @@ func updateApplicationHandler(c *gin.Context) {
 func getAllSimpleAppHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.JSON(http.StatusOK, aRes)
+		c.JSON(aRes.Code, aRes)
 	}()
 	var app = model.Application{}
 

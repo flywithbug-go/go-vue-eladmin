@@ -33,7 +33,7 @@ const localImageFilePath = "./image/"
 func uploadImageHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.JSON(http.StatusOK, aRes)
+		c.JSON(aRes.Code, aRes)
 	}()
 
 	//gin将het/http包的FormFile函数封装到c.Request
