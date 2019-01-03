@@ -26,10 +26,6 @@ type Application struct {
 	BundleId   string `json:"bundle_id,omitempty" bson:"bundle_id,omitempty"`
 }
 
-var (
-	appC = Application{}
-)
-
 func (a Application) ToJson() string {
 	js, _ := json.Marshal(a)
 	return string(js)
@@ -94,15 +90,15 @@ func (a *Application) Insert() error {
 		return errors.New("desc length must > 10")
 	}
 
-	if appC.isExist(bson.M{"bundle_id": a.BundleId}) {
+	if a.isExist(bson.M{"bundle_id": a.BundleId}) {
 		return errors.New("bundle_id already exist")
 	}
-	if appC.isExist(bson.M{"name": a.Name}) {
+	if a.isExist(bson.M{"name": a.Name}) {
 		return errors.New("name already exist")
 	}
 	a.Id, _ = mongo.GetIncrementId(appCollection)
 	a.CreateTime = time.Now().Unix()
-	return appC.insert(a)
+	return a.insert(a)
 }
 
 //func UpdateApplication(a *Application) error {
@@ -124,38 +120,38 @@ func (a Application) Update() error {
 	a.BundleId = ""
 	a.Owner = ""
 	a.CreateTime = 0
-	return appC.update(selector, a)
+	return a.update(selector, a)
 }
 
 func (a Application) Remove() error {
 	if a.Id == 0 {
 		return errors.New("id is 0")
 	}
-	return appC.remove(bson.M{"_id": a.Id})
+	return a.remove(bson.M{"_id": a.Id})
 }
 
-func FindApplicationById(id int64) (Application, error) {
-	return appC.findOne(bson.M{"_id": id}, nil)
-}
+//func FindApplicationById(id int64) (Application, error) {
+//	return a.findOne(bson.M{"_id": id}, nil)
+//}
+//
+//func FindApplicationAppId(appId string) (Application, error) {
+//	return a.findOne(bson.M{"app_id": appId}, nil)
+//}
+//func FindApplication(query, selector interface{}) (Application, error) {
+//	return a.findOne(query, selector)
+//}
 
-func FindApplicationAppId(appId string) (Application, error) {
-	return appC.findOne(bson.M{"app_id": appId}, nil)
-}
-func FindApplication(query, selector interface{}) (Application, error) {
-	return appC.findOne(query, selector)
-}
-
-func FindAllApplications(query, selector interface{}) (apps []Application, err error) {
-	return appC.findAll(query, selector)
+func (a Application) FindAll(query, selector interface{}) (apps []Application, err error) {
+	return a.findAll(query, selector)
 }
 
 //func FindPageApplications(page, limit int, fields ...string) (apps *[]Application, err error) {
 //	return appC.findPage(page, limit, nil, nil, fields...)
 //}
 
-func TotalCountApplication(query, selector interface{}) (int, error) {
-	return appC.totalCount(query, selector)
+func (a Application) TotalCount(query, selector interface{}) (int, error) {
+	return a.totalCount(query, selector)
 }
-func FindPageApplicationsFilter(page, limit int, query, selector interface{}, fields ...string) (apps []Application, err error) {
-	return appC.findPage(page, limit, query, selector, fields...)
+func (a Application) FindPageFilter(page, limit int, query, selector interface{}, fields ...string) (apps []Application, err error) {
+	return a.findPage(page, limit, query, selector, fields...)
 }

@@ -31,10 +31,6 @@ type User struct {
 	Status   int    `json:"status,omitempty" bson:"status,omitempty"`
 }
 
-var (
-	userC = new(User)
-)
-
 func (u User) ToJson() string {
 	js, _ := json.Marshal(u)
 	return string(js)
@@ -79,7 +75,7 @@ func (u User) removeAll(selector interface{}) error {
 /*
 	userModify
 */
-func (u *User) Insert() error {
+func (u User) Insert() error {
 	if u.isExist(bson.M{"account": u.Account}) {
 		return errors.New("account 已存在")
 	}
@@ -87,26 +83,28 @@ func (u *User) Insert() error {
 		return errors.New("email 已存在")
 	}
 	u.Id, _ = mongo.GetIncrementId(userCollection)
-	return userC.insert(u)
+	return u.insert(u)
 }
 
-func (u *User) Update() error {
+func (u User) Update() error {
 	selector := bson.M{"_id": u.Id}
 	u.Account = ""
-	return userC.update(selector, u)
+	return u.update(selector, u)
 }
 
-func FindAllUsers() ([]User, error) {
-	return userC.findAll(nil, bson.M{"password": 0})
+func (u User) FindAll() ([]User, error) {
+	return u.findAll(nil, bson.M{"password": 0})
 }
 
 func FindByUserId(userId int64) (u User, err error) {
-	u, err = userC.findOne(bson.M{"_id": userId}, bson.M{"password": 0})
+	u = User{}
+	u, err = u.findOne(bson.M{"_id": userId}, bson.M{"password": 0})
 	return
 }
 
 func LoginUser(account, pass string) (user User, err error) {
-	user, err = userC.findOne(bson.M{"account": account, "password": pass}, bson.M{"password": 0})
+	user = User{}
+	user, err = user.findOne(bson.M{"account": account, "password": pass}, bson.M{"password": 0})
 	return
 }
 

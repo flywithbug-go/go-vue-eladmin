@@ -48,10 +48,6 @@ func (app AppVersion) ToJson() string {
 	return string(js)
 }
 
-var (
-	appVC = AppVersion{}
-)
-
 func (app AppVersion) insert(docs ...interface{}) error {
 	return mongo.Insert(db, appVersionCollection, docs...)
 }
@@ -95,7 +91,7 @@ func (app AppVersion) findPage(page, limit int, query, selector interface{}, fie
 }
 
 func (app *AppVersion) Insert() error {
-	if !appC.isExist(bson.M{"_id": app.AppId}) {
+	if !app.isExist(bson.M{"_id": app.AppId}) {
 		return fmt.Errorf("appID:%d not found", app.AppId)
 	}
 	if app.isExist(bson.M{"version": app.Version, "app_id": app.AppId}) {
@@ -129,7 +125,7 @@ func (app *AppVersion) Insert() error {
 	if len(app.ParentVersion) == 0 {
 		app.ParentVersion = "-"
 	}
-	return appVC.insert(app)
+	return app.insert(app)
 }
 
 func (app *AppVersion) Update() error {
@@ -155,7 +151,7 @@ func (app *AppVersion) Update() error {
 			app.GrayTime = 0
 		}
 		app.AppId = 0
-		return appVC.update(selector, app)
+		return app.update(selector, app)
 	} else {
 		app.ReleaseTime = 0
 		//判断非当前version id的版本号是否存在
@@ -188,7 +184,7 @@ func (app *AppVersion) Update() error {
 		}
 	}
 	app.AppId = 0
-	return appVC.update(selector, app)
+	return app.update(selector, app)
 }
 
 func makeStatusString(status typeStatus) string {
@@ -214,11 +210,11 @@ func makeStatusString(status typeStatus) string {
 	return statusString
 }
 
-func TotalCountAppVersion(query, selector interface{}) (int, error) {
-	return appVC.totalCount(query, selector)
+func (app AppVersion) TotalCount(query, selector interface{}) (int, error) {
+	return app.totalCount(query, selector)
 }
-func FindPageAppVersionFilter(page, limit int, query, selector interface{}, fields ...string) (apps []AppVersion, err error) {
-	return appVC.findPage(page, limit, query, selector, fields...)
+func (app AppVersion) FindPageFilter(page, limit int, query, selector interface{}, fields ...string) (apps []AppVersion, err error) {
+	return app.findPage(page, limit, query, selector, fields...)
 }
 
 //func FindAppVersionByVersionId(appId string) (appV *AppVersion, err error) {
@@ -227,18 +223,18 @@ func FindPageAppVersionFilter(page, limit int, query, selector interface{}, fiel
 //	return
 //}
 
-func FindAppVersionById(Id int64) (appV AppVersion, err error) {
-	appV, err = appVC.findOne(bson.M{"_id": Id}, nil)
-	appV.AppStatus = makeStatusString(appV.Status)
-	return
-}
-
-func FindAppVersionByVersion(version string) (appV AppVersion, err error) {
-	appV, err = appVC.findOne(bson.M{"version": version}, nil)
-	appV.AppStatus = makeStatusString(appV.Status)
-	return
-}
-
-func FindAllAppVersion(query, selector interface{}) (results []AppVersion, err error) {
-	return appVC.findAll(query, selector)
-}
+//func FindAppVersionById(Id int64) (appV AppVersion, err error) {
+//	appV, err = appVC.findOne(bson.M{"_id": Id}, nil)
+//	appV.AppStatus = makeStatusString(appV.Status)
+//	return
+//}
+//
+//func FindAppVersionByVersion(version string) (appV AppVersion, err error) {
+//	appV, err = appVC.findOne(bson.M{"version": version}, nil)
+//	appV.AppStatus = makeStatusString(appV.Status)
+//	return
+//}
+//
+//func FindAllAppVersion(query, selector interface{}) (results []AppVersion, err error) {
+//	return appVC.findAll(query, selector)
+//}

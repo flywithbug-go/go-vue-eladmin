@@ -84,8 +84,5 @@ func (a AppPermission) Update() error {
 }
 
 func (a AppPermission) Remove() error {
-	if a.Id == 0 {
-		return errors.New("id is 0")
-	}
-	return appC.remove(bson.M{"_id": a.Id})
+	return a.remove(bson.M{"_id": a.Id})
 }

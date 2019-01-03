@@ -87,5 +87,5 @@ func (r RolePermission) Remove() error {
 	if r.Id == 0 {
 		return errors.New("id is 0")
 	}
-	return appC.remove(bson.M{"_id": r.Id})
+	return r.remove(bson.M{"_id": r.Id})
 }

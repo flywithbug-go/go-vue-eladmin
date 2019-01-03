@@ -91,8 +91,9 @@ func getApplicationsHandler(c *gin.Context) {
 		query["owner"] = bson.M{"$regex": owner}
 	}
 
-	totalCount, _ := model.TotalCountApplication(query, nil)
-	appList, err := model.FindPageApplicationsFilter(page, limit, query, nil, sort)
+	var app = model.Application{}
+	totalCount, _ := app.TotalCount(query, nil)
+	appList, err := app.FindPageFilter(page, limit, query, nil, sort)
 	if err != nil {
 		log4go.Info(err.Error())
 		aRes.SetErrorInfo(http.StatusUnauthorized, "apps find error"+err.Error())
@@ -128,7 +129,9 @@ func getAllSimpleAppHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
-	arrList, err := model.FindAllApplications(nil, bson.M{"_id": 1, "name": 1, "icon": 1, "owner": 1, "editable": 1})
+	var app = model.Application{}
+
+	arrList, err := app.FindAll(nil, bson.M{"_id": 1, "name": 1, "icon": 1, "owner": 1, "editable": 1})
 	if err != nil {
 		log4go.Info(err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "update failed: "+err.Error())

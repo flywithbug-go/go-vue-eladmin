@@ -3,7 +3,6 @@ package model
 import (
 	"doc-manager/web_server/core/mongo"
 	"encoding/json"
-	"errors"
 	"fmt"
 
 	"gopkg.in/mgo.v2/bson"
@@ -84,8 +83,5 @@ func (r Role) Update() error {
 }
 
 func (r Role) Remove() error {
-	if r.Id == 0 {
-		return errors.New("id is 0")
-	}
-	return appC.remove(bson.M{"_id": r.Id})
+	return r.remove(bson.M{"_id": r.Id})
 }

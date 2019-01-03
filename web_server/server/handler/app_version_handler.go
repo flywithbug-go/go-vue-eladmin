@@ -92,8 +92,9 @@ func getAppVersionListHandler(c *gin.Context) {
 	if appId > 0 {
 		query = bson.M{"app_id": appId}
 	}
-	totalCount, _ := model.TotalCountAppVersion(query, nil)
-	appList, err := model.FindPageAppVersionFilter(page, limit, query, nil, sort)
+	var appV = model.AppVersion{}
+	totalCount, _ := appV.TotalCount(query, nil)
+	appList, err := appV.FindPageFilter(page, limit, query, nil, sort)
 	if err != nil {
 		log4go.Info(err.Error())
 		aRes.SetErrorInfo(http.StatusUnauthorized, "app version list find error"+err.Error())

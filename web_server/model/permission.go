@@ -97,5 +97,5 @@ func (p Permission) Remove() error {
 	if p.Id == 0 {
 		return errors.New("id is 0")
 	}
-	return appC.remove(bson.M{"_id": p.Id})
+	return p.remove(bson.M{"_id": p.Id})
 }

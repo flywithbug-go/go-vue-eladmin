@@ -139,7 +139,8 @@ func getUserListInfoHandler(c *gin.Context) {
 	//	aRes.SetErrorInfo(http.StatusUnauthorized, "user not found")
 	//	return
 	//}
-	users, err := model.FindAllUsers()
+	var user = model.User{}
+	users, err := user.FindAll()
 	if err != nil {
 		log4go.Info(err.Error())
 		aRes.SetErrorInfo(http.StatusUnauthorized, "users find error"+err.Error())
