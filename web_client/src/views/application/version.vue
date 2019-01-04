@@ -231,6 +231,7 @@
             :disabled="dialogStatus==='update' && temp.status > 1"
             v-model="temp.platform"
             :placeholder="$t('selector.placeholder')"
+            style="width:320px;"
             clearable
             multiple>
             <el-option

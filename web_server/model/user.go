@@ -9,12 +9,7 @@ import (
 )
 
 const (
-	userCollection         = "user"
-	roleStateTypeForbidden = -1 //禁用
-	roleStateTypeAdmin     = 1  //管理员
-	roleStateTypeDeveloper = 2  //开发者
-	roleStateTypeNormal    = 3  //普通用户
-	roleStateTypeRootAdmin = 11 //最高管理员
+	userCollection = "user"
 )
 
 type User struct {
@@ -106,22 +101,6 @@ func LoginUser(account, pass string) (user User, err error) {
 	user = User{}
 	user, err = user.findOne(bson.M{"account": account, "password": pass}, bson.M{"password": 0})
 	return
-}
-
-func makeUserRoles(role int) string {
-	switch role {
-	case roleStateTypeRootAdmin:
-		return "最高管理员"
-	case roleStateTypeAdmin:
-		return "管理员"
-	case roleStateTypeDeveloper:
-		return "开发者"
-	case roleStateTypeNormal:
-		return "普通用户"
-	case roleStateTypeForbidden:
-		return "被禁用户"
-	}
-	return "未定义用户"
 }
 
 func AddAdminUser() error {

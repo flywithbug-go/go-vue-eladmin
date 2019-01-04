@@ -12,10 +12,18 @@ const (
 	roleCollection = "role"
 )
 
+const (
+	roleStateTypeForbidden = -1 //禁用
+	roleStateTypeAdmin     = 1  //管理员
+	roleStateTypeDeveloper = 2  //开发者
+	roleStateTypeNormal    = 3  //普通用户
+	roleStateTypeRootAdmin = 11 //最高管理员
+)
+
 //角色表，记录公司各种角色，比如：CEO 管理员，开发，开发经理，销售，销售主管，等
 type Role struct {
 	Id          int64  `json:"id,omitempty" bson:"_id,omitempty"`
-	Name        string `json:"name,omitempty" bson:"name,omitempty"`         //角色名称 CEO，CTO，主管，经理，程序员等。
+	Title       string `json:"title,omitempty" bson:"title,omitempty"`       //角色名称 CEO，CTO，主管，经理，程序员等。
 	Code        string `json:"code,omitempty" bson:"code,omitempty"`         //角色编码
 	DelFlag     bool   `json:"del_flag,omitempty" bson:"del_flag,omitempty"` //是否被删除
 	Description string `json:"description,omitempty" bson:"description,omitempty"`
@@ -76,8 +84,8 @@ func (r Role) Insert() error {
 	if r.isExist(bson.M{"code": r.Code}) {
 		return fmt.Errorf("code exist")
 	}
-	if r.isExist(bson.M{"name": r.Name}) {
-		return fmt.Errorf("name exist")
+	if r.isExist(bson.M{"title": r.Title}) {
+		return fmt.Errorf("title exist")
 	}
 	return r.insert(r)
 }
@@ -88,4 +96,20 @@ func (r Role) Update() error {
 
 func (r Role) Remove() error {
 	return r.remove(bson.M{"_id": r.Id})
+}
+
+func makeUserRoles(role int) string {
+	switch role {
+	case roleStateTypeRootAdmin:
+		return "最高管理员"
+	case roleStateTypeAdmin:
+		return "管理员"
+	case roleStateTypeDeveloper:
+		return "开发者"
+	case roleStateTypeNormal:
+		return "普通用户"
+	case roleStateTypeForbidden:
+		return "被禁用户"
+	}
+	return "未定义用户"
 }
