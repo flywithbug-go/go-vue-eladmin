@@ -48,7 +48,7 @@
       header-row-class-name="center"
       @sort-change="sortChange">
       <el-table-column
-        :label="$t('application.table_id')"
+        :label="$t('table.id')"
         prop="id"
         sortable="custom"
         align="center"

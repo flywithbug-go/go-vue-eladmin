@@ -25,7 +25,43 @@
         @click="handleCreate">{{ $t('table.add') }}</el-button>
     </div>
 
+    <el-table v-loading="listLoading"
+              :data="list"
+              border
+              fit
+              highlight-current-row
+              style="width: 100%;"
+              header-row-class-name="center"
+              @sort-change="sortChange">
+      <el-table-column
+        :label="$t('table.id')"
+        prop="id"
+        sortable="custom"
+        align="center"
+        width="65">
+        <template slot-scope="scope">
+          <span> {{ scope.row.id }} </span>
+        </template>
+      </el-table-column>
 
+      <el-table-column
+        :label="$t('application.table_name_bundleId')"
+        prop="id"
+        align="center"
+        width="160px">
+        <template slot-scope="scope">
+          <span style="color: #4a9ff9; font-weight: bolder;font-size: 18px;">
+            {{ scope.row.name }}
+          </span>
+          <br>
+          <span style="color: #2d2d2d; font-weight: bolder;font-size: 10px;">
+            {{ scope.row.bundle_id }}
+          </span>
+        </template>
+      </el-table-column>
+
+
+    </el-table>
 
 
 
@@ -41,15 +77,20 @@
 import waves from '@/directive/waves' // Waves directive
 import fixedButton from '../../components/FixedButton'
 import Pagination from '../../components/Pagination'
+import ElTableFooter from "element-ui";
 
 export default {
   name: 'AppManager',
   components: {
+    ElTableFooter,
     fixedButton,
     Pagination
   },
   data() {
     return {
+      listLoading: true,
+      list: null,
+      total: 0,
       listQuery: {
         page: 0,
         limit: 10,
@@ -61,7 +102,16 @@ export default {
     }
   },
   directives: { waves },
+  created() {
+    this.getList()
+  },
   methods: {
+    getList() {
+      this.listLoading = false
+    },
+    sortChange() {
+
+    },
     handleFilter() {
 
     },

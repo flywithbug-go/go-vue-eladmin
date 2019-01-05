@@ -35,27 +35,15 @@ export default {
     github: 'Github 地址'
   },
   table: {
-    dynamicTips1: '固定表头, 按照表头顺序排序',
-    dynamicTips2: '不固定表头, 按照点击顺序排序',
-    dragTips1: '默认顺序',
-    dragTips2: '拖拽后顺序',
     title: '标题',
-    importance: '重要性',
     type: '类型',
-    remark: '点评',
     search: '搜索',
     add: '添加',
-    export: '导出',
-    reviewer: '审核人',
     id: '序号',
     date: '时间',
-    author: '作者',
-    readings: '阅读数',
     status: '状态',
     actions: '操作',
     edit: '编辑',
-    publish: '发布',
-    draft: '草稿',
     delete: '删除',
     cancel: '取 消',
     confirm: '确 定'
@@ -82,7 +70,6 @@ export default {
     table_edit: "编辑",
     table_search: '搜索',
     table_show: "",
-    table_id: "序号",
     table_name: "名称",
     table_name_bundleId: "名称(包名)",
     table_name_placeHolder: "请输入应用名字",
@@ -127,5 +114,12 @@ export default {
     confirmChange:"切换状态到",
     confirmDelete:"确定要删除当前版本？"
   },
+  organization:{
+    name: "名字",
+    phone:"电话",
+    role: "职位",
+    status:"状态",
+    note:"备注"
+  }
 
 }

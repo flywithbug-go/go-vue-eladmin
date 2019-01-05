@@ -212,5 +212,12 @@ export default {
     confirm: "Confirm",
     confirmChange:"Change to ",
     confirmDelete:"Delete current version？"
+  },
+  organization:{
+    name: "Name",
+    phone:"Phone",
+    role: "Role",
+    status:"Status",
+    note:"Note"
   }
 }
