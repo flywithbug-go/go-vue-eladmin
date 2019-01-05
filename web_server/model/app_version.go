@@ -100,6 +100,9 @@ func (app AppVersion) FindOne() (AppVersion, error) {
 }
 
 func (app *AppVersion) Insert() error {
+	if err := app.checkTimeValid(); err != nil {
+		return err
+	}
 	var application = Application{}
 	log4go.Info(app.ToJson())
 	if !application.isExist(bson.M{"_id": app.AppId}) {
@@ -139,6 +142,22 @@ func (app *AppVersion) Insert() error {
 	return app.insert(app)
 }
 
+func (app AppVersion) checkTimeValid() error {
+	if app.ApprovalTime > app.LockTime {
+		return errors.New("approval time must early than lock time")
+	}
+
+	if app.LockTime > app.GrayTime {
+		return errors.New("lock time must early than gray time")
+	}
+	if app.Status == appStatusTypeRelease {
+		if app.GrayTime > app.ReleaseTime {
+			return errors.New("gray time must early than release time")
+		}
+	}
+	return nil
+}
+
 func (app AppVersion) Remove() error {
 	selector := bson.M{"_id": app.Id}
 	app, err := app.findOne(selector, nil)
@@ -152,6 +171,9 @@ func (app AppVersion) Remove() error {
 }
 
 func (app AppVersion) Update() error {
+	if err := app.checkTimeValid(); err != nil {
+		return err
+	}
 	appOld, _ := app.findOne(bson.M{"_id": app.Id}, nil)
 	if app.Status > appStatusTypeWorkDone || app.Status < appStatusTypeUnDetermined {
 		return errors.New("status not right")

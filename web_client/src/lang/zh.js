@@ -119,7 +119,9 @@ export default {
     phone:"电话",
     role: "职位",
     status:"状态",
-    note:"备注"
+    note:"备注",
+    avatar:"头像",
+    email:"邮箱",
   }
 
 }

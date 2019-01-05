@@ -38,14 +38,14 @@
         prop="id"
         sortable="custom"
         align="center"
-        width="65">
+        width="80px">
         <template slot-scope="scope">
           <span> {{ scope.row.id }} </span>
         </template>
       </el-table-column>
 
       <el-table-column
-        :label="$t('application.table_name_bundleId')"
+        :label="$t('organization.name')"
         prop="id"
         align="center"
         width="160px">
@@ -53,9 +53,78 @@
           <span style="color: #4a9ff9; font-weight: bolder;font-size: 18px;">
             {{ scope.row.name }}
           </span>
-          <br>
-          <span style="color: #2d2d2d; font-weight: bolder;font-size: 10px;">
-            {{ scope.row.bundle_id }}
+        </template>
+      </el-table-column>
+
+      <el-table-column
+        :label="$t('organization.avatar')"
+        prop="id"
+        align="center"
+        width="160px">
+        <template slot-scope="scope">
+          <span style="color: #4a9ff9; font-weight: bolder;font-size: 18px;">
+            {{ scope.row.avatar }}
+          </span>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+        :label="$t('organization.role')"
+        prop="id"
+        align="center"
+        width="160px">
+        <template slot-scope="scope">
+          <span style="color: #4a9ff9; font-weight: bolder;font-size: 18px;">
+            {{ scope.row.role }}
+          </span>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+        :label="$t('organization.phone')"
+        prop="id"
+        align="center"
+        width="160px">
+        <template slot-scope="scope">
+          <span style="color: #4a9ff9; font-weight: bolder;font-size: 18px;">
+            {{ scope.row.phone }}
+          </span>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+        :label="$t('organization.email')"
+        prop="id"
+        align="center"
+        width="160px">
+        <template slot-scope="scope">
+          <span style="color: #4a9ff9; font-weight: bolder;font-size: 18px;">
+            {{ scope.row.email }}
+          </span>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+        :label="$t('organization.status')"
+        prop="id"
+        align="center"
+        width="160px">
+        <template slot-scope="scope">
+          <span style="color: #4a9ff9; font-weight: bolder;font-size: 18px;">
+            {{ scope.row.status }}
+          </span>
+        </template>
+      </el-table-column>
+
+
+      <el-table-column
+        :label="$t('organization.note')"
+        prop="id"
+        align="center"
+        min-width="160px">
+        <template slot-scope="scope">
+          <span style="color: #4a9ff9; font-weight: bolder;font-size: 18px;">
+            {{ scope.row.note }}
           </span>
         </template>
       </el-table-column>

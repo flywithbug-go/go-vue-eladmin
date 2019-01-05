@@ -52,7 +52,7 @@
         prop="id"
         sortable="custom"
         align="center"
-        width="65">
+        width="80px">
         <template slot-scope="scope">
           <span> {{ scope.row.id }} </span>
         </template>

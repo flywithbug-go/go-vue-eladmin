@@ -19,9 +19,9 @@ type User struct {
 	Avatar   string `json:"avatar,omitempty" bson:"avatar,omitempty"`
 	Email    string `json:"email,omitempty" bson:"email,omitempty"`
 	Phone    string `json:"phone,omitempty" bson:"phone,omitempty"`
-	Sex      int    `json:"sex,omitempty" bson:"sex,omitempty"` // 0保密，1男 2女
-	RealName string `json:"real_name,omitempty" bson:"real_name,omitempty"`
-	Name     string `json:"name,omitempty" bson:"name,omitempty"` //昵称
+	Sex      int    `json:"sex,omitempty" bson:"sex,omitempty"`             // 0保密，1男 2女
+	RealName string `json:"real_name,omitempty" bson:"real_name,omitempty"` //原名
+	Name     string `json:"name,omitempty" bson:"name,omitempty"`           //
 	Title    string `json:"title,omitempty" bson:"title,omitempty"`
 	Status   int    `json:"status,omitempty" bson:"status,omitempty"`
 }
@@ -105,7 +105,6 @@ func LoginUser(account, pass string) (user User, err error) {
 
 func AddAdminUser() error {
 	u := new(User)
-
 	u.Account = "admin"
 	u.Password = "flywithbug123"
 	u.Email = "flywithbug@gmail.com"

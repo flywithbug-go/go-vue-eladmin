@@ -25,3 +25,11 @@ export function logout() {
     method: 'post'
   })
 }
+
+export function getUserListInfoRequest(query) {
+  return client({
+    url: '/user/list',
+    method: 'get',
+    params: query
+  })
+}
