@@ -5,6 +5,7 @@ import (
 	"vue-admin/web_server/common"
 	"vue-admin/web_server/core/jwt"
 	"vue-admin/web_server/model"
+	"vue-admin/web_server/server/sync"
 
 	"github.com/flywithbug/log4go"
 	"github.com/gin-gonic/gin"
@@ -48,6 +49,7 @@ func loginHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "token generate error"+err.Error())
 		return
 	}
+	sync.SetKeyValue(token)
 	aRes.SetResponseDataInfo("token", token)
 	aRes.AddResponseInfo("user", user)
 
@@ -102,7 +104,7 @@ func logoutHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, err.Error())
 		return
 	}
-	delete(common.TokenValidMap, token)
+	sync.RemoveKey(token)
 	aRes.SetSuccessInfo(http.StatusOK, "success")
 }
 
