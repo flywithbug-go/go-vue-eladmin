@@ -2,10 +2,14 @@ package user_handler
 
 import (
 	"net/http"
+	"strconv"
+	"strings"
 	"vue-admin/web_server/common"
 	"vue-admin/web_server/core/jwt"
 	"vue-admin/web_server/model"
 	"vue-admin/web_server/server/sync"
+
+	"gopkg.in/mgo.v2/bson"
 
 	"github.com/flywithbug/log4go"
 	"github.com/gin-gonic/gin"
@@ -136,20 +140,44 @@ func getUserListInfoHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(aRes.Code, aRes)
 	}()
-	//userId := common.UserId(c)
-	//if userId <= 0 {
-	//	aRes.SetErrorInfo(http.StatusUnauthorized, "user not found")
-	//	return
-	//}
 
-	var user = model.User{}
-	users, err := user.FindAll()
-	if err != nil {
-		log4go.Info(err.Error())
-		aRes.SetErrorInfo(http.StatusUnauthorized, "users find error"+err.Error())
+	limit, _ := strconv.Atoi(c.Query("limit"))
+	page, _ := strconv.Atoi(c.Query("page"))
+	sort := c.Query("sort")
+	name := c.Query("name")
+	owner := c.Query("owner")
+	if strings.EqualFold(sort, "-id") {
+		sort = "-_id"
+	} else if strings.EqualFold(sort, "+id") {
+		sort = "+_id"
+	} else if len(sort) == 0 {
+		sort = "+_id"
+	}
+	if limit == 0 {
+		limit = 10
+	}
+	if page != 0 {
+		page--
+	}
+	userId := common.UserId(c)
+	if userId <= 0 {
+		aRes.SetErrorInfo(http.StatusUnauthorized, "user not found")
 		return
 	}
-	aRes.AddResponseInfo("list", users)
+	query := bson.M{}
+	if len(name) > 0 {
+		query["name"] = bson.M{"$regex": name, "$options": "i"}
+	}
+	var user = model.User{}
+	totalCount, _ := user.TotalCount(query, nil)
+	appList, err := user.FindPageFilter(page, limit, query, nil, sort)
+	if err != nil {
+		log4go.Info(err.Error())
+		aRes.SetErrorInfo(http.StatusUnauthorized, "apps find error"+err.Error())
+		return
+	}
+	aRes.AddResponseInfo("list", appList)
+	aRes.AddResponseInfo("total", totalCount)
 }
 
 func updateUserHandler(c *gin.Context) {

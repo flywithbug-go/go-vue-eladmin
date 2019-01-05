@@ -51,7 +51,7 @@
         width="160px">
         <template slot-scope="scope">
           <span style="color: #4a9ff9; font-weight: bolder;font-size: 18px;">
-            {{ scope.row.name }}
+            {{  formatUndefine(scope.row.name)}}
           </span>
         </template>
       </el-table-column>
@@ -60,11 +60,9 @@
         :label="$t('organization.avatar')"
         prop="id"
         align="center"
-        width="160px">
-        <template slot-scope="scope">
-          <span style="color: #4a9ff9; font-weight: bolder;font-size: 18px;">
-            {{ scope.row.avatar }}
-          </span>
+        width="100px">
+        <template slot-scope="scope" >
+          <img :src="scope.row.avatar" class="app-icon" width="auto" align="center">
         </template>
       </el-table-column>
 
@@ -75,7 +73,7 @@
         width="160px">
         <template slot-scope="scope">
           <span style="color: #4a9ff9; font-weight: bolder;font-size: 18px;">
-            {{ scope.row.role }}
+            {{ formatUndefine(scope.row.role)}}
           </span>
         </template>
       </el-table-column>
@@ -87,7 +85,7 @@
         width="160px">
         <template slot-scope="scope">
           <span style="color: #4a9ff9; font-weight: bolder;font-size: 18px;">
-            {{ scope.row.phone }}
+            {{  formatUndefine(scope.row.phone)}}
           </span>
         </template>
       </el-table-column>
@@ -96,10 +94,10 @@
         :label="$t('organization.email')"
         prop="id"
         align="center"
-        width="160px">
+        width="200px">
         <template slot-scope="scope">
-          <span style="color: #4a9ff9; font-weight: bolder;font-size: 18px;">
-            {{ scope.row.email }}
+          <span >
+            {{ formatUndefine(scope.row.email)}}
           </span>
         </template>
       </el-table-column>
@@ -111,7 +109,7 @@
         width="160px">
         <template slot-scope="scope">
           <span style="color: #4a9ff9; font-weight: bolder;font-size: 18px;">
-            {{ scope.row.status }}
+            {{ formatUndefine(scope.row.status)}}
           </span>
         </template>
       </el-table-column>
@@ -124,7 +122,7 @@
         min-width="160px">
         <template slot-scope="scope">
           <span style="color: #4a9ff9; font-weight: bolder;font-size: 18px;">
-            {{ scope.row.note }}
+            {{ formatUndefine(scope.row.note)}}
           </span>
         </template>
       </el-table-column>
@@ -148,6 +146,9 @@ import fixedButton from '../../components/FixedButton'
 import Pagination from '../../components/Pagination'
 import ElTableFooter from "element-ui";
 
+import {getUserListInfoRequest} from "../../api/user";
+
+
 export default {
   name: 'AppManager',
   components: {
@@ -167,7 +168,6 @@ export default {
         status: '',
         sort: '+_id'
       },
-
     }
   },
   directives: { waves },
@@ -175,8 +175,20 @@ export default {
     this.getList()
   },
   methods: {
+    formatUndefine(obj) {
+      if (obj){
+        return obj
+      }
+      return "-"
+    },
     getList() {
-      this.listLoading = false
+      getUserListInfoRequest(this.listQuery).then(response => {
+        this.list = response.list
+        this.total = response.total
+        this.listLoading = false
+      }).catch(() => {
+        this.listLoading = false
+      })
     },
     sortChange() {
 

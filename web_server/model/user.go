@@ -19,9 +19,9 @@ type User struct {
 	Avatar   string `json:"avatar,omitempty" bson:"avatar,omitempty"`
 	Email    string `json:"email,omitempty" bson:"email,omitempty"`
 	Phone    string `json:"phone,omitempty" bson:"phone,omitempty"`
-	Sex      int    `json:"sex,omitempty" bson:"sex,omitempty"`             // 0保密，1男 2女
-	RealName string `json:"real_name,omitempty" bson:"real_name,omitempty"` //原名
-	Name     string `json:"name,omitempty" bson:"name,omitempty"`           //
+	Sex      int    `json:"sex,omitempty" bson:"sex,omitempty"`   // 0保密，1男 2女
+	Name     string `json:"name,omitempty" bson:"name,omitempty"` //名字
+	Nick     string `json:"nick,omitempty" bson:"nick,omitempty"` //昵称
 	Title    string `json:"title,omitempty" bson:"title,omitempty"`
 	Status   int    `json:"status,omitempty" bson:"status,omitempty"`
 }
@@ -52,6 +52,12 @@ func (u User) findAll(query, selector interface{}) (results []User, err error) {
 	results = []User{}
 	err = mongo.FindAll(db, userCollection, query, selector, &results)
 	return results, err
+}
+
+func (u User) findPage(page, limit int, query, selector interface{}, fields ...string) (results []User, err error) {
+	results = []User{}
+	err = mongo.FindPage(db, appCollection, page, limit, query, selector, &results, fields...)
+	return
 }
 
 //data := bson.M{"$set": bson.M{"age": 22}}
@@ -101,6 +107,18 @@ func LoginUser(account, pass string) (user User, err error) {
 	user = User{}
 	user, err = user.findOne(bson.M{"account": account, "password": pass}, bson.M{"password": 0})
 	return
+}
+
+func (u User) totalCount(query, selector interface{}) (int, error) {
+	return mongo.TotalCount(db, appCollection, query, selector)
+}
+
+func (u User) FindPageFilter(page, limit int, query, selector interface{}, fields ...string) ([]User, error) {
+	return u.findPage(page, limit, query, selector, fields...)
+}
+
+func (u User) TotalCount(query, selector interface{}) (int, error) {
+	return u.totalCount(query, selector)
 }
 
 func AddAdminUser() error {

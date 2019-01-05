@@ -122,6 +122,7 @@ export default {
     note:"备注",
     avatar:"头像",
     email:"邮箱",
+    account: "账号",
   }
 
 }

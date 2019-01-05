@@ -209,6 +209,8 @@ export default {
     status:"Status",
     note:"Note",
     avatar:"Avatar",
-    email: "EMail"
+    email: "EMail",
+    account: "Account",
+
   }
 }
