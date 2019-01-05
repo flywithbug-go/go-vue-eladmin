@@ -71,6 +71,6 @@ func UpdateLoginStatus(token string, status int) error {
 
 func FindLoginByToken(token string) (l *Login, err error) {
 	l = new(Login)
-	err = mongo.FindOne(db, loginCollection, bson.M{"token": token}, nil, &l)
+	err = mongo.FindOne(db, loginCollection, bson.M{"token": token}, bson.M{"status": StatusLogout}, &l)
 	return
 }

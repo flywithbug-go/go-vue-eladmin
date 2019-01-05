@@ -102,6 +102,7 @@ func logoutHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, err.Error())
 		return
 	}
+	delete(common.TokenValidMap, token)
 	aRes.SetSuccessInfo(http.StatusOK, "success")
 }
 

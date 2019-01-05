@@ -13,6 +13,10 @@ const (
 	KeyContextUser    = "_key_ctx_user_"
 )
 
+var (
+	TokenValidMap = make(map[string]bool)
+)
+
 func UserToken(ctx *gin.Context) string {
 	token := ctx.GetHeader(KeyAuthorization)
 	return token
