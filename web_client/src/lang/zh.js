@@ -123,6 +123,8 @@ export default {
     avatar:"头像",
     email:"邮箱",
     account: "账号",
+    code: "代码",
+
   }
 
 }

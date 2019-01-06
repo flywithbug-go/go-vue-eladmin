@@ -211,6 +211,8 @@ export default {
     avatar:"Avatar",
     email: "EMail",
     account: "Account",
+    code: "Code",
+
 
   }
 }

@@ -57,48 +57,16 @@
         </template>
       </el-table-column>
 
-      <el-table-column
-        :label="$t('organization.avatar')"
-        prop="id"
-        align="center"
-        width="100px">
-        <template slot-scope="scope" >
-          <img :src="scope.row.avatar" class="app-icon" width="auto" align="center">
-        </template>
-      </el-table-column>
+
 
       <el-table-column
-        :label="$t('organization.role')"
-        prop="id"
-        align="center"
-        width="160px">
-        <template slot-scope="scope">
-          <span style="color: #4a9ff9; font-weight: bolder;font-size: 18px;">
-            {{ formatUndefine(scope.row.role)}}
-          </span>
-        </template>
-      </el-table-column>
-
-      <el-table-column
-        :label="$t('organization.phone')"
-        prop="id"
-        align="center"
-        width="160px">
-        <template slot-scope="scope">
-          <span style="color: #4a9ff9; font-weight: bolder;font-size: 18px;">
-            {{  formatUndefine(scope.row.phone)}}
-          </span>
-        </template>
-      </el-table-column>
-
-      <el-table-column
-        :label="$t('organization.email')"
+        :label="$t('organization.code')"
         prop="id"
         align="center"
         width="200px">
         <template slot-scope="scope">
           <span >
-            {{ formatUndefine(scope.row.email)}}
+            {{ formatUndefine(scope.row.code)}}
           </span>
         </template>
       </el-table-column>
