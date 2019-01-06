@@ -27,13 +27,13 @@ const (
 //3. NoRight
 
 type Permission struct {
-	Id          int64  `json:"id,omitempty" bson:"_id,omitempty"`
-	Type        int    `json:"type,omitempty" bson:"type,omitempty"` //
-	TypeStatus  string `json:"type_status,omitempty" bson:"type_status,omitempty"`
-	Name        string `json:"name,omitempty" bson:"name,omitempty"`         //
-	Code        string `json:"code,omitempty" bson:"code,omitempty"`         //
-	DelFlag     bool   `json:"del_flag,omitempty" bson:"del_flag,omitempty"` //
-	Description string `json:"description,omitempty" bson:"description,omitempty"`
+	Id         int64  `json:"id,omitempty" bson:"_id,omitempty"`
+	Type       int    `json:"type,omitempty" bson:"type,omitempty"` //
+	TypeStatus string `json:"type_status,omitempty" bson:"type_status,omitempty"`
+	Name       string `json:"name,omitempty" bson:"name,omitempty"`         //
+	Code       string `json:"code,omitempty" bson:"code,omitempty"`         //
+	DelFlag    bool   `json:"del_flag,omitempty" bson:"del_flag,omitempty"` //
+	Note       string `json:"note,omitempty" bson:"note,omitempty"`
 }
 
 func (p Permission) ToJson() string {

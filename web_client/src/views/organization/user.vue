@@ -1,6 +1,7 @@
 <template>
   <div class="app-container">
 
+
     <div class="filter-container">
       <el-input
         :placeholder="$t('application.table_name')"

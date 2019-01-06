@@ -34,8 +34,8 @@ func addPermissionHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "name not be null")
 		return
 	}
-	if len(p.Description) == 0 {
-		aRes.SetErrorInfo(http.StatusBadRequest, "desc should not be null")
+	if len(p.Note) == 0 {
+		aRes.SetErrorInfo(http.StatusBadRequest, "note should not be null")
 		return
 	}
 

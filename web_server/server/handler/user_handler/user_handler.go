@@ -168,6 +168,9 @@ func getUserListInfoHandler(c *gin.Context) {
 	if len(name) > 0 {
 		query["name"] = bson.M{"$regex": name, "$options": "i"}
 	}
+	if len(owner) > 0 {
+		query["owner"] = bson.M{"$regex": owner, "$options": "i"}
+	}
 	var user = model.User{}
 	totalCount, _ := user.TotalCount(query, nil)
 	appList, err := user.FindPageFilter(page, limit, query, nil, sort)

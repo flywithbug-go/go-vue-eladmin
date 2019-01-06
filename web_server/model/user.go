@@ -20,10 +20,11 @@ type User struct {
 	Email    string `json:"email,omitempty" bson:"email,omitempty"`
 	Phone    string `json:"phone,omitempty" bson:"phone,omitempty"`
 	Sex      int    `json:"sex,omitempty" bson:"sex,omitempty"`   // 0保密，1男 2女
-	Name     string `json:"name,omitempty" bson:"name,omitempty"` //名字
+	Name     string `json:"name,omitempty" bson:"name,omitempty"` // 名字！
 	Nick     string `json:"nick,omitempty" bson:"nick,omitempty"` //昵称
 	Title    string `json:"title,omitempty" bson:"title,omitempty"`
 	Status   int    `json:"status,omitempty" bson:"status,omitempty"`
+	Note     string `json:"note,omitempty"  bson:"note,omitempty"` //备注,
 }
 
 func (u User) ToJson() string {
@@ -128,7 +129,6 @@ func AddAdminUser() error {
 	u.Email = "flywithbug@gmail.com"
 	u.Title = "admin"
 	u.Phone = "phone"
-	u.RealName = "Jack"
 	u.Sex = 1
 	return u.insert()
 }
