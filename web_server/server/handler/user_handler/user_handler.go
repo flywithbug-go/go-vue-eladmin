@@ -145,7 +145,6 @@ func getUserListInfoHandler(c *gin.Context) {
 	page, _ := strconv.Atoi(c.Query("page"))
 	sort := c.Query("sort")
 	name := c.Query("name")
-	owner := c.Query("owner")
 	if strings.EqualFold(sort, "-id") {
 		sort = "-_id"
 	} else if strings.EqualFold(sort, "+id") {
@@ -167,9 +166,6 @@ func getUserListInfoHandler(c *gin.Context) {
 	query := bson.M{}
 	if len(name) > 0 {
 		query["name"] = bson.M{"$regex": name, "$options": "i"}
-	}
-	if len(owner) > 0 {
-		query["owner"] = bson.M{"$regex": owner, "$options": "i"}
 	}
 	var user = model.User{}
 	totalCount, _ := user.TotalCount(query, nil)

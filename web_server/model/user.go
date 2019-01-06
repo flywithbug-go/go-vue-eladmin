@@ -57,7 +57,7 @@ func (u User) findAll(query, selector interface{}) (results []User, err error) {
 
 func (u User) findPage(page, limit int, query, selector interface{}, fields ...string) (results []User, err error) {
 	results = []User{}
-	err = mongo.FindPage(db, appCollection, page, limit, query, selector, &results, fields...)
+	err = mongo.FindPage(db, userCollection, page, limit, query, selector, &results, fields...)
 	return
 }
 
@@ -111,7 +111,7 @@ func LoginUser(account, pass string) (user User, err error) {
 }
 
 func (u User) totalCount(query, selector interface{}) (int, error) {
-	return mongo.TotalCount(db, appCollection, query, selector)
+	return mongo.TotalCount(db, userCollection, query, selector)
 }
 
 func (u User) FindPageFilter(page, limit int, query, selector interface{}, fields ...string) ([]User, error) {
