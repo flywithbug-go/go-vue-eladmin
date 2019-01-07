@@ -113,3 +113,13 @@ func makeUserRoles(role int) string {
 	}
 	return "未定义用户"
 }
+
+
+
+
+func (r Role) TotalCount(query, selector interface{}) (int, error) {
+	return r.totalCount(query, selector)
+}
+func (r Role) FindPageFilter(page, limit int, query, selector interface{}, fields ...string) ([]Role, err error) {
+	return r.findPage(page, limit, query, selector, fields...)
+}

@@ -3,10 +3,13 @@ package role_handler
 import (
 	"net/http"
 	"strconv"
+	"strings"
+	"vue-admin/web_server/common"
 	"vue-admin/web_server/model"
 
 	"github.com/flywithbug/log4go"
 	"github.com/gin-gonic/gin"
+	"gopkg.in/mgo.v2/bson"
 )
 
 func addPermissionHandler(c *gin.Context) {
@@ -104,4 +107,44 @@ func removePermissionHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "invalid: "+err.Error())
 		return
 	}
+}
+
+func getPermissionListHandler(c *gin.Context) {
+	aRes := model.NewResponse()
+	defer func() {
+		c.JSON(aRes.Code, aRes)
+	}()
+	limit, _ := strconv.Atoi(c.Query("limit"))
+	page, _ := strconv.Atoi(c.Query("page"))
+	sort := c.Query("sort")
+	if strings.EqualFold(sort, "-id") {
+		sort = "-_id"
+	} else if strings.EqualFold(sort, "+id") {
+		sort = "+_id"
+	} else if len(sort) == 0 {
+		sort = "+_id"
+	}
+	//if limit == 0 {
+	//	limit = 10
+	//}
+	if page != 0 {
+		page--
+	}
+	userId := common.UserId(c)
+	if userId <= 0 {
+		log4go.Info("user not found")
+		aRes.SetErrorInfo(http.StatusUnauthorized, "user not found")
+		return
+	}
+	query := bson.M{}
+	var appV = model.Permission{}
+	totalCount, _ := appV.TotalCount(query, nil)
+	appList, err := appV.FindPageFilter(page, limit, query, nil, sort)
+	if err != nil {
+		log4go.Info(err.Error())
+		aRes.SetErrorInfo(http.StatusUnauthorized, "app version list find error"+err.Error())
+		return
+	}
+	aRes.AddResponseInfo("list", appList)
+	aRes.AddResponseInfo("total", totalCount)
 }

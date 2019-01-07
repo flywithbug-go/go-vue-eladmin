@@ -132,3 +132,10 @@ func makeTypeStatus(makeTypeStatus typeStatus) string {
 	}
 	return "未定义用户"
 }
+
+func (p Permission) TotalCount(query, selector interface{}) (int, error) {
+	return p.totalCount(query, selector)
+}
+func (p Permission) FindPageFilter(page, limit int, query, selector interface{}, fields ...string) (apps []Permission, err error) {
+	return p.findPage(page, limit, query, selector, fields...)
+}

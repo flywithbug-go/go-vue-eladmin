@@ -90,3 +90,10 @@ func (r UserAppPermission) Remove() error {
 	}
 	return r.remove(bson.M{"_id": r.Id})
 }
+
+func (r UserAppPermission) TotalCount(query, selector interface{}) (int, error) {
+	return r.totalCount(query, selector)
+}
+func (r UserAppPermission) FindPageFilter(page, limit int, query, selector interface{}, fields ...string) ([]UserAppPermission, error) {
+	return r.findPage(page, limit, query, selector, fields...)
+}

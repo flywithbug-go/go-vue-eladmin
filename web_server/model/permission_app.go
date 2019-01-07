@@ -86,3 +86,10 @@ func (a AppPermission) Update() error {
 func (a AppPermission) Remove() error {
 	return a.remove(bson.M{"_id": a.Id})
 }
+
+func (a AppPermission) TotalCount(query, selector interface{}) (int, error) {
+	return a.totalCount(query, selector)
+}
+func (a AppPermission) FindPageFilter(page, limit int, query, selector interface{}, fields ...string) (apps []AppPermission, err error) {
+	return a.findPage(page, limit, query, selector, fields...)
+}
