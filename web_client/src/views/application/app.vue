@@ -379,11 +379,8 @@ export default {
       }
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          addApplicationRequest(
-            this.temp.bundle_id,
-            this.temp.icon,
-            this.temp.name,
-            this.temp.desc).then((response) => {
+
+          addApplicationRequest(this.temp).then((response) => {
             this.list.unshift(response.app)
             this.dialogFormVisible = false
             this.resetTemp()
@@ -405,7 +402,7 @@ export default {
       }
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          updateApplicationRequest(this.temp.icon, this.temp.name, this.temp.desc, this.temp.id).then(() => {
+          updateApplicationRequest(this.temp).then(() => {
             for (const v of this.list) {
               if (v.id === this.temp.id) {
                 const index = this.list.indexOf(v)

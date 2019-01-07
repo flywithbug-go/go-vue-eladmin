@@ -1,11 +1,13 @@
 import client from '../utils/fetch'
 
-export function addApplicationRequest(bundle_id, icon, name, desc) {
+
+
+export function addApplicationRequest(para) {
   const data = {
-    bundle_id,
-    icon,
-    name,
-    desc
+    bundle_id:para.bundle_id,
+    icon:para.icon,
+    name:para.name,
+    desc:para.desc
   }
   return client({
     url: '/app/add',
@@ -29,12 +31,12 @@ export function getSimpleApplicationListRequest() {
   })
 }
 
-export function updateApplicationRequest(icon, name, desc, id) {
+export function updateApplicationRequest(para) {
   const data = {
-    icon,
-    name,
-    desc,
-    id
+    icon:para.icon,
+    name:para.name,
+    desc:para.desc,
+    id:para.id
   }
   return client({
     url: '/app/update',
