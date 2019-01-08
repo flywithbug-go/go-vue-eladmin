@@ -346,7 +346,7 @@ export default {
             trigger: 'blur'
           },
           {
-            pattern: /^\d+(.)\d+(.)\d+$/,
+            pattern: /\d+(\.\d+)*/,
             message: '输入格式1.0.0,只能是`数字`和 `.`',
             trigger: 'blur'
           }
