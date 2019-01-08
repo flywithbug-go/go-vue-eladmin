@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 case $1 in
-        server)
+        server|s)
             cd web_server
             sh autobuild.sh
         ;;
-        vue)
+        client|c)
             cd web_client
             npm run build:prod
             scp -r dist root@118.89.108.25:/root/vue-admin/
         ;;
-        all)
+        all|a)
             cd web_client
             npm run build:prod
             scp -r dist root@118.89.108.25:/root/vue-admin/
@@ -18,7 +18,7 @@ case $1 in
             sh autobuild.sh
         ;;
         *)
-                echo "$0 {server|vue|all}"
+                echo "$0 {server|client|all}"
                 exit 4
         ;;
 esac
