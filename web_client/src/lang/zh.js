@@ -124,6 +124,7 @@ export default {
     email:"邮箱",
     account: "账号",
     code: "代码",
+    type:"类型",
 
   }
 

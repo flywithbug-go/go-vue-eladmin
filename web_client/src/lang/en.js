@@ -212,6 +212,7 @@ export default {
     email: "EMail",
     account: "Account",
     code: "Code",
+    type:"Type",
 
 
   }

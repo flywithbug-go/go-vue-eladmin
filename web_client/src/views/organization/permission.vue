@@ -51,7 +51,7 @@
         align="center"
         width="160px">
         <template slot-scope="scope">
-          <span style="color: #4a9ff9; font-weight: bolder;font-size: 18px;">
+          <span style="color: #000000; font-weight: bolder;font-size: 18px;">
             {{  formatUndefine(scope.row.name)}}
           </span>
         </template>
@@ -72,13 +72,13 @@
       </el-table-column>
 
       <el-table-column
-        :label="$t('organization.status')"
+        :label="$t('organization.type')"
         prop="id"
         align="center"
         width="160px">
         <template slot-scope="scope">
-          <span style="color: #4a9ff9; font-weight: bolder;font-size: 18px;">
-            {{ formatUndefine(scope.row.status)}}
+          <span >
+            {{ formatUndefine(scope.row.type_status)}}
           </span>
         </template>
       </el-table-column>
@@ -90,7 +90,7 @@
         align="center"
         min-width="160px">
         <template slot-scope="scope">
-          <span style="color: #4a9ff9; font-weight: bolder;font-size: 18px;">
+          <span style="color: #2d2f33;">
             {{ formatUndefine(scope.row.note)}}
           </span>
         </template>
@@ -115,7 +115,7 @@
   import Pagination from '../../components/Pagination'
   import ElTableFooter from "element-ui";
 
-  import {getUserListInfoRequest} from "../../api/user";
+  import {addPermissionRequest,getPermissionListRequest} from "../../api/permission";
 
 
   export default {
@@ -151,7 +151,7 @@
         return "-"
       },
       getList() {
-        getUserListInfoRequest(this.listQuery).then(response => {
+        getPermissionListRequest(this.listQuery).then(response => {
           this.list = response.list
           this.total = response.total
           this.listLoading = false

@@ -120,7 +120,7 @@ func (p Permission) Remove() error {
 func makeTypeStatus(makeTypeStatus typeStatus) string {
 	switch makeTypeStatus {
 	case PermissionTypeUndetermined:
-		return "未定义"
+		return "无权限"
 	case PermissionTypeNone:
 		return "无权限"
 	case PermissionTypeCURD:

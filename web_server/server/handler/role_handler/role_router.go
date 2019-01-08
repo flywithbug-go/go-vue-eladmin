@@ -45,11 +45,16 @@ var FileRouters = []common.GinHandleFunc{
 		Method:     "POST",
 		Route:      "/permission/update",
 	},
-
 	{
 		Handler:    removePermissionHandler,
 		RouterType: common.RouterTypeNeedAuth,
 		Method:     "POST",
 		Route:      "/permission/remove",
+	},
+	{
+		Handler:    getPermissionListHandler,
+		RouterType: common.RouterTypeNeedAuth,
+		Method:     "GET",
+		Route:      "/permission/list",
 	},
 }
