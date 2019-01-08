@@ -83,10 +83,6 @@ npm run build --report
 ### 页面示例
 ![frontend](frontend/1546939038644.jpg)   
 
-<video id="video" controls="" preload="none">
-      <source id="mov" src="frontend/admin.mov" type="video/mov">
-      </video>
-
 
 
 
