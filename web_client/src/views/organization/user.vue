@@ -1,39 +1,39 @@
 <template>
   <div class="app-container">
 
+    <!--<div class="filter-container">-->
+      <!--<el-input-->
+        <!--:placeholder="$t('application.table_name')"-->
+        <!--v-model="listQuery.name"-->
+        <!--style="width: 200px;"-->
+        <!--class="filter-item"-->
+        <!--@keyup.enter.native="handleFilter"/>-->
 
-    <div class="filter-container">
-      <el-input
-        :placeholder="$t('application.table_name')"
-        v-model="listQuery.name"
-        style="width: 200px;"
-        class="filter-item"
-        @keyup.enter.native="handleFilter"/>
+      <!--<el-button-->
+        <!--v-waves-->
+        <!--class="filter-item"-->
+        <!--type="primary"-->
+        <!--icon="el-icon-search"-->
+        <!--@click="handleFilter">-->
+        <!--{{ $t('application.table_search') }}-->
+      <!--</el-button>-->
+      <!--<el-button-->
+        <!--class="filter-item"-->
+        <!--style="margin-left: 10px;"-->
+        <!--type="primary"-->
+        <!--icon="el-icon-edit"-->
+        <!--@click="handleCreate">{{ $t('table.add') }}</el-button>-->
+    <!--</div>-->
 
-      <el-button
-        v-waves
-        class="filter-item"
-        type="primary"
-        icon="el-icon-search"
-        @click="handleFilter">
-        {{ $t('application.table_search') }}
-      </el-button>
-      <el-button
-        class="filter-item"
-        style="margin-left: 10px;"
-        type="primary"
-        icon="el-icon-edit"
-        @click="handleCreate">{{ $t('table.add') }}</el-button>
-    </div>
-
-    <el-table v-loading="listLoading"
-              :data="list"
-              border
-              fit
-              highlight-current-row
-              style="width: 100%;"
-              header-row-class-name="center"
-              @sort-change="sortChange">
+    <el-table
+      v-loading="listLoading"
+      :data="list"
+      border
+      fit
+      highlight-current-row
+      style="width: 100%;"
+      header-row-class-name="center"
+      @sort-change="sortChange">
       <el-table-column
         :label="$t('table.id')"
         prop="id"
@@ -52,7 +52,7 @@
         width="160px">
         <template slot-scope="scope">
           <span style="color: #4a9ff9; font-weight: bolder;font-size: 18px;">
-            {{  formatUndefine(scope.row.name)}}
+            {{ formatUndefine(scope.row.name) }}
           </span>
         </template>
       </el-table-column>
@@ -68,13 +68,13 @@
       </el-table-column>
 
       <el-table-column
-        :label="$t('organization.role')"
+        :label="$t('organization.title')"
         prop="id"
         align="center"
         width="160px">
         <template slot-scope="scope">
-          <span style="color: #4a9ff9; font-weight: bolder;font-size: 18px;">
-            {{ formatUndefine(scope.row.role)}}
+          <span >
+            {{ formatUndefine(scope.row.title) }}
           </span>
         </template>
       </el-table-column>
@@ -85,8 +85,8 @@
         align="center"
         width="160px">
         <template slot-scope="scope">
-          <span style="color: #4a9ff9; font-weight: bolder;font-size: 18px;">
-            {{  formatUndefine(scope.row.phone)}}
+          <span >
+            {{ formatUndefine(scope.row.phone) }}
           </span>
         </template>
       </el-table-column>
@@ -98,7 +98,7 @@
         width="200px">
         <template slot-scope="scope">
           <span >
-            {{ formatUndefine(scope.row.email)}}
+            {{ formatUndefine(scope.row.email) }}
           </span>
         </template>
       </el-table-column>
@@ -110,11 +110,10 @@
         width="160px">
         <template slot-scope="scope">
           <span style="color: #4a9ff9; font-weight: bolder;font-size: 18px;">
-            {{ formatUndefine(scope.row.status)}}
+            {{ formatUndefine(scope.row.status) }}
           </span>
         </template>
       </el-table-column>
-
 
       <el-table-column
         :label="$t('organization.note')"
@@ -123,20 +122,12 @@
         min-width="160px">
         <template slot-scope="scope">
           <span style="color: #4a9ff9; font-weight: bolder;font-size: 18px;">
-            {{ formatUndefine(scope.row.note)}}
+            {{ formatUndefine(scope.row.note) }}
           </span>
         </template>
       </el-table-column>
 
-
     </el-table>
-
-
-
-
-
-
-
 
   </div>
 </template>
@@ -145,10 +136,9 @@
 import waves from '@/directive/waves' // Waves directive
 import fixedButton from '../../components/FixedButton'
 import Pagination from '../../components/Pagination'
-import ElTableFooter from "element-ui";
+import ElTableFooter from 'element-ui'
 
-import {getUserListInfoRequest} from "../../api/user";
-
+import { getUserListInfoRequest } from '../../api/user'
 
 export default {
   name: 'AppManager',
@@ -157,6 +147,7 @@ export default {
     fixedButton,
     Pagination
   },
+  directives: { waves },
   data() {
     return {
       listLoading: true,
@@ -168,19 +159,18 @@ export default {
         name: '',
         status: '',
         sort: '+_id'
-      },
+      }
     }
   },
-  directives: { waves },
   created() {
     this.getList()
   },
   methods: {
     formatUndefine(obj) {
-      if (obj){
+      if (obj) {
         return obj
       }
-      return "-"
+      return '-'
     },
     getList() {
       getUserListInfoRequest(this.listQuery).then(response => {
@@ -199,7 +189,7 @@ export default {
     },
     handleCreate() {
 
-    },
+    }
   }
 
 }

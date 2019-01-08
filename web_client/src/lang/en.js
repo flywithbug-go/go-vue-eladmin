@@ -205,7 +205,7 @@ export default {
   organization:{
     name: "Name",
     phone:"Phone",
-    role: "Role",
+    title: "Title",
     status:"Status",
     note:"Note",
     avatar:"Avatar",

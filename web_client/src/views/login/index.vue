@@ -45,6 +45,12 @@
         {{ $t('login.logIn') }}
       </el-button>
 
+      <el-form-item>
+        <div>
+          <span style="color: #eef1f6">测试账号：admin</span>
+          <span style="color: #eef1f6">密码：admin</span>
+        </div>
+      </el-form-item>
     </el-form>
 
   </div>

@@ -1,9 +1,7 @@
-const BaseURL = 'http://localhost:6201/api'
+const BaseURL = process.env.BASE_API
 
-
-const UploadImageURL = 'http://localhost:6201/api/upload/image'
-const downloadImageURL = 'http://localhost:6201/api/image'
-
+const UploadImageURL =  process.env.BASE_API + '/upload/image'
+const downloadImageURL = process.env.BASE_API +  '/image'
 
 export default {
   BaseURL,

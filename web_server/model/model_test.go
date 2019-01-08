@@ -8,12 +8,11 @@ import (
 )
 
 func TestUserFunctions(t *testing.T) {
-	mongo.DialMgo("127.0.0.1:27017")
+	mongo.DialMgo("doc:doc11121014a@118.89.108.25:27017/docmanager")
 
 	user := new(User)
-	user.RealName = "ori"
-	user.Password = "pass"
-	user.Account = "ori"
+	user.Password = "admin"
+	user.Account = "admin"
 	user.Title = "CEO"
 	user.Phone = "129"
 	user.Email = "admin@admin.com"

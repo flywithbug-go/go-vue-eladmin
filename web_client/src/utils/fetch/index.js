@@ -4,6 +4,7 @@ import store from '@/store'
 import global_ from '../../config'
 
 
+
 client.defaults.baseURL = global_.BaseURL;
 client.defaults.headers.common['Authorization'] = localStorage.getItem("Authorization");
 client.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
