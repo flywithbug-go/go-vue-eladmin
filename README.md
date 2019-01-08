@@ -1,6 +1,8 @@
 
 ## 简介
-使用PanJiaChen的:[vue-element-admin](https://github.com/PanJiaChen/vue-element-admin/blob/master/README.zh-CN.md)搭好的基础框架
+
+[在线查看](http://118.89.108.25:9801)
+
 
 
 Backend(go):
@@ -333,3 +335,6 @@ npm run build --report
 80 directories, 187 files
 
 ```
+
+
+使用PanJiaChen的:[vue-element-admin](https://github.com/PanJiaChen/vue-element-admin/blob/master/README.zh-CN.md)搭好的基础框架
