@@ -23,7 +23,7 @@ type UserRole struct {
 func loginHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.JSON(aRes.Code, aRes)
+		c.JSON(http.StatusOK, aRes)
 	}()
 	user := model.User{}
 	err := c.BindJSON(&user)
@@ -62,7 +62,7 @@ func loginHandler(c *gin.Context) {
 func registerHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.JSON(aRes.Code, aRes)
+		c.JSON(http.StatusOK, aRes)
 	}()
 	user := new(model.User)
 	err := c.BindJSON(user)
@@ -94,7 +94,7 @@ func registerHandler(c *gin.Context) {
 func logoutHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.JSON(aRes.Code, aRes)
+		c.JSON(http.StatusOK, aRes)
 	}()
 	token := common.UserToken(c)
 	if token == "" {
@@ -115,7 +115,7 @@ func logoutHandler(c *gin.Context) {
 func getUserInfoHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.JSON(aRes.Code, aRes)
+		c.JSON(http.StatusOK, aRes)
 	}()
 	userId := common.UserId(c)
 	if userId <= 0 {
@@ -138,7 +138,7 @@ func getUserInfoHandler(c *gin.Context) {
 func getUserListInfoHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.JSON(aRes.Code, aRes)
+		c.JSON(http.StatusOK, aRes)
 	}()
 
 	limit, _ := strconv.Atoi(c.Query("limit"))
@@ -182,7 +182,7 @@ func getUserListInfoHandler(c *gin.Context) {
 func updateUserHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.JSON(aRes.Code, aRes)
+		c.JSON(http.StatusOK, aRes)
 	}()
 	user := new(model.User)
 	err := c.BindJSON(user)

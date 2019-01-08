@@ -17,7 +17,7 @@ import (
 func addAppVersionHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.JSON(aRes.Code, aRes)
+		c.JSON(http.StatusOK, aRes)
 	}()
 	appV := new(model.AppVersion)
 	err := c.BindJSON(appV)
@@ -38,7 +38,7 @@ func addAppVersionHandler(c *gin.Context) {
 func updateAppVersionHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.JSON(aRes.Code, aRes)
+		c.JSON(http.StatusOK, aRes)
 	}()
 	appV := new(model.AppVersion)
 	err := c.BindJSON(appV)
@@ -59,7 +59,7 @@ func updateAppVersionHandler(c *gin.Context) {
 func getAppVersionListHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.JSON(aRes.Code, aRes)
+		c.JSON(http.StatusOK, aRes)
 	}()
 	appId, _ := strconv.Atoi(c.Query("app_id"))
 	limit, _ := strconv.Atoi(c.Query("limit"))
@@ -103,7 +103,7 @@ func getAppVersionListHandler(c *gin.Context) {
 func removeAppVersionHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.JSON(aRes.Code, aRes)
+		c.JSON(http.StatusOK, aRes)
 	}()
 	appV := model.AppVersion{}
 	err := c.BindJSON(&appV)

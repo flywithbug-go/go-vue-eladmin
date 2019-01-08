@@ -16,7 +16,7 @@ type paraRole struct {
 func addRoleHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.JSON(aRes.Code, aRes)
+		c.JSON(http.StatusOK, aRes)
 	}()
 	para := paraRole{}
 	err := c.BindJSON(&para)
@@ -36,7 +36,7 @@ func addRoleHandler(c *gin.Context) {
 func getRoleHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.JSON(aRes.Code, aRes)
+		c.JSON(http.StatusOK, aRes)
 	}()
 	ids := c.Query("id")
 	var role = model.Role{}
@@ -54,7 +54,7 @@ func getRoleHandler(c *gin.Context) {
 func updateRoleHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.JSON(aRes.Code, aRes)
+		c.JSON(http.StatusOK, aRes)
 	}()
 	para := model.Role{}
 	err := c.BindJSON(&para)
@@ -74,7 +74,7 @@ func updateRoleHandler(c *gin.Context) {
 func removeRoleHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.JSON(aRes.Code, aRes)
+		c.JSON(http.StatusOK, aRes)
 	}()
 	//need id
 	para := model.Role{}

@@ -16,7 +16,7 @@ import (
 func addPermissionHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.JSON(aRes.Code, aRes)
+		c.JSON(http.StatusOK, aRes)
 	}()
 	p := model.Permission{}
 	err := c.BindJSON(&p)
@@ -54,7 +54,7 @@ func addPermissionHandler(c *gin.Context) {
 func getPermissionHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.JSON(aRes.Code, aRes)
+		c.JSON(http.StatusOK, aRes)
 	}()
 	ids := c.Query("id")
 	var mInfo = model.Permission{}
@@ -72,7 +72,7 @@ func getPermissionHandler(c *gin.Context) {
 func updatePermissionHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.JSON(aRes.Code, aRes)
+		c.JSON(http.StatusOK, aRes)
 	}()
 	para := model.Permission{}
 	err := c.BindJSON(&para)
@@ -92,7 +92,7 @@ func updatePermissionHandler(c *gin.Context) {
 func removePermissionHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.JSON(aRes.Code, aRes)
+		c.JSON(http.StatusOK, aRes)
 	}()
 	//need id
 	para := model.Permission{}
@@ -113,7 +113,7 @@ func removePermissionHandler(c *gin.Context) {
 func getPermissionListHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.JSON(aRes.Code, aRes)
+		c.JSON(http.StatusOK, aRes)
 	}()
 	limit, _ := strconv.Atoi(c.Query("limit"))
 	page, _ := strconv.Atoi(c.Query("page"))

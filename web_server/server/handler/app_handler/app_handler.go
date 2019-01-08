@@ -20,7 +20,7 @@ type appPara struct {
 func addApplicationHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.JSON(aRes.Code, aRes)
+		c.JSON(http.StatusOK, aRes)
 	}()
 	app := new(appPara)
 	err := c.BindJSON(app)
@@ -58,7 +58,7 @@ func addApplicationHandler(c *gin.Context) {
 func getApplicationsHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.JSON(aRes.Code, aRes)
+		c.JSON(http.StatusOK, aRes)
 	}()
 	limit, _ := strconv.Atoi(c.Query("limit"))
 	page, _ := strconv.Atoi(c.Query("page"))
@@ -105,7 +105,7 @@ func getApplicationsHandler(c *gin.Context) {
 func updateApplicationHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.JSON(aRes.Code, aRes)
+		c.JSON(http.StatusOK, aRes)
 	}()
 	app := new(model.Application)
 	err := c.BindJSON(app)
@@ -126,7 +126,7 @@ func updateApplicationHandler(c *gin.Context) {
 func getAllSimpleAppHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.JSON(aRes.Code, aRes)
+		c.JSON(http.StatusOK, aRes)
 	}()
 	var app = model.Application{}
 
