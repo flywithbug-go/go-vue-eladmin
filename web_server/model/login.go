@@ -5,6 +5,7 @@ import (
 	"errors"
 	"time"
 	"vue-admin/web_server/core/mongo"
+	"vue-admin/web_server/model/shareDB"
 
 	"gopkg.in/mgo.v2/bson"
 )
@@ -51,7 +52,7 @@ func UserLogin(userID int64, userAgent, token, ip string) (l *Login, err error) 
 
 func (l Login) FindAll() ([]Login, error) {
 	var results []Login
-	err := mongo.FindAll(db, userCollection, nil, nil, &results)
+	err := mongo.FindAll(shareDB.DBName(), userCollection, nil, nil, &results)
 	return results, err
 }
 
@@ -59,18 +60,18 @@ func (l *Login) Insert() error {
 	if l.UserId == 0 {
 		return errors.New("user_id can not be 0")
 	}
-	return mongo.Insert(db, loginCollection, l)
+	return mongo.Insert(shareDB.DBName(), loginCollection, l)
 }
 
 //status 0 退出登录，1 登录
-//	return mongo.Update(db, todoCollection, bson.M{"_id": t.Id}, bson.M{"$set": bson.M{"title": t.Title, "completed": t.Completed, "updated_at": t.UpdatedAt}})
+//	return mongo.Update(shareDB.DBName(), todoCollection, bson.M{"_id": t.Id}, bson.M{"$set": bson.M{"title": t.Title, "completed": t.Completed, "updated_at": t.UpdatedAt}})
 func UpdateLoginStatus(token string, status int) error {
 	updateAt := time.Now().Unix()
-	return mongo.Update(db, loginCollection, bson.M{"token": token}, bson.M{"status": status, "updated_at": updateAt}, true)
+	return mongo.Update(shareDB.DBName(), loginCollection, bson.M{"token": token}, bson.M{"status": status, "updated_at": updateAt}, true)
 }
 
 func FindLoginByToken(token string) (l *Login, err error) {
 	l = new(Login)
-	err = mongo.FindOne(db, loginCollection, bson.M{"token": token}, bson.M{"status": StatusLogout}, &l)
+	err = mongo.FindOne(shareDB.DBName(), loginCollection, bson.M{"token": token}, bson.M{"status": StatusLogout}, &l)
 	return
 }

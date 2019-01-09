@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"vue-admin/web_server/core/mongo"
+	"vue-admin/web_server/model/shareDB"
 
 	"gopkg.in/mgo.v2/bson"
 )
@@ -42,43 +43,43 @@ func (p Permission) ToJson() string {
 }
 
 func (p Permission) isExist(query interface{}) bool {
-	return mongo.IsExist(db, permissionCollection, query)
+	return mongo.IsExist(shareDB.DBName(), permissionCollection, query)
 }
 
 func (p Permission) insert(docs ...interface{}) error {
-	return mongo.Insert(db, permissionCollection, docs...)
+	return mongo.Insert(shareDB.DBName(), permissionCollection, docs...)
 }
 
 func (p Permission) update(selector, update interface{}) error {
-	return mongo.Update(db, permissionCollection, selector, update, true)
+	return mongo.Update(shareDB.DBName(), permissionCollection, selector, update, true)
 }
 
 func (p Permission) findOne(query, selector interface{}) (Permission, error) {
 	ap := Permission{}
-	err := mongo.FindOne(db, permissionCollection, query, selector, &ap)
+	err := mongo.FindOne(shareDB.DBName(), permissionCollection, query, selector, &ap)
 	return ap, err
 }
 func (p Permission) findAll(query, selector interface{}) (results []Permission, err error) {
 	results = []Permission{}
-	err = mongo.FindAll(db, permissionCollection, query, selector, &results)
+	err = mongo.FindAll(shareDB.DBName(), permissionCollection, query, selector, &results)
 	return results, err
 }
 
 func (p Permission) remove(selector interface{}) error {
-	return mongo.Remove(db, permissionCollection, selector)
+	return mongo.Remove(shareDB.DBName(), permissionCollection, selector)
 }
 
 func (p Permission) removeAll(selector interface{}) error {
-	return mongo.RemoveAll(db, permissionCollection, selector)
+	return mongo.RemoveAll(shareDB.DBName(), permissionCollection, selector)
 }
 
 func (p Permission) totalCount(query, selector interface{}) (int, error) {
-	return mongo.TotalCount(db, permissionCollection, query, selector)
+	return mongo.TotalCount(shareDB.DBName(), permissionCollection, query, selector)
 }
 
 func (p Permission) findPage(page, limit int, query, selector interface{}, fields ...string) (results []Permission, err error) {
 	results = []Permission{}
-	err = mongo.FindPage(db, permissionCollection, page, limit, query, selector, &results, fields...)
+	err = mongo.FindPage(shareDB.DBName(), permissionCollection, page, limit, query, selector, &results, fields...)
 	return
 }
 

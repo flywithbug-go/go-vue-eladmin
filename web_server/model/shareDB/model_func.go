@@ -1,4 +1,4 @@
-package model
+package shareDB
 
 import "vue-admin/web_server/core/mongo"
 

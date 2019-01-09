@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"vue-admin/web_server/core/mongo"
+	"vue-admin/web_server/model/shareDB"
 
 	"gopkg.in/mgo.v2/bson"
 )
@@ -35,43 +36,43 @@ func (r Role) ToJson() string {
 }
 
 func (r Role) isExist(query interface{}) bool {
-	return mongo.IsExist(db, roleCollection, query)
+	return mongo.IsExist(shareDB.DBName(), roleCollection, query)
 }
 
 func (r Role) insert(docs ...interface{}) error {
-	return mongo.Insert(db, roleCollection, docs...)
+	return mongo.Insert(shareDB.DBName(), roleCollection, docs...)
 }
 
 func (r Role) update(selector, update interface{}) error {
-	return mongo.Update(db, roleCollection, selector, update, true)
+	return mongo.Update(shareDB.DBName(), roleCollection, selector, update, true)
 }
 
 func (r Role) findOne(query, selector interface{}) (Role, error) {
 	ap := Role{}
-	err := mongo.FindOne(db, roleCollection, query, selector, &ap)
+	err := mongo.FindOne(shareDB.DBName(), roleCollection, query, selector, &ap)
 	return ap, err
 }
 func (r Role) findAll(query, selector interface{}) (results []Role, err error) {
 	results = []Role{}
-	err = mongo.FindAll(db, roleCollection, query, selector, &results)
+	err = mongo.FindAll(shareDB.DBName(), roleCollection, query, selector, &results)
 	return results, err
 }
 
 func (r Role) remove(selector interface{}) error {
-	return mongo.Remove(db, roleCollection, selector)
+	return mongo.Remove(shareDB.DBName(), roleCollection, selector)
 }
 
 func (r Role) removeAll(selector interface{}) error {
-	return mongo.RemoveAll(db, roleCollection, selector)
+	return mongo.RemoveAll(shareDB.DBName(), roleCollection, selector)
 }
 
 func (r Role) totalCount(query, selector interface{}) (int, error) {
-	return mongo.TotalCount(db, roleCollection, query, selector)
+	return mongo.TotalCount(shareDB.DBName(), roleCollection, query, selector)
 }
 
 func (r Role) findPage(page, limit int, query, selector interface{}, fields ...string) (results []Role, err error) {
 	results = []Role{}
-	err = mongo.FindPage(db, roleCollection, page, limit, query, selector, &results, fields...)
+	err = mongo.FindPage(shareDB.DBName(), roleCollection, page, limit, query, selector, &results, fields...)
 	return
 }
 

@@ -6,7 +6,7 @@ import (
 	"vue-admin/web_server/config"
 	"vue-admin/web_server/core/jwt"
 	"vue-admin/web_server/core/mongo"
-	"vue-admin/web_server/model"
+	"vue-admin/web_server/model/shareDB"
 	"vue-admin/web_server/server"
 	"vue-admin/web_server/server/handler/file_handler"
 
@@ -57,7 +57,7 @@ func main() {
 
 	//mongodb启动连接
 	//设置数据库名字
-	model.SetDBName(config.Conf().DBConfig.DBName)
+	shareDB.SetDBName(config.Conf().DBConfig.DBName)
 	mongo.DialMgo(config.Conf().DBConfig.Url)
 
 	//启动ApiServer服务

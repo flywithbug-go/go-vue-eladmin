@@ -6,6 +6,7 @@ import (
 	"strings"
 	"vue-admin/web_server/common"
 	"vue-admin/web_server/model"
+	"vue-admin/web_server/model/model_app"
 
 	"gopkg.in/mgo.v2/bson"
 
@@ -19,7 +20,7 @@ func addAppVersionHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
-	appV := new(model.AppVersion)
+	appV := new(model_app.AppVersion)
 	err := c.BindJSON(appV)
 	if err != nil {
 		log4go.Info(err.Error())
@@ -40,7 +41,7 @@ func updateAppVersionHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
-	appV := new(model.AppVersion)
+	appV := new(model_app.AppVersion)
 	err := c.BindJSON(appV)
 	if err != nil {
 		log4go.Info(err.Error())
@@ -88,7 +89,7 @@ func getAppVersionListHandler(c *gin.Context) {
 	if appId > 0 {
 		query = bson.M{"app_id": appId}
 	}
-	var appV = model.AppVersion{}
+	var appV = model_app.AppVersion{}
 	totalCount, _ := appV.TotalCount(query, nil)
 	appList, err := appV.FindPageFilter(page, limit, query, nil, sort)
 	if err != nil {
@@ -105,7 +106,7 @@ func removeAppVersionHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
-	appV := model.AppVersion{}
+	appV := model_app.AppVersion{}
 	err := c.BindJSON(&appV)
 	if err != nil {
 		log4go.Info(err.Error())

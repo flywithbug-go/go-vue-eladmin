@@ -1,4 +1,4 @@
-package model
+package model_app
 
 import (
 	"encoding/json"
@@ -8,6 +8,7 @@ import (
 	"time"
 	"vue-admin/web_server/common"
 	"vue-admin/web_server/core/mongo"
+	"vue-admin/web_server/model/shareDB"
 
 	"github.com/flywithbug/log4go"
 
@@ -53,44 +54,44 @@ func (app AppVersion) ToJson() string {
 }
 
 func (app AppVersion) insert(docs ...interface{}) error {
-	return mongo.Insert(db, appVersionCollection, docs...)
+	return mongo.Insert(shareDB.DBName(), appVersionCollection, docs...)
 }
 
 func (app AppVersion) isExist(query interface{}) bool {
-	return mongo.IsExist(db, appVersionCollection, query)
+	return mongo.IsExist(shareDB.DBName(), appVersionCollection, query)
 }
 
 func (app AppVersion) findOne(query, selector interface{}) (AppVersion, error) {
 	ap := AppVersion{}
-	err := mongo.FindOne(db, appVersionCollection, query, selector, &ap)
+	err := mongo.FindOne(shareDB.DBName(), appVersionCollection, query, selector, &ap)
 	return ap, err
 }
 
 func (app AppVersion) findAll(query, selector interface{}) (results []AppVersion, err error) {
 	results = []AppVersion{}
-	err = mongo.FindAll(db, appVersionCollection, query, selector, &results)
+	err = mongo.FindAll(shareDB.DBName(), appVersionCollection, query, selector, &results)
 	return results, err
 }
 
 func (app AppVersion) update(selector, update interface{}) error {
-	return mongo.Update(db, appVersionCollection, selector, update, true)
+	return mongo.Update(shareDB.DBName(), appVersionCollection, selector, update, true)
 }
 
 func (app AppVersion) remove(selector interface{}) error {
-	return mongo.Remove(db, appVersionCollection, selector)
+	return mongo.Remove(shareDB.DBName(), appVersionCollection, selector)
 }
 
 func (app AppVersion) removeAll(selector interface{}) error {
-	return mongo.RemoveAll(db, appVersionCollection, selector)
+	return mongo.RemoveAll(shareDB.DBName(), appVersionCollection, selector)
 }
 
 func (app AppVersion) totalCount(query, selector interface{}) (int, error) {
-	return mongo.TotalCount(db, appVersionCollection, query, selector)
+	return mongo.TotalCount(shareDB.DBName(), appVersionCollection, query, selector)
 }
 
 func (app AppVersion) findPage(page, limit int, query, selector interface{}, fields ...string) (results []AppVersion, err error) {
 	results = []AppVersion{}
-	err = mongo.FindPage(db, appVersionCollection, page, limit, query, selector, &results, fields...)
+	err = mongo.FindPage(shareDB.DBName(), appVersionCollection, page, limit, query, selector, &results, fields...)
 	return
 }
 

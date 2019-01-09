@@ -20,9 +20,8 @@ const userRouter = {
     {
       path: 'permission',
       name: 'permission',
-      component: () => import('../../views/organization/permission'),
+      component: () => import('../../views/organization/permission/permission'),
       meta: { title: 'permissionManager', noCache: true, icon: 'permission' },
-      // hidden:true
     },
     {
       path: 'role',

@@ -14,7 +14,7 @@ function hasPermission(roles, permissionRoles) {
   return roles.some(role => permissionRoles.indexOf(role) >= 0)
 }
 
-const whiteList = ['/login', '/auth-redirect']
+const whiteList = ['/login']
 
 router.beforeEach((to, from, next) => {
   NProgress.start()

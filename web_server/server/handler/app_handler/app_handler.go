@@ -6,6 +6,7 @@ import (
 	"strings"
 	"vue-admin/web_server/common"
 	"vue-admin/web_server/model"
+	appModel "vue-admin/web_server/model/model_app"
 
 	"gopkg.in/mgo.v2/bson"
 
@@ -14,7 +15,7 @@ import (
 )
 
 type appPara struct {
-	model.Application
+	appModel.Application
 }
 
 func addApplicationHandler(c *gin.Context) {
@@ -90,7 +91,7 @@ func getApplicationsHandler(c *gin.Context) {
 	if len(owner) > 0 {
 		query["owner"] = bson.M{"$regex": owner, "$options": "i"}
 	}
-	var app = model.Application{}
+	var app = appModel.Application{}
 	totalCount, _ := app.TotalCount(query, nil)
 	appList, err := app.FindPageFilter(page, limit, query, nil, sort)
 	if err != nil {
@@ -107,7 +108,7 @@ func updateApplicationHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
-	app := new(model.Application)
+	app := new(appModel.Application)
 	err := c.BindJSON(app)
 	if err != nil {
 		log4go.Info(err.Error())
@@ -128,7 +129,7 @@ func getAllSimpleAppHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
-	var app = model.Application{}
+	var app = appModel.Application{}
 
 	arrList, err := app.FindAll(nil, bson.M{"_id": 1, "name": 1, "icon": 1, "owner": 1, "editable": 1})
 	if err != nil {

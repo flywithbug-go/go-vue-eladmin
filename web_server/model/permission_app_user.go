@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"vue-admin/web_server/core/mongo"
+	"vue-admin/web_server/model/shareDB"
 
 	"gopkg.in/mgo.v2/bson"
 )
@@ -26,43 +27,43 @@ func (r UserAppPermission) ToJson() string {
 }
 
 func (r UserAppPermission) isExist(query interface{}) bool {
-	return mongo.IsExist(db, userAppPermissionCollection, query)
+	return mongo.IsExist(shareDB.DBName(), userAppPermissionCollection, query)
 }
 
 func (r UserAppPermission) insert(docs ...interface{}) error {
-	return mongo.Insert(db, userAppPermissionCollection, docs...)
+	return mongo.Insert(shareDB.DBName(), userAppPermissionCollection, docs...)
 }
 
 func (r UserAppPermission) update(selector, update interface{}) error {
-	return mongo.Update(db, userAppPermissionCollection, selector, update, true)
+	return mongo.Update(shareDB.DBName(), userAppPermissionCollection, selector, update, true)
 }
 
 func (r UserAppPermission) findOne(query, selector interface{}) (UserAppPermission, error) {
 	ap := UserAppPermission{}
-	err := mongo.FindOne(db, userAppPermissionCollection, query, selector, &ap)
+	err := mongo.FindOne(shareDB.DBName(), userAppPermissionCollection, query, selector, &ap)
 	return ap, err
 }
 func (r UserAppPermission) findAll(query, selector interface{}) (results []UserAppPermission, err error) {
 	results = []UserAppPermission{}
-	err = mongo.FindAll(db, userAppPermissionCollection, query, selector, &results)
+	err = mongo.FindAll(shareDB.DBName(), userAppPermissionCollection, query, selector, &results)
 	return results, err
 }
 
 func (r UserAppPermission) remove(selector interface{}) error {
-	return mongo.Remove(db, userAppPermissionCollection, selector)
+	return mongo.Remove(shareDB.DBName(), userAppPermissionCollection, selector)
 }
 
 func (r UserAppPermission) removeAll(selector interface{}) error {
-	return mongo.RemoveAll(db, userAppPermissionCollection, selector)
+	return mongo.RemoveAll(shareDB.DBName(), userAppPermissionCollection, selector)
 }
 
 func (r UserAppPermission) totalCount(query, selector interface{}) (int, error) {
-	return mongo.TotalCount(db, userAppPermissionCollection, query, selector)
+	return mongo.TotalCount(shareDB.DBName(), userAppPermissionCollection, query, selector)
 }
 
 func (r UserAppPermission) findPage(page, limit int, query, selector interface{}, fields ...string) (results []UserAppPermission, err error) {
 	results = []UserAppPermission{}
-	err = mongo.FindPage(db, userAppPermissionCollection, page, limit, query, selector, &results, fields...)
+	err = mongo.FindPage(shareDB.DBName(), userAppPermissionCollection, page, limit, query, selector, &results, fields...)
 	return
 }
 

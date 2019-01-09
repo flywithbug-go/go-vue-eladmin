@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"vue-admin/web_server/core/mongo"
+	"vue-admin/web_server/model/shareDB"
 
 	"gopkg.in/mgo.v2/bson"
 )
@@ -25,43 +26,43 @@ func (a AppPermission) ToJson() string {
 }
 
 func (a AppPermission) isExist(query interface{}) bool {
-	return mongo.IsExist(db, appPermissionCollection, query)
+	return mongo.IsExist(shareDB.DBName(), appPermissionCollection, query)
 }
 
 func (a AppPermission) insert(docs ...interface{}) error {
-	return mongo.Insert(db, appPermissionCollection, docs...)
+	return mongo.Insert(shareDB.DBName(), appPermissionCollection, docs...)
 }
 
 func (a AppPermission) update(selector, update interface{}) error {
-	return mongo.Update(db, appPermissionCollection, selector, update, true)
+	return mongo.Update(shareDB.DBName(), appPermissionCollection, selector, update, true)
 }
 
 func (a AppPermission) findOne(query, selector interface{}) (AppPermission, error) {
 	ap := AppPermission{}
-	err := mongo.FindOne(db, appPermissionCollection, query, selector, &ap)
+	err := mongo.FindOne(shareDB.DBName(), appPermissionCollection, query, selector, &ap)
 	return ap, err
 }
 func (a AppPermission) findAll(query, selector interface{}) (results []AppPermission, err error) {
 	results = []AppPermission{}
-	err = mongo.FindAll(db, appPermissionCollection, query, selector, &results)
+	err = mongo.FindAll(shareDB.DBName(), appPermissionCollection, query, selector, &results)
 	return results, err
 }
 
 func (a AppPermission) remove(selector interface{}) error {
-	return mongo.Remove(db, appPermissionCollection, selector)
+	return mongo.Remove(shareDB.DBName(), appPermissionCollection, selector)
 }
 
 func (a AppPermission) removeAll(selector interface{}) error {
-	return mongo.RemoveAll(db, appPermissionCollection, selector)
+	return mongo.RemoveAll(shareDB.DBName(), appPermissionCollection, selector)
 }
 
 func (a AppPermission) totalCount(query, selector interface{}) (int, error) {
-	return mongo.TotalCount(db, appPermissionCollection, query, selector)
+	return mongo.TotalCount(shareDB.DBName(), appPermissionCollection, query, selector)
 }
 
 func (a AppPermission) findPage(page, limit int, query, selector interface{}, fields ...string) (results []AppPermission, err error) {
 	results = []AppPermission{}
-	err = mongo.FindPage(db, appPermissionCollection, page, limit, query, selector, &results, fields...)
+	err = mongo.FindPage(shareDB.DBName(), appPermissionCollection, page, limit, query, selector, &results, fields...)
 	return
 }
 

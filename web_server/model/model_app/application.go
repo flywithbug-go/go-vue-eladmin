@@ -1,10 +1,11 @@
-package model
+package model_app
 
 import (
 	"encoding/json"
 	"errors"
 	"time"
 	"vue-admin/web_server/core/mongo"
+	"vue-admin/web_server/model/shareDB"
 
 	"gopkg.in/mgo.v2/bson"
 )
@@ -32,45 +33,45 @@ func (a Application) ToJson() string {
 }
 
 func (a Application) insert(docs ...interface{}) error {
-	return mongo.Insert(db, appCollection, docs...)
+	return mongo.Insert(shareDB.DBName(), appCollection, docs...)
 }
 
 func (a Application) isExist(query interface{}) bool {
-	return mongo.IsExist(db, appCollection, query)
+	return mongo.IsExist(shareDB.DBName(), appCollection, query)
 }
 
 func (a Application) findOne(query, selector interface{}) (Application, error) {
 	ap := Application{}
-	err := mongo.FindOne(db, appCollection, query, selector, &ap)
+	err := mongo.FindOne(shareDB.DBName(), appCollection, query, selector, &ap)
 	return ap, err
 }
 
 func (a Application) findAll(query, selector interface{}) (results []Application, err error) {
 	results = []Application{}
-	err = mongo.FindAll(db, appCollection, query, selector, &results)
+	err = mongo.FindAll(shareDB.DBName(), appCollection, query, selector, &results)
 	return results, err
 }
 
 func (a Application) totalCount(query, selector interface{}) (int, error) {
-	return mongo.TotalCount(db, appCollection, query, selector)
+	return mongo.TotalCount(shareDB.DBName(), appCollection, query, selector)
 }
 
 func (a Application) findPage(page, limit int, query, selector interface{}, fields ...string) (results []Application, err error) {
 	results = []Application{}
-	err = mongo.FindPage(db, appCollection, page, limit, query, selector, &results, fields...)
+	err = mongo.FindPage(shareDB.DBName(), appCollection, page, limit, query, selector, &results, fields...)
 	return
 }
 
 func (a Application) update(selector, update interface{}) error {
-	return mongo.Update(db, appCollection, selector, update, true)
+	return mongo.Update(shareDB.DBName(), appCollection, selector, update, true)
 }
 
 func (a Application) remove(selector interface{}) error {
-	return mongo.Remove(db, appCollection, selector)
+	return mongo.Remove(shareDB.DBName(), appCollection, selector)
 }
 
 func (a Application) removeAll(selector interface{}) error {
-	return mongo.RemoveAll(db, appCollection, selector)
+	return mongo.RemoveAll(shareDB.DBName(), appCollection, selector)
 }
 
 func (a *Application) Insert() error {
