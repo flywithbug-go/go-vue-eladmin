@@ -2,7 +2,7 @@ package permission_handler
 
 import "vue-admin/web_server/server/handler/common"
 
-var PermissionRouters = []common.GinHandleFunc{
+var Routers = []common.GinHandleFunc{
 	{
 		Handler:    addPermissionHandler,
 		RouterType: common.RouterTypeNeedAuth,

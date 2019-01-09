@@ -67,8 +67,15 @@ func (p Permission) findPage(page, limit int, query, selector interface{}, field
 	return
 }
 
+func (p Permission) pipeAll(pipeline, result interface{}, allowDiskUse bool) error {
+	return mongo.PipeAll(shareDB.DBName(), permissionCollection, pipeline, result, allowDiskUse)
+}
+
+func (p Permission) pipeOne(pipeline, result interface{}, allowDiskUse bool) error {
+	return mongo.PipeOne(shareDB.DBName(), permissionCollection, pipeline, result, allowDiskUse)
+}
+
 func (p Permission) Insert() error {
-	p.Id, _ = mongo.GetIncrementId(permissionCollection)
 	if p.isExist(bson.M{"name": p.Name}) {
 		return fmt.Errorf("code exist")
 	}
@@ -78,6 +85,7 @@ func (p Permission) Insert() error {
 	if p.PId != 0 && !p.isExist(bson.M{"p_id": p.PId}) {
 		return fmt.Errorf("pid  not exist")
 	}
+	p.Id, _ = mongo.GetIncrementId(permissionCollection)
 	return p.insert(p)
 }
 
