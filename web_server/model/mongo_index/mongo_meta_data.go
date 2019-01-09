@@ -30,9 +30,9 @@ var Indexes = []Index{
 		Index: mgo.Index{
 			Key:        []string{"alias"},
 			Unique:     true,
-			DropDups:   false,
+			DropDups:   true,
 			Background: false,
-			Sparse:     false,
+			Sparse:     true,
 			Name:       "c_permission_f_alias_index",
 		},
 	},
@@ -41,9 +41,9 @@ var Indexes = []Index{
 		Index: mgo.Index{
 			Key:        []string{"name"},
 			Unique:     true,
-			DropDups:   false,
+			DropDups:   true,
 			Background: false,
-			Sparse:     false,
+			Sparse:     true,
 			Name:       "c_permission_f_name_index",
 		},
 	},
