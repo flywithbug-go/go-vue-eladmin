@@ -24,8 +24,8 @@ var Routers = []common.GinHandleFunc{
 	{
 		Handler:    removePermissionHandler,
 		RouterType: common.RouterTypeNeedAuth,
-		Method:     "POST",
-		Route:      "/permission/remove",
+		Method:     "DELETE",
+		Route:      "/permission",
 	},
 	{
 		Handler:    getPermissionListHandler,
