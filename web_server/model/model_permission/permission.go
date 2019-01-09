@@ -15,10 +15,11 @@ const (
 )
 
 type Permission struct {
-	Id    int64  `json:"id,omitempty" bson:"_id,omitempty"`
-	PId   int64  `json:"pid,omitempty" bson:"p_id,omitempty"`
-	Name  string `json:"name"`
-	Alias string `json:"alias"`
+	Id       int64        `json:"_id" bson:"_id"`
+	PId      int64        `json:"pid,omitempty" bson:"pid"`
+	Name     string       `json:"name"`
+	Alias    string       `json:"alias"`
+	Children []Permission `json:"children"`
 }
 
 func (p Permission) ToJson() string {
