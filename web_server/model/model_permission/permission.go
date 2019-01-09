@@ -16,12 +16,13 @@ const (
 )
 
 type Permission struct {
-	Id       int64        `json:"id,omitempty" bson:"_id,omitempty"`
-	PId      int64        `json:"pid,omitempty" bson:"pid,omitempty"`
-	Name     string       `json:"name,omitempty" bson:"name,omitempty"`
-	Alias    string       `json:"alias,omitempty" bson:"alias,omitempty"`
-	Note     string       `json:"note,omitempty" bson:"note,omitempty"`
-	Children []Permission `json:"children,omitempty" bson:"children,omitempty"`
+	Id         int64        `json:"id,omitempty" bson:"_id,omitempty"`
+	PId        int64        `json:"pid,omitempty" bson:"pid,omitempty"`
+	Name       string       `json:"name,omitempty" bson:"name,omitempty"`
+	Alias      string       `json:"alias,omitempty" bson:"alias,omitempty"`
+	Note       string       `json:"note,omitempty" bson:"note,omitempty"`
+	CreateTime int64        `json:"create_time,omitempty" bson:"create_time,omitempty"`
+	Children   []Permission `json:"children,omitempty" bson:"children,omitempty"`
 }
 
 func (p Permission) ToJson() string {
@@ -126,8 +127,4 @@ func (p Permission) FindPipeAll() (results []Permission, err error) {
 	}
 	err = p.pipeAll(pipeline, &results, true)
 	return
-}
-func (p Permission) createUniqueIndex() error {
-
-	return nil
 }

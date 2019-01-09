@@ -179,6 +179,7 @@ func PipeAll(db, collection string, pipeline, result interface{}, allowDiskUse b
 	} else {
 		pipe = c.Pipe(pipeline)
 	}
+	pipe.Batch(1)
 	return pipe.All(result)
 }
 
