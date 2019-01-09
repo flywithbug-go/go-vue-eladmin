@@ -117,7 +117,15 @@ export default {
   },
   dialog: {
     edit:"编辑",
-    create:"新增"
+    create:"新增",
+    name_placeholder:"请输入名字",
+    alias_placeholder:"请输入别名",
+    cancel: "取消",
+    confirm: "确定",
+  },
+  filterHeader:{
+    search: '搜索',
+    add: "添加",
   },
   system:{
     name: "名字",

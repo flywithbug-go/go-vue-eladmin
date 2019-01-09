@@ -8,6 +8,8 @@ import (
 	"vue-admin/web_server/model/mongo_index"
 	"vue-admin/web_server/model/shareDB"
 
+	"time"
+
 	"gopkg.in/mgo.v2/bson"
 )
 
@@ -85,6 +87,7 @@ func (p Permission) Insert() error {
 	}
 	p.Id, _ = mongo.GetIncrementId(permissionCollection)
 	p.Children = nil
+	p.CreateTime = time.Now().Unix() * 1000
 	return p.insert(p)
 }
 

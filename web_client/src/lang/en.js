@@ -204,7 +204,15 @@ export default {
   },
   dialog: {
     edit:"Edit",
-    create:"Create"
+    create:"Create",
+    name_placeholder:"Please input name",
+    alias_placeholder:"Please input alias",
+    cancel: "Cancel",
+    confirm: "Confirm",
+  },
+  filterHeader:{
+    search: 'Search',
+    add: "Add",
   },
   system:{
     name: "Name",
