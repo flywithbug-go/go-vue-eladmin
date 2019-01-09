@@ -4,13 +4,14 @@ import (
 	"net/http"
 	"strconv"
 	"vue-admin/web_server/model"
+	"vue-admin/web_server/model/model_role"
 
 	"github.com/flywithbug/log4go"
 	"github.com/gin-gonic/gin"
 )
 
 type paraRole struct {
-	model.Role
+	model_role.Role
 }
 
 func addRoleHandler(c *gin.Context) {
@@ -39,7 +40,7 @@ func getRoleHandler(c *gin.Context) {
 		c.JSON(http.StatusOK, aRes)
 	}()
 	ids := c.Query("id")
-	var role = model.Role{}
+	var role = model_role.Role{}
 	id, _ := strconv.Atoi(ids)
 	role.Id = int64(id)
 	role, err := role.FindOne()
@@ -56,7 +57,7 @@ func updateRoleHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
-	para := model.Role{}
+	para := model_role.Role{}
 	err := c.BindJSON(&para)
 	if err != nil {
 		log4go.Info(err.Error())
@@ -77,7 +78,7 @@ func removeRoleHandler(c *gin.Context) {
 		c.JSON(http.StatusOK, aRes)
 	}()
 	//need id
-	para := model.Role{}
+	para := model_role.Role{}
 	err := c.BindJSON(&para)
 	if err != nil {
 		log4go.Info(err.Error())

@@ -7,6 +7,7 @@ import (
 	"strings"
 	"vue-admin/web_server/common"
 	"vue-admin/web_server/model"
+	"vue-admin/web_server/model/model_permission"
 
 	"github.com/flywithbug/log4go"
 	"github.com/gin-gonic/gin"
@@ -18,7 +19,7 @@ func addPermissionHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
-	p := model.Permission{}
+	p := model_permission.Permission{}
 	err := c.BindJSON(&p)
 	if err != nil {
 		log4go.Info(err.Error())
@@ -30,7 +31,7 @@ func addPermissionHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "code is null")
 		return
 	}
-	if p.Type < model.PermissionTypeUndetermined || p.Type > model.PermissionTypeR {
+	if p.Type < model_permission.PermissionTypeUndetermined || p.Type > model_permission.PermissionTypeR {
 		aRes.SetErrorInfo(http.StatusBadRequest, fmt.Sprintf("type should . %d", p.Type))
 		return
 	}
@@ -57,7 +58,7 @@ func getPermissionHandler(c *gin.Context) {
 		c.JSON(http.StatusOK, aRes)
 	}()
 	ids := c.Query("id")
-	var mInfo = model.Permission{}
+	var mInfo = model_permission.Permission{}
 	id, _ := strconv.Atoi(ids)
 	mInfo.Id = int64(id)
 	mInfo, err := mInfo.FindOne()
@@ -74,7 +75,7 @@ func updatePermissionHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
-	para := model.Permission{}
+	para := model_permission.Permission{}
 	err := c.BindJSON(&para)
 	if err != nil {
 		log4go.Info(err.Error())
@@ -95,7 +96,7 @@ func removePermissionHandler(c *gin.Context) {
 		c.JSON(http.StatusOK, aRes)
 	}()
 	//need id
-	para := model.Permission{}
+	para := model_permission.Permission{}
 	err := c.BindJSON(&para)
 	if err != nil {
 		log4go.Info(err.Error())
@@ -138,7 +139,7 @@ func getPermissionListHandler(c *gin.Context) {
 		return
 	}
 	query := bson.M{}
-	var appV = model.Permission{}
+	var appV = model_permission.Permission{}
 	totalCount, _ := appV.TotalCount(query, nil)
 	appList, err := appV.FindPageFilter(page, limit, query, nil, sort)
 	if err != nil {

@@ -1,4 +1,4 @@
-package model
+package model_permission
 
 import (
 	"encoding/json"
