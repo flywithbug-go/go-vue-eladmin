@@ -1,7 +1,6 @@
-package role_handler
+package permission_handler
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -24,23 +23,6 @@ func addPermissionHandler(c *gin.Context) {
 	if err != nil {
 		log4go.Info(err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
-		return
-	}
-
-	if len(p.Code) == 0 {
-		aRes.SetErrorInfo(http.StatusBadRequest, "code is null")
-		return
-	}
-	if p.Type < model_permission.PermissionTypeUndetermined || p.Type > model_permission.PermissionTypeR {
-		aRes.SetErrorInfo(http.StatusBadRequest, fmt.Sprintf("type should . %d", p.Type))
-		return
-	}
-	if len(p.Name) == 0 {
-		aRes.SetErrorInfo(http.StatusBadRequest, "name not be null")
-		return
-	}
-	if len(p.Note) == 0 {
-		aRes.SetErrorInfo(http.StatusBadRequest, "note should not be null")
 		return
 	}
 

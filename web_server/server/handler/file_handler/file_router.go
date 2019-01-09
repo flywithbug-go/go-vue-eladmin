@@ -2,7 +2,7 @@ package file_handler
 
 import "vue-admin/web_server/server/handler/common"
 
-var FileRouters = []common.GinHandleFunc{
+var Routers = []common.GinHandleFunc{
 	{
 		Handler:    uploadImageHandler, //上传图片
 		RouterType: common.RouterTypeNeedAuth,

@@ -2,7 +2,7 @@ package app_handler
 
 import "vue-admin/web_server/server/handler/common"
 
-var AppRouters = []common.GinHandleFunc{
+var Routers = []common.GinHandleFunc{
 	{
 		Handler:    addApplicationHandler, //添加应用
 		RouterType: common.RouterTypeNeedAuth,

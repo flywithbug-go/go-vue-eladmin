@@ -10,16 +10,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type paraRole struct {
-	model_role.Role
-}
-
 func addRoleHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
-	para := paraRole{}
+	para := model_role.Role{}
 	err := c.BindJSON(&para)
 	if err != nil {
 		log4go.Info(err.Error())

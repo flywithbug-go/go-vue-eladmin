@@ -76,8 +76,8 @@ func funcDoRouteRegister(method, route string, handler gin.HandlerFunc, r *gin.E
 
 //添加route 到RouterList
 func addAllRouters() {
-	routerList = append(routerList, user_handler.UserRouters...)
-	routerList = append(routerList, file_handler.FileRouters...)
-	routerList = append(routerList, app_handler.AppRouters...)
-	routerList = append(routerList, role_handler.FileRouters...)
+	routerList = append(routerList, user_handler.Routers...)
+	routerList = append(routerList, file_handler.Routers...)
+	routerList = append(routerList, app_handler.Routers...)
+	routerList = append(routerList, role_handler.Routers...)
 }

@@ -2,8 +2,7 @@ package user_handler
 
 import "vue-admin/web_server/server/handler/common"
 
-var UserRouters = []common.GinHandleFunc{
-
+var Routers = []common.GinHandleFunc{
 	{
 		Handler:    registerHandler,
 		RouterType: common.RouterTypeNormal,

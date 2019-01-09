@@ -14,27 +14,11 @@ const (
 	permissionCollection = "permission"
 )
 
-const (
-	PermissionTypeUndetermined typeStatus = iota
-	PermissionTypeNone                    //无权限
-	PermissionTypeCURD                    //增删改查
-	PermissionTypeRU                      //改查
-	PermissionTypeR                       //查看
-)
-
-//权限表 type
-//1. Delete ReadWrite
-//2. Read
-//3. NoRight
-
 type Permission struct {
-	Id         int64      `json:"id,omitempty" bson:"_id,omitempty"`
-	Type       typeStatus `json:"type,omitempty" bson:"type,omitempty"` //
-	TypeStatus string     `json:"type_status,omitempty" bson:"type_status,omitempty"`
-	Name       string     `json:"name,omitempty" bson:"name,omitempty"`         //
-	Code       string     `json:"code,omitempty" bson:"code,omitempty"`         //
-	DelFlag    bool       `json:"del_flag,omitempty" bson:"del_flag,omitempty"` //
-	Note       string     `json:"note,omitempty" bson:"note,omitempty"`
+	Id    int64  `json:"id,omitempty" bson:"_id,omitempty"`
+	PId   int64  `json:"pid,omitempty" bson:"p_id,omitempty"`
+	Name  string `json:"name"`
+	Alias string `json:"alias"`
 }
 
 func (p Permission) ToJson() string {
@@ -85,13 +69,15 @@ func (p Permission) findPage(page, limit int, query, selector interface{}, field
 
 func (p Permission) Insert() error {
 	p.Id, _ = mongo.GetIncrementId(permissionCollection)
-	if p.isExist(bson.M{"code": p.Code}) {
+	if p.isExist(bson.M{"name": p.Name}) {
 		return fmt.Errorf("code exist")
 	}
-	if p.isExist(bson.M{"name": p.Name}) {
+	if p.isExist(bson.M{"alias": p.Alias}) {
 		return fmt.Errorf("name exist")
 	}
-	p.TypeStatus = makeTypeStatus(p.Type)
+	if p.PId != 0 && !p.isExist(bson.M{"p_id": p.PId}) {
+		return fmt.Errorf("pid  not exist")
+	}
 	return p.insert(p)
 }
 
@@ -100,7 +86,6 @@ func (p Permission) FindOne() (Permission, error) {
 	if err != nil {
 		return p, err
 	}
-	p.TypeStatus = makeTypeStatus(p.Type)
 	return p, err
 }
 
@@ -116,22 +101,6 @@ func (p Permission) Remove() error {
 		return errors.New("id needed ")
 	}
 	return p.remove(bson.M{"_id": p.Id})
-}
-
-func makeTypeStatus(makeTypeStatus typeStatus) string {
-	switch makeTypeStatus {
-	case PermissionTypeUndetermined:
-		return "无权限"
-	case PermissionTypeNone:
-		return "无权限"
-	case PermissionTypeCURD:
-		return "增删改查"
-	case PermissionTypeRU:
-		return "读写"
-	case PermissionTypeR:
-		return "只读"
-	}
-	return "未定义用户"
 }
 
 func (p Permission) TotalCount(query, selector interface{}) (int, error) {
