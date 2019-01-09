@@ -19,7 +19,8 @@ type Permission struct {
 	PId      int64        `json:"pid,omitempty" bson:"pid"`
 	Name     string       `json:"name"`
 	Alias    string       `json:"alias"`
-	Children []Permission `json:"children" bson:"children,omitempty"`
+	Note     string       `json:"note,omitempty"`
+	Children []Permission `json:"children,omitempty" bson:"children,omitempty"`
 }
 
 func (p Permission) ToJson() string {
@@ -92,10 +93,11 @@ func (p Permission) Insert() error {
 }
 
 func (p Permission) FindOne() (Permission, error) {
-	p, err := p.findOne(bson.M{"_id": p.Id}, nil)
-	if err != nil {
-		return p, err
+	pipeline := []bson.M{
+		{"$match": bson.M{"_id": p.Id}},
+		{"$lookup": bson.M{"from": permissionCollection, "localField": "_id", "foreignField": "pid", "as": "children"}},
 	}
+	err := p.pipeOne(pipeline, &p, true)
 	return p, err
 }
 
@@ -119,4 +121,18 @@ func (p Permission) TotalCount(query, selector interface{}) (int, error) {
 }
 func (p Permission) FindPageFilter(page, limit int, query, selector interface{}, fields ...string) (apps []Permission, err error) {
 	return p.findPage(page, limit, query, selector, fields...)
+}
+
+func (p Permission) FindPipeAll() (results []Permission, err error) {
+	results = make([]Permission, 0)
+	pipeline := []bson.M{
+		{"$match": bson.M{"pid": 0}},
+		{"$lookup": bson.M{"from": permissionCollection, "localField": "_id", "foreignField": "pid", "as": "children"}},
+	}
+	err = p.pipeAll(pipeline, &results, true)
+	return
+}
+func (p Permission) createUniqueIndex() error {
+
+	return nil
 }

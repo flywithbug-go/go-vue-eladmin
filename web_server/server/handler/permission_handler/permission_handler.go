@@ -132,3 +132,19 @@ func getPermissionListHandler(c *gin.Context) {
 	aRes.AddResponseInfo("list", appList)
 	aRes.AddResponseInfo("total", totalCount)
 }
+
+func getPermissionTreeHandler(c *gin.Context) {
+	aRes := model.NewResponse()
+	defer func() {
+		c.JSON(http.StatusOK, aRes)
+	}()
+	var per = model_permission.Permission{}
+	results, err := per.FindPipeAll()
+	if err != nil {
+		log4go.Info(err.Error())
+		aRes.SetErrorInfo(http.StatusUnauthorized, "app version list find error"+err.Error())
+		return
+	}
+	aRes.AddResponseInfo("tree", results)
+
+}
