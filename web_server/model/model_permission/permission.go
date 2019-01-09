@@ -19,7 +19,7 @@ type Permission struct {
 	PId      int64        `json:"pid,omitempty" bson:"pid"`
 	Name     string       `json:"name"`
 	Alias    string       `json:"alias"`
-	Children []Permission `json:"children"`
+	Children []Permission `json:"children" bson:"children,omitempty"`
 }
 
 func (p Permission) ToJson() string {
@@ -83,10 +83,11 @@ func (p Permission) Insert() error {
 	if p.isExist(bson.M{"alias": p.Alias}) {
 		return fmt.Errorf("name exist")
 	}
-	if p.PId != 0 && !p.isExist(bson.M{"p_id": p.PId}) {
+	if p.PId != 0 && !p.isExist(bson.M{"pid": p.PId}) {
 		return fmt.Errorf("pid  not exist")
 	}
 	p.Id, _ = mongo.GetIncrementId(permissionCollection)
+	p.Children = nil
 	return p.insert(p)
 }
 
@@ -99,9 +100,10 @@ func (p Permission) FindOne() (Permission, error) {
 }
 
 func (p Permission) Update() error {
-	if p.Id == 0 {
-		return errors.New("id needed ")
+	if p.PId != 0 && !p.isExist(bson.M{"pid": p.PId}) {
+		return fmt.Errorf("pid  not exist")
 	}
+	p.Children = nil
 	return p.update(bson.M{"_id": p.Id}, p)
 }
 
