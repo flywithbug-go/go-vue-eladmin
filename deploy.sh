@@ -19,7 +19,7 @@ case $1 in
             sh autobuild.sh
         ;;
         *)
-                echo "$0 {server|client|all}"
-                exit 4
+            echo "$0 {server|client|all}"
+            exit 4
         ;;
 esac
