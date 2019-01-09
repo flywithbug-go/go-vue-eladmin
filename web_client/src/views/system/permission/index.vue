@@ -2,10 +2,10 @@
   <div class="app-container">
     <eHeader :permissions="permissions" :query="query"/>
     <!--表格渲染-->
-    <tree-table v-loading="loading" :data="data" :expand-all="true" :columns="columns" border size="small">
+    <tree-table v-loading="loading" :data="data" :expand-all="true" :columns="columns" border size="medium">
       <el-table-column prop="createTime" label="创建日期">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.createTime) }}</span>
+          <span>{{ parseTime(scope.row.create_time) }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" width="150px" align="center">

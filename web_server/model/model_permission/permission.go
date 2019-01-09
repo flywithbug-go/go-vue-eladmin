@@ -19,7 +19,7 @@ const (
 
 type Permission struct {
 	Id         int64        `json:"id,omitempty" bson:"_id,omitempty"`
-	PId        int64        `json:"pid,omitempty" bson:"pid,omitempty"`
+	PId        int64        `json:"pid" bson:"pid"`
 	Name       string       `json:"name,omitempty" bson:"name,omitempty"`
 	Alias      string       `json:"alias,omitempty" bson:"alias,omitempty"`
 	Note       string       `json:"note,omitempty" bson:"note,omitempty"`
@@ -88,6 +88,7 @@ func (p Permission) Insert() error {
 	p.Id, _ = mongo.GetIncrementId(permissionCollection)
 	p.Children = nil
 	p.CreateTime = time.Now().Unix() * 1000
+
 	return p.insert(p)
 }
 
