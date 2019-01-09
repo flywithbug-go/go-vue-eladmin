@@ -276,25 +276,3 @@ func (app AppVersion) TotalCount(query, selector interface{}) (int, error) {
 func (app AppVersion) FindPageFilter(page, limit int, query, selector interface{}, fields ...string) (apps []AppVersion, err error) {
 	return app.findPage(page, limit, query, selector, fields...)
 }
-
-//func FindAppVersionByVersionId(appId string) (appV *AppVersion, err error) {
-//	appV, err = appVC.findOne(bson.M{"app_id": appId}, nil)
-//	appV.AppStatus = makeStatusString(appV.Status)
-//	return
-//}
-
-//func FindAppVersionById(Id int64) (appV AppVersion, err error) {
-//	appV, err = appVC.findOne(bson.M{"_id": Id}, nil)
-//	appV.AppStatus = makeStatusString(appV.Status)
-//	return
-//}
-//
-//func FindAppVersionByVersion(version string) (appV AppVersion, err error) {
-//	appV, err = appVC.findOne(bson.M{"version": version}, nil)
-//	appV.AppStatus = makeStatusString(appV.Status)
-//	return
-//}
-//
-//func FindAllAppVersion(query, selector interface{}) (results []AppVersion, err error) {
-//	return appVC.findAll(query, selector)
-//}
