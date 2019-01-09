@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Layout from '../views/layout/Layout'
 import metadataRouter from './modules/metadata'
-import  userRouter from './modules/organization'
+import  userRouter from './modules/system'
 
 Vue.use(Router)
 

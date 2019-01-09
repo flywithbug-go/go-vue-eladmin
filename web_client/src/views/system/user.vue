@@ -46,7 +46,7 @@
       </el-table-column>
 
       <el-table-column
-        :label="$t('organization.name')"
+        :label="$t('system.name')"
         prop="id"
         align="center"
         width="160px">
@@ -58,7 +58,7 @@
       </el-table-column>
 
       <el-table-column
-        :label="$t('organization.avatar')"
+        :label="$t('system.avatar')"
         prop="id"
         align="center"
         width="100px">
@@ -68,7 +68,7 @@
       </el-table-column>
 
       <el-table-column
-        :label="$t('organization.title')"
+        :label="$t('system.title')"
         prop="id"
         align="center"
         width="160px">
@@ -80,7 +80,7 @@
       </el-table-column>
 
       <el-table-column
-        :label="$t('organization.phone')"
+        :label="$t('system.phone')"
         prop="id"
         align="center"
         width="160px">
@@ -92,7 +92,7 @@
       </el-table-column>
 
       <el-table-column
-        :label="$t('organization.email')"
+        :label="$t('system.email')"
         prop="id"
         align="center"
         width="200px">
@@ -104,7 +104,7 @@
       </el-table-column>
 
       <el-table-column
-        :label="$t('organization.status')"
+        :label="$t('system.status')"
         prop="id"
         align="center"
         width="160px">
@@ -116,7 +116,7 @@
       </el-table-column>
 
       <el-table-column
-        :label="$t('organization.note')"
+        :label="$t('system.note')"
         prop="id"
         align="center"
         min-width="160px">

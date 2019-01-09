@@ -3,25 +3,25 @@ import client from '../utils/fetch'
 
 
 
-export function addPermissionRequest(para) {
-  const data = {
-    bundle_id:para.bundle_id,
-    icon:para.icon,
-    name:para.name,
-    desc:para.desc
-  }
+export function add(data) {
   return client({
-    url: '/permission/add',
+    url: '/permission',
     method: 'post',
     data
   })
 }
 
-
-export function getPermissionListRequest(query) {
+export function del(id) {
   return client({
-    url: '/permission/list',
-    method: 'get',
-    params: query
+    url: '/permission/' + id,
+    method: 'delete'
+  })
+}
+
+export function edit(data) {
+  return client({
+    url: '/permission',
+    method: 'put',
+    data
   })
 }

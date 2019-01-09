@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-
+aaa
 
 
   </div>
@@ -10,9 +10,7 @@
 
 
 export default {
-  name: 'AppManager',
-
-
+  name: 'permission',
 }
 </script>
 
@@ -25,7 +23,5 @@ export default {
       background-size: 2rem 1.9rem;
     }
   }
-
-
 
 </style>

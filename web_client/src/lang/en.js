@@ -202,7 +202,11 @@ export default {
     confirmChange:"Change to ",
     confirmDelete:"Delete current version？"
   },
-  organization:{
+  dialog: {
+    edit:"Edit",
+    create:"Create"
+  },
+  system:{
     name: "Name",
     phone:"Phone",
     title: "Title",
@@ -213,7 +217,5 @@ export default {
     account: "Account",
     code: "Code",
     type:"Type",
-
-
   }
 }

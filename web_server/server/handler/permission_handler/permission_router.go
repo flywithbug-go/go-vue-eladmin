@@ -7,7 +7,7 @@ var Routers = []common.GinHandleFunc{
 		Handler:    addPermissionHandler,
 		RouterType: common.RouterTypeNeedAuth,
 		Method:     "POST",
-		Route:      "/permission/add",
+		Route:      "/permission",
 	},
 	{
 		Handler:    getPermissionHandler,
@@ -18,8 +18,8 @@ var Routers = []common.GinHandleFunc{
 	{
 		Handler:    updatePermissionHandler,
 		RouterType: common.RouterTypeNeedAuth,
-		Method:     "POST",
-		Route:      "/permission/update",
+		Method:     "PUT",
+		Route:      "/permission",
 	},
 	{
 		Handler:    removePermissionHandler,

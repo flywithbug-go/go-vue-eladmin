@@ -6,6 +6,7 @@ export default {
     metadata: '元数据',
     userManager: '人员管理',
     organizationStruct:'组织架构',
+    systemManager:"系统管理",
     permissionManager: '权限管理',
     roleManager:'角色管理',
     user: '人员',
@@ -114,7 +115,11 @@ export default {
     confirmChange:"切换状态到",
     confirmDelete:"确定要删除当前版本？"
   },
-  organization:{
+  dialog: {
+    edit:"编辑",
+    create:"新增"
+  },
+  system:{
     name: "名字",
     phone:"电话",
     title: "职位",
@@ -125,7 +130,6 @@ export default {
     account: "账号",
     code: "代码",
     type:"类型",
-
   }
 
 }
