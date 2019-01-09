@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 case $1 in
         server|s)
             cd web_server
