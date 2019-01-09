@@ -40,9 +40,9 @@ type AppConfig struct {
 数据库配置结构体
 */
 type DBConfig struct {
-	Url       string `json:"url"`     //连接地址
-	DBName    string `json:"db_name"` //用户名
-	ForceSync bool   `json:"force_sync"`
+	Url       string `json:"url"`        //连接地址
+	DBName    string `json:"db_name"`    //用户名
+	ForceSync bool   `json:"force_sync"` //强制索引同步
 }
 
 type MailConfig struct {

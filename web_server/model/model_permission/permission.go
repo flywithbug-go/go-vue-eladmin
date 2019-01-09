@@ -16,11 +16,11 @@ const (
 )
 
 type Permission struct {
-	Id       int64        `json:"id" bson:"_id"`
-	PId      int64        `json:"pid,omitempty" bson:"pid"`
-	Name     string       `json:"name"`
-	Alias    string       `json:"alias"`
-	Note     string       `json:"note,omitempty"`
+	Id       int64        `json:"id,omitempty" bson:"_id,omitempty"`
+	PId      int64        `json:"pid,omitempty" bson:"pid,omitempty"`
+	Name     string       `json:"name,omitempty" bson:"name,omitempty"`
+	Alias    string       `json:"alias,omitempty" bson:"alias,omitempty"`
+	Note     string       `json:"note,omitempty" bson:"note,omitempty"`
 	Children []Permission `json:"children,omitempty" bson:"children,omitempty"`
 }
 
@@ -79,12 +79,6 @@ func (p Permission) pipeOne(pipeline, result interface{}, allowDiskUse bool) err
 }
 
 func (p Permission) Insert() error {
-	if p.isExist(bson.M{"name": p.Name}) {
-		return fmt.Errorf("code exist")
-	}
-	if p.isExist(bson.M{"alias": p.Alias}) {
-		return fmt.Errorf("alias exist")
-	}
 	if p.PId != 0 && !p.isExist(bson.M{"pid": p.PId}) {
 		return fmt.Errorf("pid  not exist")
 	}
@@ -103,7 +97,7 @@ func (p Permission) FindOne() (Permission, error) {
 }
 
 func (p Permission) Update() error {
-	if p.PId != 0 && !p.isExist(bson.M{"pid": p.PId}) {
+	if p.PId != 0 && !p.isExist(bson.M{"_id": p.PId}) {
 		return fmt.Errorf("pid  not exist")
 	}
 	p.Children = nil
