@@ -5,17 +5,18 @@ import (
 	"errors"
 	"fmt"
 	"vue-admin/web_server/core/mongo"
+	"vue-admin/web_server/model/mongo_index"
 	"vue-admin/web_server/model/shareDB"
 
 	"gopkg.in/mgo.v2/bson"
 )
 
 const (
-	permissionCollection = "permission"
+	permissionCollection = mongo_index.CollectionPermission
 )
 
 type Permission struct {
-	Id       int64        `json:"_id" bson:"_id"`
+	Id       int64        `json:"id" bson:"_id"`
 	PId      int64        `json:"pid,omitempty" bson:"pid"`
 	Name     string       `json:"name"`
 	Alias    string       `json:"alias"`
@@ -82,7 +83,7 @@ func (p Permission) Insert() error {
 		return fmt.Errorf("code exist")
 	}
 	if p.isExist(bson.M{"alias": p.Alias}) {
-		return fmt.Errorf("name exist")
+		return fmt.Errorf("alias exist")
 	}
 	if p.PId != 0 && !p.isExist(bson.M{"pid": p.PId}) {
 		return fmt.Errorf("pid  not exist")

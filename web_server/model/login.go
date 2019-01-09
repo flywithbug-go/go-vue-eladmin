@@ -5,6 +5,7 @@ import (
 	"errors"
 	"time"
 	"vue-admin/web_server/core/mongo"
+	"vue-admin/web_server/model/mongo_index"
 	"vue-admin/web_server/model/shareDB"
 
 	"gopkg.in/mgo.v2/bson"
@@ -13,7 +14,7 @@ import (
 type state int
 
 const (
-	loginCollection = "login"
+	loginCollection = mongo_index.CollectionLogin
 	//StatusNormal    = 0
 	StatusLogin  = 1
 	StatusLogout = 2

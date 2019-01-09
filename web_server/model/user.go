@@ -4,13 +4,14 @@ import (
 	"encoding/json"
 	"errors"
 	"vue-admin/web_server/core/mongo"
+	"vue-admin/web_server/model/mongo_index"
 	"vue-admin/web_server/model/shareDB"
 
 	"gopkg.in/mgo.v2/bson"
 )
 
 const (
-	userCollection = "user"
+	userCollection = mongo_index.CollectionUser
 )
 
 type User struct {

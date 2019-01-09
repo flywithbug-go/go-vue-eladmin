@@ -4,13 +4,14 @@ import (
 	"encoding/json"
 	"fmt"
 	"vue-admin/web_server/core/mongo"
+	"vue-admin/web_server/model/mongo_index"
 	"vue-admin/web_server/model/shareDB"
 
 	"gopkg.in/mgo.v2/bson"
 )
 
 const (
-	roleCollection = "role"
+	roleCollection = mongo_index.CollectionRole
 )
 
 //角色表，记录公司各种角色，比如：CEO 管理员，开发，开发经理，销售，销售主管，等

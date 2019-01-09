@@ -24,6 +24,15 @@ func connect(db, collection string) (*mgo.Session, *mgo.Collection) {
 	return s, c
 }
 
+func Collection(db, collection string) *mgo.Collection {
+	if globalS == nil {
+		panic("mgo disconnected")
+	}
+	s := globalS.Copy()
+	c := s.DB(db).C(collection)
+	return c
+}
+
 func getDb(db string) (*mgo.Session, *mgo.Database) {
 	ms := globalS.Copy()
 	return ms, ms.DB(db)

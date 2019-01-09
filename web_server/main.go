@@ -6,6 +6,7 @@ import (
 	"vue-admin/web_server/config"
 	"vue-admin/web_server/core/jwt"
 	"vue-admin/web_server/core/mongo"
+	"vue-admin/web_server/model/mongo_index"
 	"vue-admin/web_server/model/shareDB"
 	"vue-admin/web_server/server"
 	"vue-admin/web_server/server/handler/file_handler"
@@ -45,6 +46,14 @@ func init() {
 	}
 }
 
+func setMongoDB() {
+	//mongodb启动连接
+	//设置数据库名字
+	shareDB.SetDBName(config.Conf().DBConfig.DBName)
+	mongo.DialMgo(config.Conf().DBConfig.Url)
+	mongo_index.CreateMgoIndex()
+}
+
 func main() {
 	//log配置
 	setLog()
@@ -55,10 +64,7 @@ func main() {
 	//jwt验证
 	setJWTKey()
 
-	//mongodb启动连接
-	//设置数据库名字
-	shareDB.SetDBName(config.Conf().DBConfig.DBName)
-	mongo.DialMgo(config.Conf().DBConfig.Url)
+	setMongoDB()
 
 	//启动ApiServer服务
 	server.StartServer(config.Conf().Port, config.Conf().StaticPath, config.Conf().RouterPrefix, config.Conf().AuthPrefix)
