@@ -122,12 +122,19 @@ func (p Permission) FindPageFilter(page, limit int, query, selector interface{},
 	return p.findPage(page, limit, query, selector, fields...)
 }
 
-func (p Permission) FindPipeAll() (results []Permission, err error) {
+func (p Permission) FindPipeAll(match interface{}) (results []Permission, err error) {
+	//"name": bson.M{"$regex": "user", "$options": "i"}
 	results = make([]Permission, 0)
 	pipeline := []bson.M{
-		{"$match": bson.M{"pid": 0}},
+		{"$match": bson.M{"pid": 0, "name": bson.M{"$regex": "user", "$options": "i"}}},
 		{"$lookup": bson.M{"from": permissionCollection, "localField": "_id", "foreignField": "pid", "as": "children"}},
 	}
+	err = p.pipeAll(pipeline, &results, true)
+	return
+}
+
+func (p Permission) FindPipeline(pipeline []bson.M) (results []Permission, err error) {
+	results = make([]Permission, 0)
 	err = p.pipeAll(pipeline, &results, true)
 	return
 }

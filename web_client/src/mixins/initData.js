@@ -19,7 +19,7 @@ export default {
           this.data = res.list
           setTimeout(() => {
             this.loading = false
-          }, 1000)
+          }, 200)
           resolve(res)
         }).catch(err => {
           this.loading = false
