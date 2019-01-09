@@ -8,8 +8,6 @@ export function getPermissionTree() {
   })
 }
 
-
-
 export function add(data) {
   return client({
     url: '/permission',

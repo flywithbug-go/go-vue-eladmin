@@ -1,13 +1,11 @@
 import client from '../utils/fetch'
 
-
-
 export function addApplicationRequest(para) {
   const data = {
-    bundle_id:para.bundle_id,
-    icon:para.icon,
-    name:para.name,
-    desc:para.desc
+    bundle_id: para.bundle_id,
+    icon: para.icon,
+    name: para.name,
+    desc: para.desc
   }
   return client({
     url: '/app/add',
@@ -33,10 +31,10 @@ export function getSimpleApplicationListRequest() {
 
 export function updateApplicationRequest(para) {
   const data = {
-    icon:para.icon,
-    name:para.name,
-    desc:para.desc,
-    id:para.id
+    icon: para.icon,
+    name: para.name,
+    desc: para.desc,
+    id: para.id
   }
   return client({
     url: '/app/update',
@@ -80,7 +78,7 @@ export function addAppVersionRequest(app_id, version, parent_version, platform, 
     data
   })
 }
-export function updateAppVersionRequest(id, app_id, version, parent_version, platform, approval_time, lock_time, gray_time,release_time) {
+export function updateAppVersionRequest(id, app_id, version, parent_version, platform, approval_time, lock_time, gray_time, release_time) {
   const data = {
     id,
     app_id,
@@ -99,7 +97,6 @@ export function updateAppVersionRequest(id, app_id, version, parent_version, pla
   })
 }
 
-
 export function removeAppVersionRequest(id) {
   const data = {
     id
@@ -110,8 +107,6 @@ export function removeAppVersionRequest(id) {
     data
   })
 }
-
-
 
 export function updateStatusAppVersionRequest(id, status) {
   const data = {

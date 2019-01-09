@@ -30,78 +30,78 @@
 </template>
 
 <script>
-  import checkPermission from '@/utils/permission' // 权限判断函数
-  import treeTable from '@/components/TreeTable'
-  import initData from '../../../mixins/initData'
-  import { del } from '@/api/permission'
-  import { getPermissionTree } from '@/api/permission'
-  import { parseTime } from '@/utils/index'
-  import eHeader from './module/header'
-  import edit from './module/edit'
-  export default {
-    components: { eHeader, edit, treeTable },
-    mixins: [initData],
-    data() {
-      return {
-        columns: [
-          {
-            text: '名称',
-            value: 'name'
-          },
-          {
-            text: '别名',
-            value: 'alias'
-          }
-        ],
-        delLoading: false, sup_this: this, permissions: []
-      }
+import checkPermission from '@/utils/permission' // 权限判断函数
+import treeTable from '@/components/TreeTable'
+import initData from '../../../mixins/initData'
+import { del } from '@/api/permission'
+import { getPermissionTree } from '@/api/permission'
+import { parseTime } from '@/utils/index'
+import eHeader from './module/header'
+import edit from './module/edit'
+export default {
+  components: { eHeader, edit, treeTable },
+  mixins: [initData],
+  data() {
+    return {
+      columns: [
+        {
+          text: '名称',
+          value: 'name'
+        },
+        {
+          text: '别名',
+          value: 'alias'
+        }
+      ],
+      delLoading: false, sup_this: this, permissions: []
+    }
+  },
+  created() {
+    this.getPermissions()
+    this.$nextTick(() => {
+      this.init()
+    })
+  },
+  methods: {
+    parseTime,
+    checkPermission,
+    beforeInit() {
+      this.url = '/permission/tree'
+      const sort = 'id,desc'
+      const query = this.query
+      const value = query.value
+      this.params = { page: this.page, size: this.size, sort: sort }
+      if (value) { this.params['name'] = value }
+      return true
     },
-    created() {
-      this.getPermissions()
-      this.$nextTick(() => {
+    subDelete(index, row) {
+      this.delLoading = true
+      del(row.id).then(res => {
+        this.delLoading = false
+        row.delPopover = false
         this.init()
+        this.$notify({
+          title: '删除成功',
+          type: 'success',
+          duration: 2500
+        })
+      }).catch(err => {
+        this.delLoading = false
+        row.delPopover = false
+        console.log(err.response.message)
       })
     },
-    methods: {
-      parseTime,
-      checkPermission,
-      beforeInit() {
-        this.url = '/permission/tree'
-        const sort = 'id,desc'
-        const query = this.query
-        const value = query.value
-        this.params = { page: this.page, size: this.size, sort: sort }
-        if (value) { this.params['name'] = value }
-        return true
-      },
-      subDelete(index, row) {
-        this.delLoading = true
-        del(row.id).then(res => {
-          this.delLoading = false
-          row.delPopover = false
-          this.init()
-          this.$notify({
-            title: '删除成功',
-            type: 'success',
-            duration: 2500
-          })
-        }).catch(err => {
-          this.delLoading = false
-          row.delPopover = false
-          console.log(err.response.data.message)
-        })
-      },
-      getPermissions() {
-        getPermissionTree().then(res => {
-          this.permissions = []
-          const permission = { id: 0, label: '顶级类目', children: [] }
-          permission.children = res
-          this.permissions.push(permission)
-          console.log('permissions:', this.permissions)
-        })
-      }
+    getPermissions() {
+      getPermissionTree().then(res => {
+        this.permissions = []
+        const permission = { id: 0, label: '顶级类目', children: [] }
+        permission.children = res.tree
+        this.permissions.push(permission)
+        console.log('permissions:', this.permissions)
+      })
     }
   }
+}
 </script>
 
 <style scoped>

@@ -100,6 +100,8 @@ func getPermissionListHandler(c *gin.Context) {
 	}()
 	limit, _ := strconv.Atoi(c.Query("limit"))
 	page, _ := strconv.Atoi(c.Query("page"))
+	name := c.Query("name")
+
 	sort := c.Query("sort")
 	if strings.EqualFold(sort, "-id") {
 		sort = "-_id"
@@ -108,9 +110,7 @@ func getPermissionListHandler(c *gin.Context) {
 	} else if len(sort) == 0 {
 		sort = "+_id"
 	}
-	//if limit == 0 {
-	//	limit = 10
-	//}
+
 	if page != 0 {
 		page--
 	}
@@ -120,7 +120,13 @@ func getPermissionListHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusUnauthorized, "user not found")
 		return
 	}
-	query := bson.M{}
+	query := bson.M{"pid": 0}
+	if len(name) > 0 {
+		query["name"] = bson.M{"$regex": name, "$options": "i"}
+	}
+	//if len(owner) > 0 {
+	//	query["owner"] = bson.M{"$regex": owner, "$options": "i"}
+	//}
 	var appV = model_permission.Permission{}
 	totalCount, _ := appV.TotalCount(query, nil)
 	appList, err := appV.FindPageFilter(page, limit, query, nil, sort)
@@ -145,6 +151,6 @@ func getPermissionTreeHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusUnauthorized, "app version list find error"+err.Error())
 		return
 	}
-	aRes.AddResponseInfo("tree", results)
+	aRes.AddResponseInfo("list", results)
 
 }

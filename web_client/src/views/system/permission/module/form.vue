@@ -19,102 +19,102 @@
 </template>
 
 <script>
-  import { add, edit } from '@/api/permission'
-  import TreeSelect from '@riophae/vue-treeselect'
-  import '@riophae/vue-treeselect/dist/vue-treeselect.css'
+import { add, edit } from '@/api/permission'
+import TreeSelect from '@riophae/vue-treeselect'
+import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 
-  export default {
-		name: "form",
-    components: {
-      TreeSelect
+export default {
+  name: 'Form',
+  components: {
+    TreeSelect
+  },
+  props: {
+    permissions: {
+      type: Array,
+      required: true
     },
-    props: {
-      permissions: {
-        type: Array,
-        required: true
-      },
-      isAdd: {
-        type: Boolean,
-        required: true
-      },
-      sup_this: {
-        type: Object,
-        default: null
+    isAdd: {
+      type: Boolean,
+      required: true
+    },
+    sup_this: {
+      type: Object,
+      default: null
+    }
+  },
+  data() {
+    return {
+      loading: false, dialog: false,
+      form: { name: '', alias: '', pid: 0 },
+      rules: {
+        name: [
+          { required: true, message: this.$t('dialog.name_placeholder'), trigger: 'blur' }
+        ],
+        alias: [
+          { required: true, message: this.$t('dialog.alias_placeholder'), trigger: 'blur' }
+        ]
       }
+    }
+  },
+  methods: {
+    cancel() {
+      this.resetForm()
     },
-    data() {
-      return {
-        loading: false, dialog: false,
-        form: { name: '', alias: '', pid: 0 },
-        rules: {
-          name: [
-            { required: true, message: this.$t('dialog.name_placeholder'), trigger: 'blur' }
-          ],
-          alias: [
-            { required: true, message: this.$t('dialog.alias_placeholder'), trigger: 'blur' }
-          ]
+    doSubmit() {
+      this.$refs['form'].validate((valid) => {
+        if (valid) {
+          this.loading = true
+          if (this.isAdd) {
+            this.doAdd()
+          } else this.doEdit()
+        } else {
+          return false
         }
-      }
+      })
     },
-    methods: {
-      cancel() {
+    doAdd() {
+      add(this.form).then(res => {
         this.resetForm()
-      },
-      doSubmit() {
-        this.$refs['form'].validate((valid) => {
-          if (valid) {
-            this.loading = true
-            if (this.isAdd) {
-              this.doAdd()
-            } else this.doEdit()
-          } else {
-            return false
-          }
+        this.$notify({
+          title: '添加成功',
+          type: 'success',
+          duration: 2500
         })
-      },
-      doAdd() {
-        add(this.form).then(res => {
-          this.resetForm()
-          this.$notify({
-            title: '添加成功',
-            type: 'success',
-            duration: 2500
-          })
-          this.loading = false
-          setTimeout(() => {
-            this.$parent.$parent.init()
-            this.$parent.$parent.getPermissions()
-          }, 200)
-        }).catch(err => {
-          this.loading = false
-          console.log(err.response.data.message)
-        })
-      },
-      doEdit() {
-        edit(this.form).then(res => {
-          this.resetForm()
-          this.$notify({
-            title: '修改成功',
-            type: 'success',
-            duration: 2500
-          })
-          this.loading = false
-          setTimeout(() => {
-            this.sup_this.init()
-            this.sup_this.getPermissions()
-          }, 200)
-        }).catch(err => {
-          this.loading = false
-          console.log(err.response.data.message)
-        })
-      },
-      resetForm() {
-        this.dialog = false
-        this.$refs['form'].resetFields()
-        this.form = { name: '', alias: '', pid: 0 }
-      }
+        this.loading = false
+        setTimeout(() => {
+          this.$parent.$parent.init()
+          this.$parent.$parent.getPermissions()
+        }, 200)
+      }).catch(err => {
+        this.loading = false
+        console.log(err.response.data.message)
+      })
     },
-	}
+    doEdit() {
+      edit(this.form).then(res => {
+        this.resetForm()
+        this.$notify({
+          title: '修改成功',
+          type: 'success',
+          duration: 2500
+        })
+        this.loading = false
+        setTimeout(() => {
+          this.sup_this.init()
+          this.sup_this.getPermissions()
+        }, 200)
+      }).catch(err => {
+        this.loading = false
+        console.log(err.response.data.message)
+      })
+    },
+    resetForm() {
+      this.dialog = false
+      this.$refs['form'].resetFields()
+      this.form = { name: '', alias: '', pid: 0 }
+    }
+  }
+}
 </script>
 
 <style scoped>
