@@ -136,6 +136,7 @@ func (p Permission) FindAll(query, selector interface{}) (apps []Permission, err
 	return p.findAll(query, selector)
 }
 
+//只能查询到下一级子节点，不能递归全部的子节点
 //func (p Permission) FindPipeAll(match interface{}) (results []Permission, err error) {
 //	results = make([]Permission, 0)
 //	pipeline := []bson.M{
@@ -152,15 +153,6 @@ func (p Permission) FindPipeline(pipeline []bson.M) (results []Permission, err e
 	return
 }
 
-func (p *Permission) FindChildren() error {
-	results, err := p.findAll(bson.M{"pid": p.Id}, nil)
-	if err != nil {
-		return err
-	}
-	p.Children = results
-	return nil
-}
-
 func (p Permission) FetchTreeList() (results []Permission, err error) {
 	results, err = p.findAll(bson.M{"pid": 0}, nil)
 	if err != nil {
@@ -168,6 +160,15 @@ func (p Permission) FetchTreeList() (results []Permission, err error) {
 	}
 	err = makeTreeList(results)
 	return
+}
+
+func (p *Permission) FindChildren() error {
+	results, err := p.findAll(bson.M{"pid": p.Id}, nil)
+	if err != nil {
+		return err
+	}
+	p.Children = results
+	return nil
 }
 
 func makeTreeList(list []Permission) error {

@@ -105,6 +105,7 @@ func getPermissionTreeHandler(c *gin.Context) {
 	aRes.AddResponseInfo("list", results)
 }
 
+////只能查询到下一级子节点，不能递归全部的子节点
 //func getPermissionTreeHandler(c *gin.Context) {
 //	aRes := model.NewResponse()
 //	defer func() {
