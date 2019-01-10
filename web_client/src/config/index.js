@@ -6,10 +6,12 @@ const downloadImageURL = process.env.BASE_API +  '/image'
 
 
 const PathPermissionTree = "/permission/tree"
+const PathPermissionList = "/permission/list"
 
 export default {
   BaseURL,
   UploadImageURL,
   downloadImageURL,
   PathPermissionTree,
+  PathPermissionList
 }

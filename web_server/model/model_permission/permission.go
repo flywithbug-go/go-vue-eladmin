@@ -19,9 +19,10 @@ const (
 
 type Permission struct {
 	Id         int64        `json:"id,omitempty" bson:"_id,omitempty"`
-	PId        int64        `json:"pid" bson:"pid"`
+	PId        int64        `json:"pid,omitempty" bson:"pid"`
 	Name       string       `json:"name,omitempty" bson:"name,omitempty"`
-	Alias      string       `json:"label,omitempty" bson:"alias,omitempty"`
+	Alias      string       `json:"alias,omitempty" bson:"alias,omitempty"`
+	Label      string       `json:"label,omitempty" bson:"_,omitempty"`
 	Note       string       `json:"note,omitempty" bson:"note,omitempty"`
 	CreateTime int64        `json:"create_time,omitempty" bson:"create_time,omitempty"`
 	Children   []Permission `json:"children,omitempty" bson:"children,omitempty"`
@@ -87,7 +88,7 @@ func (p Permission) explain(pipeline, result interface{}) (results []Permission,
 }
 
 func (p Permission) Insert() error {
-	if p.PId != 0 && !p.isExist(bson.M{"pid": p.PId}) {
+	if p.PId != 0 && !p.isExist(bson.M{"_id": p.PId}) {
 		return fmt.Errorf("pid  not exist")
 	}
 	p.Id, _ = mongo.GetIncrementId(permissionCollection)
@@ -112,7 +113,7 @@ func (p Permission) FindPipeOne() (Permission, error) {
 
 func (p Permission) Update() error {
 	if p.PId != 0 && !p.isExist(bson.M{"_id": p.PId}) {
-		return fmt.Errorf("pid  not exist")
+		return fmt.Errorf("pid not exist")
 	}
 	p.Children = nil
 	return p.update(bson.M{"_id": p.Id}, p)
@@ -153,17 +154,17 @@ func (p Permission) FindPipeline(pipeline []bson.M) (results []Permission, err e
 	return
 }
 
-func (p Permission) FetchTreeList() (results []Permission, err error) {
-	results, err = p.findAll(bson.M{"pid": 0}, nil)
+func (p Permission) FetchTreeList(selector interface{}) (results []Permission, err error) {
+	results, err = p.findAll(bson.M{"pid": 0}, selector)
 	if err != nil {
 		return
 	}
-	err = makeTreeList(results)
+	err = makeTreeList(results, selector)
 	return
 }
 
-func (p *Permission) FindChildren() error {
-	results, err := p.findAll(bson.M{"pid": p.Id}, nil)
+func (p *Permission) FindChildren(selector interface{}) error {
+	results, err := p.findAll(bson.M{"pid": p.Id}, selector)
 	if err != nil {
 		return err
 	}
@@ -171,14 +172,15 @@ func (p *Permission) FindChildren() error {
 	return nil
 }
 
-func makeTreeList(list []Permission) error {
+func makeTreeList(list []Permission, selector interface{}) error {
 	for index := range list {
 		list[index].Children = make([]Permission, 0)
-		err := list[index].FindChildren()
+		list[index].Label = list[index].Alias
+		err := list[index].FindChildren(selector)
 		if err != nil {
 			return err
 		}
-		makeTreeList(list[index].Children)
+		makeTreeList(list[index].Children, selector)
 	}
 	return nil
 }

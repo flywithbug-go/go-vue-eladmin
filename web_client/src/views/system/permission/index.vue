@@ -51,7 +51,7 @@ export default {
         },
         {
           text: '别名',
-          value: 'label'
+          value: 'alias'
         }
       ],
       delLoading: false, sup_this: this, permissions: []
@@ -67,7 +67,7 @@ export default {
     parseTime,
     checkPermission,
     beforeInit() {
-      this.url = config.PathPermissionTree
+      this.url = config.PathPermissionList
       const sort = 'id,desc'
       const query = this.query
       const value = query.value
@@ -94,6 +94,7 @@ export default {
     },
     getPermissions() {
       getPermissionTree().then(res => {
+        console.log("getPermissionTree:",res)
         this.permissions = []
         const permission = { id: 0, label: '顶级类目', children: [] }
         permission.children = res.list

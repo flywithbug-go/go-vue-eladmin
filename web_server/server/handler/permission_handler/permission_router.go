@@ -33,4 +33,10 @@ var Routers = []common.GinHandleFunc{
 		Method:     "GET",
 		Route:      "/permission/tree",
 	},
+	{
+		Handler:    getPermissionListHandler,
+		RouterType: common.RouterTypeNeedAuth,
+		Method:     "GET",
+		Route:      "/permission/list",
+	},
 }

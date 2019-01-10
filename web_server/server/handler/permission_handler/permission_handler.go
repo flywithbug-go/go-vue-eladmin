@@ -6,6 +6,8 @@ import (
 	"vue-admin/web_server/model"
 	"vue-admin/web_server/model/model_permission"
 
+	"gopkg.in/mgo.v2/bson"
+
 	"github.com/flywithbug/log4go"
 	"github.com/gin-gonic/gin"
 )
@@ -90,13 +92,28 @@ func removePermissionHandler(c *gin.Context) {
 	}
 }
 
+func getPermissionListHandler(c *gin.Context) {
+	aRes := model.NewResponse()
+	defer func() {
+		c.JSON(http.StatusOK, aRes)
+	}()
+	var per = model_permission.Permission{}
+	results, err := per.FetchTreeList(nil)
+	if err != nil {
+		log4go.Info(err.Error())
+		aRes.SetErrorInfo(http.StatusUnauthorized, "app version list find error"+err.Error())
+		return
+	}
+	aRes.AddResponseInfo("list", results)
+}
+
 func getPermissionTreeHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
 	var per = model_permission.Permission{}
-	results, err := per.FetchTreeList()
+	results, err := per.FetchTreeList(bson.M{"_id": 1, "alias": 1})
 	if err != nil {
 		log4go.Info(err.Error())
 		aRes.SetErrorInfo(http.StatusUnauthorized, "app version list find error"+err.Error())
