@@ -38,7 +38,6 @@ func loginHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "account or password not right")
 		return
 	}
-	log4go.Info("%v", user)
 	claims := jwt.NewCustomClaims(user.Id, user.Account)
 	token, err := jwt.GenerateToken(claims)
 	if err != nil {
@@ -102,13 +101,13 @@ func logoutHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "token not found")
 		return
 	}
+	sync.RemoveKey(token)
 	err := model.UpdateLoginStatus(token, model.StatusLogout)
 	if err != nil {
 		log4go.Info(err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, err.Error())
 		return
 	}
-	sync.RemoveKey(token)
 	aRes.SetSuccessInfo(http.StatusOK, "success")
 }
 
