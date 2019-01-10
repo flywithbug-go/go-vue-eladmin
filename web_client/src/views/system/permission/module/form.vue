@@ -4,8 +4,8 @@
       <el-form-item label="名称" prop="name">
         <el-input v-model="form.name" style="width: 360px;"/>
       </el-form-item>
-      <el-form-item label="别名" prop="alias">
-        <el-input v-model="form.alias" style="width: 360px;"/>
+      <el-form-item label="别名" prop="label">
+        <el-input v-model="form.label" style="width: 360px;"/>
       </el-form-item>
       <el-form-item style="margin-bottom: 0px;" label="上级类目">
         <TreeSelect v-model="form.pid" :options="permissions" style="width: 360px;" placeholder="选择上级类目" />
@@ -45,12 +45,12 @@ export default {
   data() {
     return {
       loading: false, dialog: false,
-      form: { name: '', alias: '', pid: 0 },
+      form: { name: '', label: '', pid: 0 },
       rules: {
         name: [
           { required: true, message: this.$t('dialog.name_placeholder'), trigger: 'blur' }
         ],
-        alias: [
+        label: [
           { required: true, message: this.$t('dialog.alias_placeholder'), trigger: 'blur' }
         ]
       }
@@ -111,7 +111,7 @@ export default {
     resetForm() {
       this.dialog = false
       this.$refs['form'].resetFields()
-      this.form = { name: '', alias: '', pid: 0 }
+      this.form = { name: '', label: '', pid: 0 }
     }
   }
 }
