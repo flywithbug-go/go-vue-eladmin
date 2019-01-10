@@ -139,7 +139,7 @@
     <!--创建弹窗添加修改-->
     <el-dialog
       :title="textMap[dialogStatus]"
-      :visible.sync="dialogFormVisible">
+      :visible.sync="dialogFormVisible" width="600px">
       <el-form
         ref="dataForm"
         :rules="rules"

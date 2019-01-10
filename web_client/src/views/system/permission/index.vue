@@ -34,7 +34,7 @@ import checkPermission from '@/utils/permission' // 权限判断函数
 import treeTable from '@/components/TreeTable'
 import initData from '../../../mixins/initData'
 import { del } from '@/api/permission'
-import { getPermissionTree } from '@/api/permission'
+import { tree } from '@/api/permission'
 import { parseTime } from '@/utils/index'
 import eHeader from './module/header'
 import edit from './module/edit'
@@ -93,7 +93,7 @@ export default {
       })
     },
     getPermissions() {
-      getPermissionTree().then(res => {
+      tree().then(res => {
         console.log("getPermissionTree:",res)
         this.permissions = []
         const permission = { id: 0, label: '顶级类目', children: [] }

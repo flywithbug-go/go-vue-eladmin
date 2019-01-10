@@ -156,7 +156,7 @@
 
     <el-dialog
       :title="textMap[dialogStatus]"
-      :visible.sync="dialogFormVisible">
+      :visible.sync="dialogFormVisible" width="600px">
       <el-form
         ref="dataForm"
         :rules="rules"

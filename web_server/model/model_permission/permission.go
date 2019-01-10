@@ -174,7 +174,11 @@ func (p *Permission) findChildren(selector interface{}) error {
 func makeTreeList(list []Permission, selector interface{}) error {
 	for index := range list {
 		list[index].Children = make([]Permission, 0)
-		list[index].Label = list[index].Alias
+		if selector != nil {
+			list[index].Label = list[index].Alias
+			list[index].Alias = ""
+
+		}
 		err := list[index].findChildren(selector)
 		if err != nil {
 			return err
