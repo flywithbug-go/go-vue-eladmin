@@ -4,6 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"testing"
+	"vue-admin/web_server/model/mongo_index"
+
+	"gopkg.in/mgo.v2/bson"
 
 	"vue-admin/web_server/core/mongo"
 )
@@ -11,27 +14,35 @@ import (
 func TestPipe(t *testing.T) {
 	mongo.DialMgo("127.0.0.1:27017")
 	permission := Permission{}
-	results, _ := permission.FindPipeAll()
 
-	//result := make([]Permission, 0)
-	//pipeline := []bson.M{
-	//	{"$match": bson.M{"pid": 0}},
-	//	{"$lookup": bson.M{"from": "permission", "localField": "_id", "foreignField": "pid", "as": "children"}},
-	//}
-	//
-	//err := permission.pipeAll(pipeline, &result, true)
-	//if err != nil {
-	//	panic(err)
-	//}
+	name := "user"
+	sort := bson.M{"$sort": bson.M{"_id": 1}}
+	match := bson.M{"$match": bson.M{"pid": 0}}
+	if len(name) > 0 {
+		match = bson.M{"$match": bson.M{"pid": 0, "name": bson.M{"$regex": name, "$options": "i"}}}
+	}
+	lookup := bson.M{"$lookup": bson.M{"from": mongo_index.CollectionPermission, "localField": "_id", "foreignField": "pid", "as": "children"}}
+	pipeline := []bson.M{
+		match,
+		sort,
+		lookup,
+	}
+	results, _ := permission.FindPipeline(pipeline)
+
 	js, _ := json.Marshal(results)
 	fmt.Println(string(js))
 
-	permission.Id = 10006
-	permission, err := permission.FindOne()
+	fmt.Println("/t/n")
+	list, err := permission.FindAllList()
 	if err != nil {
 		panic(err)
 	}
-
-	js, _ = json.Marshal(permission)
+	js, _ = json.Marshal(list)
 	fmt.Println(string(js))
+
+	//permission.Id = 10017
+	//permission, _ = permission.FindOne()
+	//js, _ = json.Marshal(permission)
+	//fmt.Println(string(js))
+
 }

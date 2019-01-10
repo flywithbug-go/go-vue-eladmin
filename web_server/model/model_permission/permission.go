@@ -21,7 +21,7 @@ type Permission struct {
 	Id         int64        `json:"id,omitempty" bson:"_id,omitempty"`
 	PId        int64        `json:"pid" bson:"pid"`
 	Name       string       `json:"name,omitempty" bson:"name,omitempty"`
-	Alias      string       `json:"alias,omitempty" bson:"alias,omitempty"`
+	Alias      string       `json:"label,omitempty" bson:"alias,omitempty"`
 	Note       string       `json:"note,omitempty" bson:"note,omitempty"`
 	CreateTime int64        `json:"create_time,omitempty" bson:"create_time,omitempty"`
 	Children   []Permission `json:"children,omitempty" bson:"children,omitempty"`
@@ -81,6 +81,11 @@ func (p Permission) pipeOne(pipeline, result interface{}, allowDiskUse bool) err
 	return mongo.PipeOne(shareDB.DBName(), permissionCollection, pipeline, result, allowDiskUse)
 }
 
+func (p Permission) explain(pipeline, result interface{}) (results []Permission, err error) {
+	err = mongo.Explain(shareDB.DBName(), permissionCollection, pipeline, result)
+	return
+}
+
 func (p Permission) Insert() error {
 	if p.PId != 0 && !p.isExist(bson.M{"pid": p.PId}) {
 		return fmt.Errorf("pid  not exist")
@@ -93,6 +98,10 @@ func (p Permission) Insert() error {
 }
 
 func (p Permission) FindOne() (Permission, error) {
+	return p.findOne(bson.M{"_id": p.Id}, nil)
+}
+
+func (p Permission) FindPipeOne() (Permission, error) {
 	pipeline := []bson.M{
 		{"$match": bson.M{"_id": p.Id}},
 		{"$lookup": bson.M{"from": permissionCollection, "localField": "_id", "foreignField": "pid", "as": "children"}},
@@ -123,19 +132,52 @@ func (p Permission) FindPageFilter(page, limit int, query, selector interface{},
 	return p.findPage(page, limit, query, selector, fields...)
 }
 
-func (p Permission) FindPipeAll(match interface{}) (results []Permission, err error) {
-	//"name": bson.M{"$regex": "user", "$options": "i"}
-	results = make([]Permission, 0)
-	pipeline := []bson.M{
-		{"$match": bson.M{"pid": 0, "name": bson.M{"$regex": "user", "$options": "i"}}},
-		{"$lookup": bson.M{"from": permissionCollection, "localField": "_id", "foreignField": "pid", "as": "children"}},
-	}
-	err = p.pipeAll(pipeline, &results, true)
-	return
+func (p Permission) FindAll(query, selector interface{}) (apps []Permission, err error) {
+	return p.findAll(query, selector)
 }
+
+//func (p Permission) FindPipeAll(match interface{}) (results []Permission, err error) {
+//	results = make([]Permission, 0)
+//	pipeline := []bson.M{
+//		{"$match": bson.M{"pid": 0}},
+//		{"$lookup": bson.M{"from": permissionCollection, "localField": "_id", "foreignField": "pid", "as": "children"}},
+//	}
+//	err = p.pipeAll(pipeline, &results, true)
+//	return
+//}
 
 func (p Permission) FindPipeline(pipeline []bson.M) (results []Permission, err error) {
 	results = make([]Permission, 0)
 	err = p.pipeAll(pipeline, &results, true)
 	return
+}
+
+func (p *Permission) FindChildren() error {
+	results, err := p.findAll(bson.M{"pid": p.Id}, nil)
+	if err != nil {
+		return err
+	}
+	p.Children = results
+	return nil
+}
+
+func (p Permission) FindAllList() (results []Permission, err error) {
+	results, err = p.findAll(bson.M{"pid": 0}, nil)
+	if err != nil {
+		return
+	}
+	err = FindChildren(results)
+	return
+}
+
+func FindChildren(list []Permission) error {
+	for index := range list {
+		(list)[index].Children = make([]Permission, 0)
+		err := (list)[index].FindChildren()
+		if err != nil {
+			return err
+		}
+		FindChildren((list)[index].Children)
+	}
+	return nil
 }

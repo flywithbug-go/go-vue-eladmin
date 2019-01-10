@@ -10,9 +10,9 @@
       </el-table-column>
       <el-table-column label="操作" width="150px" align="center">
         <template slot-scope="scope">
-          <edit v-if="checkPermission(['ADMIN','PERMISSION_ALL','PERMISSION_EDIT'])" :permissions="permissions" :data="scope.row" :sup_this="sup_this"/>
+          <!--v-if="checkPermission(['ADMIN','PERMISSION_ALL','PERMISSION_EDIT'])"-->
+          <edit  :permissions="permissions" :data="scope.row" :sup_this="sup_this"/>
           <el-popover
-            v-if="checkPermission(['ADMIN','PERMISSION_ALL','PERMISSION_DELETE'])"
             v-model="scope.row.delPopover"
             placement="top"
             width="200">
@@ -38,6 +38,7 @@ import { getPermissionTree } from '@/api/permission'
 import { parseTime } from '@/utils/index'
 import eHeader from './module/header'
 import edit from './module/edit'
+import config from '../../../config'
 export default {
   components: { eHeader, edit, treeTable },
   mixins: [initData],
@@ -50,7 +51,7 @@ export default {
         },
         {
           text: '别名',
-          value: 'alias'
+          value: 'label'
         }
       ],
       delLoading: false, sup_this: this, permissions: []
@@ -66,7 +67,7 @@ export default {
     parseTime,
     checkPermission,
     beforeInit() {
-      this.url = '/permission/tree'
+      this.url = config.PathPermissionList
       const sort = 'id,desc'
       const query = this.query
       const value = query.value
@@ -93,11 +94,11 @@ export default {
     },
     getPermissions() {
       getPermissionTree().then(res => {
+        console.log('getPermissionTree:', res)
         this.permissions = []
         const permission = { id: 0, label: '顶级类目', children: [] }
-        permission.children = res.tree
+        permission.children = res.list
         this.permissions.push(permission)
-        console.log('permissions:', this.permissions)
       })
     }
   }

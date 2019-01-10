@@ -1,9 +1,17 @@
 import client from '../utils/fetch'
-
+import config from '../config'
 // 获取所有的权限树
 export function getPermissionTree() {
   return client({
-    url: '/permission/tree',
+    url: config.PathPermissionTree,
+    method: 'get'
+  })
+}
+
+// 获取权限列表
+export function getPermissionList() {
+  return client({
+    url: config.PathPermissionList,
     method: 'get'
   })
 }

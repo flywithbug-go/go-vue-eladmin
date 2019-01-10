@@ -8,7 +8,7 @@
         <el-input v-model="form.alias" style="width: 360px;"/>
       </el-form-item>
       <el-form-item style="margin-bottom: 0px;" label="上级类目">
-        <treeselect v-model="form.pid" :options="permissions" style="width: 360px;" placeholder="选择上级类目" />
+        <TreeSelect v-model="form.pid" :options="permissions" style="width: 360px;" placeholder="选择上级类目" />
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
