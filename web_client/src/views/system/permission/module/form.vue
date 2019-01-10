@@ -87,7 +87,7 @@ export default {
         }, 200)
       }).catch(err => {
         this.loading = false
-        console.log(err.response.data.message)
+        console.log(err.msg)
       })
     },
     doEdit() {
@@ -105,7 +105,7 @@ export default {
         }, 200)
       }).catch(err => {
         this.loading = false
-        console.log(err.response.data.message)
+        console.log(err.msg)
       })
     },
     resetForm() {

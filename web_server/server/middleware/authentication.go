@@ -45,8 +45,21 @@ func JWTAuthMiddleware() gin.HandlerFunc {
 			}
 			sync.SetKeyValue(token)
 		}
-		//c.SetCookie(common.KeyAuthorization, token, 604800, "", "", false, true)
+
 		c.Set(common.KeyContextUserId, claims.UserId)
 		c.Set(common.KeyContextAccount, claims.Account)
+
+		//cookie := http.Cookie{
+		//	Name:     common.KeyAuthorization,
+		//	Value:    token,
+		//	Path:     "/",
+		//	Domain:   "localhost",
+		//	Expires:  time.Now(),
+		//	MaxAge:   604800,
+		//	HttpOnly: true,
+		//	Secure:   false,
+		//}
+		//http.SetCookie(c.Writer, &cookie)
+		//c.Next()
 	}
 }

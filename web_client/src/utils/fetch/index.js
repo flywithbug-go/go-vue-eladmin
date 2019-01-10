@@ -10,12 +10,6 @@ client.defaults.baseURL = global_.BaseURL;
 client.defaults.headers.common['Authorization'] = getToken();
 client.defaults.headers.post['Content-Type'] = 'application/json';
 client.defaults.timeout = 60000 //60秒
-//
-// let client = axios.create({
-//   baseURL: global_.BaseURL,
-//   timeout: 60000, //60秒
-//   headers:{'Authorization':localStorage.getItem("Authorization")}
-// })
 
 client.interceptors.request.use(config => {
   if (store.getters.token) {
@@ -53,7 +47,7 @@ client.interceptors.response.use(response => {
     type:'error',
     duration: 5*1000
   })
-  return Promise.reject(res.msg)
+  return Promise.reject(res)
 },error => {
   Message({
     message: error.message,

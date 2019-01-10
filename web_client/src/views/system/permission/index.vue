@@ -89,12 +89,11 @@ export default {
       }).catch(err => {
         this.delLoading = false
         row.delPopover = false
-        console.log(err.response.message)
+        console.log(err.msg)
       })
     },
     getPermissions() {
       tree().then(res => {
-        console.log("getPermissionTree:",res)
         this.permissions = []
         const permission = { id: 0, label: '顶级类目', children: [] }
         permission.children = res.list
