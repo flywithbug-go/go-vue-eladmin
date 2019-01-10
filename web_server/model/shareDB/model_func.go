@@ -32,7 +32,7 @@ type OperationModel interface {
 
 	TotalCount(query, selector interface{}) (int, error)
 	FindPage(page, limit int, query, selector interface{}, fields ...string) (results []interface{}, err error)
-	Insert() error
+	Insert() (int64, error)
 	Update() error
 	FindOne(query, selector interface{}) (interface{}, error)
 	Remove() error

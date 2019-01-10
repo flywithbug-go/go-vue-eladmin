@@ -87,15 +87,14 @@ func (p Permission) explain(pipeline, result interface{}) (results []Permission,
 	return
 }
 
-func (p Permission) Insert() error {
+func (p Permission) Insert() (int64, error) {
 	if p.PId != 0 && !p.isExist(bson.M{"_id": p.PId}) {
-		return fmt.Errorf("pid  not exist")
+		return -1, fmt.Errorf("pid  not exist")
 	}
 	p.Id, _ = mongo.GetIncrementId(permissionCollection)
 	p.Children = nil
 	p.CreateTime = time.Now().Unix() * 1000
-
-	return p.insert(p)
+	return p.Id, p.insert(p)
 }
 
 func (p Permission) FindOne() (Permission, error) {
@@ -163,7 +162,7 @@ func (p Permission) FetchTreeList(selector interface{}) (results []Permission, e
 	return
 }
 
-func (p *Permission) FindChildren(selector interface{}) error {
+func (p *Permission) findChildren(selector interface{}) error {
 	results, err := p.findAll(bson.M{"pid": p.Id}, selector)
 	if err != nil {
 		return err
@@ -176,7 +175,7 @@ func makeTreeList(list []Permission, selector interface{}) error {
 	for index := range list {
 		list[index].Children = make([]Permission, 0)
 		list[index].Label = list[index].Alias
-		err := list[index].FindChildren(selector)
+		err := list[index].findChildren(selector)
 		if err != nil {
 			return err
 		}

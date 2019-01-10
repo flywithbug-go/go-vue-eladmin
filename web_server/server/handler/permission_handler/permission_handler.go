@@ -25,12 +25,13 @@ func addPermissionHandler(c *gin.Context) {
 		return
 	}
 
-	err = p.Insert()
+	id, err := p.Insert()
 	if err != nil {
 		log4go.Info(err.Error())
 		aRes.SetErrorInfo(http.StatusInternalServerError, "server invalid: "+err.Error())
 		return
 	}
+	aRes.AddResponseInfo("id", id)
 }
 
 func getPermissionHandler(c *gin.Context) {
