@@ -174,13 +174,15 @@ func makeTreeList(list []Permission, selector interface{}) error {
 		if selector != nil {
 			list[index].Label = list[index].Alias
 			list[index].Alias = ""
-
 		}
 		err := list[index].findChildren(selector)
 		if err != nil {
 			return err
 		}
-		makeTreeList(list[index].Children, selector)
+		err = makeTreeList(list[index].Children, selector)
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 }

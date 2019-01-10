@@ -24,6 +24,7 @@ type Index struct {
 	DropIndex []string
 }
 
+//唯一约束
 var Indexes = []Index{
 	{
 		Name: CollectionPermission,
@@ -45,6 +46,28 @@ var Indexes = []Index{
 			Background: false,
 			Sparse:     true,
 			Name:       "c_permission_f_name_index",
+		},
+	},
+	{
+		Name: CollectionUser,
+		Index: mgo.Index{
+			Key:        []string{"account"},
+			Unique:     true,
+			DropDups:   true,
+			Background: false,
+			Sparse:     true,
+			Name:       "c_user_f_account_index",
+		},
+	},
+	{
+		Name: CollectionUser,
+		Index: mgo.Index{
+			Key:        []string{"email"},
+			Unique:     true,
+			DropDups:   true,
+			Background: false,
+			Sparse:     true,
+			Name:       "c_user_f_email_index",
 		},
 	},
 }

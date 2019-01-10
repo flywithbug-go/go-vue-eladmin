@@ -2,12 +2,13 @@ import client from 'axios'
 import { MessageBox,Message,Notification } from 'element-ui'
 import store from '@/store'
 import global_ from '../../config'
+import { getToken } from '@/utils/auth'
 
 
 
 client.defaults.baseURL = global_.BaseURL;
-client.defaults.headers.common['Authorization'] = localStorage.getItem("Authorization");
-client.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+client.defaults.headers.common['Authorization'] = getToken();
+client.defaults.headers.post['Content-Type'] = 'application/json';
 client.defaults.timeout = 60000 //60秒
 //
 // let client = axios.create({

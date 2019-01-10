@@ -2,7 +2,6 @@ package model_user
 
 import (
 	"encoding/json"
-	"errors"
 	"vue-admin/web_server/core/mongo"
 	"vue-admin/web_server/model/mongo_index"
 	"vue-admin/web_server/model/shareDB"
@@ -81,12 +80,6 @@ func (u User) removeAll(selector interface{}) error {
 	userModify
 */
 func (u User) Insert() error {
-	if u.isExist(bson.M{"account": u.Account}) {
-		return errors.New("account 已存在")
-	}
-	if u.isExist(bson.M{"email": u.Email}) {
-		return errors.New("email 已存在")
-	}
 	u.Id, _ = mongo.GetIncrementId(userCollection)
 	u.Status = 1
 	return u.insert(u)
@@ -94,7 +87,6 @@ func (u User) Insert() error {
 
 func (u User) Update() error {
 	selector := bson.M{"_id": u.Id}
-	u.Account = ""
 	return u.update(selector, u)
 }
 
