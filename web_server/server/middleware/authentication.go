@@ -45,7 +45,7 @@ func JWTAuthMiddleware() gin.HandlerFunc {
 			}
 			sync.SetKeyValue(token)
 		}
-		c.SetCookie(common.KeyAuthorization, token, 604800, "", "", false, true)
+		//c.SetCookie(common.KeyAuthorization, token, 604800, "", "", false, true)
 		c.Set(common.KeyContextUserId, claims.UserId)
 		c.Set(common.KeyContextAccount, claims.Account)
 	}
