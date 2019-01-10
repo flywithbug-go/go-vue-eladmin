@@ -128,24 +128,21 @@ func (p Permission) Remove() error {
 func (p Permission) TotalCount(query, selector interface{}) (int, error) {
 	return p.totalCount(query, selector)
 }
-func (p Permission) FindPageFilter(page, limit int, query, selector interface{}, fields ...string) (apps []Permission, err error) {
-	return p.findPage(page, limit, query, selector, fields...)
+func (p Permission) FindPageFilter(page, limit int, query, selector interface{}, fields ...string) ([]Permission, error) {
+	results, err := p.findPage(page, limit, query, selector, fields...)
+	if err != nil {
+		return nil, err
+	}
+	err = makeTreeList(results, selector)
+	if err != nil {
+		return nil, err
+	}
+	return results, nil
 }
 
 func (p Permission) FindAll(query, selector interface{}) (apps []Permission, err error) {
 	return p.findAll(query, selector)
 }
-
-//只能查询到下一级子节点，不能递归全部的子节点
-//func (p Permission) FindPipeAll(match interface{}) (results []Permission, err error) {
-//	results = make([]Permission, 0)
-//	pipeline := []bson.M{
-//		{"$match": bson.M{"pid": 0}},
-//		{"$lookup": bson.M{"from": permissionCollection, "localField": "_id", "foreignField": "pid", "as": "children"}},
-//	}
-//	err = p.pipeAll(pipeline, &results, true)
-//	return
-//}
 
 func (p Permission) FindPipeline(pipeline []bson.M) (results []Permission, err error) {
 	results = make([]Permission, 0)
