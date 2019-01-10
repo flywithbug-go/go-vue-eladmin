@@ -7,6 +7,7 @@ import (
 	"vue-admin/web_server/common"
 	"vue-admin/web_server/core/jwt"
 	"vue-admin/web_server/model"
+	"vue-admin/web_server/model/model_user"
 	"vue-admin/web_server/server/sync"
 
 	"gopkg.in/mgo.v2/bson"
@@ -16,7 +17,7 @@ import (
 )
 
 type UserRole struct {
-	model.User
+	model_user.User
 	Roles []string `json:"roles"`
 }
 
@@ -25,14 +26,14 @@ func loginHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
-	user := model.User{}
+	user := model_user.User{}
 	err := c.BindJSON(&user)
 	if err != nil {
 		log4go.Info(err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
-	user, err = model.LoginUser(user.Account, user.Password)
+	user, err = model_user.LoginUser(user.Account, user.Password)
 	if err != nil {
 		log4go.Error(err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "account or password not right")
@@ -46,7 +47,7 @@ func loginHandler(c *gin.Context) {
 		return
 	}
 	userAg := c.GetHeader(common.KeyUserAgent)
-	_, err = model.UserLogin(user.Id, userAg, token, c.ClientIP())
+	_, err = model_user.UserLogin(user.Id, userAg, token, c.ClientIP())
 	if err != nil {
 		log4go.Error(err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "token generate error"+err.Error())
@@ -63,7 +64,7 @@ func registerHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
-	user := new(model.User)
+	user := new(model_user.User)
 	err := c.BindJSON(user)
 	if err != nil {
 		log4go.Info(err.Error())
@@ -102,7 +103,7 @@ func logoutHandler(c *gin.Context) {
 		return
 	}
 	sync.RemoveKey(token)
-	err := model.UpdateLoginStatus(token, model.StatusLogout)
+	err := model_user.UpdateLoginStatus(token, model_user.StatusLogout)
 	if err != nil {
 		log4go.Info(err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, err.Error())
@@ -122,7 +123,7 @@ func getUserInfoHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusUnauthorized, "user not found")
 		return
 	}
-	user, err := model.FindByUserId(userId)
+	user, err := model_user.FindByUserId(userId)
 	if err != nil {
 		log4go.Info(err.Error())
 		aRes.SetErrorInfo(http.StatusUnauthorized, "user not found:"+err.Error())
@@ -166,7 +167,7 @@ func getUserListInfoHandler(c *gin.Context) {
 	if len(name) > 0 {
 		query["name"] = bson.M{"$regex": name, "$options": "i"}
 	}
-	var user = model.User{}
+	var user = model_user.User{}
 	totalCount, _ := user.TotalCount(query, nil)
 	appList, err := user.FindPageFilter(page, limit, query, nil, sort)
 	if err != nil {
@@ -183,7 +184,7 @@ func updateUserHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
-	user := new(model.User)
+	user := new(model_user.User)
 	err := c.BindJSON(user)
 	if err != nil {
 		log4go.Info(err.Error())

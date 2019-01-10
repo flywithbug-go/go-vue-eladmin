@@ -5,6 +5,7 @@ import (
 	"vue-admin/web_server/common"
 	"vue-admin/web_server/core/jwt"
 	"vue-admin/web_server/model"
+	"vue-admin/web_server/model/model_user"
 	"vue-admin/web_server/server/sync"
 
 	"github.com/gin-gonic/gin"
@@ -35,7 +36,7 @@ func JWTAuthMiddleware() gin.HandlerFunc {
 			return
 		}
 		if !sync.Value(token) {
-			_, err = model.FindLoginByToken(token)
+			_, err = model_user.FindLoginByToken(token)
 			if err != nil {
 				aRes.SetErrorInfo(http.StatusUnauthorized, "token无效，无权限访问")
 				c.JSON(http.StatusUnauthorized, aRes)

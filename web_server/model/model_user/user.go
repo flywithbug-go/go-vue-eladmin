@@ -1,4 +1,4 @@
-package model
+package model_user
 
 import (
 	"encoding/json"
@@ -15,18 +15,19 @@ const (
 )
 
 type User struct {
-	Id       int64  `json:"id,omitempty" bson:"_id,omitempty"`
-	Account  string `json:"account,omitempty" bson:"account,omitempty"`
-	Password string `json:"password,omitempty" bson:"password,omitempty"`
-	Avatar   string `json:"avatar,omitempty" bson:"avatar,omitempty"`
-	Email    string `json:"email,omitempty" bson:"email,omitempty"`
-	Phone    string `json:"phone,omitempty" bson:"phone,omitempty"`
-	Sex      int    `json:"sex,omitempty" bson:"sex,omitempty"`   // 0保密，1男 2女
-	Name     string `json:"name,omitempty" bson:"name,omitempty"` // 名字！
-	Nick     string `json:"nick,omitempty" bson:"nick,omitempty"` //昵称
-	Title    string `json:"title,omitempty" bson:"title,omitempty"`
-	Status   int    `json:"status,omitempty" bson:"status,omitempty"`
-	Note     string `json:"note,omitempty"  bson:"note,omitempty"` //备注,
+	Id         int64  `json:"id,omitempty" bson:"_id,omitempty"`
+	Account    string `json:"account,omitempty" bson:"account,omitempty"` //用户名
+	Password   string `json:"password,omitempty" bson:"password,omitempty"`
+	Avatar     string `json:"avatar,omitempty" bson:"avatar,omitempty"`
+	Email      string `json:"email,omitempty" bson:"email,omitempty"`
+	Phone      string `json:"phone,omitempty" bson:"phone,omitempty"`
+	Gender     int    `json:"gender,omitempty" bson:"gender,omitempty"` // 1男 2女
+	Name       string `json:"name,omitempty" bson:"name,omitempty"`     // 名字！
+	Nick       string `json:"nick,omitempty" bson:"nick,omitempty"`     // 昵称
+	Title      string `json:"title,omitempty" bson:"title,omitempty"`
+	Status     int    `json:"status,omitempty" bson:"status,omitempty"` //1 激活，2锁定
+	Note       string `json:"note,omitempty"  bson:"note,omitempty"`    //备注,
+	CreateTime int64  `json:"create_time,omitempty"  bson:"create_time,omitempty"`
 }
 
 func (u User) ToJson() string {
@@ -87,6 +88,7 @@ func (u User) Insert() error {
 		return errors.New("email 已存在")
 	}
 	u.Id, _ = mongo.GetIncrementId(userCollection)
+	u.Status = 1
 	return u.insert(u)
 }
 
@@ -131,6 +133,6 @@ func AddAdminUser() error {
 	u.Email = "flywithbug@gmail.com"
 	u.Title = "admin"
 	u.Phone = "phone"
-	u.Sex = 1
+	u.Gender = 1
 	return u.insert()
 }

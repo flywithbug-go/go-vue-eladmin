@@ -14,7 +14,7 @@ const userRouter = {
     {
       path: 'user',
       name:"user",
-      component: () => import('../../views/system/user'),
+      component: () => import('../../views/system/user/'),
       meta: { title: 'userManager', noCache: true, icon: 'user' }
     },
     {
