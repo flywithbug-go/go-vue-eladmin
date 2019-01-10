@@ -161,23 +161,23 @@ func (p *Permission) FindChildren() error {
 	return nil
 }
 
-func (p Permission) FindAllList() (results []Permission, err error) {
+func (p Permission) FetchTreeList() (results []Permission, err error) {
 	results, err = p.findAll(bson.M{"pid": 0}, nil)
 	if err != nil {
 		return
 	}
-	err = FindChildren(results)
+	err = makeTreeList(results)
 	return
 }
 
-func FindChildren(list []Permission) error {
+func makeTreeList(list []Permission) error {
 	for index := range list {
-		(list)[index].Children = make([]Permission, 0)
-		err := (list)[index].FindChildren()
+		list[index].Children = make([]Permission, 0)
+		err := list[index].FindChildren()
 		if err != nil {
 			return err
 		}
-		FindChildren((list)[index].Children)
+		makeTreeList(list[index].Children)
 	}
 	return nil
 }

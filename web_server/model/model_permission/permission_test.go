@@ -15,6 +15,19 @@ func TestPipe(t *testing.T) {
 	mongo.DialMgo("127.0.0.1:27017")
 	permission := Permission{}
 
+	list, err := permission.FetchTreeList()
+	if err != nil {
+		panic(err)
+	}
+	js, _ := json.Marshal(list)
+	fmt.Println(string(js))
+
+}
+
+func TestPipelineFetch(t *testing.T) {
+	mongo.DialMgo("127.0.0.1:27017")
+	permission := Permission{}
+
 	name := "user"
 	sort := bson.M{"$sort": bson.M{"_id": 1}}
 	match := bson.M{"$match": bson.M{"pid": 0}}
@@ -31,18 +44,5 @@ func TestPipe(t *testing.T) {
 
 	js, _ := json.Marshal(results)
 	fmt.Println(string(js))
-
-	fmt.Println("/t/n")
-	list, err := permission.FindAllList()
-	if err != nil {
-		panic(err)
-	}
-	js, _ = json.Marshal(list)
-	fmt.Println(string(js))
-
-	//permission.Id = 10017
-	//permission, _ = permission.FindOne()
-	//js, _ = json.Marshal(permission)
-	//fmt.Println(string(js))
 
 }

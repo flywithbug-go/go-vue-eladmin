@@ -98,20 +98,7 @@ func getPermissionListHandler(c *gin.Context) {
 		c.JSON(http.StatusOK, aRes)
 	}()
 	var per = model_permission.Permission{}
-
-	//name := c.Query("name")
-	//sort := bson.M{"$sort": bson.M{"_id": 1}}
-	//match := bson.M{"$match": bson.M{"pid": 0}}
-	//if len(name) > 0 {
-	//	match = bson.M{"$match": bson.M{"pid": 0, "name": bson.M{"$regex": name, "$options": "i"}}}
-	//}
-	//lookup := bson.M{"$graphLookup": bson.M{"from": mongo_index.CollectionPermission, "startWith": "$_id", "connectFromField": "_id", "connectToField": "pid", "as": "children"}}
-	//pipeline := []bson.M{
-	//	match,
-	//	sort,
-	//	lookup,
-	//}
-	results, err := per.FindAllList()
+	results, err := per.FetchTreeList()
 	if err != nil {
 		log4go.Info(err.Error())
 		aRes.SetErrorInfo(http.StatusUnauthorized, "app version list find error"+err.Error())
