@@ -38,6 +38,8 @@ export default {
     alias:"请输入别名",
     bundle_id: "请输入应用包名,格式: com.xxx.xx",
     desc: "请输入描述内容",
+    sup_dir:"请选择上级目录",
+    permission:"请选择权限",
   },
   application: {
     table_app_icon: "应用图标",
@@ -65,7 +67,10 @@ export default {
     create_time:"创建时间",
     desc:"描述",
     name: "名称",
+    alias:'别名',
     bundle:'包名',
+    sup_dir:"上级目录",
+    permission:"权限",
   },
   errorLog: {
     tips: '请点击右上角bug小图标',
@@ -83,7 +88,6 @@ export default {
     closeOthers: '关闭其它',
     closeAll: '关闭所有'
   },
-
   appVersion: {
     versionN: "版本号",
     parentVN: "父版本号",

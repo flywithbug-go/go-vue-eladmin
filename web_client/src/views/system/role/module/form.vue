@@ -1,13 +1,13 @@
 <template>
-  <el-dialog :append-to-body="true" :visible.sync="dialog" :title="isAdd ? '新增角色' : '编辑角色'" width="500px">
+  <el-dialog :append-to-body="true" :visible.sync="dialog" :title="isAdd ? $t('actions.add') : $t('actions.edit')" width="500px">
     <el-form ref="form" :model="form" :rules="rules" size="small" label-width="66px">
-      <el-form-item label="名称" prop="name">
+      <el-form-item :label="$t('table.name')" prop="name">
         <el-input v-model="form.name" style="width: 370px;"/>
       </el-form-item>
-      <el-form-item label="权限">
-        <TreeSelect v-model="permissionIds" :multiple="true" :options="permissions" style="width: 370px;" placeholder="请选择权限" />
+      <el-form-item :label="$t('table.permission')">
+        <TreeSelect v-model="permissionIds" :multiple="true" :options="permissions" style="width: 370px;" :placeholder="$t('placeholder.permission')" />
       </el-form-item>
-      <el-form-item style="margin-top: -10px;" label="描述">
+      <el-form-item style="margin-top: -10px;" :label="$t('table.desc')">
         <el-input v-model="form.remark" style="width: 370px;" rows="5" type="textarea"/>
       </el-form-item>
     </el-form>

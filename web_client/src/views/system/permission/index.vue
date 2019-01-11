@@ -3,12 +3,12 @@
     <eHeader :permissions="permissions" :query="query"/>
     <!--表格渲染-->
     <tree-table v-loading="loading" :data="data" :expand-all="true" :columns="columns" border size="medium">
-      <el-table-column prop="createTime" label="创建日期">
+      <el-table-column prop="createTime" :label="$t('table.create_time')">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.create_time) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="150px" align="center">
+      <el-table-column :label="$t('actions.action')" width="150px" align="center">
         <template slot-scope="scope">
           <edit v-if="checkPermission(['ADMIN','PERMISSION_ALL','PERMISSION_EDIT'])" :permissions="permissions" :data="scope.row" :sup_this="sup_this"/>
           <el-popover

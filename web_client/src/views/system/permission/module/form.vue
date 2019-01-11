@@ -1,14 +1,14 @@
 <template>
   <el-dialog :append-to-body="true" :visible.sync="dialog" :title="isAdd ? $t('actions.add') : $t('actions.edit')" width="500px">
     <el-form ref="form" :model="form" :rules="rules" size="small" label-width="80px">
-      <el-form-item label="名称" prop="name">
+      <el-form-item :label="$t('table.name')" prop="name">
         <el-input v-model="form.name" style="width: 360px;"/>
       </el-form-item>
-      <el-form-item label="别名" prop="alias">
+      <el-form-item :label="$t('table.alias')" prop="alias">
         <el-input v-model="form.alias" style="width: 360px;"/>
       </el-form-item>
-      <el-form-item style="margin-bottom: 0px;" label="上级类目">
-        <TreeSelect v-model="form.pid" :options="permissions" style="width: 360px;" placeholder="选择上级类目" />
+      <el-form-item style="margin-bottom: 0px;" :label="$t('table.sup_dir')">
+        <TreeSelect v-model="form.pid" :options="permissions" style="width: 360px;" :placeholder="$t('placeholder.sup_dir')" />
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
