@@ -49,7 +49,13 @@ export default {
     edit: 'Edit',
     delete: 'Delete',
     cancel: 'Cancel',
-    confirm: 'Confirm'
+    confirm: 'Confirm',
+    icon: "Icon",
+    owner:"Owner",
+    create_time:"CreatTime",
+    desc:"Description",
+    name: "Name",
+
   },
   errorLog: {
     tips: 'Please click the bug icon in the upper right corner',

@@ -1,29 +1,28 @@
 import client from '../utils/fetch'
-import config from '../config'
 
 
-// 获取所有的权限树
-export function getPermissionTree() {
+// 获取所有的Role
+export function getRoleTree() {
   return client({
-    url: config.PathPermissionTree,
+    url: '/role/list',
     method: 'get'
   })
 }
 
 export function add(data) {
   return client({
-    url: '/permission',
+    url: '/role',
     method: 'post',
     data
   })
 }
 
 export function del(id) {
-  const data = {
+  let data = {
     id
   }
   return client({
-    url: '/permission',
+    url: '/role' ,
     method: 'delete',
     data
   })
@@ -31,7 +30,7 @@ export function del(id) {
 
 export function edit(data) {
   return client({
-    url: '/permission',
+    url: '/role',
     method: 'put',
     data
   })

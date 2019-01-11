@@ -10,9 +10,9 @@
       </el-table-column>
       <el-table-column label="操作" width="150px" align="center">
         <template slot-scope="scope">
-          <!--v-if="checkPermission(['ADMIN','PERMISSION_ALL','PERMISSION_EDIT'])"-->
-          <edit  :permissions="permissions" :data="scope.row" :sup_this="sup_this"/>
+          <edit v-if="checkPermission(['ADMIN','PERMISSION_ALL','PERMISSION_EDIT'])" :permissions="permissions" :data="scope.row" :sup_this="sup_this"/>
           <el-popover
+            v-if="checkPermission(['ADMIN','PERMISSION_ALL','PERMISSION_DELETE'])"
             v-model="scope.row.delPopover"
             placement="top"
             width="200">
@@ -34,7 +34,7 @@ import checkPermission from '@/utils/permission' // 权限判断函数
 import treeTable from '@/components/TreeTable'
 import initData from '../../../mixins/initData'
 import { del } from '@/api/permission'
-import { tree } from '@/api/permission'
+import { getPermissionTree } from '@/api/permission'
 import { parseTime } from '@/utils/index'
 import eHeader from './module/header'
 import edit from './module/edit'
@@ -93,7 +93,7 @@ export default {
       })
     },
     getPermissions() {
-      tree().then(res => {
+      getPermissionTree().then(res => {
         this.permissions = []
         const permission = { id: 0, label: '顶级类目', children: [] }
         permission.children = res.list

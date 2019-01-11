@@ -48,7 +48,12 @@ export default {
     edit: '编辑',
     delete: '删除',
     cancel: '取 消',
-    confirm: '确 定'
+    confirm: '确 定',
+    icon: "图标",
+    owner:"负责人",
+    create_time:"创建时间",
+    desc:"描述",
+    name: "名称",
   },
   errorLog: {
     tips: '请点击右上角bug小图标',

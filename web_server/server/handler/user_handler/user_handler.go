@@ -133,7 +133,7 @@ func getUserInfoHandler(c *gin.Context) {
 	roleUser.User = user
 	//TODO need check Permission
 
-	roleUser.Roles = []string{"admin"}
+	roleUser.Roles = []string{"ADMIN"}
 	aRes.AddResponseInfo("user", roleUser)
 }
 

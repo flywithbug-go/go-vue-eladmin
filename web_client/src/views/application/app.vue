@@ -10,13 +10,13 @@
 
     <div class="filter-container">
       <el-input
-        :placeholder="$t('application.table_name')"
+        :placeholder="$t('table.name')"
         v-model="listQuery.name"
         style="width: 200px;"
         class="filter-item"
         @keyup.enter.native="handleFilter"/>
       <el-input
-        :placeholder="$t('application.table_owner')"
+        :placeholder="$t('table.owner')"
         v-model="listQuery.owner"
         style="width: 200px;"
         class="filter-item"
@@ -27,7 +27,7 @@
         type="primary"
         icon="el-icon-search"
         @click="handleFilter">
-        {{ $t('application.table_search') }}
+        {{ $t('table.search') }}
       </el-button>
       <el-button
         class="filter-item"
@@ -74,7 +74,7 @@
       </el-table-column>
 
       <el-table-column
-        :label="$t('application.table_icon')"
+        :label="$t('table.icon')"
         prop="id"
         align="center"
         width="100px">
@@ -83,7 +83,7 @@
         </template>
       </el-table-column>
       <el-table-column
-        :label="$t('application.table_owner')"
+        :label="$t('table.owner')"
         prop="id"
         align="center"
         width="150px">
@@ -93,7 +93,7 @@
       </el-table-column>
 
       <el-table-column
-        :label="$t('application.table_create_time')"
+        :label="$t('table.create_time')"
         prop="id"
         align="center"
         width="150px">
@@ -103,7 +103,7 @@
       </el-table-column>
 
       <el-table-column
-        :label="$t('application.table_desc')"
+        :label="$t('table.desc')"
         prop="id"
         align="center"
         min-width="150px">
@@ -112,7 +112,7 @@
         </template>
       </el-table-column>
       <el-table-column
-        :label="$t('application.table_action')"
+        :label="$t('table.actions')"
         align="center"
         width="100px"
         class-name="small-padding fixed-width">
@@ -121,7 +121,7 @@
             type="primary"
             size="mini"
             @click="handleUpdate(scope.row)">
-            {{ $t('application.table_edit') }}
+            {{ $t('table.edit') }}
           </el-button>
         </template>
       </el-table-column>

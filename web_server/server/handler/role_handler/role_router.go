@@ -7,7 +7,7 @@ var Routers = []common.GinHandleFunc{
 		Handler:    addRoleHandler,
 		RouterType: common.RouterTypeNeedAuth,
 		Method:     "POST",
-		Route:      "/role/add",
+		Route:      "/role",
 	},
 	{
 		Handler:    getRoleHandler,
@@ -18,13 +18,19 @@ var Routers = []common.GinHandleFunc{
 	{
 		Handler:    updateRoleHandler,
 		RouterType: common.RouterTypeNeedAuth,
-		Method:     "POST",
-		Route:      "/role/update",
+		Method:     "PUT",
+		Route:      "/role",
 	},
 	{
 		Handler:    removeRoleHandler,
 		RouterType: common.RouterTypeNeedAuth,
-		Method:     "POST",
-		Route:      "/role/remove",
+		Method:     "DELETE",
+		Route:      "/role",
+	},
+	{
+		Handler:    getRoleListHandler,
+		RouterType: common.RouterTypeNeedAuth,
+		Method:     "GET",
+		Route:      "/role/list",
 	},
 }
