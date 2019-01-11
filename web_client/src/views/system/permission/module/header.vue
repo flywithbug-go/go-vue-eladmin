@@ -2,7 +2,7 @@
   <div class="head-container">
     <!-- 搜索 -->
     <el-input v-model="query.value" clearable placeholder="输入名称搜索" style="width: 200px;" class="filter-item" @keyup.enter.native="toQuery"/>
-    <el-button class="filter-item" size="mini" type="primary" icon="el-icon-search" @click="toQuery">{{ $t('filterHeader.search') }}</el-button>
+    <el-button class="filter-item" size="mini" type="primary" icon="el-icon-search" @click="toQuery">{{ $t('actions.search') }}</el-button>
     <!-- 新增 -->
     <div style="display: inline-block;margin: 0px 2px;">
       <el-button
@@ -11,7 +11,7 @@
         size="mini"
         type="primary"
         icon="el-icon-plus"
-        @click="$refs.form.dialog = true">{{ $t('filterHeader.add') }}</el-button>
+        @click="$refs.form.dialog = true">{{ $t('actions.add') }}</el-button>
       <eForm ref="form" :permissions="permissions" :is-add="true"/>
     </div>
   </div>

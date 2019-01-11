@@ -48,8 +48,6 @@ export default {
   table: {
     title: '标题',
     type: '类型',
-    search: '搜索',
-    add: '添加',
     id: '序号',
     date: '时间',
     status: '状态',
@@ -116,8 +114,6 @@ export default {
     changeStatus:"状态",
     develop: "开发",
     releasing: "发布",
-    cancel: "取消",
-    confirm: "确定",
     confirmChange:"切换状态到",
     confirmDelete:"确定要删除当前版本？"
   },
@@ -126,12 +122,6 @@ export default {
     create:"新增",
     name_placeholder:"请输入名字",
     alias_placeholder:"请输入别名",
-    cancel: "取消",
-    confirm: "确定",
-  },
-  filterHeader:{
-    search: '搜索',
-    add: "添加",
   },
   system:{
     name: "名字",

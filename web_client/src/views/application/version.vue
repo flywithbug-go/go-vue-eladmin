@@ -112,8 +112,8 @@
               <span>？</span>
             </p>
             <div style="text-align: center; margin: 0">
-              <el-button size="mini" type="text" @click="cancelPopover(scope.row)">{{ $t('selector.cancel') }}</el-button>
-              <el-button type="primary" size="mini" @click="confirmPopover(scope.row)">{{ $t('selector.confirm') }}</el-button>
+              <el-button size="mini" type="text" @click="cancelPopover(scope.row)">{{ $t('actions.cancel') }}</el-button>
+              <el-button type="primary" size="mini" @click="confirmPopover(scope.row)">{{ $t('actions.confirm') }}</el-button>
             </div>
             <el-button slot="reference" style="width: 60px" type="success" size="mini">{{ $t('selector.changeStatus') }}</el-button>
           </el-popover>
