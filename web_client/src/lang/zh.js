@@ -14,6 +14,15 @@ export default {
     guide: '引导页',
     icons: '图标',
   },
+  navbar: {
+    logOut: '退出登录',
+    dashboard: '首页',
+    github: '项目地址',
+    screenfull: '全屏',
+    theme: '换肤',
+    size: '布局大小',
+    personal:"个人中心"
+  },
   actions:{
     action: '操 作',
     search: '搜 索',
@@ -25,18 +34,10 @@ export default {
     export: "导出",
   },
   placeholder:{
-    app_name: "请输入应用名字",
+    name: "请输入名字",
+    alias:"请输入别名",
     bundle_id: "格式: com.xxx.xx",
     description: "请输入描述内容",
-  },
-  navbar: {
-    logOut: '退出登录',
-    dashboard: '首页',
-    github: '项目地址',
-    screenfull: '全屏',
-    theme: '换肤',
-    size: '布局大小',
-    personal:"个人中心"
   },
   login: {
     title: '系统登录',
@@ -61,12 +62,6 @@ export default {
     desc:"描述",
     name: "名称",
     bundle:'包名',
-  },
-  dialog: {
-    edit:"编辑",
-    create:"新增",
-    name_placeholder:"请输入名字",
-    alias_placeholder:"请输入别名",
   },
   application: {
     table_show: "",

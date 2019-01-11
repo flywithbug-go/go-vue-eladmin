@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :append-to-body="true" :visible.sync="dialog" :title="isAdd ? $t('action.create') : $t('action.edit')" width="500px">
+  <el-dialog :append-to-body="true" :visible.sync="dialog" :title="isAdd ? $t('actions.add') : $t('actions.edit')" width="500px">
     <el-form ref="form" :model="form" :rules="rules" size="small" label-width="80px">
       <el-form-item label="名称" prop="name">
         <el-input v-model="form.name" style="width: 360px;"/>
@@ -48,10 +48,10 @@ export default {
       form: { name: '', alias: '', pid: 0 },
       rules: {
         name: [
-          { required: true, message: this.$t('dialog.name_placeholder'), trigger: 'blur' }
+          { required: true, message: this.$t('placeholder.name'), trigger: 'blur' }
         ],
         alias: [
-          { required: true, message: this.$t('dialog.alias_placeholder'), trigger: 'blur' }
+          { required: true, message: this.$t('placeholder.alias'), trigger: 'blur' }
         ]
       }
     }
