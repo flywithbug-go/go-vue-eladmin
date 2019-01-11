@@ -8,7 +8,7 @@
     <el-select v-model="query.enabled" clearable placeholder="状态" class="filter-item" style="width: 90px" @change="toQuery">
       <el-option v-for="item in enabledTypeOptions" :key="item.key" :label="item.display_name" :value="item.key"/>
     </el-select>
-    <el-button class="filter-item" size="mini" type="primary" icon="el-icon-search" @click="toQuery">搜索</el-button>
+    <el-button class="filter-item" size="mini" type="primary" icon="el-icon-search" @click="toQuery">{{ $t('actions.search') }}</el-button>
     <!-- 新增 -->
     <div style="display: inline-block;margin: 0px 2px;">
       <el-button
@@ -17,7 +17,7 @@
         size="mini"
         type="primary"
         icon="el-icon-plus"
-        @click="$refs.form.dialog = true">新增</el-button>
+        @click="$refs.form.dialog = true">{{ $t('actions.add') }}</el-button>
       <eForm ref="form" :roles="roles" :is-add="true"/>
     </div>
     <!-- 导出 -->
@@ -28,7 +28,7 @@
       class="filter-item"
       type="primary"
       icon="el-icon-download"
-      @click="download">导出</el-button>
+      @click="download">{{ $t('actions.export') }}</el-button>
   </div>
 </template>
 
