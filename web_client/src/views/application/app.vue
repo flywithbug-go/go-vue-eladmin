@@ -58,7 +58,7 @@
         </template>
       </el-table-column>
       <el-table-column
-        :label="$t('application.table_name_bundleId')"
+        :label="$t('table.name')"
         prop="id"
         align="center"
         width="160px">
@@ -163,24 +163,24 @@
           </el-upload>
         </el-form-item>
 
-        <el-form-item :label="$t('application.table_name')" prop="name">
+        <el-form-item :label="$t('table.name')" prop="name">
           <el-input v-model="temp.name"/>
         </el-form-item>
         <el-form-item
-          :label="$t('application.table_bundleId')"
+          :label="$t('table.bundle')"
           prop="bundle_id">
           <el-input
             :disabled="dialogStatus==='update'"
             v-model="temp.bundle_id"
-            :placeholder="$t('application.table_bundleId_placeHolder')"/>
+            :placeholder="$t('placeholder.bundle_id')"/>
         </el-form-item>
 
         <el-form-item
-          :label="$t('application.table_desc')"
+          :label="$t('table.desc')"
           prop="desc">
           <el-input
             :autosize="{ minRows: 2, maxRows: 4}"
-            :placeholder="$t('application.table_desc_placeholder')"
+            :placeholder="$t('placeholder.desc')"
             v-model="temp.desc"
             type="textarea"/>
         </el-form-item>
@@ -246,7 +246,7 @@ export default {
         name: [
           {
             required: true,
-            message: this.$t('application.table_name_placeHolder'),
+            message: this.$t('placeholder.name'),
             trigger: 'blur'
           },
           {
@@ -268,7 +268,7 @@ export default {
         bundle_id: [
           {
             required: true,
-            message: this.$t('application.table_bundleId_warning'),
+            message: this.$t('placeholder.bundle_id'),
             trigger: 'blur'
           },
           {
@@ -290,7 +290,7 @@ export default {
         desc: [
           {
             required: true,
-            message: this.$t('application.table_desc_placeholder'),
+            message: this.$t('placeholder.desc'),
             trigger: 'blur'
           },
           {

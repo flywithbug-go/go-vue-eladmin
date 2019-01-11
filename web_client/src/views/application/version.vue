@@ -22,7 +22,7 @@
       <img
         :src="currentSimpleApp?currentSimpleApp.icon:imagePlaceHolder"
         style="height: 50px; display: inline-block; margin-bottom: -15px;margin-left: 10px">
-      <span style="color: #2d2f33">{{ $t('application.table_owner') }}:</span>
+      <span style="color: #2d2f33">{{ $t( 'table.owner') }}:</span>
       <label style="color: #2d2f33">{{ currentSimpleApp?currentSimpleApp.owner:'' }}</label>
     </div>
 
