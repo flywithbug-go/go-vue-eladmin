@@ -30,8 +30,8 @@ var Routers = []common.GinHandleFunc{
 	{
 		Handler:    updateUserHandler, //更新当前用户信息
 		RouterType: common.RouterTypeNeedAuth,
-		Method:     "POST",
-		Route:      "/user/update",
+		Method:     "PUT",
+		Route:      "/user",
 	},
 	{
 		Handler:    getUserListInfoHandler, //获取所有用户

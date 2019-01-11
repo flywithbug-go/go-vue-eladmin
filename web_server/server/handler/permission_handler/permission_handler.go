@@ -41,8 +41,9 @@ func getPermissionHandler(c *gin.Context) {
 		c.JSON(http.StatusOK, aRes)
 	}()
 	ids := c.Query("id")
-	var mInfo = model_permission.Permission{}
 	id, _ := strconv.Atoi(ids)
+
+	var mInfo = model_permission.Permission{}
 	mInfo.Id = int64(id)
 	mInfo, err := mInfo.FindOne()
 	if err != nil {

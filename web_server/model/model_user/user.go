@@ -90,6 +90,11 @@ func (u User) Update() error {
 	return u.update(selector, u)
 }
 
+func (u User) Remove() error {
+	selector := bson.M{"_id": u.Id}
+	return u.remove(selector)
+}
+
 func (u User) FindAll() ([]User, error) {
 	return u.findAll(nil, bson.M{"password": 0})
 }

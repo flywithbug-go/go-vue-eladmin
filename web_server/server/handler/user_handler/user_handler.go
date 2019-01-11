@@ -10,10 +10,9 @@ import (
 	"vue-admin/web_server/model/model_user"
 	"vue-admin/web_server/server/sync"
 
-	"gopkg.in/mgo.v2/bson"
-
 	"github.com/flywithbug/log4go"
 	"github.com/gin-gonic/gin"
+	"gopkg.in/mgo.v2/bson"
 )
 
 type UserRole struct {
@@ -117,13 +116,14 @@ func getUserInfoHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
-	userId := common.UserId(c)
-	if userId <= 0 {
+	ids := c.Query("id")
+	id, _ := strconv.Atoi(ids)
+	if id <= 0 {
 		log4go.Info("user not found")
 		aRes.SetErrorInfo(http.StatusUnauthorized, "user not found")
 		return
 	}
-	user, err := model_user.FindByUserId(userId)
+	user, err := model_user.FindByUserId(int64(id))
 	if err != nil {
 		log4go.Info(err.Error())
 		aRes.SetErrorInfo(http.StatusUnauthorized, "user not found:"+err.Error())
@@ -131,8 +131,55 @@ func getUserInfoHandler(c *gin.Context) {
 	}
 	roleUser := UserRole{}
 	roleUser.User = user
+	//TODO need check Permission
+
 	roleUser.Roles = []string{"admin"}
 	aRes.AddResponseInfo("user", roleUser)
+}
+
+func updateUserHandler(c *gin.Context) {
+	//TODO need check Permission
+
+	aRes := model.NewResponse()
+	defer func() {
+		c.JSON(http.StatusOK, aRes)
+	}()
+	user := new(model_user.User)
+	err := c.BindJSON(user)
+	if err != nil {
+		log4go.Info(err.Error())
+		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
+		return
+	}
+	err = user.Update()
+	if err != nil {
+		log4go.Info(err.Error())
+		aRes.SetErrorInfo(http.StatusBadRequest, "db update failed: "+err.Error())
+		return
+	}
+	aRes.SetSuccessInfo(http.StatusOK, "success")
+}
+
+func deleteUserHandler(c *gin.Context) {
+	//TODO need check Permission
+	aRes := model.NewResponse()
+	defer func() {
+		c.JSON(http.StatusOK, aRes)
+	}()
+	user := new(model_user.User)
+	err := c.BindJSON(user)
+	if err != nil {
+		log4go.Info(err.Error())
+		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
+		return
+	}
+	err = user.Remove()
+	if err != nil {
+		log4go.Info(err.Error())
+		aRes.SetErrorInfo(http.StatusBadRequest, "db delete failed: "+err.Error())
+		return
+	}
+	aRes.SetSuccessInfo(http.StatusOK, "success")
 }
 
 func getUserListInfoHandler(c *gin.Context) {
@@ -177,30 +224,4 @@ func getUserListInfoHandler(c *gin.Context) {
 	}
 	aRes.AddResponseInfo("list", appList)
 	aRes.AddResponseInfo("total", totalCount)
-}
-
-func updateUserHandler(c *gin.Context) {
-	aRes := model.NewResponse()
-	defer func() {
-		c.JSON(http.StatusOK, aRes)
-	}()
-	user := new(model_user.User)
-	err := c.BindJSON(user)
-	if err != nil {
-		log4go.Info(err.Error())
-		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
-		return
-	}
-	user.Id = common.UserId(c)
-	err = user.Update()
-	if err != nil {
-		log4go.Info(err.Error())
-		aRes.SetErrorInfo(http.StatusBadRequest, "db update failed: "+err.Error())
-		return
-	}
-	aRes.SetSuccessInfo(http.StatusOK, "success")
-}
-
-func searchUserHandler(c *gin.Context) {
-
 }
