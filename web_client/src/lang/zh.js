@@ -20,7 +20,8 @@ export default {
     github: '项目地址',
     screenfull: '全屏',
     theme: '换肤',
-    size: '布局大小'
+    size: '布局大小',
+    personal:"个人中心"
   },
   login: {
     title: '系统登录',

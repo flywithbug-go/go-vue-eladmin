@@ -116,12 +116,11 @@ func getUserInfoHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
+	var id int64
 	ids := c.Query("id")
-	id, _ := strconv.Atoi(ids)
-	if id <= 0 {
-		log4go.Info("user not found")
-		aRes.SetErrorInfo(http.StatusUnauthorized, "user not found")
-		return
+	id, _ = strconv.ParseInt(ids, 10, 64)
+	if id == 0 {
+		id = common.UserId(c)
 	}
 	user, err := model_user.FindByUserId(int64(id))
 	if err != nil {

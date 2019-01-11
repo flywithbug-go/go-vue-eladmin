@@ -50,6 +50,20 @@ export  const constantRouterMap = [
       }
     ]
   },
+  {
+    path: '/user',
+    component: Layout,
+    hidden: true,
+    redirect: 'noredirect',
+    children: [
+      {
+        path: 'center',
+        component: () => import('@/views/system/user/center'),
+        name: 'personal',
+        meta: { title: 'personal', icon: 'user' }
+      }
+    ]
+  }
 ]
 
 

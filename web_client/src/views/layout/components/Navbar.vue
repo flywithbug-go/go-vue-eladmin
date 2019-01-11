@@ -34,11 +34,11 @@
               {{ $t('navbar.dashboard') }}
             </el-dropdown-item>
           </router-link>
-          <a target="_blank" href="https://github.com/flywithbug-docmanager/docmanager">
+          <router-link to="/user/center">
             <el-dropdown-item>
-              {{ $t('navbar.github') }}
+              {{ $t('navbar.personal') }}
             </el-dropdown-item>
-          </a>
+          </router-link>
           <el-dropdown-item divided>
             <span style="display:block;" @click="logout">{{ $t('navbar.logOut') }}</span>
           </el-dropdown-item>

@@ -2,7 +2,7 @@ import Layout from '@/views/layout/Layout'
 
 
 const userRouter = {
-  path: '/user',
+  path: '/system',
   component: Layout,
   redirect: 'index',
   name:"systemManager",
