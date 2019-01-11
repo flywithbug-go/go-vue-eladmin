@@ -16,7 +16,7 @@
             v-model="scope.row.delPopover"
             placement="top"
             width="200">
-            <p>确定删除吗,如果存在下级节点则一并删除，此操作不能撤销！</p>
+            <p>{{ $t('system.per_confirm_del') }}</p>
             <div style="text-align: right; margin: 0">
               <el-button size="mini" type="text" @click="scope.row.delPopover = false">{{ $t('actions.cancel') }}</el-button>
               <el-button :loading="delLoading" type="primary" size="mini" @click="subDelete(scope.$index, scope.row)">{{ $t('actions.confirm') }}</el-button>

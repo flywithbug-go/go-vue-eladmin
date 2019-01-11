@@ -124,7 +124,10 @@ export default {
     username: "用户名",
     code: "代码",
     type:"类型",
+    per_confirm_del:'确定删除吗,如果存在下级节点则一并删除，此操作不能撤销！',
+    role_confirm_del:'确定删除本条数据吗？',
   },
+
 
 
 }

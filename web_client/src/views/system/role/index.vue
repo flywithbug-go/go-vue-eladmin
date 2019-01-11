@@ -18,7 +18,7 @@
             v-model="scope.row.delPopover"
             placement="top"
             width="180">
-            <p>确定删除本条数据吗？</p>
+            <p>{{ $t('system.role_confirm_del') }}</p>
             <div style="text-align: right; margin: 0">
               <el-button size="mini" type="text" @click="scope.row.delPopover = false">{{ "$t('actions.cancel')" }}</el-button>
               <el-button :loading="delLoading" type="primary" size="mini" @click="subDelete(scope.$index, scope.row)">{{ "$t('actions.confirm')" }}</el-button>
