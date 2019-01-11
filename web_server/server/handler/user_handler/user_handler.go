@@ -27,6 +27,7 @@ func loginHandler(c *gin.Context) {
 	}()
 	user := model_user.User{}
 	err := c.BindJSON(&user)
+	log4go.Info("%s-%s", user.Username, user.Password)
 	if err != nil {
 		log4go.Info(err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
