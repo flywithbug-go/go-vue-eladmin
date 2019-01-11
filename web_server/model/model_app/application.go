@@ -91,6 +91,13 @@ func (a *Application) Insert() error {
 	if len(a.Desc) < 10 {
 		return errors.New("desc length must > 10")
 	}
+
+	if a.isExist(bson.M{"bundle_id": a.BundleId}) {
+		return errors.New("bundle_id already exist")
+	}
+	if a.isExist(bson.M{"name": a.Name}) {
+		return errors.New("name already exist")
+	}
 	a.Id, _ = mongo.GetIncrementId(appCollection)
 	a.CreateTime = time.Now().Unix() * 1000
 	return a.insert(a)
