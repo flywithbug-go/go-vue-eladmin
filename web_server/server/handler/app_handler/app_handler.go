@@ -46,7 +46,7 @@ func addApplicationHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "Desc must fill")
 		return
 	}
-	app.Owner = common.Account(c)
+	app.Owner = common.Username(c)
 	err = app.Insert()
 	if err != nil {
 		log4go.Error(err.Error())

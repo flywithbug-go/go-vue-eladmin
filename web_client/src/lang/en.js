@@ -147,7 +147,7 @@ export default {
     note:"Note",
     avatar:"Avatar",
     email: "EMail",
-    account: "Account",
+    username: "Username",
     code: "Code",
     type:"Type",
   }

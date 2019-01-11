@@ -10,14 +10,14 @@
         <lang-select class="set-language"/>
         <h3 class="title" >{{ $t('login.title') }}</h3>
       </div>
-      <el-form-item prop="account">
+      <el-form-item prop="username">
         <span class="svg-container">
           <svg-icon icon-class="user"/>
         </span>
         <el-input
-          v-model="loginForm.account"
+          v-model="loginForm.username"
           :placeholder="$t('login.username')"
-          name="account"
+          name="username"
           type="text"
           auto-complete="on" />
       </el-form-item>
@@ -80,11 +80,11 @@ export default {
     }
     return {
       loginForm: {
-        account: '',
+        username: '',
         password: ''
       },
       loginRules: {
-        account: [{ required: true, trigger: 'blur', validator: validateUsername }],
+        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }]
       },
       loginDisable: true,
@@ -97,7 +97,7 @@ export default {
   },
   computed: {
     loginBtnDisable() {
-      if (this.loginForm.password.length < 4 || this.loginForm.account.length < 4) {
+      if (this.loginForm.password.length < 4 || this.loginForm.username.length < 4) {
         return true
       }
       return false

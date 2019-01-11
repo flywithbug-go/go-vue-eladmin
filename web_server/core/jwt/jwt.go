@@ -49,16 +49,16 @@ var (
 //自定义载荷
 type CustomClaims struct {
 	jwt.StandardClaims
-	UserId  int64  `json:"user_id"`
-	Account string `json:"account"`
+	UserId   int64  `json:"user_id"`
+	Username string `json:"username"`
 }
 
 //创建claims
-func NewCustomClaims(userId int64, account string) CustomClaims {
+func NewCustomClaims(userId int64, username string) CustomClaims {
 	now := time.Now().Unix()
 	claims := CustomClaims{
-		UserId:  userId,
-		Account: account,
+		UserId:   userId,
+		Username: username,
 		StandardClaims: jwt.StandardClaims{
 			NotBefore: int64(now - notBeforeDuration), // 	签名生效时间
 			ExpiresAt: int64(now + expiresOffset),     // 	过期时间

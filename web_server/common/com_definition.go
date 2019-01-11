@@ -5,12 +5,10 @@ import (
 )
 
 const (
-	KeyAuthorization  = "Authorization"
-	KeyJWTClaims      = "_key_jwt_Claims"
-	KeyUserAgent      = "User-Agent"
-	KeyContextUserId  = "_key_ctx_userId_"
-	KeyContextAccount = "_key_ctx_account_"
-	KeyContextUser    = "_key_ctx_user_"
+	KeyAuthorization   = "Authorization"
+	KeyUserAgent       = "User-Agent"
+	KeyContextUserId   = "_key_ctx_userId_"
+	KeyContextUsername = "_key_ctx_username_"
 )
 
 func UserToken(ctx *gin.Context) string {
@@ -30,8 +28,8 @@ func UserId(ctx *gin.Context) int64 {
 	return userId
 }
 
-func Account(ctx *gin.Context) string {
-	o, ok := ctx.Get(KeyContextAccount)
+func Username(ctx *gin.Context) string {
+	o, ok := ctx.Get(KeyContextUsername)
 	if !ok {
 		return ""
 	}

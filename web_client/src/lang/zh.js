@@ -136,7 +136,7 @@ export default {
     note:"备注",
     avatar:"头像",
     email:"邮箱",
-    account: "账号",
+    username: "用户名",
     code: "代码",
     type:"类型",
   }

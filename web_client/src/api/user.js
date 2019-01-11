@@ -1,8 +1,8 @@
 import client from '../utils/fetch'
 
-export function login(account, password) {
+export function login(username, password) {
   const data = {
-    account,
+    username,
     password
   }
   return client({

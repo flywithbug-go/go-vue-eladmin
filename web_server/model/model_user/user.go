@@ -15,7 +15,7 @@ const (
 
 type User struct {
 	Id         int64  `json:"id,omitempty" bson:"_id,omitempty"`
-	Account    string `json:"account,omitempty" bson:"account,omitempty"` //用户名
+	Username   string `json:"username,omitempty" bson:"username,omitempty"` //用户名
 	Password   string `json:"password,omitempty" bson:"password,omitempty"`
 	Avatar     string `json:"avatar,omitempty" bson:"avatar,omitempty"`
 	Email      string `json:"email,omitempty" bson:"email,omitempty"`
@@ -105,9 +105,9 @@ func FindByUserId(userId int64) (u User, err error) {
 	return
 }
 
-func LoginUser(account, pass string) (user User, err error) {
+func LoginUser(username, pass string) (user User, err error) {
 	user = User{}
-	user, err = user.findOne(bson.M{"account": account, "password": pass}, bson.M{"password": 0})
+	user, err = user.findOne(bson.M{"username": username, "password": pass}, bson.M{"password": 0})
 	return
 }
 
@@ -125,7 +125,7 @@ func (u User) TotalCount(query, selector interface{}) (int, error) {
 
 func AddAdminUser() error {
 	u := new(User)
-	u.Account = "admin"
+	u.Username = "admin"
 	u.Password = "flywithbug123"
 	u.Email = "flywithbug@gmail.com"
 	u.Title = "admin"

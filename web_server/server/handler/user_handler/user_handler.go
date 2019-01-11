@@ -32,13 +32,13 @@ func loginHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
-	user, err = model_user.LoginUser(user.Account, user.Password)
+	user, err = model_user.LoginUser(user.Username, user.Password)
 	if err != nil {
 		log4go.Error(err.Error())
-		aRes.SetErrorInfo(http.StatusBadRequest, "account or password not right")
+		aRes.SetErrorInfo(http.StatusBadRequest, "username or password not right")
 		return
 	}
-	claims := jwt.NewCustomClaims(user.Id, user.Account)
+	claims := jwt.NewCustomClaims(user.Id, user.Username)
 	token, err := jwt.GenerateToken(claims)
 	if err != nil {
 		log4go.Error(err.Error())
@@ -70,8 +70,8 @@ func registerHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
-	if user.Account == "" {
-		aRes.SetErrorInfo(http.StatusBadRequest, "account can not be nil")
+	if user.Username == "" {
+		aRes.SetErrorInfo(http.StatusBadRequest, "username can not be nil")
 		return
 	}
 	if user.Password == "" {

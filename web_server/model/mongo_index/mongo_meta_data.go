@@ -51,12 +51,12 @@ var Indexes = []Index{
 	{
 		Name: CollectionUser,
 		Index: mgo.Index{
-			Key:        []string{"account"},
+			Key:        []string{"username"},
 			Unique:     true,
 			DropDups:   true,
 			Background: false,
 			Sparse:     true,
-			Name:       "c_user_f_account_index",
+			Name:       "c_user_f_username_index",
 		},
 	},
 	{

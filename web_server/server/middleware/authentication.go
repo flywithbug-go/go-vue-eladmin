@@ -47,7 +47,7 @@ func JWTAuthMiddleware() gin.HandlerFunc {
 		}
 
 		c.Set(common.KeyContextUserId, claims.UserId)
-		c.Set(common.KeyContextAccount, claims.Account)
+		c.Set(common.KeyContextUsername, claims.Username)
 
 		//cookie := http.Cookie{
 		//	Name:     common.KeyAuthorization,
