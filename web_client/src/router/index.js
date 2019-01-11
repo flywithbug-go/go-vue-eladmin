@@ -63,7 +63,8 @@ export  const constantRouterMap = [
         meta: { title: 'personal', icon: 'user' }
       }
     ]
-  }
+  },
+  { path: '*', redirect: '/404', hidden: true }
 ]
 
 
