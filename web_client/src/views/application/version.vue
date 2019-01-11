@@ -87,7 +87,7 @@
       </el-table-column>
 
       <el-table-column
-        :label="$t('application.table_action')"
+        :label="$t('actions.action')"
         align="center"
         min-width="200px"
         class-name="small-padding fixed-width">
@@ -129,10 +129,10 @@
               <span>{{ $t('selector.confirmDelete') }}</span>
             </p>
             <div style="text-align: center; margin: 0">
-              <el-button size="mini" type="text" @click="cancelPopover(scope.row)">{{ $t('selector.cancel') }}</el-button>
-              <el-button type="primary" size="mini" @click="deleteVersionPopover(scope.row)">{{ $t('selector.confirm') }}</el-button>
+              <el-button size="mini" type="text" @click="cancelPopover(scope.row)">{{ $t('actions.cancel') }}</el-button>
+              <el-button type="primary" size="mini" @click="deleteVersionPopover(scope.row)">{{ $t('actions.confirm') }}</el-button>
             </div>
-            <el-button slot="reference" style="width: 60px" type="danger" size="mini">{{ $t('table.delete') }}</el-button>
+            <el-button slot="reference" style="width: 60px" type="danger" size="mini">{{ $t('actions.delete') }}</el-button>
           </el-popover>
 
         </template>
@@ -245,8 +245,8 @@
       </el-form>
 
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
-        <el-button type="primary" @click="dialogStatus==='create'? createData():updateDate()">{{ $t('table.confirm') }}</el-button>
+        <el-button @click="dialogFormVisible = false">{{ $t('actions.cancel') }}</el-button>
+        <el-button type="primary" @click="dialogStatus==='create'? createData():updateDate()">{{ $t('actions.confirm') }}</el-button>
       </div>
 
     </el-dialog>
@@ -285,8 +285,8 @@ export default {
       dialogEditCount: 0,
       imagePlaceHolder: require('../../assets/image_placeholder.png'),
       textMap: {
-        update: this.$t('application.table_edit'),
-        create: this.$t('application.table_add')
+        update: this.$t('actions.edit'),
+        create: this.$t('actions.add')
       },
       temp: {
         id: 0,

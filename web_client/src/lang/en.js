@@ -17,7 +17,15 @@ export default {
     page401: '401',
     page404: '404',
     errorLog: 'Error Log',
-
+  },
+  actions:{
+    action: 'Action',
+    search: 'Search',
+    add: 'Add',
+    edit: 'Edit',
+    delete: 'Delete',
+    cancel: 'Cancel',
+    confirm: 'Confirm',
   },
   navbar: {
     logOut: 'Log Out',

@@ -12,8 +12,8 @@
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button type="text" @click="cancel">{{ $t('table.cancel') }}</el-button>
-      <el-button :loading="loading" type="primary" @click="doSubmit">{{ $t('table.confirm') }}</el-button>
+      <el-button type="text" @click="cancel">{{ $t('actions.cancel') }}</el-button>
+      <el-button :loading="loading" type="primary" @click="doSubmit">{{ $t('actions.confirm') }}</el-button>
     </div>
   </el-dialog>
 </template>

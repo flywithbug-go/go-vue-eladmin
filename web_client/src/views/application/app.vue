@@ -27,14 +27,14 @@
         type="primary"
         icon="el-icon-search"
         @click="handleFilter">
-        {{ $t('table.search') }}
+        {{ $t('actions.search') }}
       </el-button>
       <el-button
         class="filter-item"
         style="margin-left: 10px;"
         type="primary"
         icon="el-icon-edit"
-        @click="handleCreate">{{ $t('table.add') }}</el-button>
+        @click="handleCreate">{{ $t('actions.add') }}</el-button>
     </div>
 
     <!--列表内容-->
@@ -112,7 +112,7 @@
         </template>
       </el-table-column>
       <el-table-column
-        :label="$t('table.actions')"
+        :label="$t('actions.action')"
         align="center"
         width="100px"
         class-name="small-padding fixed-width">
@@ -121,7 +121,7 @@
             type="primary"
             size="mini"
             @click="handleUpdate(scope.row)">
-            {{ $t('table.edit') }}
+            {{ $t('actions.edit') }}
           </el-button>
         </template>
       </el-table-column>
@@ -186,8 +186,8 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
-        <el-button type="primary" @click="dialogStatus==='create'? createData():updateDate()">{{ $t('table.confirm') }}</el-button>
+        <el-button @click="dialogFormVisible = false">{{ $t('actions.cancel') }}</el-button>
+        <el-button type="primary" @click="dialogStatus==='create'? createData():updateDate()">{{ $t('actions.confirm') }}</el-button>
       </div>
     </el-dialog>
 
@@ -222,8 +222,8 @@ export default {
       dialogStatus: 'create',
       dialogEditCount: 0,
       textMap: {
-        update: this.$t('application.table_edit'),
-        create: this.$t('application.table_add')
+        update: this.$t('actions.edit'),
+        create: this.$t('actions.add')
       },
       listQuery: {
         page: 0,

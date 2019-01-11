@@ -3,14 +3,14 @@
     <eHeader :permissions="permissions" :query="query"/>
     <!--表格渲染-->
     <el-table v-loading="loading" :data="data" size="small" border style="width: 100%;">
-      <el-table-column prop="name" label="名称"/>
-      <el-table-column prop="remark" label="描述"/>
-      <el-table-column prop="createTime" label="创建日期">
+      <el-table-column prop="name" :label="$t('table.name')"/>
+      <el-table-column prop="remark" :label="$t('table.desc')"/>
+      <el-table-column prop="createTime" :label="$t('table.create_time')">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="150px" align="center">
+      <el-table-column :label="$t('actions.action')" width="150px" align="center">
         <template slot-scope="scope">
           <edit v-if="checkPermission(['ADMIN','ROLE_ALL','ROLE_EDIT'])"   :permissions="permissions" :data="scope.row" :sup_this="sup_this"/>
           <el-popover
@@ -20,10 +20,10 @@
             width="180">
             <p>确定删除本条数据吗？</p>
             <div style="text-align: right; margin: 0">
-              <el-button size="mini" type="text" @click="scope.row.delPopover = false">取消</el-button>
-              <el-button :loading="delLoading" type="primary" size="mini" @click="subDelete(scope.$index, scope.row)">确定</el-button>
+              <el-button size="mini" type="text" @click="scope.row.delPopover = false">{{ "$t('actions.cancel')" }}</el-button>
+              <el-button :loading="delLoading" type="primary" size="mini" @click="subDelete(scope.$index, scope.row)">{{ "$t('actions.confirm')" }}</el-button>
             </div>
-            <el-button slot="reference" :disabled="scope.row.id === 1" type="danger" size="mini" @click="scope.row.delPopover = true">删除</el-button>
+            <el-button slot="reference" :disabled="scope.row.id === 1" type="danger" size="mini" @click="scope.row.delPopover = true">{{ "$t('actions.delete')" }}</el-button>
           </el-popover>
         </template>
       </el-table-column>

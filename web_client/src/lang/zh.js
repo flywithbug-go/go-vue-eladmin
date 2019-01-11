@@ -14,6 +14,15 @@ export default {
     guide: '引导页',
     icons: '图标',
   },
+  actions:{
+    action: '操 作',
+    search: '搜 索',
+    add: '添 加',
+    edit: '编 辑',
+    delete: '删 除',
+    cancel: '取 消',
+    confirm: '确 定',
+  },
   navbar: {
     logOut: '退出登录',
     dashboard: '首页',
@@ -44,11 +53,6 @@ export default {
     id: '序号',
     date: '时间',
     status: '状态',
-    actions: '操作',
-    edit: '编辑',
-    delete: '删除',
-    cancel: '取 消',
-    confirm: '确 定',
     icon: "图标",
     owner:"负责人",
     create_time:"创建时间",
@@ -72,10 +76,6 @@ export default {
     closeAll: '关闭所有'
   },
   application: {
-    table_action: "操作",
-    table_add: "添加",
-    table_edit: "编辑",
-    table_search: '搜索',
     table_show: "",
     table_name: "名称",
     table_name_bundleId: "名称(包名)",
@@ -144,6 +144,7 @@ export default {
     username: "用户名",
     code: "代码",
     type:"类型",
-  }
+  },
+
 
 }
