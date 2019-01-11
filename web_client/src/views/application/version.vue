@@ -96,7 +96,7 @@
             type="primary"
             size="mini"
             @click="handleUpdate(scope.row)">
-            {{ $t('appVersion.operate') }}
+            {{ $t('actions.edit') }}
           </el-button>
 
           <el-popover

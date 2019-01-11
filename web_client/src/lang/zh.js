@@ -95,7 +95,6 @@ export default {
     grayTime: "灰度时间",
     status: "状态",
     createTime: "添加时间",
-    operate: "编辑"
   },
   selector: {
     placeholder: "请选择",
