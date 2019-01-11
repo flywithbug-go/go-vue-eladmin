@@ -106,7 +106,7 @@ func (app *AppVersion) Insert() error {
 		return err
 	}
 	var application = Application{}
-	log4go.Info(app.ToJson())
+
 	if !application.isExist(bson.M{"_id": app.AppId}) {
 		return fmt.Errorf("appID:%d not found", app.AppId)
 	}

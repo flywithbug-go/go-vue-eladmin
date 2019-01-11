@@ -15,6 +15,10 @@ func DialMgo(url string) {
 	globalS = s
 }
 
+const (
+	ErrorCodeHeader = "E11000"
+)
+
 func connect(db, collection string) (*mgo.Session, *mgo.Collection) {
 	if globalS == nil {
 		panic("mgo disconnected")
@@ -41,7 +45,9 @@ func getDb(db string) (*mgo.Session, *mgo.Database) {
 func Insert(db, collection string, docs ...interface{}) error {
 	ms, c := connect(db, collection)
 	defer ms.Close()
-	return c.Insert(docs...)
+	err := c.Insert(docs...)
+
+	return err
 }
 
 func IsExist(db, collection string, query interface{}) bool {

@@ -26,7 +26,7 @@ const userRouter = {
     {
       path: 'role',
       name: 'role',
-      component: () => import('../../views/system/role'),
+      component: () => import('../../views/system/role/'),
       meta: { title: 'roleManager', noCache: true, icon: 'role' }
     },
   ]

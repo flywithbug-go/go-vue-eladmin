@@ -2,7 +2,7 @@ package model_role
 
 import (
 	"encoding/json"
-	"fmt"
+	"time"
 	"vue-admin/web_server/core/mongo"
 	"vue-admin/web_server/model/mongo_index"
 	"vue-admin/web_server/model/shareDB"
@@ -16,10 +16,11 @@ const (
 
 //角色表，记录公司各种角色，比如：CEO 管理员，开发，开发经理，销售，销售主管，等
 type Role struct {
-	Id    int64 `json:"id,omitempty" bson:"_id,omitempty"`
-	Pid   int64 `json:"pid"`
-	Name  string
-	Alias string
+	Id         int64  `json:"id,omitempty" bson:"_id,omitempty"`
+	Name       string `json:"name,omitempty"  bson:"name,omitempty"`
+	Alias      string `json:"alias,omitempty"  bson:"alias,omitempty"`
+	Note       string `json:"note,omitempty"  bson:"note,omitempty"`
+	CreateTime int64  `json:"create_time,omitempty"  bson:"create_time,omitempty"`
 }
 
 func (r Role) ToJson() string {
@@ -74,12 +75,7 @@ func (r Role) FindOne() (role Role, err error) {
 }
 func (r Role) Insert() error {
 	r.Id, _ = mongo.GetIncrementId(roleCollection)
-	if r.isExist(bson.M{"name": r.Name}) {
-		return fmt.Errorf("code exist")
-	}
-	if r.isExist(bson.M{"alias": r.Alias}) {
-		return fmt.Errorf("alias exist")
-	}
+	r.CreateTime = time.Now().Unix() * 1000
 	return r.insert(r)
 }
 

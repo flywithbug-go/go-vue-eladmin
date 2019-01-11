@@ -8,11 +8,11 @@
 
 <script>
 
-export default {
-  name: 'AppManager',
+  export default {
+    name: 'AppManager',
 
 
-}
+  }
 </script>
 
 <style  scoped>

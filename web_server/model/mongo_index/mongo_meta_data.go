@@ -70,6 +70,61 @@ var Indexes = []Index{
 			Name:       "c_user_f_email_index",
 		},
 	},
+	{
+		Name: CollectionRole,
+		Index: mgo.Index{
+			Key:        []string{"name"},
+			Unique:     true,
+			DropDups:   true,
+			Background: false,
+			Sparse:     true,
+			Name:       "c_role_f_name_index",
+		},
+	},
+	{
+		Name: CollectionRole,
+		Index: mgo.Index{
+			Key:        []string{"alias"},
+			Unique:     true,
+			DropDups:   true,
+			Background: false,
+			Sparse:     true,
+			Name:       "c_role_f_alias_index",
+		},
+	},
+	{
+		Name: CollectionApp,
+		Index: mgo.Index{
+			Key:        []string{"bundle_id"},
+			Unique:     true,
+			DropDups:   true,
+			Background: false,
+			Sparse:     true,
+			Name:       "c_app_f_bundle_id_index",
+		},
+	},
+	{
+		Name: CollectionApp,
+		Index: mgo.Index{
+			Key:        []string{"name"},
+			Unique:     true,
+			DropDups:   true,
+			Background: false,
+			Sparse:     true,
+			Name:       "c_app_f_name_index",
+		},
+	},
+	{
+		Name: CollectionAppVersion,
+		Index: mgo.Index{
+			Key:        []string{"version", "app_id"},
+			Unique:     true,
+			DropDups:   true,
+			Background: false,
+			Sparse:     true,
+			Name:       "c_appVersion_f_version_f_appId_index",
+		},
+	},
 }
 
 func CreateMgoIndex() {
