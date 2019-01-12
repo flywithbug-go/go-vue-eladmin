@@ -33,3 +33,27 @@ export function getUserListInfoRequest(query) {
     params: query
   })
 }
+
+
+export function add(data) {
+  return request({
+    url: 'user',
+    method: 'post',
+    data
+  })
+}
+
+export function del(id) {
+  return request({
+    url: '/user' + id,
+    method: 'delete'
+  })
+}
+
+export function edit(data) {
+  return request({
+    url: '/user',
+    method: 'put',
+    data
+  })
+}

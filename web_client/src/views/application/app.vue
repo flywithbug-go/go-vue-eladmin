@@ -117,7 +117,8 @@
         width="180px"
         class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button style="margin-right: 10px"
+          <el-button
+            style="margin-right: 10px"
             type="primary"
             size="mini"
             @click="handleUpdate(scope.row)">
@@ -140,7 +141,6 @@
             <el-button slot="reference" style="width: 60px" type="danger" size="mini">{{ $t('actions.delete') }}</el-button>
           </el-popover>
 
-
         </template>
       </el-table-column>
 
@@ -157,7 +157,8 @@
     <!--创建弹窗添加修改-->
     <el-dialog
       :title="textMap[dialogStatus]"
-      :visible.sync="dialogFormVisible" width="600px">
+      :visible.sync="dialogFormVisible"
+      width="600px">
       <el-form
         ref="dataForm"
         :rules="rules"
@@ -218,7 +219,7 @@ import fixedButton from '../../components/FixedButton'
 import global_ from '../../config'
 import store from '../../store'
 import Pagination from '../../components/Pagination'
-import { addApplicationRequest, getApplicationlListRequest, updateApplicationRequest,deleteApplication } from '../../api/app'
+import { addApplicationRequest, getApplicationlListRequest, updateApplicationRequest, deleteApplication } from '../../api/app'
 import { formatDate } from '../../utils/date'
 
 export default {
@@ -370,7 +371,7 @@ export default {
       data.pop_status = false
       this.delApp(data)
     },
-    delApp(data){
+    delApp(data) {
       deleteApplication(data).then(() => {
         this.getList()
         this.$notify({
@@ -416,7 +417,6 @@ export default {
       }
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-
           addApplicationRequest(this.temp).then((response) => {
             this.list.unshift(response.app)
             this.dialogFormVisible = false
