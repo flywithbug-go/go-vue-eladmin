@@ -36,6 +36,11 @@ export function getUserListInfoRequest(query) {
 
 
 export function add(data) {
+  if (data.enabled === 'true'){
+    data.enabled = true
+  } else {
+    data.enabled = false
+  }
   return client({
     url: 'user',
     method: 'post',
