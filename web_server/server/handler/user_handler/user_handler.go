@@ -27,7 +27,6 @@ func loginHandler(c *gin.Context) {
 	}()
 	user := model_user.User{}
 	err := c.BindJSON(&user)
-	log4go.Info("%s-%s", user.Username, user.Password)
 	if err != nil {
 		log4go.Info(err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
@@ -112,26 +111,6 @@ func logoutHandler(c *gin.Context) {
 	aRes.SetSuccessInfo(http.StatusOK, "success")
 }
 
-func userInfoHandler(c *gin.Context) {
-	aRes := model.NewResponse()
-	defer func() {
-		c.JSON(http.StatusOK, aRes)
-	}()
-	user := model_user.User{}
-	user.Id = common.UserId(c)
-	user, err := user.FindOne()
-	if err != nil {
-		log4go.Info(err.Error())
-		aRes.SetErrorInfo(http.StatusUnauthorized, "user not found:"+err.Error())
-		return
-	}
-	roleUser := UserRole{}
-	roleUser.User = user
-	roleUser.Roles = user.RolesString
-	roleUser.RolesString = nil
-	aRes.AddResponseInfo("user", roleUser)
-}
-
 func getUserInfoHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
@@ -153,14 +132,13 @@ func getUserInfoHandler(c *gin.Context) {
 	}
 	roleUser := UserRole{}
 	roleUser.User = user
-	roleUser.Roles = user.RolesString
-	roleUser.RolesString = nil
+	roleUser.Roles = []string{"ADMIN"}
+	//roleUser.RolesString = nil
 	aRes.AddResponseInfo("user", roleUser)
 }
 
 func updateUserHandler(c *gin.Context) {
 	//TODO need check Permission
-
 	aRes := model.NewResponse()
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
