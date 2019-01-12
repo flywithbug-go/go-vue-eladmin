@@ -22,6 +22,12 @@ var Routers = []common.GinHandleFunc{
 		Method:     "POST",
 	},
 	{
+		Handler:    userInfoHandler, //获取当前用户信息
+		RouterType: common.RouterTypeNeedAuth,
+		Method:     "GET",
+		Route:      "/auth/info",
+	},
+	{
 		Handler:    getUserInfoHandler, //获取当前用户信息
 		RouterType: common.RouterTypeNeedAuth,
 		Method:     "GET",

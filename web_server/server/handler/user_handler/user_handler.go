@@ -112,6 +112,26 @@ func logoutHandler(c *gin.Context) {
 	aRes.SetSuccessInfo(http.StatusOK, "success")
 }
 
+func userInfoHandler(c *gin.Context) {
+	aRes := model.NewResponse()
+	defer func() {
+		c.JSON(http.StatusOK, aRes)
+	}()
+	user := model_user.User{}
+	user.Id = common.UserId(c)
+	user, err := user.FindOne()
+	if err != nil {
+		log4go.Info(err.Error())
+		aRes.SetErrorInfo(http.StatusUnauthorized, "user not found:"+err.Error())
+		return
+	}
+	roleUser := UserRole{}
+	roleUser.User = user
+	roleUser.Roles = user.RolesString
+	roleUser.RolesString = nil
+	aRes.AddResponseInfo("user", roleUser)
+}
+
 func getUserInfoHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
