@@ -10,6 +10,8 @@ import (
 	"vue-admin/web_server/model/mongo_index"
 	"vue-admin/web_server/model/shareDB"
 
+	"github.com/flywithbug/log4go"
+
 	"gopkg.in/mgo.v2/bson"
 )
 
@@ -18,20 +20,21 @@ const (
 )
 
 type User struct {
-	Id         int64             `json:"id,omitempty" bson:"_id,omitempty"`
-	Username   string            `json:"username,omitempty" bson:"username,omitempty"` //用户名
-	Password   string            `json:"password,omitempty" bson:"password,omitempty"`
-	Avatar     string            `json:"avatar,omitempty" bson:"avatar,omitempty"`
-	Email      string            `json:"email,omitempty" bson:"email,omitempty"`
-	Phone      string            `json:"phone,omitempty" bson:"phone,omitempty"`
-	Gender     int               `json:"gender,omitempty" bson:"gender,omitempty"` // 1男 2女
-	Name       string            `json:"name,omitempty" bson:"name,omitempty"`     // 名字！
-	Nick       string            `json:"nick,omitempty" bson:"nick,omitempty"`     // 昵称
-	Title      string            `json:"title,omitempty" bson:"title,omitempty"`
-	Status     int               `json:"status,omitempty" bson:"status,omitempty"` //1 激活，2锁定
-	Note       string            `json:"note,omitempty"  bson:"note,omitempty"`    //备注,
-	CreateTime int64             `json:"create_time,omitempty"  bson:"create_time,omitempty"`
-	Roles      []model_role.Role `json:"roles,omitempty" bson:"roles,omitempty"`
+	Id          int64             `json:"id,omitempty" bson:"_id,omitempty"`
+	Username    string            `json:"username,omitempty" bson:"username,omitempty"` //用户名
+	Password    string            `json:"password,omitempty" bson:"password,omitempty"`
+	Avatar      string            `json:"avatar,omitempty" bson:"avatar,omitempty"`
+	Email       string            `json:"email,omitempty" bson:"email,omitempty"`
+	Phone       string            `json:"phone,omitempty" bson:"phone,omitempty"`
+	Gender      int               `json:"gender,omitempty" bson:"gender,omitempty"` // 1男 2女
+	Name        string            `json:"name,omitempty" bson:"name,omitempty"`     // 名字！
+	Nick        string            `json:"nick,omitempty" bson:"nick,omitempty"`     // 昵称
+	Title       string            `json:"title,omitempty" bson:"title,omitempty"`
+	Status      int               `json:"status,omitempty" bson:"status,omitempty"` //1 激活，2锁定
+	Note        string            `json:"note,omitempty"  bson:"note,omitempty"`    //备注,
+	CreateTime  int64             `json:"create_time,omitempty"  bson:"create_time,omitempty"`
+	Roles       []model_role.Role `json:"roles,omitempty" bson:"roles,omitempty"`
+	RolesString []string          `json:"roles_string,omitempty" bson:"roles_string,omitempty"`
 }
 
 func (u User) ToJson() string {
@@ -126,17 +129,27 @@ func (u User) Remove() error {
 		return fmt.Errorf("超级管理员无法被删除")
 	}
 	selector := bson.M{"_id": u.Id}
-	return u.remove(selector)
+	err := u.remove(selector)
+	if err != nil {
+		return err
+	}
+	ur := model_user_role.UserRole{}
+	ur.RemoveUserId(u.Id)
+	return nil
 }
 
 func (u User) FindAll() ([]User, error) {
 	return u.findAll(nil, bson.M{"password": 0})
 }
 
-func FindByUserId(userId int64) (u User, err error) {
-	u = User{}
-	u, err = u.findOne(bson.M{"_id": userId}, bson.M{"password": 0})
-	return
+func (u User) FindOne() (User, error) {
+	u, err := u.findOne(bson.M{"_id": u.Id}, bson.M{"password": 0})
+	if err != nil {
+		return u, err
+	}
+	list := []User{u}
+	makeTreeList(list, nil)
+	return list[0], nil
 }
 
 func LoginUser(username, pass string) (user User, err error) {
@@ -157,18 +170,27 @@ func (u User) TotalCount(query, selector interface{}) (int, error) {
 	return u.totalCount(query, selector)
 }
 
-func (u *User) fetchRoles() {
-	ur := model_user_role.UserRole{}
-	list, _ := ur.FindAll(bson.M{"user_id": u.Id}, nil)
-	role := model_role.Role{}
-	for _, item := range list {
-		role.Id = item.RoleId
-		role.FindOne()
-	}
-
-}
-
 func makeTreeList(list []User, selector interface{}) error {
+	for index := range list {
+		ur := model_user_role.UserRole{}
+		results, _ := ur.FindAll(bson.M{"user_id": list[index].Id}, nil)
+		list[index].Roles = make([]model_role.Role, len(results))
+		var rule model_role.Role
+		index1 := 0
+		for _, item := range results {
+			rule.Id = item.RoleId
+			rule, err := rule.FindOneTree()
+			rule.Label = rule.Alias
+			rule.Alias = ""
+			if err != nil {
+				log4go.Info(err.Error())
+			} else {
+				list[index].Roles[index1] = rule
+				index1++
+			}
+		}
+		list[index].Roles = list[index].Roles[:index1]
+	}
 
 	return nil
 }

@@ -28,7 +28,8 @@ type Role struct {
 	Note        string                        `json:"note,omitempty"  bson:"note,omitempty"`
 	CreateTime  int64                         `json:"create_time,omitempty"  bson:"create_time,omitempty"`
 	Permissions []model_permission.Permission `json:"permissions" bson:"permissions,omitempty"`
-	Label       string                        `json:"label ,omitempty"  bson:"_ ,omitempty"`
+	Label       string                        `json:"label,omitempty"  bson:"label,omitempty"`
+	PerString   []string                      `json:"per_string,omitempty" bson:"per_string,omitempty"`
 }
 
 func (r Role) ToJson() string {
@@ -134,6 +135,18 @@ func (r Role) FindOne() (role Role, err error) {
 	return r.findOne(bson.M{"_id": r.Id}, nil)
 }
 
+func (r Role) FindLabelAll() ([]Role, error) {
+	results, err := r.findAll(nil, bson.M{"_id": 1, "alias": 1})
+	if err != nil {
+		return nil, err
+	}
+	for index := range results {
+		results[index].Label = results[index].Alias
+		results[index].Alias = ""
+	}
+	return results, nil
+}
+
 func (r Role) TotalCount(query, selector interface{}) (int, error) {
 	return r.totalCount(query, selector)
 }
@@ -179,21 +192,25 @@ func makeTreeList(list []Role, selector interface{}) error {
 		rp := model_role_permission.RolePermission{}
 		results, _ := rp.FindAll(bson.M{"role_id": list[index].Id}, nil)
 		list[index].Permissions = make([]model_permission.Permission, len(results))
+		list[index].PerString = make([]string, len(results))
 		var per model_permission.Permission
 		index1 := 0
 		for _, item := range results {
 			per.Id = item.PermissionId
 			per, err := per.FindOne(selector)
-			per.Label = per.Alias
-			per.Alias = ""
+
 			if err != nil {
 				log4go.Info(err.Error())
 			} else {
+				per.Label = per.Alias
 				list[index].Permissions[index1] = per
+				list[index].PerString[index1] = per.Alias
 				index1++
+				per.Alias = ""
 			}
 		}
 		list[index].Permissions = list[index].Permissions[:index1]
+		list[index].PerString = list[index].PerString[:index1]
 	}
 	return nil
 }
