@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-button :disabled="data.id === 10000"
+    <el-button v-if="data.id != 10000"
                size="mini"
                type="success"
                @click="to">
