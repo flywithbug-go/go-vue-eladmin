@@ -132,8 +132,11 @@ func getUserInfoHandler(c *gin.Context) {
 	}
 	roleUser := UserRole{}
 	roleUser.User = user
-	roleUser.Roles = []string{"ADMIN"}
-	//roleUser.RolesString = nil
+	roleUser.Roles = user.RolesString
+	if roleUser.Id == 10000 && len(roleUser.Roles) > 0 {
+		roleUser.Roles = []string{"ADMIN"}
+	}
+	roleUser.RolesString = nil
 	aRes.AddResponseInfo("user", roleUser)
 }
 
