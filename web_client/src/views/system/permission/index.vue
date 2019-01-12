@@ -21,7 +21,7 @@
               <el-button size="mini" type="text" @click="scope.row.delPopover = false">{{ $t('actions.cancel') }}</el-button>
               <el-button :loading="delLoading" type="primary" size="mini" @click="subDelete(scope.$index, scope.row)">{{ $t('actions.confirm') }}</el-button>
             </div>
-            <el-button slot="reference" :disabled="scope.row.id === 1" type="danger" size="mini" @click="scope.row.delPopover = true">{{ $t('actions.delete') }}</el-button>
+            <el-button slot="reference" v-if="scope.row.id != 10001" type="danger" size="mini" @click="scope.row.delPopover = true">{{ $t('actions.delete') }}</el-button>
           </el-popover>
         </template>
       </el-table-column>

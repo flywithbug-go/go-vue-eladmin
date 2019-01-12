@@ -2,7 +2,6 @@ package model_permission
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"vue-admin/web_server/core/mongo"
 	"vue-admin/web_server/model/model_role_permission"
@@ -116,6 +115,9 @@ func (p Permission) FindPipeOne() (Permission, error) {
 }
 
 func (p Permission) Update() error {
+	if p.Id == 10000 {
+		return fmt.Errorf("此权限不能编辑")
+	}
 	if p.PId != 0 && !p.isExist(bson.M{"_id": p.PId}) {
 		return fmt.Errorf("pid not exist")
 	}
@@ -124,14 +126,27 @@ func (p Permission) Update() error {
 }
 
 func (p Permission) Remove() error {
-	if p.Id == 0 {
-		return errors.New("id needed ")
+	if p.Id == 10000 {
+		return fmt.Errorf("此权限不能编辑")
 	}
-	rp := model_role_permission.RolePermission{}
-	if rp.Exist(bson.M{"permission_id": p.Id}) {
+	if p.checkInUse() {
 		return fmt.Errorf("permission in use")
 	}
 	return p.remove(bson.M{"_id": p.Id})
+}
+
+func (p Permission) checkInUse() bool {
+	p.findChildren(bson.M{"_id": 1})
+	rp := model_role_permission.RolePermission{}
+	if rp.Exist(bson.M{"permission_id": p.Id}) {
+		return true
+	}
+	for _, item := range p.Children {
+		if rp.Exist(bson.M{"permission_id": item.Id}) {
+			return true
+		}
+	}
+	return false
 }
 
 func (p Permission) TotalCount(query, selector interface{}) (int, error) {
