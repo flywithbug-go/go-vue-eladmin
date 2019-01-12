@@ -8,7 +8,7 @@
         <TreeSelect v-model="permissionIds" :multiple="true" :options="permissions" style="width: 370px;" :placeholder="$t('placeholder.permission')" />
       </el-form-item>
       <el-form-item style="margin-top: -10px;" :label="$t('table.desc')">
-        <el-input v-model="form.remark" style="width: 370px;" rows="5" type="textarea"/>
+        <el-input v-model="form.note" style="width: 370px;" rows="5" type="textarea"/>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -41,7 +41,7 @@ export default {
   data() {
     return {
       loading: false, dialog: false,
-      form: { name: '', permissions: [], remark: '' }, permissionIds: [],
+      form: { name: '', permissions: [], note: '' }, permissionIds: [],
       rules: {
         name: [
           { required: true, message: '请输入名称', trigger: 'blur' }
@@ -83,7 +83,7 @@ export default {
         this.$parent.$parent.init()
       }).catch(err => {
         this.loading = false
-        console.log(err.response.data.message)
+        console.log(err.msg)
       })
     },
     doEdit() {
@@ -98,14 +98,14 @@ export default {
         this.sup_this.init()
       }).catch(err => {
         this.loading = false
-        console.log(err.response.data.message)
+        console.log(err.msg)
       })
     },
     resetForm() {
       this.dialog = false
       this.$refs['form'].resetFields()
       this.permissionIds = []
-      this.form = { name: '', permissions: [], remark: '' }
+      this.form = { name: '', permissions: [], note: '' }
     }
   }
 }

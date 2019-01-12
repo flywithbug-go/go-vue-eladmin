@@ -4,7 +4,7 @@
     <!--表格渲染-->
     <el-table v-loading="loading" :data="data" size="small" border style="width: 100%;">
       <el-table-column prop="name" :label="$t('table.name')"/>
-      <el-table-column prop="remark" :label="$t('table.desc')"/>
+      <el-table-column prop="note" :label="$t('table.desc')"/>
       <el-table-column prop="create_time" :label="$t('table.create_time')">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.create_time) }}</span>
