@@ -20,6 +20,12 @@ func CheckPermission(c *gin.Context, permission string) bool {
 		if strings.EqualFold(item, permission) {
 			return true
 		}
+		if strings.HasSuffix(item, "ALL") {
+			splits := strings.Split(item, "_")
+			if strings.HasPrefix(item, splits[0]) {
+				return true
+			}
+		}
 	}
 	return false
 }

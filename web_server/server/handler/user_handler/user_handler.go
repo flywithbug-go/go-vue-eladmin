@@ -7,6 +7,7 @@ import (
 	"vue-admin/web_server/common"
 	"vue-admin/web_server/core/jwt"
 	"vue-admin/web_server/model"
+	"vue-admin/web_server/model/check_permission"
 	"vue-admin/web_server/model/model_user"
 	"vue-admin/web_server/server/sync"
 
@@ -121,6 +122,12 @@ func getUserInfoHandler(c *gin.Context) {
 	id, _ = strconv.ParseInt(ids, 10, 64)
 	if id == 0 {
 		id = common.UserId(c)
+	} else {
+		if check_permission.CheckPermission(c, model_user.UserPermissionSelect) {
+			log4go.Info("has no permission")
+			aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
+			return
+		}
 	}
 	user := model_user.User{}
 	user.Id = id
@@ -146,11 +153,21 @@ func updateUserHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
+	if check_permission.CheckPermission(c, model_user.UserPermissionEdit) {
+		log4go.Info("has no permission")
+		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
+		return
+	}
 	user := new(model_user.User)
 	err := c.BindJSON(user)
 	if err != nil {
 		log4go.Info(err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
+		return
+	}
+	if common.UserId(c) == user.Id {
+		log4go.Info("can not delete your self")
+		aRes.SetErrorInfo(http.StatusForbidden, "can not delete your self")
 		return
 	}
 	err = user.Update()
@@ -168,7 +185,11 @@ func deleteUserHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
-
+	if check_permission.CheckPermission(c, model_user.UserPermissionDelete) {
+		log4go.Info("has no permission")
+		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
+		return
+	}
 	user := new(model_user.User)
 	err := c.BindJSON(user)
 	if err != nil {

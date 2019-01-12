@@ -34,6 +34,12 @@ var Routers = []common.GinHandleFunc{
 		Route:      "/user",
 	},
 	{
+		Handler:    deleteUserHandler, //删除当前用户信息
+		RouterType: common.RouterTypeNeedAuth,
+		Method:     "DELETE",
+		Route:      "/user",
+	},
+	{
 		Handler:    getUserListInfoHandler, //获取所有用户
 		RouterType: common.RouterTypeNeedAuth,
 		Method:     "GET",
