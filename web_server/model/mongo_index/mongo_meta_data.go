@@ -10,12 +10,13 @@ import (
 )
 
 const (
-	CollectionUser       = "user"
-	CollectionLogin      = "login"
-	CollectionApp        = "application"
-	CollectionAppVersion = "app_version"
-	CollectionPermission = "permission"
-	CollectionRole       = "role"
+	CollectionUser           = "user"
+	CollectionLogin          = "login"
+	CollectionApp            = "application"
+	CollectionAppVersion     = "app_version"
+	CollectionPermission     = "permission"
+	CollectionRole           = "role"
+	CollectionRolePermission = "role_permission"
 )
 
 type Index struct {
@@ -123,6 +124,17 @@ var Indexes = []Index{
 			Background: false,
 			Sparse:     true,
 			Name:       "c_appVersion_f_version_f_appId_index",
+		},
+	},
+	{
+		Name: CollectionRolePermission,
+		Index: mgo.Index{
+			Key:        []string{"role_id", "permission_id"},
+			Unique:     true,
+			DropDups:   true,
+			Background: false,
+			Sparse:     true,
+			Name:       "c_role_f_permission_f_role_index",
 		},
 	},
 }

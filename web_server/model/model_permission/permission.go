@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"vue-admin/web_server/core/mongo"
+	"vue-admin/web_server/model/model_role_permission"
 	"vue-admin/web_server/model/mongo_index"
 	"vue-admin/web_server/model/shareDB"
 
@@ -97,8 +98,8 @@ func (p Permission) Insert() (int64, error) {
 	return p.Id, p.insert(p)
 }
 
-func (p Permission) FindOne() (Permission, error) {
-	return p.findOne(bson.M{"_id": p.Id}, nil)
+func (p Permission) FindOne(selector interface{}) (Permission, error) {
+	return p.findOne(bson.M{"_id": p.Id}, selector)
 }
 
 func (p Permission) FindPipeOne() (Permission, error) {
@@ -121,6 +122,10 @@ func (p Permission) Update() error {
 func (p Permission) Remove() error {
 	if p.Id == 0 {
 		return errors.New("id needed ")
+	}
+	rp := model_role_permission.RolePermission{}
+	if rp.Exist(bson.M{"permission_id": p.Id}) {
+		return fmt.Errorf("permission in use")
 	}
 	return p.remove(bson.M{"_id": p.Id})
 }

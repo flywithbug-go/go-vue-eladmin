@@ -5,9 +5,9 @@
     <el-table v-loading="loading" :data="data" size="small" border style="width: 100%;">
       <el-table-column prop="name" :label="$t('table.name')"/>
       <el-table-column prop="remark" :label="$t('table.desc')"/>
-      <el-table-column prop="createTime" :label="$t('table.create_time')">
+      <el-table-column prop="create_time" :label="$t('table.create_time')">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.createTime) }}</span>
+          <span>{{ parseTime(scope.row.create_time) }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('actions.action')" width="150px" align="center">
@@ -20,10 +20,10 @@
             width="180">
             <p>{{ $t('system.role_confirm_del') }}</p>
             <div style="text-align: right; margin: 0">
-              <el-button size="mini" type="text" @click="scope.row.delPopover = false">{{ "$t('actions.cancel')" }}</el-button>
-              <el-button :loading="delLoading" type="primary" size="mini" @click="subDelete(scope.$index, scope.row)">{{ "$t('actions.confirm')" }}</el-button>
+              <el-button size="mini" type="text" @click="scope.row.delPopover = false">{{ $t('actions.cancel') }}</el-button>
+              <el-button :loading="delLoading" type="primary" size="mini" @click="subDelete(scope.$index, scope.row)">{{ $t('actions.confirm') }}</el-button>
             </div>
-            <el-button slot="reference" :disabled="scope.row.id === 1" type="danger" size="mini" @click="scope.row.delPopover = true">{{ "$t('actions.delete')" }}</el-button>
+            <el-button slot="reference" :disabled="scope.row.id === 1" type="danger" size="mini" @click="scope.row.delPopover = true">{{ $t('actions.delete') }}</el-button>
           </el-popover>
         </template>
       </el-table-column>

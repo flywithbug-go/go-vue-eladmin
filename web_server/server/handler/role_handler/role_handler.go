@@ -125,5 +125,21 @@ func getRoleListHandler(c *gin.Context) {
 	}
 	aRes.AddResponseInfo("list", list)
 	aRes.AddResponseInfo("total", totalCount)
+}
 
+func getRoleTreeHandler(c *gin.Context) {
+	aRes := model.NewResponse()
+	defer func() {
+		c.JSON(http.StatusOK, aRes)
+	}()
+	var role = model_role.Role{}
+	query := bson.M{"pid": 0}
+	selector := bson.M{"_id": 1, "name": 1}
+	list, err := role.FindPageFilter(0, 0, query, selector)
+	if err != nil {
+		log4go.Info(err.Error())
+		aRes.SetErrorInfo(http.StatusUnauthorized, "app version list find error"+err.Error())
+		return
+	}
+	aRes.AddResponseInfo("list", list)
 }

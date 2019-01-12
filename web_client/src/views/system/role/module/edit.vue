@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-button :disabled="data.id === 1" size="mini" type="success" @click="to">编辑</el-button>
+    <el-button :disabled="data.id === 1" size="mini" type="success" @click="to">{{ $t('actions.edit') }}</el-button>
     <eForm ref="form" :permissions="permissions" :sup_this="sup_this" :is-add="false"/>
   </div>
 </template>
@@ -24,9 +24,10 @@ export default {
   },
   methods: {
     to() {
+      console.log("permissions:", this.permissions)
       const _this = this.$refs.form
       _this.permissionIds = []
-      _this.form = { id: this.data.id, name: this.data.name, remark: this.data.remark, permissions: [] }
+      _this.form = { id: this.data.id, name: this.data.name, remark: this.data.alias, permissions: [] }
       this.data.permissions.forEach(function(data, index) {
         _this.permissionIds.push(data.id)
       })

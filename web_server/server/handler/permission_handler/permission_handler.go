@@ -45,7 +45,7 @@ func getPermissionHandler(c *gin.Context) {
 
 	var mInfo = model_permission.Permission{}
 	mInfo.Id = int64(id)
-	mInfo, err := mInfo.FindOne()
+	mInfo, err := mInfo.FindOne(nil)
 	if err != nil {
 		log4go.Info(err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "invalid: "+err.Error())
