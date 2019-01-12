@@ -7,9 +7,9 @@
       <el-form-item label="邮箱" prop="email">
         <el-input v-model="form.email" style="width: 370px;"/>
       </el-form-item>
-      <el-form-item label="状态" prop="enabled">
-        <el-radio v-model="form.enabled" label="true">激活</el-radio>
-        <el-radio v-model="form.enabled" label="false" >锁定</el-radio>
+      <el-form-item label="状态" prop="status">
+        <el-radio v-model="form.status" label="true">激活</el-radio>
+        <el-radio v-model="form.status" label="false" >锁定</el-radio>
       </el-form-item>
       <el-form-item style="margin-bottom: 0px;" label="角色">
         <treeselect v-model="roleIds" :multiple="true" :options="roles" style="width: 370px;" placeholder="请选择角色" />
@@ -45,7 +45,7 @@
     },
     data() {
       return {
-        dialog: false, loading: false, form: { username: '', email: '', enabled: 'false', roles: [] }, roleIds: [],
+        dialog: false, loading: false, form: { username: '', email: '', status: 1, roles: [] }, roleIds: [],
         rules: {
           username: [
             { required: true, message: '请输入用户名', trigger: 'blur' },
@@ -55,7 +55,7 @@
             { required: true, message: '请输入邮箱地址', trigger: 'blur' },
             { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' }
           ],
-          enabled: [
+          status: [
             { required: true, message: '状态不能为空', trigger: 'blur' }
           ]
         }

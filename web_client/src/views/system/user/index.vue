@@ -15,7 +15,7 @@
       <el-table-column prop="email" label="邮箱"/>
       <el-table-column label="状态">
         <template slot-scope="scope">
-          <span>{{ scope.row.status == 1 ? '激活':'锁定' }}</span>
+          <span>{{ scope.row.status == 1  ? '激活':'锁定' }}</span>
         </template>
       </el-table-column>
       <el-table-column prop="createTime" label="注册日期">
@@ -82,10 +82,10 @@
         const query = this.query
         const type = query.type
         const value = query.value
-        const enabled = query.enabled
+        const status = query.status
         this.params = { page: this.page, size: this.size, sort: sort }
         if (type && value) { this.params[type] = value }
-        if (enabled !== '' && enabled !== null) { this.params['enabled'] = enabled }
+        if (status !== '' && status !== null) { this.params['status'] = status }
         return true
       },
       subDelete(index, row) {
