@@ -148,7 +148,6 @@ func getUserInfoHandler(c *gin.Context) {
 }
 
 func updateUserHandler(c *gin.Context) {
-	//TODO need check Permission
 	aRes := model.NewResponse()
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
@@ -180,7 +179,6 @@ func updateUserHandler(c *gin.Context) {
 }
 
 func deleteUserHandler(c *gin.Context) {
-	//TODO need check Permission
 	aRes := model.NewResponse()
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
@@ -254,4 +252,31 @@ func getUserListInfoHandler(c *gin.Context) {
 	}
 	aRes.AddResponseInfo("list", appList)
 	aRes.AddResponseInfo("total", totalCount)
+}
+
+func addUserHandler(c *gin.Context) {
+	aRes := model.NewResponse()
+	defer func() {
+		c.JSON(http.StatusOK, aRes)
+	}()
+
+	if check_permission.CheckPermission(c, model_user.UserPermissionCreate) {
+		log4go.Info("has no permission")
+		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
+		return
+	}
+	user := new(model_user.User)
+	err := c.BindJSON(user)
+	if err != nil {
+		log4go.Info(err.Error())
+		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
+		return
+	}
+	err = user.Insert()
+	if err != nil {
+		log4go.Info(err.Error())
+		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
+		return
+	}
+	aRes.SetSuccess()
 }

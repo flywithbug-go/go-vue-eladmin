@@ -17,6 +17,9 @@ func CheckPermission(c *gin.Context, permission string) bool {
 		return false
 	}
 	for _, item := range user.RolesString {
+		if strings.EqualFold(item, "") {
+
+		}
 		if strings.EqualFold(item, permission) {
 			return true
 		}
