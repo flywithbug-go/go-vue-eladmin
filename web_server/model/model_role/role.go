@@ -27,7 +27,7 @@ type Role struct {
 	Alias       string                        `json:"alias,omitempty"  bson:"alias,omitempty"`
 	Note        string                        `json:"note,omitempty"  bson:"note,omitempty"`
 	CreateTime  int64                         `json:"create_time,omitempty"  bson:"create_time,omitempty"`
-	Permissions []model_permission.Permission `json:"permissions" bson:"permissions,omitempty"`
+	Permissions []model_permission.Permission `json:"permissions,omitempty" bson:"permissions,omitempty"`
 	Label       string                        `json:"label,omitempty"  bson:"label,omitempty"`
 	PerString   []string                      `json:"per_string,omitempty" bson:"per_string,omitempty"`
 }
@@ -83,10 +83,17 @@ func (r Role) Exist() bool {
 }
 
 func (r Role) Insert() error {
+	if len(r.Name) == 0 {
+		return fmt.Errorf("name can not be nil")
+	}
+	if len(r.Alias) == 0 {
+		return fmt.Errorf("alias can not be nil")
+	}
 	r.Id, _ = mongo.GetIncrementId(roleCollection)
 	r.CreateTime = time.Now().Unix() * 1000
 	list := r.Permissions
 	r.Permissions = nil
+
 	err := r.insert(r)
 	if err != nil {
 		return err
@@ -99,6 +106,12 @@ func (r Role) Insert() error {
 func (r Role) Update() error {
 	if r.Id == 10000 {
 		return fmt.Errorf("超级管理员不能编辑")
+	}
+	if len(r.Name) == 0 {
+		return fmt.Errorf("name can not be nil")
+	}
+	if len(r.Alias) == 0 {
+		return fmt.Errorf("alias can not be nil")
 	}
 	r.updateRolePermission()
 	r.Permissions = nil
@@ -198,7 +211,6 @@ func makeTreeList(list []Role, selector interface{}) error {
 		for _, item := range results {
 			per.Id = item.PermissionId
 			per, err := per.FindOne(selector)
-
 			if err != nil {
 				log4go.Info(err.Error())
 			} else {

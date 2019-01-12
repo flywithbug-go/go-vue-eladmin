@@ -116,12 +116,10 @@ func (u User) updateUserRoles() {
 
 func (u User) Update() error {
 	selector := bson.M{"_id": u.Id}
-	if u.Id == 10000 {
-		u.Id = 0
-	}
 	u.updateUserRoles()
 	u.Roles = nil
-	return u.update(selector, u)
+	err := u.update(selector, u)
+	return err
 }
 
 func (u User) Remove() error {
