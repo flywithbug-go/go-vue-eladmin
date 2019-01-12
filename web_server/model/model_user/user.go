@@ -16,7 +16,12 @@ import (
 )
 
 const (
-	userCollection = mongo_index.CollectionUser
+	userCollection       = mongo_index.CollectionUser
+	UserPermissionAll    = "USER_ALL"
+	UserPermissionSelect = "USER_SELECT"
+	UserPermissionCreate = "USER_CREATE"
+	UserPermissionEdit   = "USER_EDIT"
+	UserPermissionDelete = "USER_DELETE"
 )
 
 type User struct {
@@ -35,6 +40,7 @@ type User struct {
 	CreateTime  int64             `json:"createTime,omitempty"  bson:"create_time,omitempty"`
 	Roles       []model_role.Role `json:"roles,omitempty" bson:"roles,omitempty"`
 	RolesString []string          `json:"roles_string,omitempty" bson:"roles_string,omitempty"`
+	Permissions []string          `json:"permissions,omitempty" bson:"permissions,omitempty"`
 }
 
 func (u User) ToJson() string {

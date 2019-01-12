@@ -168,6 +168,7 @@ func deleteUserHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
+
 	user := new(model_user.User)
 	err := c.BindJSON(user)
 	if err != nil {
