@@ -212,6 +212,12 @@ func getUserListInfoHandler(c *gin.Context) {
 		c.JSON(http.StatusOK, aRes)
 	}()
 
+	if check_permission.CheckPermission(c, model_user.UserPermissionSelect) {
+		log4go.Info("has no permission")
+		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
+		return
+	}
+
 	limit, _ := strconv.Atoi(c.Query("limit"))
 	page, _ := strconv.Atoi(c.Query("page"))
 	sort := c.Query("sort")
