@@ -121,7 +121,7 @@ func getUserInfoHandler(c *gin.Context) {
 	if id == 0 {
 		id = common.UserId(c)
 	} else {
-		if check_permission.CheckPermission(c, model_user.UserPermissionSelect) {
+		if check_permission.CheckNoPermission(c, model_user.UserPermissionSelect) {
 			log4go.Info("has no permission")
 			aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
 			return
@@ -150,7 +150,7 @@ func updateUserHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
-	if check_permission.CheckPermission(c, model_user.UserPermissionEdit) {
+	if check_permission.CheckNoPermission(c, model_user.UserPermissionEdit) {
 		log4go.Info("has no permission")
 		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
 		return
@@ -162,11 +162,7 @@ func updateUserHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
-	if common.UserId(c) == user.Id {
-		log4go.Info("can not delete your self")
-		aRes.SetErrorInfo(http.StatusForbidden, "can not delete your self")
-		return
-	}
+
 	err = user.Update()
 	if err != nil {
 		log4go.Info(err.Error())
@@ -181,7 +177,7 @@ func deleteUserHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
-	if check_permission.CheckPermission(c, model_user.UserPermissionDelete) {
+	if check_permission.CheckNoPermission(c, model_user.UserPermissionDelete) {
 		log4go.Info("has no permission")
 		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
 		return
@@ -191,6 +187,11 @@ func deleteUserHandler(c *gin.Context) {
 	if err != nil {
 		log4go.Info(err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
+		return
+	}
+	if common.UserId(c) == user.Id {
+		log4go.Info("can not delete your self")
+		aRes.SetErrorInfo(http.StatusForbidden, "can not delete your self")
 		return
 	}
 	err = user.Remove()
@@ -208,7 +209,7 @@ func getUserListInfoHandler(c *gin.Context) {
 		c.JSON(http.StatusOK, aRes)
 	}()
 
-	if check_permission.CheckPermission(c, model_user.UserPermissionSelect) {
+	if check_permission.CheckNoPermission(c, model_user.UserPermissionSelect) {
 		log4go.Info("has no permission")
 		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
 		return
@@ -258,7 +259,7 @@ func addUserHandler(c *gin.Context) {
 		c.JSON(http.StatusOK, aRes)
 	}()
 
-	if check_permission.CheckPermission(c, model_user.UserPermissionCreate) {
+	if check_permission.CheckNoPermission(c, model_user.UserPermissionCreate) {
 		log4go.Info("has no permission")
 		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
 		return

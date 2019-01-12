@@ -12,27 +12,28 @@ const (
 	SUPERADMIN = "ADMIN"
 )
 
-func CheckPermission(c *gin.Context, permission string) bool {
+func CheckNoPermission(c *gin.Context, permission string) bool {
 	id := common.UserId(c)
 	user := model_user.User{}
 	user.Id = id
 	user, err := user.FindOne()
 	if err != nil {
-		return false
+		return true
 	}
-	for _, item := range user.RolesString {
+	for index := range user.RolesString {
+		item := user.RolesString[index]
 		if strings.EqualFold(item, SUPERADMIN) {
-			return true
+			return false
 		}
 		if strings.EqualFold(item, permission) {
-			return true
+			return false
 		}
 		if strings.HasSuffix(item, "ALL") {
 			splits := strings.Split(item, "_")
 			if strings.HasPrefix(item, splits[0]) {
-				return true
+				return false
 			}
 		}
 	}
-	return false
+	return true
 }

@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"strings"
 	"vue-admin/web_server/model"
+	"vue-admin/web_server/model/check_permission"
 	"vue-admin/web_server/model/model_permission"
 
 	"gopkg.in/mgo.v2/bson"
@@ -18,6 +19,11 @@ func addPermissionHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
+	if check_permission.CheckNoPermission(c, model_permission.PPermissionCreate) {
+		log4go.Info("has no permission")
+		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
+		return
+	}
 	p := model_permission.Permission{}
 	err := c.BindJSON(&p)
 	if err != nil {
@@ -25,7 +31,6 @@ func addPermissionHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
-
 	id, err := p.Insert()
 	if err != nil {
 		log4go.Info(err.Error())
@@ -40,9 +45,13 @@ func getPermissionHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
+	if check_permission.CheckNoPermission(c, model_permission.PPermissionSelect) {
+		log4go.Info("has no permission")
+		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
+		return
+	}
 	ids := c.Query("id")
 	id, _ := strconv.Atoi(ids)
-
 	var mInfo = model_permission.Permission{}
 	mInfo.Id = int64(id)
 	mInfo, err := mInfo.FindOne(nil)
@@ -59,6 +68,11 @@ func updatePermissionHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
+	if check_permission.CheckNoPermission(c, model_permission.PPermissionEdit) {
+		log4go.Info("has no permission")
+		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
+		return
+	}
 	para := model_permission.Permission{}
 	err := c.BindJSON(&para)
 	if err != nil {
@@ -79,6 +93,11 @@ func removePermissionHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
+	if check_permission.CheckNoPermission(c, model_permission.PPermissionDelete) {
+		log4go.Info("has no permission")
+		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
+		return
+	}
 	//need id
 	para := model_permission.Permission{}
 	err := c.BindJSON(&para)
@@ -100,6 +119,11 @@ func getPermissionListHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
+	if check_permission.CheckNoPermission(c, model_permission.PPermissionSelect) {
+		log4go.Info("has no permission")
+		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
+		return
+	}
 	var per = model_permission.Permission{}
 	limit, _ := strconv.Atoi(c.Query("limit"))
 	page, _ := strconv.Atoi(c.Query("page"))
@@ -136,6 +160,11 @@ func getPermissionTreeHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
+	if check_permission.CheckNoPermission(c, model_permission.PPermissionSelect) {
+		log4go.Info("has no permission")
+		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
+		return
+	}
 	var per = model_permission.Permission{}
 	query := bson.M{"pid": 0}
 	selector := bson.M{"_id": 1, "alias": 1}

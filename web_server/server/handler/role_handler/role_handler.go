@@ -19,7 +19,7 @@ func addRoleHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
-	if check_permission.CheckPermission(c, model_role.RolePermissionCreate) {
+	if check_permission.CheckNoPermission(c, model_role.RolePermissionCreate) {
 		log4go.Info("has no permission")
 		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
 		return
@@ -45,7 +45,7 @@ func getRoleHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
-	if check_permission.CheckPermission(c, model_role.RolePermissionSelect) {
+	if check_permission.CheckNoPermission(c, model_role.RolePermissionSelect) {
 		log4go.Info("has no permission")
 		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
 		return
@@ -69,7 +69,7 @@ func updateRoleHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
-	if check_permission.CheckPermission(c, model_role.RolePermissionEdit) {
+	if check_permission.CheckNoPermission(c, model_role.RolePermissionEdit) {
 		log4go.Info("has no permission")
 		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
 		return
@@ -95,7 +95,7 @@ func removeRoleHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
-	if check_permission.CheckPermission(c, model_role.RolePermissionDelete) {
+	if check_permission.CheckNoPermission(c, model_role.RolePermissionDelete) {
 		log4go.Info("has no permission")
 		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
 		return
@@ -122,7 +122,7 @@ func getRoleListHandler(c *gin.Context) {
 		c.JSON(http.StatusOK, aRes)
 	}()
 
-	if check_permission.CheckPermission(c, model_role.RolePermissionSelect) {
+	if check_permission.CheckNoPermission(c, model_role.RolePermissionSelect) {
 		log4go.Info("has no permission")
 		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
 		return
@@ -164,7 +164,7 @@ func getRoleTreeHandler(c *gin.Context) {
 		c.JSON(http.StatusOK, aRes)
 	}()
 
-	if check_permission.CheckPermission(c, model_role.RolePermissionSelect) {
+	if check_permission.CheckNoPermission(c, model_role.RolePermissionSelect) {
 		log4go.Info("has no permission")
 		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
 		return
