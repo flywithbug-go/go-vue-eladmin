@@ -3,7 +3,7 @@
     <eHeader :permissions="permissions" :query="query"/>
     <!--表格渲染-->
     <tree-table v-loading="loading" :data="data" :expand-all="true" :columns="columns" border size="medium">
-      <el-table-column prop="createTime" :label="$t('table.create_time')">
+      <el-table-column :label="$t('table.create_time')" prop="createTime">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.create_time) }}</span>
         </template>
@@ -21,7 +21,7 @@
               <el-button size="mini" type="text" @click="scope.row.delPopover = false">{{ $t('actions.cancel') }}</el-button>
               <el-button :loading="delLoading" type="primary" size="mini" @click="subDelete(scope.$index, scope.row)">{{ $t('actions.confirm') }}</el-button>
             </div>
-            <el-button slot="reference" v-if="scope.row.id != 10000" type="danger" size="mini" @click="scope.row.delPopover = true">{{ $t('actions.delete') }}</el-button>
+            <el-button v-if="scope.row.id != 10000" slot="reference" type="danger" size="mini" @click="scope.row.delPopover = true">{{ $t('actions.delete') }}</el-button>
           </el-popover>
         </template>
       </el-table-column>

@@ -5,9 +5,9 @@
         <el-input v-model="form.name" style="width: 370px;"/>
       </el-form-item>
       <el-form-item :label="$t('table.permission')">
-        <TreeSelect v-model="permissionIds" :multiple="true" :options="permissions" style="width: 370px;" :placeholder="$t('placeholder.permission')" />
+        <TreeSelect v-model="permissionIds" :multiple="true" :options="permissions" :placeholder="$t('placeholder.permission')" style="width: 370px;" />
       </el-form-item>
-      <el-form-item style="margin-top: -10px;" :label="$t('table.desc')">
+      <el-form-item :label="$t('table.desc')" style="margin-top: -10px;">
         <el-input v-model="form.note" style="width: 370px;" rows="5" type="textarea"/>
       </el-form-item>
     </el-form>

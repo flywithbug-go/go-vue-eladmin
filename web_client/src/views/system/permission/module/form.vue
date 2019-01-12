@@ -7,8 +7,8 @@
       <el-form-item :label="$t('table.alias')" prop="alias">
         <el-input v-model="form.alias" style="width: 360px;"/>
       </el-form-item>
-      <el-form-item style="margin-bottom: 0px;" :label="$t('table.sup_dir')">
-        <TreeSelect v-model="form.pid" :options="permissions" style="width: 360px;" :placeholder="$t('placeholder.sup_dir')" />
+      <el-form-item :label="$t('table.sup_dir')" style="margin-bottom: 0px;">
+        <TreeSelect v-model="form.pid" :options="permissions" :placeholder="$t('placeholder.sup_dir')" style="width: 360px;" />
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">

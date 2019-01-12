@@ -33,45 +33,45 @@
 </template>
 
 <script>
-  import checkPermission from '@/utils/permission' // 权限判断函数
-  import { parseTime } from '@/utils/index'
-  import eForm from './form'
-  // 查询条件
-  export default {
-    components: { eForm },
-    props: {
-      roles: {
-        type: Array,
-        required: true
-      },
-      query: {
-        type: Object,
-        required: true
-      }
+import checkPermission from '@/utils/permission' // 权限判断函数
+import { parseTime } from '@/utils/index'
+import eForm from './form'
+// 查询条件
+export default {
+  components: { eForm },
+  props: {
+    roles: {
+      type: Array,
+      required: true
     },
-    data() {
-      return {
-        downloadLoading: false,
-        queryTypeOptions: [
-          { key: 'username', display_name: '用户名' },
-          { key: 'email', display_name: '邮箱' }
-        ],
-        enabledTypeOptions: [
-          { key: 'true', display_name: '激活' },
-          { key: 'false', display_name: '锁定' }
-        ]
-      }
+    query: {
+      type: Object,
+      required: true
+    }
+  },
+  data() {
+    return {
+      downloadLoading: false,
+      queryTypeOptions: [
+        { key: 'username', display_name: '用户名' },
+        { key: 'email', display_name: '邮箱' }
+      ],
+      enabledTypeOptions: [
+        { key: 'true', display_name: '激活' },
+        { key: 'false', display_name: '锁定' }
+      ]
+    }
+  },
+  methods: {
+    checkPermission,
+    // 去查询
+    toQuery() {
+      this.$parent.page = 0
+      this.$parent.init()
     },
-    methods: {
-      checkPermission,
-      // 去查询
-      toQuery() {
-        this.$parent.page = 0
-        this.$parent.init()
-      },
-      // 导出
-      download() {
-        this.downloadLoading = true
+    // 导出
+    download() {
+      this.downloadLoading = true
         import('@/vendor/Export2Excel').then(excel => {
           const tHeader = ['ID', '用户名', '邮箱', '头像地址', '状态', '注册日期', '最后修改密码日期']
           const filterVal = ['id', 'username', 'email', 'avatar', 'enabled', 'createTime', 'lastPasswordResetTime']
@@ -83,19 +83,19 @@
           })
           this.downloadLoading = false
         })
-      },
-      // 数据转换
-      formatJson(filterVal, jsonData) {
-        return jsonData.map(v => filterVal.map(j => {
-          if (j === 'createTime' || j === 'lastPasswordResetTime') {
-            return parseTime(v[j])
-          } else if (j === 'enabled') {
-            return parseTime(v[j]) ? '启用' : '禁用'
-          } else {
-            return v[j]
-          }
-        }))
-      }
+    },
+    // 数据转换
+    formatJson(filterVal, jsonData) {
+      return jsonData.map(v => filterVal.map(j => {
+        if (j === 'createTime' || j === 'lastPasswordResetTime') {
+          return parseTime(v[j])
+        } else if (j === 'enabled') {
+          return parseTime(v[j]) ? '启用' : '禁用'
+        } else {
+          return v[j]
+        }
+      }))
     }
   }
+}
 </script>
