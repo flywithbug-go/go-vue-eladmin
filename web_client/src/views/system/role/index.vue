@@ -46,6 +46,8 @@
   import { parseTime } from '@/utils/index'
   import eHeader from './module/header'
   import edit from './module/edit'
+  import config from '../../../config'
+
   export default {
     components: { eHeader, edit },
     mixins: [initData],
@@ -64,7 +66,7 @@
       parseTime,
       checkPermission,
       beforeInit() {
-        this.url = '/role/list'
+        this.url = config.PathRoleList
         const sort = 'id,desc'
         const query = this.query
         const value = query.value

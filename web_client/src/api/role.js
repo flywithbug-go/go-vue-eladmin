@@ -1,10 +1,11 @@
 import client from '../utils/fetch'
+import config from '../config'
 
 
 // 获取所有的Role
 export function getRoleTree() {
   return client({
-    url: '/role/list',
+    url: config.PathRoleTree,
     method: 'get'
   })
 }

@@ -23,7 +23,7 @@ type Role struct {
 	Alias       string                        `json:"alias,omitempty"  bson:"alias,omitempty"`
 	Note        string                        `json:"note,omitempty"  bson:"note,omitempty"`
 	CreateTime  int64                         `json:"create_time,omitempty"  bson:"create_time,omitempty"`
-	Permissions []model_permission.Permission `json:"permissions,omitempty" bson:"_,omitempty"`
+	Permissions []model_permission.Permission `json:"permissions" bson:"permissions,omitempty"`
 	Label       string                        `json:"label ,omitempty"  bson:"_ ,omitempty"`
 }
 
@@ -84,7 +84,7 @@ func (r Role) FindOne() (role Role, err error) {
 	var per model_permission.Permission
 	for index, item := range results {
 		per.Id = item.PermissionId
-		per, err := per.FindOne(bson.M{"_id": 1, "alias": 1})
+		per, err := per.FindOne(nil)
 		per.Label = per.Alias
 		per.Alias = ""
 		if err == nil {
@@ -119,6 +119,7 @@ func (r Role) Update() error {
 		rp.PermissionId = per.Id
 		rp.Insert()
 	}
+	r.Permissions = nil
 	return r.update(bson.M{"_id": r.Id}, r)
 }
 
@@ -133,8 +134,12 @@ func (r Role) TotalCount(query, selector interface{}) (int, error) {
 }
 
 func (r Role) FindPageFilter(page, limit int, query, selector interface{}, fields ...string) ([]Role, error) {
-
-	return r.findPage(page, limit, query, selector, fields...)
+	results, err := r.findPage(page, limit, query, selector, fields...)
+	if err != nil {
+		return nil, err
+	}
+	err = makeTreeList(results, selector)
+	return results, err
 }
 
 func (r Role) FetchTreeList(selector interface{}) (results []Role, err error) {
@@ -147,6 +152,20 @@ func (r Role) FetchTreeList(selector interface{}) (results []Role, err error) {
 }
 
 func makeTreeList(list []Role, selector interface{}) error {
-
+	for index := range list {
+		rp := model_role_permission.RolePermission{}
+		results, _ := rp.FindAll(bson.M{"role_id": list[index].Id}, nil)
+		list[index].Permissions = make([]model_permission.Permission, len(results))
+		var per model_permission.Permission
+		for index1, item := range results {
+			per.Id = item.PermissionId
+			per, err := per.FindOne(selector)
+			per.Label = per.Alias
+			per.Alias = ""
+			if err == nil {
+				list[index].Permissions[index1] = per
+			}
+		}
+	}
 	return nil
 }

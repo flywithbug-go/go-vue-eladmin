@@ -93,8 +93,9 @@ func (r RolePermission) Update() error {
 func (r RolePermission) Remove() error {
 	return r.remove(bson.M{"_id": r.Id})
 }
+
 func (r RolePermission) RemoveRoleId(roleId int64) error {
-	return r.remove(bson.M{"role_id": roleId})
+	return r.removeAll(bson.M{"role_id": roleId})
 }
 
 func (r RolePermission) TotalCount(query, selector interface{}) (int, error) {
