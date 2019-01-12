@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"time"
 	"vue-admin/web_server/core/mongo"
+	"vue-admin/web_server/model/model_ROLE_role"
 	"vue-admin/web_server/model/model_permission"
 	"vue-admin/web_server/model/model_role_permission"
-	"vue-admin/web_server/model/model_user_role"
 	"vue-admin/web_server/model/mongo_index"
 	"vue-admin/web_server/model/shareDB"
 
@@ -18,6 +18,11 @@ import (
 
 const (
 	roleCollection = mongo_index.CollectionRole
+	//RolePermissionAll    = "ROLE_ALL"
+	RolePermissionSelect = "ROLE_SELECT"
+	RolePermissionCreate = "ROLE_CREATE"
+	RolePermissionEdit   = "ROLE_EDIT"
+	RolePermissionDelete = "ROLE_DELETE"
 )
 
 //角色表，记录公司各种角色，比如：CEO 管理员，开发，开发经理，销售，销售主管，等
@@ -228,7 +233,7 @@ func makeTreeList(list []Role, selector interface{}) error {
 }
 
 func (r Role) checkInUse() bool {
-	ur := model_user_role.UserRole{}
+	ur := model_ROLE_role.UserRole{}
 	if ur.Exist(bson.M{"role_id": r.Id}) {
 		return true
 	}

@@ -16,8 +16,8 @@ import (
 )
 
 const (
-	userCollection       = mongo_index.CollectionUser
-	UserPermissionAll    = "USER_ALL"
+	userCollection = mongo_index.CollectionUser
+	//UserPermissionAll    = "USER_ALL"
 	UserPermissionSelect = "USER_SELECT"
 	UserPermissionCreate = "USER_CREATE"
 	UserPermissionEdit   = "USER_EDIT"

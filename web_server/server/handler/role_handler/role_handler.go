@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"strings"
 	"vue-admin/web_server/model"
+	"vue-admin/web_server/model/check_permission"
 	"vue-admin/web_server/model/model_role"
 
 	"gopkg.in/mgo.v2/bson"
@@ -18,6 +19,12 @@ func addRoleHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
+	if check_permission.CheckPermission(c, model_role.RolePermissionCreate) {
+		log4go.Info("has no permission")
+		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
+		return
+	}
+
 	para := model_role.Role{}
 	err := c.BindJSON(&para)
 	if err != nil {
@@ -38,6 +45,12 @@ func getRoleHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
+	if check_permission.CheckPermission(c, model_role.RolePermissionSelect) {
+		log4go.Info("has no permission")
+		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
+		return
+	}
+
 	ids := c.Query("id")
 	var role = model_role.Role{}
 	id, _ := strconv.Atoi(ids)
@@ -56,6 +69,12 @@ func updateRoleHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
+	if check_permission.CheckPermission(c, model_role.RolePermissionEdit) {
+		log4go.Info("has no permission")
+		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
+		return
+	}
+
 	para := model_role.Role{}
 	err := c.BindJSON(&para)
 	if err != nil {
@@ -76,6 +95,11 @@ func removeRoleHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
+	if check_permission.CheckPermission(c, model_role.RolePermissionDelete) {
+		log4go.Info("has no permission")
+		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
+		return
+	}
 	//need id
 	para := model_role.Role{}
 	err := c.BindJSON(&para)
@@ -97,6 +121,13 @@ func getRoleListHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
+
+	if check_permission.CheckPermission(c, model_role.RolePermissionSelect) {
+		log4go.Info("has no permission")
+		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
+		return
+	}
+
 	var role = model_role.Role{}
 	limit, _ := strconv.Atoi(c.Query("limit"))
 	page, _ := strconv.Atoi(c.Query("page"))
@@ -132,6 +163,13 @@ func getRoleTreeHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
+
+	if check_permission.CheckPermission(c, model_role.RolePermissionSelect) {
+		log4go.Info("has no permission")
+		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
+		return
+	}
+
 	var role = model_role.Role{}
 	selector := bson.M{"_id": 1, "alias": 1}
 	list, err := role.FindPageFilter(0, 0, nil, selector)
