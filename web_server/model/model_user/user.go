@@ -35,8 +35,8 @@ type User struct {
 	Name        string            `json:"name,omitempty" bson:"name,omitempty"`     // 名字！
 	Nick        string            `json:"nick,omitempty" bson:"nick,omitempty"`     // 昵称
 	Title       string            `json:"title,omitempty" bson:"title,omitempty"`
-	Status      int               `json:"status,omitempty" bson:"status,omitempty"` //1 激活，2锁定
-	Note        string            `json:"note,omitempty"  bson:"note,omitempty"`    //备注,
+	Enabled     bool              `json:"enabled" bson:"enabled"`                //1 激活，
+	Note        string            `json:"note,omitempty"  bson:"note,omitempty"` //备注,
 	CreateTime  int64             `json:"createTime,omitempty"  bson:"create_time,omitempty"`
 	Roles       []model_role.Role `json:"roles,omitempty" bson:"roles,omitempty"`
 	RolesString []string          `json:"roles_string,omitempty" bson:"roles_string,omitempty"`
@@ -95,7 +95,7 @@ func (u User) removeAll(selector interface{}) error {
 */
 func (u User) Insert() error {
 	u.Id, _ = mongo.GetIncrementId(userCollection)
-	u.Status = 1
+	u.Enabled = true
 	u.CreateTime = time.Now().Unix() * 1000
 	list := u.Roles
 	u.Roles = nil

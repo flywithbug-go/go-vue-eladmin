@@ -36,7 +36,7 @@ export function getUserListInfoRequest(query) {
 
 
 export function add(data) {
-  return request({
+  return client({
     url: 'user',
     method: 'post',
     data
@@ -44,14 +44,19 @@ export function add(data) {
 }
 
 export function del(id) {
-  return request({
+  return client({
     url: '/user' + id,
     method: 'delete'
   })
 }
 
 export function edit(data) {
-  return request({
+  if (data.enabled === 'true'){
+    data.enabled = true
+  } else {
+    data.enabled = false
+  }
+  return client({
     url: '/user',
     method: 'put',
     data

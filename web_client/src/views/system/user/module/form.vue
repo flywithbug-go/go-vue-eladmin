@@ -7,9 +7,9 @@
       <el-form-item label="邮箱" prop="email">
         <el-input v-model="form.email" style="width: 370px;"/>
       </el-form-item>
-      <el-form-item label="状态" prop="status">
-        <el-radio v-model="form.status" label="true">激活</el-radio>
-        <el-radio v-model="form.status" label="false" >锁定</el-radio>
+      <el-form-item label="状态" prop="enabled">
+        <el-radio v-model="form.enabled" label="true">激活</el-radio>
+        <el-radio v-model="form.enabled" label="false" >锁定</el-radio>
       </el-form-item>
       <el-form-item style="margin-bottom: 0px;" label="角色">
         <treeselect v-model="roleIds" :multiple="true" :options="roles" style="width: 370px;" placeholder="请选择角色" />
@@ -45,7 +45,7 @@
     },
     data() {
       return {
-        dialog: false, loading: false, form: { username: '', email: '', status: 1, roles: [] }, roleIds: [],
+        dialog: false, loading: false, form: { username: '', email: '',enabled: 'false', status: 1, roles: [] }, roleIds: [],
         rules: {
           username: [
             { required: true, message: '请输入用户名', trigger: 'blur' },
@@ -88,7 +88,7 @@
           this.resetForm()
           this.$notify({
             title: '添加成功',
-            message: '默认密码：123456',
+            message: res.msg,
             type: 'success',
             duration: 2500
           })

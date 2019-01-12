@@ -21,6 +21,11 @@ type UserRole struct {
 	Roles []string `json:"roles"`
 }
 
+type ParaUserEdit struct {
+	model_user.User
+	Enabled string `json:"enabled,omitempty" bson:"enabled,omitempty"`
+}
+
 func loginHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
@@ -189,7 +194,6 @@ func updateUserHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
-
 	err = user.Update()
 	if err != nil {
 		log4go.Info(err.Error())

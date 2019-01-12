@@ -185,14 +185,8 @@ func (r Role) FindOneTree() (role Role, err error) {
 	if err != nil {
 		return
 	}
-	list := []Role{r}
+	list := []Role{role}
 	makeTreeList(list, nil)
-	js, _ := json.Marshal(role)
-	log4go.Info("FindOneTree:%s", js)
-	list[0].Name = role.Name
-	list[0].Alias = role.Alias
-	list[0].Label = role.Alias
-	//role.Permissions = list[0].Permissions
 	return list[0], nil
 }
 

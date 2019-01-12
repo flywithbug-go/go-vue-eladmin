@@ -163,13 +163,11 @@ func getRoleTreeHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
-
 	if check_permission.CheckNoPermission(c, model_role.RolePermissionSelect) {
 		log4go.Info("has no permission")
 		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
 		return
 	}
-
 	var role = model_role.Role{}
 	selector := bson.M{"_id": 1, "alias": 1}
 	list, err := role.FindPageFilter(0, 0, nil, selector)

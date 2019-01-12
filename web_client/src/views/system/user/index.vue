@@ -36,7 +36,7 @@
               <el-button size="mini" type="text" @click="scope.row.delPopover = false">取消</el-button>
               <el-button :loading="delLoading" type="primary" size="mini" @click="subDelete(scope.$index, scope.row)">确定</el-button>
             </div>
-            <el-button slot="reference" :disabled="scope.row.id === 1" type="danger" size="mini" @click="scope.row.delPopover = true">删除</el-button>
+            <el-button slot="reference" v-if="scope.row.id != 10000" type="danger" size="mini" @click="scope.row.delPopover = true">删除</el-button>
           </el-popover>
         </template>
       </el-table-column>
@@ -82,10 +82,10 @@
         const query = this.query
         const type = query.type
         const value = query.value
-        const status = query.status
+        const enabled = query.enabled
         this.params = { page: this.page, size: this.size, sort: sort }
         if (type && value) { this.params[type] = value }
-        if (status !== '' && status !== null) { this.params['status'] = status }
+        if (enabled !== '' && enabled !== null) { this.params['enabled'] = enabled }
         return true
       },
       subDelete(index, row) {

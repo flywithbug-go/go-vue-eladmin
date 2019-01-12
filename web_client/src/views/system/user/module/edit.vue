@@ -1,6 +1,7 @@
 <template>
   <div>
-    <el-button :disabled="data.id === 1" size="mini" type="success" @click="to">编辑</el-button>
+    <el-button v-if="data.id != 10000" size="mini" type="success" @click="to">编辑</el-button>
+    <el-tag v-if="data.id === 10000" style="color: #666666; font-weight: bolder;">不可编辑</el-tag>
     <eForm ref="form" :roles="roles" :sup_this="sup_this" :is-add="false"/>
   </div>
 </template>
@@ -27,8 +28,8 @@
       to() {
         const _this = this.$refs.form
         _this.roleIds = []
-        _this.form = { id: this.data.id, username: this.data.username, email: this.data.email, status: this.data.status, roles: [] }
-        this.data.roles.forEach(function(data) {
+        _this.form = { id: this.data.id, username: this.data.username, email: this.data.email, enabled: this.data.enabled.toString(), roles: [] }
+        this.data.roles.forEach(function(data, index) {
           _this.roleIds.push(data.id)
         })
         _this.dialog = true
