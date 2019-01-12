@@ -35,7 +35,7 @@ export default {
       console.log("permissions:", this.permissions)
       const _this = this.$refs.form
       _this.permissionIds = []
-      _this.form = { id: this.data.id, name: this.data.name, remark: this.data.alias, permissions: [] }
+      _this.form = { id: this.data.id, name: this.data.name, note: this.data.note, permissions: [] }
       this.data.permissions.forEach(function(data, index) {
         _this.permissionIds.push(data.id)
       })
