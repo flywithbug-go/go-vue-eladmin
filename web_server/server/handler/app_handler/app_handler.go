@@ -6,7 +6,8 @@ import (
 	"strings"
 	"vue-admin/web_server/common"
 	"vue-admin/web_server/model"
-	appModel "vue-admin/web_server/model/model_app"
+	"vue-admin/web_server/model/check_permission"
+	"vue-admin/web_server/model/model_app"
 
 	"gopkg.in/mgo.v2/bson"
 
@@ -15,7 +16,7 @@ import (
 )
 
 type appPara struct {
-	appModel.Application
+	model_app.Application
 }
 
 func addApplicationHandler(c *gin.Context) {
@@ -23,6 +24,12 @@ func addApplicationHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
+	if check_permission.CheckNoPermission(c, model_app.APPlicationPermissionCreate) {
+		log4go.Info("has no permission")
+		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
+		return
+	}
+
 	app := new(appPara)
 	err := c.BindJSON(app)
 	if err != nil {
@@ -61,6 +68,11 @@ func getApplicationsHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
+	if check_permission.CheckNoPermission(c, model_app.APPlicationPermissionSelect) {
+		log4go.Info("has no permission")
+		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
+		return
+	}
 	limit, _ := strconv.Atoi(c.Query("limit"))
 	page, _ := strconv.Atoi(c.Query("page"))
 	sort := c.Query("sort")
@@ -91,7 +103,7 @@ func getApplicationsHandler(c *gin.Context) {
 	if len(owner) > 0 {
 		query["owner"] = bson.M{"$regex": owner, "$options": "i"}
 	}
-	var app = appModel.Application{}
+	var app = model_app.Application{}
 	totalCount, _ := app.TotalCount(query, nil)
 	appList, err := app.FindPageFilter(page, limit, query, nil, sort)
 	if err != nil {
@@ -108,7 +120,12 @@ func updateApplicationHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
-	app := new(appModel.Application)
+	if check_permission.CheckNoPermission(c, model_app.APPlicationPermissionEdit) {
+		log4go.Info("has no permission")
+		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
+		return
+	}
+	app := new(model_app.Application)
 	err := c.BindJSON(app)
 	if err != nil {
 		log4go.Info(err.Error())
@@ -129,8 +146,12 @@ func getAllSimpleAppHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
-	var app = appModel.Application{}
-
+	if check_permission.CheckNoPermission(c, model_app.APPlicationPermissionSelect) {
+		log4go.Info("has no permission")
+		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
+		return
+	}
+	var app = model_app.Application{}
 	arrList, err := app.FindAll(nil, bson.M{"_id": 1, "name": 1, "icon": 1, "owner": 1, "editable": 1})
 	if err != nil {
 		log4go.Info(err.Error())
