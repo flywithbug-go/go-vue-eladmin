@@ -13,6 +13,13 @@ export function addApplicationRequest(para) {
     data
   })
 }
+export function deleteApplication(data) {
+  return client({
+    url: '/app',
+    method: 'delete',
+    data
+  })
+}
 
 export function getApplicationlListRequest(query) {
   return client({

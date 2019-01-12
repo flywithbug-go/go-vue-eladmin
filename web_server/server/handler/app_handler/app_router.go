@@ -27,7 +27,12 @@ var Routers = []common.GinHandleFunc{
 		Method:     "POST",
 		Route:      "/app/update",
 	},
-
+	{
+		Handler:    removeApplicationHandler,
+		RouterType: common.RouterTypeNeedAuth,
+		Method:     "DELETE",
+		Route:      "/app",
+	},
 	{
 		Handler:    addAppVersionHandler,
 		RouterType: common.RouterTypeNeedAuth,

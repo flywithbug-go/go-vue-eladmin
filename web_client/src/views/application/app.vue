@@ -114,15 +114,33 @@
       <el-table-column
         :label="$t('actions.action')"
         align="center"
-        width="100px"
+        width="180px"
         class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button
+          <el-button style="margin-right: 10px"
             type="primary"
             size="mini"
             @click="handleUpdate(scope.row)">
             {{ $t('actions.edit') }}
           </el-button>
+
+          <el-popover
+            v-model="scope.row.pop_de_status"
+            placement="top"
+            width="160px"
+            trigger="click"
+            align="center" >
+            <p align="center">
+              <span>{{ $t('selector.confirmDelete') }}</span>
+            </p>
+            <div style="text-align: center; margin: 0">
+              <el-button size="mini" type="text" @click="cancelPopover(scope.row)">{{ $t('actions.cancel') }}</el-button>
+              <el-button type="primary" size="mini" @click="deleteVersionPopover(scope.row)">{{ $t('actions.confirm') }}</el-button>
+            </div>
+            <el-button slot="reference" style="width: 60px" type="danger" size="mini">{{ $t('actions.delete') }}</el-button>
+          </el-popover>
+
+
         </template>
       </el-table-column>
 
@@ -200,7 +218,7 @@ import fixedButton from '../../components/FixedButton'
 import global_ from '../../config'
 import store from '../../store'
 import Pagination from '../../components/Pagination'
-import { addApplicationRequest, getApplicationlListRequest, updateApplicationRequest } from '../../api/app'
+import { addApplicationRequest, getApplicationlListRequest, updateApplicationRequest,deleteApplication } from '../../api/app'
 import { formatDate } from '../../utils/date'
 
 export default {
@@ -342,6 +360,25 @@ export default {
       this.dialogEditCount = -1
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
+      })
+    },
+    cancelPopover(data) {
+      data.pop_status = false
+      data.pop_de_status = false
+    },
+    deleteVersionPopover(data) {
+      data.pop_status = false
+      this.delApp(data)
+    },
+    delApp(data){
+      deleteApplication(data).then(() => {
+        this.getList()
+        this.$notify({
+          title: '成功',
+          message: '创建成功',
+          type: 'success',
+          duration: 2000
+        })
       })
     },
     sortChange(data) {
