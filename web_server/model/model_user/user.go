@@ -3,6 +3,7 @@ package model_user
 import (
 	"encoding/json"
 	"fmt"
+	"math/rand"
 	"time"
 	"vue-admin/web_server/core/mongo"
 	"vue-admin/web_server/model/model_role"
@@ -101,6 +102,9 @@ func (u User) Insert() error {
 	u.Roles = nil
 	if len(u.Avatar) == 0 {
 		u.Avatar = "https://s2.ax1x.com/2019/01/12/FjDbjg.png"
+	}
+	if u.Password == "" {
+		u.Password = createCaptcha()
 	}
 	err := u.insert(u)
 	if err != nil {
@@ -209,4 +213,8 @@ func makeTreeList(list []User, selector interface{}) error {
 	}
 
 	return nil
+}
+
+func createCaptcha() string {
+	return fmt.Sprintf("%06v", rand.New(rand.NewSource(time.Now().UnixNano())).Int31n(1000000))
 }
