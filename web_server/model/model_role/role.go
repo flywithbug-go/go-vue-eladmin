@@ -174,6 +174,9 @@ func (r Role) FindPageFilter(page, limit int, query, selector interface{}, field
 	if err != nil {
 		return nil, err
 	}
+	for index := range results {
+		results[index].Label = results[index].Alias
+	}
 	return results, err
 }
 
@@ -184,6 +187,12 @@ func (r Role) FindOneTree() (role Role, err error) {
 	}
 	list := []Role{r}
 	makeTreeList(list, nil)
+	js, _ := json.Marshal(role)
+	log4go.Info("FindOneTree:%s", js)
+	list[0].Name = role.Name
+	list[0].Alias = role.Alias
+	list[0].Label = role.Alias
+	//role.Permissions = list[0].Permissions
 	return list[0], nil
 }
 

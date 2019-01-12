@@ -28,7 +28,7 @@
         const _this = this.$refs.form
         _this.roleIds = []
         _this.form = { id: this.data.id, username: this.data.username, email: this.data.email, status: this.data.status, roles: [] }
-        this.data.roles.forEach(function(data, index) {
+        this.data.roles.forEach(function(data) {
           _this.roleIds.push(data.id)
         })
         _this.dialog = true

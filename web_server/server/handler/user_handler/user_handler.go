@@ -110,6 +110,33 @@ func logoutHandler(c *gin.Context) {
 	aRes.SetSuccessInfo(http.StatusOK, "success")
 }
 
+func addUserHandler(c *gin.Context) {
+	aRes := model.NewResponse()
+	defer func() {
+		c.JSON(http.StatusOK, aRes)
+	}()
+
+	if check_permission.CheckNoPermission(c, model_user.UserPermissionCreate) {
+		log4go.Info("has no permission")
+		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
+		return
+	}
+	user := new(model_user.User)
+	err := c.BindJSON(user)
+	if err != nil {
+		log4go.Info(err.Error())
+		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
+		return
+	}
+	err = user.Insert()
+	if err != nil {
+		log4go.Info(err.Error())
+		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
+		return
+	}
+	aRes.SetSuccess()
+}
+
 func getUserInfoHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
@@ -214,7 +241,6 @@ func getUserListInfoHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
 		return
 	}
-
 	limit, _ := strconv.Atoi(c.Query("limit"))
 	page, _ := strconv.Atoi(c.Query("page"))
 	sort := c.Query("sort")
@@ -251,31 +277,4 @@ func getUserListInfoHandler(c *gin.Context) {
 	}
 	aRes.AddResponseInfo("list", appList)
 	aRes.AddResponseInfo("total", totalCount)
-}
-
-func addUserHandler(c *gin.Context) {
-	aRes := model.NewResponse()
-	defer func() {
-		c.JSON(http.StatusOK, aRes)
-	}()
-
-	if check_permission.CheckNoPermission(c, model_user.UserPermissionCreate) {
-		log4go.Info("has no permission")
-		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
-		return
-	}
-	user := new(model_user.User)
-	err := c.BindJSON(user)
-	if err != nil {
-		log4go.Info(err.Error())
-		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
-		return
-	}
-	err = user.Insert()
-	if err != nil {
-		log4go.Info(err.Error())
-		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
-		return
-	}
-	aRes.SetSuccess()
 }

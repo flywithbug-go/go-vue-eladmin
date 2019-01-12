@@ -167,7 +167,12 @@ func (u User) totalCount(query, selector interface{}) (int, error) {
 }
 
 func (u User) FindPageFilter(page, limit int, query, selector interface{}, fields ...string) ([]User, error) {
-	return u.findPage(page, limit, query, selector, fields...)
+	results, err := u.findPage(page, limit, query, selector, fields...)
+	if err != nil {
+		return nil, err
+	}
+	makeTreeList(results, selector)
+	return results, nil
 }
 
 func (u User) TotalCount(query, selector interface{}) (int, error) {
@@ -179,7 +184,7 @@ func makeTreeList(list []User, selector interface{}) error {
 		ur := model_user_role.UserRole{}
 		results, _ := ur.FindAll(bson.M{"user_id": list[index].Id}, selector)
 		list[index].Roles = make([]model_role.Role, len(results))
-		roles := make([]string, 0, 128)
+		rolesString := make([]string, 0, 128)
 		var rule model_role.Role
 		index1 := 0
 		for _, item := range results {
@@ -191,12 +196,12 @@ func makeTreeList(list []User, selector interface{}) error {
 				log4go.Info(err.Error())
 			} else {
 				list[index].Roles[index1] = rule
-				roles = append(roles, rule.PerString...)
+				rolesString = append(rolesString, rule.PerString...)
 				index1++
 			}
 		}
 		list[index].Roles = list[index].Roles[:index1]
-		list[index].RolesString = roles
+		list[index].RolesString = rolesString
 	}
 
 	return nil
