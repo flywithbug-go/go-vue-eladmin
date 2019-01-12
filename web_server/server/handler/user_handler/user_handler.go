@@ -55,8 +55,6 @@ func loginHandler(c *gin.Context) {
 	}
 	sync.SetKeyValue(token)
 	aRes.SetResponseDataInfo("token", token)
-	//aRes.AddResponseInfo("user", user)
-
 }
 
 func registerHandler(c *gin.Context) {
