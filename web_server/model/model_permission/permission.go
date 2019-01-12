@@ -88,6 +88,10 @@ func (p Permission) explain(pipeline, result interface{}) (results []Permission,
 	return
 }
 
+func (p Permission) Exist() bool {
+	return p.isExist(bson.M{"_id": p.Id})
+}
+
 func (p Permission) Insert() (int64, error) {
 	if p.PId != 0 && !p.isExist(bson.M{"_id": p.PId}) {
 		return -1, fmt.Errorf("pid  not exist")

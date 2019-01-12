@@ -9,6 +9,8 @@ import (
 	"vue-admin/web_server/model/mongo_index"
 	"vue-admin/web_server/model/shareDB"
 
+	"github.com/flywithbug/log4go"
+
 	"gopkg.in/mgo.v2/bson"
 )
 
@@ -73,26 +75,10 @@ func (r Role) findPage(page, limit int, query, selector interface{}, fields ...s
 	return
 }
 
-func (r Role) FindOne() (role Role, err error) {
-	role, err = r.findOne(bson.M{"_id": r.Id}, nil)
-	if err != nil {
-		return
-	}
-	rp := model_role_permission.RolePermission{}
-	results, _ := rp.FindAll(bson.M{"role_id": r.Id}, nil)
-	role.Permissions = make([]model_permission.Permission, len(results))
-	var per model_permission.Permission
-	for index, item := range results {
-		per.Id = item.PermissionId
-		per, err := per.FindOne(nil)
-		per.Label = per.Alias
-		per.Alias = ""
-		if err == nil {
-			role.Permissions[index] = per
-		}
-	}
-	return
+func (r Role) Exist(query interface{}) bool {
+	return r.isExist(bson.M{"_id": r.Id})
 }
+
 func (r Role) Insert() error {
 	r.Id, _ = mongo.GetIncrementId(roleCollection)
 	err := r.insert(r)
@@ -100,26 +86,24 @@ func (r Role) Insert() error {
 		return err
 	}
 	r.CreateTime = time.Now().Unix() * 1000
+	r.updateRolePermission()
+	return nil
+}
+func (r Role) updateRolePermission() {
 	rp := model_role_permission.RolePermission{}
 	rp.RemoveRoleId(r.Id)
 	for _, per := range r.Permissions {
-		rp.RoleId = r.Id
-		rp.PermissionId = per.Id
-		rp.Insert()
+		if per.Exist() {
+			rp.RoleId = r.Id
+			rp.PermissionId = per.Id
+			rp.Insert()
+		}
 	}
 	r.Permissions = nil
-	return nil
 }
 
 func (r Role) Update() error {
-	rp := model_role_permission.RolePermission{}
-	rp.RemoveRoleId(r.Id)
-	for _, per := range r.Permissions {
-		rp.RoleId = r.Id
-		rp.PermissionId = per.Id
-		rp.Insert()
-	}
-	r.Permissions = nil
+	r.updateRolePermission()
 	return r.update(bson.M{"_id": r.Id}, r)
 }
 
@@ -127,6 +111,16 @@ func (r Role) Remove() error {
 	rp := model_role_permission.RolePermission{}
 	rp.RemoveRoleId(r.Id)
 	return r.remove(bson.M{"_id": r.Id})
+}
+
+func (r Role) FindOne() (role Role, err error) {
+	role, err = r.findOne(bson.M{"_id": r.Id}, nil)
+	if err != nil {
+		return
+	}
+	list := []Role{r}
+	makeTreeList(list, nil)
+	return list[0], nil
 }
 
 func (r Role) TotalCount(query, selector interface{}) (int, error) {
@@ -157,15 +151,20 @@ func makeTreeList(list []Role, selector interface{}) error {
 		results, _ := rp.FindAll(bson.M{"role_id": list[index].Id}, nil)
 		list[index].Permissions = make([]model_permission.Permission, len(results))
 		var per model_permission.Permission
-		for index1, item := range results {
+		index1 := 0
+		for _, item := range results {
 			per.Id = item.PermissionId
 			per, err := per.FindOne(selector)
 			per.Label = per.Alias
 			per.Alias = ""
-			if err == nil {
+			if err != nil {
+				log4go.Info(err.Error())
+			} else {
 				list[index].Permissions[index1] = per
+				index1++
 			}
 		}
+		list[index].Permissions = list[index].Permissions[:index1]
 	}
 	return nil
 }
