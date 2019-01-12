@@ -49,9 +49,13 @@ export function add(data) {
 }
 
 export function del(id) {
+  const data = {
+    id
+  }
   return client({
-    url: '/user' + id,
-    method: 'delete'
+    url: '/user' ,
+    method: 'delete',
+    data
   })
 }
 

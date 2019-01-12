@@ -99,10 +99,14 @@ func (u User) Insert() error {
 	u.CreateTime = time.Now().Unix() * 1000
 	list := u.Roles
 	u.Roles = nil
+	if len(u.Avatar) == 0 {
+		u.Avatar = "https://s2.ax1x.com/2019/01/12/FjDbjg.png"
+	}
 	err := u.insert(u)
 	if err != nil {
 		return err
 	}
+
 	u.Roles = list
 	u.updateUserRoles()
 	return nil

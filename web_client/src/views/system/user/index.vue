@@ -15,7 +15,7 @@
       <el-table-column prop="email" label="邮箱"/>
       <el-table-column label="状态">
         <template slot-scope="scope">
-          <span>{{ scope.row.status == 1  ? '激活':'锁定' }}</span>
+          <span>{{ scope.row.enabled ? '激活':'锁定' }}</span>
         </template>
       </el-table-column>
       <el-table-column prop="createTime" label="注册日期">

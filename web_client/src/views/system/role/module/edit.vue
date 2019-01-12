@@ -6,6 +6,8 @@
                @click="to">
       {{ $t('actions.edit') }}
     </el-button>
+    <el-tag v-if="data.id === 10000" style="color: #666666; font-weight: bolder;">不可编辑</el-tag>
+
     <eForm ref="form"
            :permissions="permissions"
            :sup_this="sup_this"

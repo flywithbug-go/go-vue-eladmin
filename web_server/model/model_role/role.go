@@ -112,12 +112,6 @@ func (r Role) Update() error {
 	if r.Id == 10000 {
 		return fmt.Errorf("超级管理员不能编辑")
 	}
-	if len(r.Name) == 0 {
-		return fmt.Errorf("name can not be nil")
-	}
-	if len(r.Alias) == 0 {
-		return fmt.Errorf("alias can not be nil")
-	}
 	r.updateRolePermission()
 	r.Permissions = nil
 	selector := bson.M{"_id": r.Id}
