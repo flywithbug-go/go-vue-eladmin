@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"time"
 	"vue-admin/web_server/core/mongo"
-	"vue-admin/web_server/model/model_ROLE_role"
 	"vue-admin/web_server/model/model_permission"
 	"vue-admin/web_server/model/model_role_permission"
+	"vue-admin/web_server/model/model_user_role"
 	"vue-admin/web_server/model/mongo_index"
 	"vue-admin/web_server/model/shareDB"
 
@@ -233,7 +233,7 @@ func makeTreeList(list []Role, selector interface{}) error {
 }
 
 func (r Role) checkInUse() bool {
-	ur := model_ROLE_role.UserRole{}
+	ur := model_user_role.UserRole{}
 	if ur.Exist(bson.M{"role_id": r.Id}) {
 		return true
 	}

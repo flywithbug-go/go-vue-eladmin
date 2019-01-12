@@ -8,6 +8,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+const (
+	SUPERADMIN = "ADMIN"
+)
+
 func CheckPermission(c *gin.Context, permission string) bool {
 	id := common.UserId(c)
 	user := model_user.User{}
@@ -17,8 +21,8 @@ func CheckPermission(c *gin.Context, permission string) bool {
 		return false
 	}
 	for _, item := range user.RolesString {
-		if strings.EqualFold(item, "") {
-
+		if strings.EqualFold(item, SUPERADMIN) {
+			return true
 		}
 		if strings.EqualFold(item, permission) {
 			return true

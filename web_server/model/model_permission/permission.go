@@ -15,6 +15,11 @@ import (
 
 const (
 	permissionCollection = mongo_index.CollectionPermission
+	//PPermissionAll    = "PERMISSION_ALL"
+	PPermissionSelect = "PERMISSION_SELECT"
+	PPermissionCreate = "PERMISSION_CREATE"
+	PPermissionEdit   = "PERMISSION_EDIT"
+	PPermissionDelete = "PERMISSION_DELETE"
 )
 
 type Permission struct {
