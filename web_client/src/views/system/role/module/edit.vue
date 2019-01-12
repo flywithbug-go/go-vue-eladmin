@@ -1,7 +1,15 @@
 <template>
   <div>
-    <el-button :disabled="data.id === 1" size="mini" type="success" @click="to">{{ $t('actions.edit') }}</el-button>
-    <eForm ref="form" :permissions="permissions" :sup_this="sup_this" :is-add="false"/>
+    <el-button :disabled="data.id === 10000"
+               size="mini"
+               type="success"
+               @click="to">
+      {{ $t('actions.edit') }}
+    </el-button>
+    <eForm ref="form"
+           :permissions="permissions"
+           :sup_this="sup_this"
+           :is-add="false"/>
   </div>
 </template>
 <script>

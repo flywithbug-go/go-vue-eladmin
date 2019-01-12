@@ -2,6 +2,7 @@ package model_role
 
 import (
 	"encoding/json"
+	"fmt"
 	"time"
 	"vue-admin/web_server/core/mongo"
 	"vue-admin/web_server/model/model_permission"
@@ -81,15 +82,27 @@ func (r Role) Exist(query interface{}) bool {
 
 func (r Role) Insert() error {
 	r.Id, _ = mongo.GetIncrementId(roleCollection)
+	r.CreateTime = time.Now().Unix() * 1000
+	list := r.Permissions
+	r.Permissions = nil
 	err := r.insert(r)
 	if err != nil {
 		return err
 	}
-	r.CreateTime = time.Now().Unix() * 1000
+	r.Permissions = list
 	r.updateRolePermission()
 	return nil
 }
-func (r Role) updateRolePermission() {
+
+func (r Role) Update() error {
+	r.updateRolePermission()
+	r.Permissions = nil
+	selector := bson.M{"_id": r.Id}
+	r.Id = 0
+	return r.update(selector, r)
+}
+
+func (r *Role) updateRolePermission() {
 	rp := model_role_permission.RolePermission{}
 	rp.RemoveRoleId(r.Id)
 	for _, per := range r.Permissions {
@@ -99,15 +112,12 @@ func (r Role) updateRolePermission() {
 			rp.Insert()
 		}
 	}
-	r.Permissions = nil
-}
-
-func (r Role) Update() error {
-	r.updateRolePermission()
-	return r.update(bson.M{"_id": r.Id}, r)
 }
 
 func (r Role) Remove() error {
+	if r.Id == 10000 {
+		return fmt.Errorf("超级管理员不能删除")
+	}
 	rp := model_role_permission.RolePermission{}
 	rp.RemoveRoleId(r.Id)
 	return r.remove(bson.M{"_id": r.Id})
