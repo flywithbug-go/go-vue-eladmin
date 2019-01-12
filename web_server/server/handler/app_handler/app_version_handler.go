@@ -6,6 +6,7 @@ import (
 	"strings"
 	"vue-admin/web_server/common"
 	"vue-admin/web_server/model"
+	"vue-admin/web_server/model/check_permission"
 	"vue-admin/web_server/model/model_app"
 
 	"gopkg.in/mgo.v2/bson"
@@ -20,6 +21,12 @@ func addAppVersionHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
+	if check_permission.CheckNoPermission(c, model_app.APPlicationPermissionCreate) {
+		log4go.Info("has no permission")
+		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
+		return
+	}
+
 	appV := new(model_app.AppVersion)
 	err := c.BindJSON(appV)
 	if err != nil {
@@ -41,6 +48,12 @@ func updateAppVersionHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
+	if check_permission.CheckNoPermission(c, model_app.APPlicationPermissionEdit) {
+		log4go.Info("has no permission")
+		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
+		return
+	}
+
 	appV := new(model_app.AppVersion)
 	err := c.BindJSON(appV)
 	if err != nil {
@@ -62,6 +75,12 @@ func getAppVersionListHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
+	if check_permission.CheckNoPermission(c, model_app.APPlicationPermissionSelect) {
+		log4go.Info("has no permission")
+		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
+		return
+	}
+
 	appId, _ := strconv.Atoi(c.Query("app_id"))
 	limit, _ := strconv.Atoi(c.Query("limit"))
 	page, _ := strconv.Atoi(c.Query("page"))
@@ -106,6 +125,11 @@ func removeAppVersionHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
+	if check_permission.CheckNoPermission(c, model_app.APPlicationPermissionDelete) {
+		log4go.Info("has no permission")
+		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
+		return
+	}
 	appV := model_app.AppVersion{}
 	err := c.BindJSON(&appV)
 	if err != nil {

@@ -29,7 +29,6 @@ func addApplicationHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
 		return
 	}
-
 	app := new(appPara)
 	err := c.BindJSON(app)
 	if err != nil {
@@ -168,4 +167,30 @@ func getAllSimpleAppHandler(c *gin.Context) {
 	//	arrList[i].Editable = true
 	//}
 	aRes.AddResponseInfo("list", arrList)
+}
+
+func removeApplicationHandler(c *gin.Context) {
+	aRes := model.NewResponse()
+	defer func() {
+		c.JSON(http.StatusOK, aRes)
+	}()
+	if check_permission.CheckNoPermission(c, model_app.APPlicationPermissionDelete) {
+		log4go.Info("has no permission")
+		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
+		return
+	}
+	app := model_app.Application{}
+	err := c.BindJSON(&app)
+	if err != nil {
+		log4go.Info(err.Error())
+		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid: "+err.Error())
+		return
+	}
+	err = app.Remove()
+	if err != nil {
+		log4go.Info(err.Error())
+		aRes.SetErrorInfo(http.StatusInternalServerError, "para invalid: "+err.Error())
+		return
+	}
+	aRes.SetSuccess()
 }
