@@ -153,7 +153,6 @@ var Indexes = []Index{
 
 func CreateMgoIndex() {
 	aMCfg := config.Conf().DBConfig
-
 	for _, aMongoIndex := range Indexes {
 		c := mongo.Collection(shareDB.DBName(), aMongoIndex.Name)
 		if len(aMongoIndex.DropIndex) > 0 {
@@ -173,5 +172,4 @@ func CreateMgoIndex() {
 			log4go.Warn(err.Error())
 		}
 	}
-
 }
