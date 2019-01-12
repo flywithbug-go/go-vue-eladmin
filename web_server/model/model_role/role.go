@@ -130,16 +130,6 @@ func (r Role) Remove() error {
 	return r.remove(bson.M{"_id": r.Id})
 }
 
-func (r Role) FindOneTree() (role Role, err error) {
-	role, err = r.findOne(bson.M{"_id": r.Id}, nil)
-	if err != nil {
-		return
-	}
-	list := []Role{r}
-	makeTreeList(list, nil)
-	return list[0], nil
-}
-
 func (r Role) FindOne() (role Role, err error) {
 	return r.findOne(bson.M{"_id": r.Id}, nil)
 }
@@ -154,6 +144,16 @@ func (r Role) FindPageFilter(page, limit int, query, selector interface{}, field
 		return nil, err
 	}
 	return results, err
+}
+
+func (r Role) FindOneTree() (role Role, err error) {
+	role, err = r.findOne(bson.M{"_id": r.Id}, nil)
+	if err != nil {
+		return
+	}
+	list := []Role{r}
+	makeTreeList(list, nil)
+	return list[0], nil
 }
 
 func (r Role) FindPageTreeFilter(page, limit int, query, selector interface{}, fields ...string) ([]Role, error) {
