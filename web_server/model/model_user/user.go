@@ -2,7 +2,11 @@ package model_user
 
 import (
 	"encoding/json"
+	"fmt"
+	"time"
 	"vue-admin/web_server/core/mongo"
+	"vue-admin/web_server/model/model_role"
+	"vue-admin/web_server/model/model_user_role"
 	"vue-admin/web_server/model/mongo_index"
 	"vue-admin/web_server/model/shareDB"
 
@@ -14,19 +18,20 @@ const (
 )
 
 type User struct {
-	Id         int64  `json:"id,omitempty" bson:"_id,omitempty"`
-	Username   string `json:"username,omitempty" bson:"username,omitempty"` //用户名
-	Password   string `json:"password,omitempty" bson:"password,omitempty"`
-	Avatar     string `json:"avatar,omitempty" bson:"avatar,omitempty"`
-	Email      string `json:"email,omitempty" bson:"email,omitempty"`
-	Phone      string `json:"phone,omitempty" bson:"phone,omitempty"`
-	Gender     int    `json:"gender,omitempty" bson:"gender,omitempty"` // 1男 2女
-	Name       string `json:"name,omitempty" bson:"name,omitempty"`     // 名字！
-	Nick       string `json:"nick,omitempty" bson:"nick,omitempty"`     // 昵称
-	Title      string `json:"title,omitempty" bson:"title,omitempty"`
-	Status     int    `json:"status,omitempty" bson:"status,omitempty"` //1 激活，2锁定
-	Note       string `json:"note,omitempty"  bson:"note,omitempty"`    //备注,
-	CreateTime int64  `json:"create_time,omitempty"  bson:"create_time,omitempty"`
+	Id         int64             `json:"id,omitempty" bson:"_id,omitempty"`
+	Username   string            `json:"username,omitempty" bson:"username,omitempty"` //用户名
+	Password   string            `json:"password,omitempty" bson:"password,omitempty"`
+	Avatar     string            `json:"avatar,omitempty" bson:"avatar,omitempty"`
+	Email      string            `json:"email,omitempty" bson:"email,omitempty"`
+	Phone      string            `json:"phone,omitempty" bson:"phone,omitempty"`
+	Gender     int               `json:"gender,omitempty" bson:"gender,omitempty"` // 1男 2女
+	Name       string            `json:"name,omitempty" bson:"name,omitempty"`     // 名字！
+	Nick       string            `json:"nick,omitempty" bson:"nick,omitempty"`     // 昵称
+	Title      string            `json:"title,omitempty" bson:"title,omitempty"`
+	Status     int               `json:"status,omitempty" bson:"status,omitempty"` //1 激活，2锁定
+	Note       string            `json:"note,omitempty"  bson:"note,omitempty"`    //备注,
+	CreateTime int64             `json:"create_time,omitempty"  bson:"create_time,omitempty"`
+	Roles      []model_role.Role `json:"roles,omitempty" bson:"roles,omitempty"`
 }
 
 func (u User) ToJson() string {
@@ -82,15 +87,44 @@ func (u User) removeAll(selector interface{}) error {
 func (u User) Insert() error {
 	u.Id, _ = mongo.GetIncrementId(userCollection)
 	u.Status = 1
-	return u.insert(u)
+	u.CreateTime = time.Now().Unix() * 1000
+	list := u.Roles
+	u.Roles = nil
+	err := u.insert(u)
+	if err != nil {
+		return err
+	}
+	u.Roles = list
+	u.updateUserRoles()
+	return nil
+}
+
+func (u User) updateUserRoles() {
+	ur := model_user_role.UserRole{}
+	ur.RemoveUserId(u.Id)
+	for _, role := range u.Roles {
+		if role.Exist() {
+			ur.RoleId = role.Id
+			ur.UserId = u.Id
+			ur.Insert()
+		}
+	}
 }
 
 func (u User) Update() error {
 	selector := bson.M{"_id": u.Id}
+	if u.Id == 10000 {
+		u.Id = 0
+	}
+	u.updateUserRoles()
+	u.Roles = nil
 	return u.update(selector, u)
 }
 
 func (u User) Remove() error {
+	if u.Id == 10000 {
+		return fmt.Errorf("超级管理员无法被删除")
+	}
 	selector := bson.M{"_id": u.Id}
 	return u.remove(selector)
 }
@@ -123,13 +157,18 @@ func (u User) TotalCount(query, selector interface{}) (int, error) {
 	return u.totalCount(query, selector)
 }
 
-func AddAdminUser() error {
-	u := new(User)
-	u.Username = "admin"
-	u.Password = "flywithbug123"
-	u.Email = "flywithbug@gmail.com"
-	u.Title = "admin"
-	u.Phone = "phone"
-	u.Gender = 1
-	return u.insert()
+func (u *User) fetchRoles() {
+	ur := model_user_role.UserRole{}
+	list, _ := ur.FindAll(bson.M{"user_id": u.Id}, nil)
+	role := model_role.Role{}
+	for _, item := range list {
+		role.Id = item.RoleId
+		role.FindOne()
+	}
+
+}
+
+func makeTreeList(list []User, selector interface{}) error {
+
+	return nil
 }

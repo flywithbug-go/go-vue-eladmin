@@ -7,6 +7,7 @@ import (
 	"vue-admin/web_server/core/mongo"
 	"vue-admin/web_server/model/model_permission"
 	"vue-admin/web_server/model/model_role_permission"
+	"vue-admin/web_server/model/model_user_role"
 	"vue-admin/web_server/model/mongo_index"
 	"vue-admin/web_server/model/shareDB"
 
@@ -76,7 +77,7 @@ func (r Role) findPage(page, limit int, query, selector interface{}, fields ...s
 	return
 }
 
-func (r Role) Exist(query interface{}) bool {
+func (r Role) Exist() bool {
 	return r.isExist(bson.M{"_id": r.Id})
 }
 
@@ -121,12 +122,15 @@ func (r Role) Remove() error {
 	if r.Id == 10000 {
 		return fmt.Errorf("超级管理员不能删除")
 	}
+	if r.checkInUse() {
+		return fmt.Errorf("角色使用中，无法删除")
+	}
 	rp := model_role_permission.RolePermission{}
 	rp.RemoveRoleId(r.Id)
 	return r.remove(bson.M{"_id": r.Id})
 }
 
-func (r Role) FindOne() (role Role, err error) {
+func (r Role) FindOneTree() (role Role, err error) {
 	role, err = r.findOne(bson.M{"_id": r.Id}, nil)
 	if err != nil {
 		return
@@ -136,11 +140,23 @@ func (r Role) FindOne() (role Role, err error) {
 	return list[0], nil
 }
 
+func (r Role) FindOne() (role Role, err error) {
+	return r.findOne(bson.M{"_id": r.Id}, nil)
+}
+
 func (r Role) TotalCount(query, selector interface{}) (int, error) {
 	return r.totalCount(query, selector)
 }
 
 func (r Role) FindPageFilter(page, limit int, query, selector interface{}, fields ...string) ([]Role, error) {
+	results, err := r.findPage(page, limit, query, selector, fields...)
+	if err != nil {
+		return nil, err
+	}
+	return results, err
+}
+
+func (r Role) FindPageTreeFilter(page, limit int, query, selector interface{}, fields ...string) ([]Role, error) {
 	results, err := r.findPage(page, limit, query, selector, fields...)
 	if err != nil {
 		return nil, err
@@ -180,4 +196,12 @@ func makeTreeList(list []Role, selector interface{}) error {
 		list[index].Permissions = list[index].Permissions[:index1]
 	}
 	return nil
+}
+
+func (r Role) checkInUse() bool {
+	ur := model_user_role.UserRole{}
+	if ur.Exist(bson.M{"role_id": r.Id}) {
+		return true
+	}
+	return false
 }

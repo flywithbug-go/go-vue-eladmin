@@ -71,6 +71,7 @@ func (r RolePermission) FindOne() (role RolePermission, err error) {
 	role, err = r.findOne(bson.M{"_id": r.Id}, nil)
 	return
 }
+
 func (r RolePermission) FindAll(query, selector interface{}) (results []RolePermission, err error) {
 	results = []RolePermission{}
 	return r.findAll(query, selector)

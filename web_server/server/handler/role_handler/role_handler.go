@@ -42,7 +42,7 @@ func getRoleHandler(c *gin.Context) {
 	var role = model_role.Role{}
 	id, _ := strconv.Atoi(ids)
 	role.Id = int64(id)
-	role, err := role.FindOne()
+	role, err := role.FindOneTree()
 	if err != nil {
 		log4go.Info(err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "invalid: "+err.Error())
@@ -117,7 +117,7 @@ func getRoleListHandler(c *gin.Context) {
 		query["name"] = bson.M{"$regex": name, "$options": "i"}
 	}
 	totalCount, _ := role.TotalCount(query, nil)
-	list, err := role.FindPageFilter(page, limit, query, nil, sort)
+	list, err := role.FindPageTreeFilter(page, limit, query, nil, sort)
 	if err != nil {
 		log4go.Info(err.Error())
 		aRes.SetErrorInfo(http.StatusUnauthorized, "apps find error"+err.Error())
@@ -134,7 +134,7 @@ func getRoleTreeHandler(c *gin.Context) {
 	}()
 	var role = model_role.Role{}
 	selector := bson.M{"_id": 1, "alias": 1}
-	list, err := role.FindPageFilter(0, 0, nil, selector)
+	list, err := role.FindPageTreeFilter(0, 0, nil, selector)
 	if err != nil {
 		log4go.Info(err.Error())
 		aRes.SetErrorInfo(http.StatusUnauthorized, "app version list find error"+err.Error())
