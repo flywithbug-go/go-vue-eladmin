@@ -55,7 +55,7 @@ func loginHandler(c *gin.Context) {
 	}
 	sync.SetKeyValue(token)
 	aRes.SetResponseDataInfo("token", token)
-	aRes.AddResponseInfo("user", user)
+	//aRes.AddResponseInfo("user", user)
 
 }
 
@@ -133,9 +133,8 @@ func getUserInfoHandler(c *gin.Context) {
 	}
 	roleUser := UserRole{}
 	roleUser.User = user
-	//TODO need check Permission
-
-	roleUser.Roles = []string{"ADMIN"}
+	roleUser.Roles = user.RolesString
+	roleUser.RolesString = nil
 	aRes.AddResponseInfo("user", roleUser)
 }
 

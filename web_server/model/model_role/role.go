@@ -204,7 +204,7 @@ func makeTreeList(list []Role, selector interface{}) error {
 			} else {
 				per.Label = per.Alias
 				list[index].Permissions[index1] = per
-				list[index].PerString[index1] = per.Alias
+				list[index].PerString[index1] = per.Name
 				index1++
 				per.Alias = ""
 			}

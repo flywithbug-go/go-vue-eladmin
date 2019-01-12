@@ -32,7 +32,7 @@ type User struct {
 	Title       string            `json:"title,omitempty" bson:"title,omitempty"`
 	Status      int               `json:"status,omitempty" bson:"status,omitempty"` //1 激活，2锁定
 	Note        string            `json:"note,omitempty"  bson:"note,omitempty"`    //备注,
-	CreateTime  int64             `json:"create_time,omitempty"  bson:"create_time,omitempty"`
+	CreateTime  int64             `json:"createTime,omitempty"  bson:"create_time,omitempty"`
 	Roles       []model_role.Role `json:"roles,omitempty" bson:"roles,omitempty"`
 	RolesString []string          `json:"roles_string,omitempty" bson:"roles_string,omitempty"`
 }
@@ -173,8 +173,9 @@ func (u User) TotalCount(query, selector interface{}) (int, error) {
 func makeTreeList(list []User, selector interface{}) error {
 	for index := range list {
 		ur := model_user_role.UserRole{}
-		results, _ := ur.FindAll(bson.M{"user_id": list[index].Id}, nil)
+		results, _ := ur.FindAll(bson.M{"user_id": list[index].Id}, selector)
 		list[index].Roles = make([]model_role.Role, len(results))
+		roles := make([]string, 0, 128)
 		var rule model_role.Role
 		index1 := 0
 		for _, item := range results {
@@ -186,10 +187,12 @@ func makeTreeList(list []User, selector interface{}) error {
 				log4go.Info(err.Error())
 			} else {
 				list[index].Roles[index1] = rule
+				roles = append(roles, rule.PerString...)
 				index1++
 			}
 		}
 		list[index].Roles = list[index].Roles[:index1]
+		list[index].RolesString = roles
 	}
 
 	return nil
