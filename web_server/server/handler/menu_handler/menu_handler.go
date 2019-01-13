@@ -74,7 +74,6 @@ func updateMenuHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
 		return
 	}
-
 	para := model_menu.Menu{}
 	err := c.BindJSON(&para)
 	if err != nil {
