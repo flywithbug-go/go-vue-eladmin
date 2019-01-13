@@ -195,7 +195,7 @@ func getMenuBuildHandler(c *gin.Context) {
 	sort := "+sort"
 	var role = model_menu.Menu{}
 	query := bson.M{"pid": 0}
-	list, err := role.FindPageTreeFilter(0, 0, query, nil, sort)
+	list, err := role.FindPageBuildFilter(0, 0, query, nil, sort)
 	if err != nil {
 		log4go.Info(err.Error())
 		aRes.SetErrorInfo(http.StatusUnauthorized, "app version list find error"+err.Error())

@@ -194,6 +194,14 @@ func (m Menu) FindPageTreeFilter(page, limit int, query, selector interface{}, f
 	makeTreeList(results, selector, MenuTypeTree)
 	return results, err
 }
+func (m Menu) FindPageBuildFilter(page, limit int, query, selector interface{}, fields ...string) ([]Menu, error) {
+	results, err := m.findPage(page, limit, query, selector, fields...)
+	if err != nil {
+		return nil, err
+	}
+	makeTreeList(results, selector, MenuTypeBuild)
+	return results, err
+}
 
 func (m Menu) FetchTreeList(selector interface{}) (results []Menu, err error) {
 	results, err = m.findAll(bson.M{"pid": 0}, selector)
