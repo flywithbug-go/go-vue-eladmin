@@ -74,13 +74,9 @@ export function edit(data) {
 
 
 export function validPassword(password) {
-  const data = {
-    password
-  }
   return client({
-    url: '/user/password/valid',
-    method: 'get',
-    data
+    url: '/user/password/valid?password=' + password,
+    method: 'get'
   })
 }
 

@@ -23,17 +23,14 @@
 
 <script>
 import store from '@/store'
-import { md5 } from '@/utils/md5'
 import { validPassword, updatePassword } from '@/api/user'
 export default {
   data() {
     const validatePass = (rule, value, callback) => {
-      validPass(value).then(res => {
-        if (res.status === 200) {
-          callback()
-        } else {
-          callback(new Error('旧密码错误，请检查'))
-        }
+      validPassword(value).then(() => {
+        callback()
+      }).catch(() => {
+        callback(new Error('旧密码错误，请检查'))
       })
     }
     const confirmPass = (rule, value, callback) => {
@@ -51,7 +48,7 @@ export default {
         ],
         newPass: [
           { required: true, message: '请输入新密码', trigger: 'blur' },
-          { min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur' }
+          { min: 4, max: 20, message: '长度在 4 到 20 个字符', trigger: 'blur' }
         ],
         confirmPass: [
           { required: true, validator: confirmPass, trigger: 'blur' }
@@ -74,11 +71,12 @@ export default {
               type: 'success',
               duration: 1500
             })
-            setTimeout(() => {
-              store.dispatch('LogOut').then(() => {
-                location.reload() // 为了重新实例化vue-router对象 避免bug
-              })
-            }, 1500)
+            this.loading = false
+            // setTimeout(() => {
+            //   store.dispatch('LogOut').then(() => {
+            //     location.reload() // 为了重新实例化vue-router对象 避免bug
+            //   })
+            // }, 1500)
           }).catch(err => {
             this.loading = false
             console.log(err.response.data.message)

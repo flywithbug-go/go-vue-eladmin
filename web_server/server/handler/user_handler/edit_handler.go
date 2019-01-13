@@ -32,7 +32,7 @@ func validPasswordHandler(c *gin.Context) {
 	}
 	user := new(model_user.User)
 	user.Password = password
-	user.Username = common.Username(c)
+	user.Id = common.UserId(c)
 	if !user.CheckPassword() {
 		log4go.Info("password not right")
 		aRes.SetErrorInfo(http.StatusBadRequest, "password not right")
