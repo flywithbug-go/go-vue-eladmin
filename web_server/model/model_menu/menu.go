@@ -10,6 +10,8 @@ import (
 	"vue-admin/web_server/model/mongo_index"
 	"vue-admin/web_server/model/shareDB"
 
+	"github.com/flywithbug/log4go"
+
 	"gopkg.in/mgo.v2/bson"
 )
 
@@ -32,18 +34,18 @@ type meta struct {
 type Menu struct {
 	Id         int64             `json:"id,omitempty" bson:"_id,omitempty"`
 	PId        int64             `json:"pid,omitempty" bson:"pid,omitempty"` //父节点ID
-	Sort       int               `json:"sort,omitempty" bson:"sort,omitempty"`
+	Sort       int               `json:"sort" bson:"sort,omitempty"`
 	Icon       string            `json:"icon,omitempty" bson:"icon,omitempty"`
 	Name       string            `json:"name,omitempty" bson:"name,omitempty"`
 	Label      string            `json:"label,omitempty" bson:"label,omitempty"`
 	Path       string            `json:"path,omitempty" bson:"path,omitempty"`
-	AlwaysShow bool              `json:"always_show" bson:"always_show"`
+	AlwaysShow bool              `json:"alwaysShow" bson:"alwaysShow"`
 	Component  string            `json:"component,omitempty" bson:"component,omitempty"`
-	IFrame     string            `json:"iFrame,omitempty" bson:"iFrame,omitempty"`
+	IFrame     bool              `json:"iFrame" bson:"iFrame"`
 	CreateTime int64             `json:"createTime,omitempty" bson:"createTime,omitempty"`
 	Children   []Menu            `json:"children,omitempty" bson:"children,omitempty"`
 	Roles      []model_role.Role `json:"roles,omitempty" bson:"roles,omitempty"`
-	Meta       meta              `json:"meta,omitempty"`
+	Meta       meta              `json:"meta,omitempty" bson:"meta,omitempty"`
 }
 
 func (m Menu) ToJson() string {
@@ -117,6 +119,13 @@ func (m Menu) Insert() (int64, error) {
 	m.Id, _ = mongo.GetIncrementId(menuCollection)
 	m.CreateTime = time.Now().Unix() * 1000
 	m.Children = nil
+	m.IFrame = true
+	if len(m.Children) > 0 {
+		m.AlwaysShow = true
+	}
+	if m.Sort == 0 {
+		m.Sort = 99
+	}
 	err := m.insert(m)
 	if err != nil {
 		return -1, err
@@ -136,12 +145,16 @@ func (m Menu) updateMenuRole() {
 			mr.Insert()
 		}
 	}
+
 }
 
 func (m Menu) Update() error {
 	m.updateMenuRole()
 	m.Roles = nil
 	selector := bson.M{"_id": m.Id}
+	if len(m.Children) > 0 {
+		m.AlwaysShow = true
+	}
 	return m.update(selector, m)
 }
 
@@ -213,13 +226,34 @@ func makeTreeList(list []Menu, selector interface{}) {
 		if err != nil {
 			return
 		}
+		item := list[index]
+		mr := model_menu_role.MenuRole{}
+		results, _ := mr.FindAll(bson.M{"menu_id": item.Id}, nil)
+		list[index].Roles = make([]model_role.Role, len(results))
+
+		index1 := 0
+		var role model_role.Role
+		for _, mr = range results {
+			role.Id = mr.RoleId
+			role, err := role.FindOneTree(nil)
+			if err != nil {
+				log4go.Info(err.Error())
+			} else {
+				role.Label = role.Alias
+				role.Alias = ""
+				list[index].Roles[index1] = role
+				index1++
+			}
+		}
+		list[index].Roles = list[index].Roles[:index1]
 		if selector == nil {
 			list[index].Meta = meta{
-				Title: list[index].Name,
-				Icon:  list[index].Icon,
+				Title: item.Name,
+				Icon:  item.Icon,
 			}
 		} else {
-			list[index].Label = list[index].Name
+			//list[index].Roles
+			list[index].Label = item.Name
 			list[index].Name = ""
 		}
 		makeTreeList(list[index].Children, selector)

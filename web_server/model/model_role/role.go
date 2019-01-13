@@ -173,13 +173,13 @@ func (r Role) FindPageFilter(page, limit int, query, selector interface{}, field
 	return results, err
 }
 
-func (r Role) FindOneTree() (role Role, err error) {
+func (r Role) FindOneTree(selector interface{}) (role Role, err error) {
 	role, err = r.findOne(bson.M{"_id": r.Id}, nil)
 	if err != nil {
 		return
 	}
 	list := []Role{role}
-	makeTreeList(list, nil)
+	makeTreeList(list, selector)
 	return list[0], nil
 }
 

@@ -9,6 +9,7 @@ export default {
     systemManager:"系统管理",
     permissionManager: '权限管理',
     roleManager:'角色管理',
+    menuManager:'菜单管理',
     user: '人员',
     dashboard: '首页',
     guide: '引导页',

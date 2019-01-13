@@ -200,7 +200,7 @@ func makeTreeList(list []User, selector interface{}) error {
 		index1 := 0
 		for _, item := range results {
 			rule.Id = item.RoleId
-			rule, err := rule.FindOneTree()
+			rule, err := rule.FindOneTree(nil)
 			rule.Label = rule.Alias
 			rule.Alias = ""
 			if err != nil {

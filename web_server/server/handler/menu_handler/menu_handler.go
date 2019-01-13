@@ -3,7 +3,6 @@ package menu_handler
 import (
 	"net/http"
 	"strconv"
-	"strings"
 	"vue-admin/web_server/model"
 	"vue-admin/web_server/model/check_permission"
 	"vue-admin/web_server/model/model_menu"
@@ -132,15 +131,9 @@ func getRoleListHandler(c *gin.Context) {
 	var role = model_menu.Menu{}
 	limit, _ := strconv.Atoi(c.Query("limit"))
 	page, _ := strconv.Atoi(c.Query("page"))
-	sort := c.Query("sort")
+	sort := "+sort"
 	name := c.Query("name")
-	if strings.EqualFold(sort, "-id") {
-		sort = "-_id"
-	} else if strings.EqualFold(sort, "+id") {
-		sort = "+_id"
-	} else if len(sort) == 0 {
-		sort = "+_id"
-	}
+
 	if page != 0 {
 		page--
 	}

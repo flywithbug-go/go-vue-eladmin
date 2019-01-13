@@ -55,7 +55,7 @@ func getRoleHandler(c *gin.Context) {
 	var role = model_role.Role{}
 	id, _ := strconv.Atoi(ids)
 	role.Id = int64(id)
-	role, err := role.FindOneTree()
+	role, err := role.FindOneTree(nil)
 	if err != nil {
 		log4go.Info(err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "invalid: "+err.Error())
