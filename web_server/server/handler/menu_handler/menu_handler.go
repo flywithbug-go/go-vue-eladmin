@@ -31,10 +31,6 @@ func addMenuHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
-	if para.Sort == 0 {
-		aRes.SetErrorInfo(http.StatusBadRequest, "sort can not be 0")
-		return
-	}
 	_, err = para.Insert()
 	if err != nil {
 		log4go.Info(err.Error())
@@ -84,10 +80,6 @@ func updateMenuHandler(c *gin.Context) {
 	if err != nil {
 		log4go.Info(err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
-		return
-	}
-	if para.Sort == 0 {
-		aRes.SetErrorInfo(http.StatusBadRequest, "sort can not be 0")
 		return
 	}
 	err = para.Update()

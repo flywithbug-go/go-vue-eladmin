@@ -38,7 +38,7 @@ type meta struct {
 type Menu struct {
 	Id         int64             `json:"id,omitempty" bson:"_id,omitempty"`
 	PId        int64             `json:"pid,omitempty" bson:"pid"` //父节点ID
-	Sort       int               `json:"sort,omitempty" bson:"sort,omitempty"`
+	Sort       int               `json:"sort" bson:"sort"`
 	Icon       string            `json:"icon,omitempty" bson:"icon,omitempty"`
 	Name       string            `json:"name,omitempty" bson:"name,omitempty"`
 	Label      string            `json:"label,omitempty" bson:"label,omitempty"`
@@ -127,9 +127,6 @@ func (m Menu) Insert() (int64, error) {
 	m.IFrame = true
 	if len(m.Children) > 0 {
 		m.AlwaysShow = true
-	}
-	if m.Sort == 0 {
-		m.Sort = 99
 	}
 	err := m.insert(m)
 	if err != nil {
