@@ -1,7 +1,10 @@
-.
+src
 ├── App.vue
 ├── api
 │   ├── app.js
+│   ├── data.js
+│   ├── permission.js
+│   ├── role.js
 │   └── user.js
 ├── assets
 │   ├── 401_images
@@ -40,8 +43,12 @@
 │   │   └── index.vue
 │   ├── SvgIcon
 │   │   └── index.vue
-│   └── ThemePicker
-│       └── index.vue
+│   ├── ThemePicker
+│   │   └── index.vue
+│   └── TreeTable
+│       ├── eval.js
+│       ├── index.vue
+│       └── readme.md
 ├── config
 │   └── index.js
 ├── directive
@@ -95,13 +102,17 @@
 │   │   ├── metadata.svg
 │   │   ├── money.svg
 │   │   ├── nested.svg
+│   │   ├── organization.svg
 │   │   ├── password.svg
 │   │   ├── people.svg
 │   │   ├── peoples.svg
+│   │   ├── permission.svg
 │   │   ├── qq.svg
+│   │   ├── role.svg
 │   │   ├── shopping.svg
 │   │   ├── size.svg
 │   │   ├── star.svg
+│   │   ├── system.svg
 │   │   ├── tab.svg
 │   │   ├── table.svg
 │   │   ├── theme.svg
@@ -116,11 +127,14 @@
 │   ├── index.js
 │   └── zh.js
 ├── main.js
+├── mixins
+│   └── initData.js
 ├── permission.js
 ├── router
 │   ├── index.js
 │   └── modules
-│       └── metadata.js
+│       ├── metadata.js
+│       └── system.js
 ├── store
 │   ├── getters.js
 │   ├── index.js
@@ -151,13 +165,14 @@
 │   ├── permission.js
 │   ├── scrollTo.js
 │   └── validate.js
+├── vendor
+│   ├── Export2Excel.js
+│   └── Export2Zip.js
 └── views
     ├── application
     │   ├── app.vue
     │   └── version.vue
     ├── dashboard
-    │   └── index.vue
-    ├── documentation
     │   └── index.vue
     ├── errorPage
     │   ├── 401.vue
@@ -185,7 +200,27 @@
     ├── svg-icons
     │   ├── index.vue
     │   └── requireIcons.js
-    └── user
-        └── user.vue
+    └── system
+        ├── permission
+        │   ├── index.vue
+        │   └── module
+        │       ├── edit.vue
+        │       ├── form.vue
+        │       └── header.vue
+        ├── role
+        │   ├── index.vue
+        │   └── module
+        │       ├── edit.vue
+        │       ├── form.vue
+        │       └── header.vue
+        └── user
+            ├── center
+            ├── center.vue
+            ├── index.vue
+            └── module
+                ├── edit.vue
+                ├── form.vue
+                └── header.vue
+2 [error opening dir]
 
-49 directories, 139 files
+58 directories, 164 files
