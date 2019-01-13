@@ -51,6 +51,16 @@ export  const constantRouterMap = [
     ]
   },
   {
+    path: '项目地址',
+    component: Layout,
+    children: [
+      {
+        path: 'https://github.com/flywithbug-vue-admin/vue-admin',
+        meta: { title: '项目地址', icon: 'link' }
+      }
+    ]
+  },
+  {
     path: '/user',
     component: Layout,
     hidden: true,
@@ -112,7 +122,7 @@ export const asyncRouterMap = [
         meta: { title: 'page404', noCache: true, }
       }
     ]
-  }
+  },
 ]
 
 

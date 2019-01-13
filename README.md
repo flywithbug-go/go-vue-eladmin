@@ -81,7 +81,7 @@ npm run build --report
 ![user_permission](/frontend/user_permission.png)
   
 ### 页面示例
-![frontend](frontend/1546939038644.jpg)   
+![frontend](frontend/dashboard.png)   
 
 
 
