@@ -33,15 +33,15 @@ type meta struct {
 
 type Menu struct {
 	Id         int64             `json:"id,omitempty" bson:"_id,omitempty"`
-	PId        int64             `json:"pid" bson:"pid"` //父节点ID
-	Sort       int               `json:"sort" bson:"sort,omitempty"`
+	PId        int64             `json:"pid,omitempty" bson:"pid"` //父节点ID
+	Sort       int               `json:"sort,omitempty" bson:"sort,omitempty"`
 	Icon       string            `json:"icon,omitempty" bson:"icon,omitempty"`
 	Name       string            `json:"name,omitempty" bson:"name,omitempty"`
 	Label      string            `json:"label,omitempty" bson:"label,omitempty"`
 	Path       string            `json:"path,omitempty" bson:"path,omitempty"`
-	AlwaysShow bool              `json:"alwaysShow" bson:"alwaysShow"`
+	AlwaysShow bool              `json:"alwaysShow,omitempty" bson:"alwaysShow"`
 	Component  string            `json:"component,omitempty" bson:"component,omitempty"`
-	IFrame     bool              `json:"iframe" bson:"iframe"`
+	IFrame     bool              `json:"iframe,omitempty" bson:"iframe"`
 	CreateTime int64             `json:"createTime,omitempty" bson:"createTime,omitempty"`
 	Children   []Menu            `json:"children,omitempty" bson:"children,omitempty"`
 	Roles      []model_role.Role `json:"roles,omitempty" bson:"roles,omitempty"`
@@ -115,9 +115,10 @@ func (m Menu) Insert() (int64, error) {
 	if m.PId != 0 && !m.isExist(bson.M{"_id": m.PId}) {
 		return -1, fmt.Errorf("pid  not exist")
 	}
-	list := m.Children
+	list := m.Roles
 	m.Id, _ = mongo.GetIncrementId(menuCollection)
 	m.CreateTime = time.Now().Unix() * 1000
+	m.Roles = nil
 	m.Children = nil
 	m.IFrame = true
 	if len(m.Children) > 0 {
@@ -130,7 +131,7 @@ func (m Menu) Insert() (int64, error) {
 	if err != nil {
 		return -1, err
 	}
-	m.Children = list
+	m.Roles = list
 	m.updateMenuRole()
 	return m.Id, nil
 }
@@ -151,6 +152,7 @@ func (m Menu) updateMenuRole() {
 func (m Menu) Update() error {
 	m.updateMenuRole()
 	m.Roles = nil
+	m.Children = nil
 	selector := bson.M{"_id": m.Id}
 	if len(m.Children) > 0 {
 		m.AlwaysShow = true
@@ -216,25 +218,26 @@ func makeTreeList(list []Menu, selector interface{}) {
 			return
 		}
 		item := list[index]
-		mr := model_menu_role.MenuRole{}
-		results, _ := mr.FindAll(bson.M{"menu_id": item.Id}, nil)
-		list[index].Roles = make([]model_role.Role, len(results))
-
-		index1 := 0
-		var role model_role.Role
-		for _, mr = range results {
-			role.Id = mr.RoleId
-			role, err := role.FindOneTree(nil)
-			if err != nil {
-				log4go.Info(err.Error())
-			} else {
-				role.Label = role.Alias
-				role.Alias = ""
-				list[index].Roles[index1] = role
-				index1++
+		if selector == nil {
+			mr := model_menu_role.MenuRole{}
+			results, _ := mr.FindAll(bson.M{"menu_id": item.Id}, nil)
+			list[index].Roles = make([]model_role.Role, len(results))
+			index1 := 0
+			var role model_role.Role
+			for _, mr = range results {
+				role.Id = mr.RoleId
+				role, err := role.FindOneTree(nil)
+				if err != nil {
+					log4go.Info(err.Error())
+				} else {
+					role.Label = role.Alias
+					role.Alias = ""
+					list[index].Roles[index1] = role
+					index1++
+				}
 			}
+			list[index].Roles = list[index].Roles[:index1]
 		}
-		list[index].Roles = list[index].Roles[:index1]
 		if selector == nil {
 			list[index].Meta = meta{
 				Title: item.Name,

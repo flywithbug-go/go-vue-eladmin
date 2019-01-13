@@ -29,9 +29,13 @@ export function add(data) {
 }
 
 export function del(id) {
+  const  data =  {
+    id
+  }
   return request({
-    url: '/menu?id=?' + id,
-    method: 'delete'
+    url: '/menu',
+    method: 'delete',
+    data
   })
 }
 

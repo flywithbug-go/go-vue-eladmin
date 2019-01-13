@@ -16,7 +16,7 @@ const (
 
 type MenuRole struct {
 	Id         int64 `json:"id,omitempty" bson:"_id,omitempty"`
-	MenuId     int64 `json:"menu_id"" bson:"menu_id"`
+	MenuId     int64 `json:"menu_id" bson:"menu_id"`
 	RoleId     int64 `json:"role_id" bson:"role_id"`
 	CreateTime int64 `json:"create_time" bson:"create_time"`
 }
