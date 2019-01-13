@@ -150,7 +150,7 @@ func getMenuListHandler(c *gin.Context) {
 		query["name"] = bson.M{"$regex": name, "$options": "i"}
 	}
 	totalCount, _ := role.TotalCount(query, nil)
-	list, err := role.FindPageTreeFilter(page, limit, query, nil, sort)
+	list, err := role.FindPageListFilter(page, limit, query, nil, sort)
 	if err != nil {
 		log4go.Info(err.Error())
 		aRes.SetErrorInfo(http.StatusUnauthorized, "apps find error"+err.Error())
@@ -174,6 +174,28 @@ func getMenuTreeHandler(c *gin.Context) {
 	query := bson.M{"pid": 0}
 	selector := bson.M{"_id": 1, "name": 1}
 	list, err := role.FindPageTreeFilter(0, 0, query, selector)
+	if err != nil {
+		log4go.Info(err.Error())
+		aRes.SetErrorInfo(http.StatusUnauthorized, "app version list find error"+err.Error())
+		return
+	}
+	aRes.AddResponseInfo("list", list)
+}
+
+func getMenuBuildHandler(c *gin.Context) {
+	aRes := model.NewResponse()
+	defer func() {
+		c.JSON(http.StatusOK, aRes)
+	}()
+	if check_permission.CheckNoPermission(c, model_menu.MenuPermissionSelect) {
+		log4go.Info("has no permission")
+		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
+		return
+	}
+	sort := "+sort"
+	var role = model_menu.Menu{}
+	query := bson.M{"pid": 0}
+	list, err := role.FindPageTreeFilter(0, 0, query, nil, sort)
 	if err != nil {
 		log4go.Info(err.Error())
 		aRes.SetErrorInfo(http.StatusUnauthorized, "app version list find error"+err.Error())

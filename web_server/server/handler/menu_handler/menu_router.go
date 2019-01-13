@@ -39,4 +39,10 @@ var Routers = []common.GinHandleFunc{
 		Method:     "GET",
 		Route:      "/menu/tree",
 	},
+	{
+		Handler:    getMenuBuildHandler,
+		RouterType: common.RouterTypeNeedAuth,
+		Method:     "GET",
+		Route:      "/menu/build",
+	},
 }

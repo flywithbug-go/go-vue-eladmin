@@ -22,6 +22,10 @@ const (
 	MenuPermissionCreate = "MENU_CREATE"
 	MenuPermissionEdit   = "MENU_EDIT"
 	MenuPermissionDelete = "MENU_DELETE"
+
+	MenuTypeList  = 1
+	MenuTypeTree  = 2
+	MenuTypeBuild = 3
 )
 
 type meta struct {
@@ -173,13 +177,21 @@ func (m Menu) FindAll(query, selector interface{}) (results []Menu, err error) {
 func (m Menu) TotalCount(query, selector interface{}) (int, error) {
 	return m.totalCount(query, selector)
 }
+func (m Menu) FindPageListFilter(page, limit int, query, selector interface{}, fields ...string) ([]Menu, error) {
+	results, err := m.findPage(page, limit, query, selector, fields...)
+	if err != nil {
+		return nil, err
+	}
+	makeTreeList(results, selector, MenuTypeList)
+	return results, err
+}
 
 func (m Menu) FindPageTreeFilter(page, limit int, query, selector interface{}, fields ...string) ([]Menu, error) {
 	results, err := m.findPage(page, limit, query, selector, fields...)
 	if err != nil {
 		return nil, err
 	}
-	makeTreeList(results, selector)
+	makeTreeList(results, selector, MenuTypeTree)
 	return results, err
 }
 
@@ -188,7 +200,7 @@ func (m Menu) FetchTreeList(selector interface{}) (results []Menu, err error) {
 	if err != nil {
 		return
 	}
-	makeTreeList(results, selector)
+	makeTreeList(results, selector, MenuTypeList)
 	return
 }
 
@@ -198,7 +210,7 @@ func (m Menu) FindOneTree() (menu Menu, err error) {
 		return
 	}
 	list := []Menu{menu}
-	makeTreeList(list, nil)
+	makeTreeList(list, nil, MenuTypeTree)
 	return list[0], nil
 }
 
@@ -211,14 +223,14 @@ func (m *Menu) findChildren(selector interface{}) error {
 	return nil
 }
 
-func makeTreeList(list []Menu, selector interface{}) {
+func makeTreeList(list []Menu, selector interface{}, menuType int) {
 	for index := range list {
 		err := list[index].findChildren(selector)
 		if err != nil {
 			return
 		}
 		item := list[index]
-		if selector == nil {
+		if menuType == MenuTypeList {
 			mr := model_menu_role.MenuRole{}
 			results, _ := mr.FindAll(bson.M{"menu_id": item.Id}, nil)
 			list[index].Roles = make([]model_role.Role, len(results))
@@ -238,6 +250,7 @@ func makeTreeList(list []Menu, selector interface{}) {
 			}
 			list[index].Roles = list[index].Roles[:index1]
 		}
+
 		if selector == nil {
 			list[index].Meta = meta{
 				Title: item.Name,
@@ -248,6 +261,6 @@ func makeTreeList(list []Menu, selector interface{}) {
 			list[index].Label = item.Name
 			list[index].Name = ""
 		}
-		makeTreeList(list[index].Children, selector)
+		makeTreeList(list[index].Children, selector, menuType)
 	}
 }
