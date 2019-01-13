@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"regexp"
 	"strings"
-	"trace_go/config"
+	"vue-admin/web_server/config"
+
+	"github.com/flywithbug/log4go"
 
 	"gopkg.in/gomail.v2"
 )
@@ -24,6 +26,7 @@ func sendMail(to, title, subject, body, from string) error {
 	m.SetHeader("Subject", subject)
 	m.SetBody("text/html", body)
 
+	log4go.Info(" %s %s ", to, m.GetHeader("To"))
 	if Mail == nil {
 		return errors.New("mail is nil")
 	}
@@ -31,10 +34,7 @@ func sendMail(to, title, subject, body, from string) error {
 }
 
 func SendVerifyMail(title, verifyStr, mail string) error {
-	if !MailVerify(mail) {
-		return fmt.Errorf("mail not right")
-	}
-	return sendMail(mail, title, "邮箱验证", verifyStr, config.Conf().MailConfig.Username)
+	return sendMail(mail, title, "验证码", verifyStr, config.Conf().MailConfig.Username)
 }
 
 var routerRe = regexp.MustCompile(`^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$`)
@@ -45,9 +45,6 @@ func MailVerify(mail string) bool {
 }
 
 func SendVerifyCode(title, code, mail string) error {
-	if !MailVerify(mail) {
-		return fmt.Errorf("mail not right")
-	}
 	body := fmt.Sprintf("您的验证码是： %s ", code)
-	return sendMail(mail, title, "", body, config.Conf().MailConfig.Username)
+	return sendMail(mail, title, "邮箱验证", body, config.Conf().MailConfig.Username)
 }
