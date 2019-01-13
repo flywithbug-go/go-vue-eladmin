@@ -15,7 +15,7 @@ func TestPipe(t *testing.T) {
 	mongo.DialMgo("127.0.0.1:27017")
 	permission := Permission{}
 
-	list, err := permission.FetchTreeList()
+	list, err := permission.FetchTreeList(nil)
 	if err != nil {
 		panic(err)
 	}

@@ -71,3 +71,8 @@ export function edit(data) {
     data
   })
 }
+
+
+export function updateEmail(code,data) {
+
+}

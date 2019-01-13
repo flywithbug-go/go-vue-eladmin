@@ -16,9 +16,9 @@ const (
 
 type UserRole struct {
 	Id         int64 `json:"id,omitempty" bson:"_id,omitempty"`
-	UserId     int64 `json:"user_id" bson:"user_id"`
-	RoleId     int64 `json:"role_id" bson:"role_id"`
-	CreateTime int64 `json:"create_time" bson:"create_time"`
+	UserId     int64 `json:"user_id,omitempty" bson:"user_id,omitempty"`
+	RoleId     int64 `json:"role_id,omitempty" bson:"role_id,omitempty"`
+	CreateTime int64 `json:"create_time,omitempty" bson:"create_time,omitempty"`
 }
 
 func (r UserRole) ToJson() string {

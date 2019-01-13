@@ -18,6 +18,7 @@ const (
 	CollectionRole           = "role"
 	CollectionRolePermission = "role_permission"
 	CollectionUserRole       = "user_role"
+	CollectionVerify         = "verify"
 )
 
 type Index struct {
