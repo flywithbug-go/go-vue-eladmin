@@ -203,7 +203,7 @@ func (m Menu) FindOneTree() (menu Menu, err error) {
 }
 
 func (m *Menu) findChildren(selector interface{}) error {
-	results, err := m.findAll(bson.M{"pid": m.Id}, selector)
+	results, err := m.findPage(0, 0, bson.M{"pid": m.Id}, selector, "+sort")
 	if err != nil {
 		return err
 	}

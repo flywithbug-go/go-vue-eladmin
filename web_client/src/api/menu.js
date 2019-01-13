@@ -16,6 +16,7 @@ export function buildMenus() {
 }
 
 export function add(data) {
+  console.log("menuAdd:", data)
   if (data.iframe === 'true'){
     data.iframe = true
   } else {

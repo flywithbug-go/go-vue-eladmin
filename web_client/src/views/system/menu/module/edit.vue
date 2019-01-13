@@ -30,7 +30,7 @@ export default {
     to() {
       const _this = this.$refs.form
       _this.roleIds = []
-      _this.form = { id: this.data.id, component: this.data.component, name: this.data.name, sort: this.data.sort, pid: this.data.pid, path: this.data.path, iframe: this.data.iframe?this.data.iframe.toString():"true", roles: [], icon: this.data.icon }
+      _this.form = { id: this.data.id, component: this.data.component, name: this.data.name, sort: this.data.sort, pid: this.data.pid, path: this.data.path, iframe: this.data.iframe?"true":"false", roles: [], icon: this.data.icon }
       if (!this.data.roles) {
         this.data.roles = []
       }
