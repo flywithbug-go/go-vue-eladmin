@@ -85,8 +85,8 @@ export default new Router({
 })
 
 export const asyncRouterMap = [
-  metadataRouter,
   userRouter,
+  metadataRouter,
   {
     path: '/icon',
     component: Layout,
