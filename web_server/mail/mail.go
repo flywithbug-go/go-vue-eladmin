@@ -49,5 +49,5 @@ func SendVerifyCode(title, code, mail string) error {
 		return fmt.Errorf("mail not right")
 	}
 	body := fmt.Sprintf("您的验证码是： %s ", code)
-	return sendMail(mail, title, "邮箱验证", body, config.Conf().MailConfig.Username)
+	return sendMail(mail, title, "", body, config.Conf().MailConfig.Username)
 }
