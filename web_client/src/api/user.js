@@ -73,6 +73,51 @@ export function edit(data) {
 }
 
 
-export function updateEmail(code,data) {
+export function validPassword(password) {
+  const data = {
+    password
+  }
+  return client({
+    url: '/user/password/valid',
+    method: 'get',
+    data
+  })
+}
 
+
+export function updatePassword(password,old_password) {
+  const data = {
+    password,
+    old_password
+  }
+  return client({
+    url: '/user/password',
+    method: 'put',
+    data
+  })
+
+}
+
+export function updateEmail(code,mail,password) {
+  const data = {
+    mail,
+    code,
+    password
+  }
+  return client({
+    url: '/user/mail',
+    method: 'put',
+    data
+  })
+}
+
+export function sendMailVerifyCode(mail) {
+  const data = {
+    mail
+  }
+  return client({
+    url: '/mail/verify',
+    method: 'post',
+    data
+  })
 }

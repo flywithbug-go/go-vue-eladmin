@@ -117,6 +117,9 @@ func (u User) Insert() error {
 }
 
 func (u User) updateUserRoles() {
+	if len(u.Permissions) == 0 {
+		return
+	}
 	ur := model_user_role.UserRole{}
 	ur.RemoveUserId(u.Id)
 	for _, role := range u.Roles {
@@ -217,4 +220,19 @@ func makeTreeList(list []User, selector interface{}) error {
 
 func createCaptcha() string {
 	return fmt.Sprintf("%06v", rand.New(rand.NewSource(time.Now().UnixNano())).Int31n(1000000))
+}
+
+func (u User) CheckPassword() bool {
+	if u.isExist(bson.M{"password": u.Password, "_id": u.Id}) {
+		return true
+	}
+	return false
+}
+
+func (u User) UpdatePassword() error {
+	return u.update(bson.M{"_id": u.Id}, bson.M{"password": u.Password})
+}
+
+func (u User) UpdateMail() error {
+	return u.update(bson.M{"_id": u.Id}, bson.M{"email": u.Email})
 }

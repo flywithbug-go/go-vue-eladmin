@@ -51,4 +51,22 @@ var Routers = []common.GinHandleFunc{
 		Method:     "GET",
 		Route:      "/user/list",
 	},
+	{
+		Handler:    validPasswordHandler, //验证密码
+		RouterType: common.RouterTypeNeedAuth,
+		Method:     "GET",
+		Route:      "/user/password/valid",
+	},
+	{
+		Handler:    updatePasswordHandler, //修改密码
+		RouterType: common.RouterTypeNeedAuth,
+		Method:     "PUT",
+		Route:      "/user/password",
+	},
+	{
+		Handler:    updateMailHandler, //修改邮箱
+		RouterType: common.RouterTypeNeedAuth,
+		Method:     "PUT",
+		Route:      "/user/mail",
+	},
 }

@@ -1,5 +1,6 @@
 import { getToken, setToken, removeToken } from '../../utils/auth'
 import {getUserInfo, login, logout} from "../../api/user";
+import { parseTime } from '@/utils/index'
 
 const user = {
   state: {
@@ -10,6 +11,7 @@ const user = {
     status: 0,
     // role:  -1 ,
     roles:[],
+    createTime:undefined,
   },
   mutations: {
     SET_TOKEN: (state, token) => {
@@ -30,7 +32,10 @@ const user = {
     },
     SET_EMAIL: (state, email) => {
       state.email = email
-    }
+    },
+    SET_CREATE_TIME: (state, createTime) => {
+      state.createTime = createTime
+    },
   },
   actions: {
     Login({ commit },user) {
@@ -55,11 +60,11 @@ const user = {
           } else {
             reject('getInfo: roles must be a non-null array !')
           }
-          commit('SET_NAME', data.name)
+          commit('SET_NAME', data.username)
           commit('SET_AVATAR', data.avatar)
           commit('SET_EMAIL', data.email)
           commit('SET_STATUS', data.status)
-
+          commit('SET_CREATE_TIME', parseTime(data.createTime))
           resolve(data)
         }).catch(error => {
           reject(error)
