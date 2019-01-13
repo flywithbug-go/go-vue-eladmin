@@ -115,7 +115,6 @@ func (r Role) Update() error {
 	r.updateRolePermission()
 	r.Permissions = nil
 	selector := bson.M{"_id": r.Id}
-	r.Id = 0
 	return r.update(selector, r)
 }
 

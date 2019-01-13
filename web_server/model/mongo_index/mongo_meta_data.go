@@ -19,6 +19,8 @@ const (
 	CollectionRolePermission = "role_permission"
 	CollectionUserRole       = "user_role"
 	CollectionVerify         = "verify"
+	CollectionMenu           = "menu"
+	CollectionMenuRole       = "menu_role"
 )
 
 type Index struct {
@@ -148,6 +150,17 @@ var Indexes = []Index{
 			Background: false,
 			Sparse:     true,
 			Name:       "c_user_f_role_index",
+		},
+	},
+	{
+		Name: CollectionMenuRole,
+		Index: mgo.Index{
+			Key:        []string{"role_id", "menu_id"},
+			Unique:     true,
+			DropDups:   true,
+			Background: false,
+			Sparse:     true,
+			Name:       "c_menu_f_role_index",
 		},
 	},
 }
