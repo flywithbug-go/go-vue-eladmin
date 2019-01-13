@@ -1,7 +1,6 @@
 import client from '../utils/fetch'
 import config from '../config'
 
-
 // 获取所有的Role
 export function getRoleTree() {
   return client({
@@ -19,11 +18,11 @@ export function add(data) {
 }
 
 export function del(id) {
-  let data = {
+  const data = {
     id
   }
   return client({
-    url: '/role' ,
+    url: '/role',
     method: 'delete',
     data
   })

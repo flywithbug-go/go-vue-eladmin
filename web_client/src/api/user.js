@@ -34,9 +34,8 @@ export function getUserListInfoRequest(query) {
   })
 }
 
-
 export function add(data) {
-  if (data.enabled === 'true'){
+  if (data.enabled === 'true') {
     data.enabled = true
   } else {
     data.enabled = false
@@ -53,15 +52,15 @@ export function del(id) {
     id
   }
   return client({
-    url: '/user' ,
+    url: '/user',
     method: 'delete',
     data
   })
 }
 
 export function edit(data) {
-  console.log("edit:", data)
-  if (data.enabled === 'true'){
+  console.log('edit:', data)
+  if (data.enabled === 'true') {
     data.enabled = true
   } else {
     data.enabled = false
@@ -73,7 +72,6 @@ export function edit(data) {
   })
 }
 
-
 export function validPassword(password) {
   return client({
     url: '/user/password/valid?password=' + password,
@@ -81,8 +79,7 @@ export function validPassword(password) {
   })
 }
 
-
-export function updatePassword(password,old_password) {
+export function updatePassword(password, old_password) {
   const data = {
     password,
     old_password
@@ -92,10 +89,9 @@ export function updatePassword(password,old_password) {
     method: 'put',
     data
   })
-
 }
 
-export function updateEmail(code,mail,password) {
+export function updateEmail(code, mail, password) {
   const data = {
     mail,
     code,

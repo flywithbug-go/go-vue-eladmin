@@ -16,8 +16,7 @@ export function buildMenus() {
 }
 
 export function add(data) {
-  console.log("menuAdd:", data)
-  if (data.iframe === 'true'){
+  if (data.iframe === 'true') {
     data.iframe = true
   } else {
     data.iframe = false
@@ -30,7 +29,7 @@ export function add(data) {
 }
 
 export function del(id) {
-  const  data =  {
+  const data = {
     id
   }
   return request({
@@ -41,7 +40,7 @@ export function del(id) {
 }
 
 export function edit(data) {
-  if (data.iframe === 'true'){
+  if (data.iframe === 'true') {
     data.iframe = true
   } else {
     data.iframe = false
