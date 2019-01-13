@@ -255,16 +255,16 @@
 </template>
 
 <script>
-import fixedButton from '../../components/FixedButton'
-import Pagination from '../../components/Pagination'
+import fixedButton from '@/components/FixedButton'
+import Pagination from '@/components/Pagination'
 
 import {
   getSimpleApplicationListRequest,
   getAppVersionListRequest,
   addAppVersionRequest,
   updateAppVersionRequest,
-  updateStatusAppVersionRequest, removeAppVersionRequest } from '../../api/app'
-import { formatDate } from '../../utils/date'
+  updateStatusAppVersionRequest, removeAppVersionRequest } from '@/api/app'
+import { formatDate } from '@/utils/date'
 import ElTableFooter from 'element-ui'
 
 export default {
@@ -283,7 +283,7 @@ export default {
       dialogFormVisible: false,
       dialogStatus: 'create',
       dialogEditCount: 0,
-      imagePlaceHolder: require('../../assets/image_placeholder.png'),
+      imagePlaceHolder: require('@/assets/image_placeholder.png'),
       textMap: {
         update: this.$t('actions.edit'),
         create: this.$t('actions.add')

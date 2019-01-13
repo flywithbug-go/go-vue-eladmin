@@ -215,12 +215,12 @@
 
 <script>
 import waves from '@/directive/waves' // Waves directive
-import fixedButton from '../../components/FixedButton'
-import global_ from '../../config'
-import store from '../../store'
-import Pagination from '../../components/Pagination'
-import { addApplicationRequest, getApplicationlListRequest, updateApplicationRequest, deleteApplication } from '../../api/app'
-import { formatDate } from '../../utils/date'
+import fixedButton from '@/components/FixedButton'
+import global_ from '@/config'
+import store from '@/store'
+import Pagination from '@/components/Pagination'
+import { addApplicationRequest, getApplicationlListRequest, updateApplicationRequest, deleteApplication } from '@/api/app'
+import { formatDate } from '@/utils/date'
 
 export default {
   name: 'AppManager',
@@ -234,7 +234,7 @@ export default {
       listLoading: true,
       headers: { 'Authorization': store.getters.token },
       actionURL: global_.UploadImageURL,
-      imagePlaceHolder: require('../../assets/image_placeholder.png'),
+      imagePlaceHolder: require('@/assets/image_placeholder.png'),
       list: null,
       total: 10,
       dialogFormVisible: false,

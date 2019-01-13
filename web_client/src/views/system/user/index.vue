@@ -55,7 +55,7 @@
 
 <script>
 import checkPermission from '@/utils/permission'
-import initData from '../../../mixins/initData'
+import initData from '@/mixins/initData'
 import { del } from '@/api/user'
 import { getRoleTree } from '@/api/role'
 import { parseTime } from '@/utils/index'

@@ -1,8 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Layout from '../views/layout/Layout'
-import metadataRouter from './modules/metadata'
-import  userRouter from './modules/system'
+
 
 Vue.use(Router)
 
@@ -83,47 +82,47 @@ export default new Router({
   routes: constantRouterMap,
   mode: 'history'
 })
-
-export const asyncRouterMap = [
-  userRouter,
-  metadataRouter,
-  {
-    path: '/icon',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/svg-icons/index'),
-        name: 'Icons',
-        meta: { title: 'icons', icon: 'icon', noCache: true }
-      }
-    ]
-  },
-  {
-    path: '/error',
-    component: Layout,
-    redirect: 'noredirect',
-    name: 'ErrorPages',
-    meta: {
-      title: 'errorPages',
-      icon: '404'
-    },
-    children: [
-      {
-        path: '401',
-        component: () => import('@/views/errorPage/401'),
-        name: 'Page401',
-        meta: { title: 'page401', noCache: true }
-      },
-      {
-        path: '404',
-        component: () => import('@/views/errorPage/404'),
-        name: 'Page404',
-        meta: { title: 'page404', noCache: true, }
-      }
-    ]
-  },
-]
+//
+// export const asyncRouterMap = [
+//   userRouter,
+//   metadataRouter,
+//   {
+//     path: '/icon',
+//     component: Layout,
+//     children: [
+//       {
+//         path: 'index',
+//         component: () => import('@/views/svg-icons/index'),
+//         name: 'Icons',
+//         meta: { title: 'icons', icon: 'icon', noCache: true }
+//       }
+//     ]
+//   },
+//   {
+//     path: '/error',
+//     component: Layout,
+//     redirect: 'noredirect',
+//     name: 'ErrorPages',
+//     meta: {
+//       title: 'errorPages',
+//       icon: '404'
+//     },
+//     children: [
+//       {
+//         path: '401',
+//         component: () => import('@/views/errorPage/401'),
+//         name: 'Page401',
+//         meta: { title: 'page401', noCache: true }
+//       },
+//       {
+//         path: '404',
+//         component: () => import('@/views/errorPage/404'),
+//         name: 'Page404',
+//         meta: { title: 'page404', noCache: true, }
+//       }
+//     ]
+//   },
+// ]
 
 
 

@@ -1,39 +1,5 @@
-import { asyncRouterMap, constantRouterMap } from '../../router'
-
-/**
- * 通过meta.role判断是否与当前用户权限匹配
- * @param roles
- * @param route
- */
-function hasPermission(roles, route) {
-  if (route.meta && route.meta.roles) {
-    return roles.some(role => route.meta.roles.includes(role))
-  } else {
-    return true
-  }
-}
-
-/**
- * 递归过滤异步路由表，返回符合用户角色权限的路由表
- * @param routes asyncRouterMap
- * @param roles
- */
-function filterAsyncRouter(routes, roles) {
-  const res = []
-  routes.forEach(route => {
-    const tmp = { ...route }
-    if (hasPermission(roles, tmp)) {
-      if (tmp.children) {
-        tmp.children = filterAsyncRouter(tmp.children, roles)
-      }
-      res.push(tmp)
-    }
-  })
-  return res
-}
-
-
-
+import { constantRouterMap } from '@/router'
+import Layout from '@/views/layout/Layout'
 
 const permission = {
   state: {
@@ -47,20 +13,32 @@ const permission = {
     }
   },
   actions: {
-    GenerateRoutes({ commit }, data) {
-      return new Promise(resolve => {
-        const { roles } = data
-        let accessedRouters
-        if (data.includes('admin')) {
-          accessedRouters = asyncRouterMap
-        } else {
-          accessedRouters = filterAsyncRouter(asyncRouterMap, roles)
-        }
-        commit('SET_ROUTERS', accessedRouters)
-        resolve()
-      })
+    GenerateRoutes({ commit }, asyncRouter) {
+      commit('SET_ROUTERS', asyncRouter)
     }
   }
+}
+
+export const filterAsyncRouter = (routers) => { // 遍历后台传来的路由字符串，转换为组件对象
+  const accessedRouters = routers.filter(router => {
+    if (router.component) {
+      if (router.component === 'Layout') { // Layout组件特殊处理
+        router.component = Layout
+      } else {
+        const component = router.component
+        router.component = loadView(component)
+      }
+    }
+    if (router.children && router.children.length) {
+      router.children = filterAsyncRouter(router.children)
+    }
+    return true
+  })
+  return accessedRouters
+}
+
+export const loadView = (view) => { // 路由懒加载
+  return () => import(`@/views/${view}`)
 }
 
 export default permission
