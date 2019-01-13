@@ -83,7 +83,7 @@ export default {
         this.$notify({
           title: res.msg,
           type: 'success',
-          duration: 2500
+          duration: 1500
         })
       }).catch(err => {
         this.delLoading = false

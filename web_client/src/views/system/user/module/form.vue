@@ -90,7 +90,7 @@ export default {
           title: '添加成功',
           message: res.msg,
           type: 'success',
-          duration: 2500
+          duration: 1500
         })
         this.loading = false
         this.$parent.$parent.init()
@@ -105,7 +105,7 @@ export default {
         this.$notify({
           title: '修改成功',
           type: 'success',
-          duration: 2500
+          duration: 1500
         })
         this.loading = false
         this.sup_this.init()

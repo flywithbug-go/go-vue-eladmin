@@ -6,7 +6,7 @@ import (
 	"vue-admin/web_server/core/jwt"
 	"vue-admin/web_server/model"
 	"vue-admin/web_server/model/model_user"
-	"vue-admin/web_server/server/sync"
+	"vue-admin/web_server/server/sync_map"
 
 	"github.com/flywithbug/log4go"
 	"github.com/gin-gonic/gin"
@@ -30,6 +30,11 @@ func loginHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "username or password not right")
 		return
 	}
+
+	if !user.Enabled {
+		aRes.SetErrorInfo(http.StatusBadRequest, "账号已停用，请联系管理员")
+		return
+	}
 	claims := jwt.NewCustomClaims(user.Id, user.Username)
 	token, err := jwt.GenerateToken(claims)
 	if err != nil {
@@ -44,7 +49,7 @@ func loginHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "token generate error"+err.Error())
 		return
 	}
-	sync.SetKeyValue(token)
+	sync_map.SetKeyValue(token)
 	aRes.SetResponseDataInfo("token", token)
 }
 
@@ -91,7 +96,7 @@ func logoutHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "token not found")
 		return
 	}
-	sync.RemoveKey(token)
+	sync_map.RemoveKey(token)
 	err := model_user.UpdateLoginStatus(token, model_user.StatusLogout)
 	if err != nil {
 		log4go.Info(err.Error())

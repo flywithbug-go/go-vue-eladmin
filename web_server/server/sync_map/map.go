@@ -1,4 +1,4 @@
-package sync
+package sync_map
 
 import "vue-admin/web_server/concurrent-map"
 

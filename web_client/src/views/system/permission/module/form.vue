@@ -78,7 +78,7 @@ export default {
         this.$notify({
           title: '添加成功',
           type: 'success',
-          duration: 2500
+          duration: 1500
         })
         this.loading = false
         setTimeout(() => {
@@ -96,7 +96,7 @@ export default {
         this.$notify({
           title: '修改成功',
           type: 'success',
-          duration: 2500
+          duration: 1500
         })
         this.loading = false
         setTimeout(() => {

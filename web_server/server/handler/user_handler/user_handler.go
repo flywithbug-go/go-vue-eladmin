@@ -76,6 +76,11 @@ func getUserInfoHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusUnauthorized, "user not found:"+err.Error())
 		return
 	}
+	if !user.Enabled {
+		log4go.Info("账号已停用")
+		aRes.SetErrorInfo(http.StatusUnauthorized, "账号已停用，请联系管理员")
+		return
+	}
 	roleUser := UserRole{}
 	roleUser.User = user
 	roleUser.Roles = user.RolesString
@@ -157,7 +162,10 @@ func getUserListInfoHandler(c *gin.Context) {
 	limit, _ := strconv.Atoi(c.Query("limit"))
 	page, _ := strconv.Atoi(c.Query("page"))
 	sort := c.Query("sort")
-	name := c.Query("name")
+	name := c.Query("username")
+	email := c.Query("email")
+	enabled := c.Query("enabled")
+
 	if strings.EqualFold(sort, "-id") {
 		sort = "-_id"
 	} else if strings.EqualFold(sort, "+id") {
@@ -178,14 +186,25 @@ func getUserListInfoHandler(c *gin.Context) {
 	}
 	query := bson.M{}
 	if len(name) > 0 {
-		query["name"] = bson.M{"$regex": name, "$options": "i"}
+		query["username"] = bson.M{"$regex": name, "$options": "i"}
 	}
+	if len(email) > 0 {
+		query["email"] = bson.M{"$regex": email, "$options": "i"}
+	}
+
+	if strings.EqualFold(enabled, "true") {
+		query["enabled"] = true
+	}
+	if strings.EqualFold(enabled, "false") {
+		query["enabled"] = false
+	}
+
 	var user = model_user.User{}
 	totalCount, _ := user.TotalCount(query, nil)
 	appList, err := user.FindPageFilter(page, limit, query, nil, sort)
 	if err != nil {
 		log4go.Info(err.Error())
-		aRes.SetErrorInfo(http.StatusUnauthorized, "apps find error"+err.Error())
+		aRes.SetErrorInfo(http.StatusInternalServerError, err.Error())
 		return
 	}
 	aRes.AddResponseInfo("list", appList)

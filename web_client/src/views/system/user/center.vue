@@ -75,7 +75,7 @@
         this.$notify({
           title: '头像修改成功',
           type: 'success',
-          duration: 2500
+          duration: 1500
         })
         store.dispatch('GetInfo').then(() => {})
       },
@@ -85,7 +85,7 @@
         this.$notify({
           title: msg.message,
           type: 'error',
-          duration: 2500
+          duration: 1500
         })
       }
     }

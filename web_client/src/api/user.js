@@ -60,6 +60,7 @@ export function del(id) {
 }
 
 export function edit(data) {
+  console.log("edit:", data)
   if (data.enabled === 'true'){
     data.enabled = true
   } else {

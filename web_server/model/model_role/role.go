@@ -92,7 +92,7 @@ func (r Role) Insert() error {
 		return fmt.Errorf("name can not be nil")
 	}
 	if len(r.Alias) == 0 {
-		return fmt.Errorf("alias can not be nil")
+		r.Alias = r.Name
 	}
 	r.Id, _ = mongo.GetIncrementId(roleCollection)
 	r.CreateTime = time.Now().Unix() * 1000

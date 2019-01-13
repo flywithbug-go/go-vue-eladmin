@@ -117,7 +117,7 @@ func (u User) Insert() error {
 }
 
 func (u User) updateUserRoles() {
-	if len(u.Permissions) == 0 {
+	if len(u.Roles) == 0 {
 		return
 	}
 	ur := model_user_role.UserRole{}
