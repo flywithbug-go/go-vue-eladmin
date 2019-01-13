@@ -7,6 +7,6 @@ var Routers = []common.GinHandleFunc{
 		Handler:    sendVerifyMailHanlder,
 		RouterType: common.RouterTypeNeedAuth,
 		Method:     "POST",
-		Route:      "/mail",
+		Route:      "/mail/verify",
 	},
 }

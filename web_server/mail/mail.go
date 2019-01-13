@@ -48,3 +48,8 @@ func SendVerifyCode(title, code, mail string) error {
 	body := fmt.Sprintf("您的验证码是： %s ", code)
 	return sendMail(mail, title, "邮箱验证", body, config.Conf().MailConfig.Username)
 }
+
+//func ReDialer(host string, port int, username, password string) (*gomail.Dialer, error) {
+//	Mail = gomail.NewDialer(host, port, username, password)
+//	return Mail, nil
+//}
