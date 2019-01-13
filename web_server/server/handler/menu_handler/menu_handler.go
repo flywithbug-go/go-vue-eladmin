@@ -116,7 +116,7 @@ func removeMenuHandler(c *gin.Context) {
 	}
 }
 
-func getRoleListHandler(c *gin.Context) {
+func getMenuListHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
@@ -137,7 +137,7 @@ func getRoleListHandler(c *gin.Context) {
 	if page != 0 {
 		page--
 	}
-	query := bson.M{}
+	query := bson.M{"pid": 0}
 	if len(name) > 0 {
 		query["name"] = bson.M{"$regex": name, "$options": "i"}
 	}
@@ -152,7 +152,7 @@ func getRoleListHandler(c *gin.Context) {
 	aRes.AddResponseInfo("total", totalCount)
 }
 
-func getRoleTreeHandler(c *gin.Context) {
+func getMenuTreeHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
@@ -163,8 +163,9 @@ func getRoleTreeHandler(c *gin.Context) {
 		return
 	}
 	var role = model_menu.Menu{}
+	query := bson.M{"pid": 0}
 	selector := bson.M{"_id": 1, "name": 1}
-	list, err := role.FindPageFilter(0, 0, nil, selector)
+	list, err := role.FindPageTreeFilter(0, 0, query, selector)
 	if err != nil {
 		log4go.Info(err.Error())
 		aRes.SetErrorInfo(http.StatusUnauthorized, "app version list find error"+err.Error())

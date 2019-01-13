@@ -33,7 +33,7 @@ type meta struct {
 
 type Menu struct {
 	Id         int64             `json:"id,omitempty" bson:"_id,omitempty"`
-	PId        int64             `json:"pid,omitempty" bson:"pid,omitempty"` //父节点ID
+	PId        int64             `json:"pid" bson:"pid"` //父节点ID
 	Sort       int               `json:"sort" bson:"sort,omitempty"`
 	Icon       string            `json:"icon,omitempty" bson:"icon,omitempty"`
 	Name       string            `json:"name,omitempty" bson:"name,omitempty"`
@@ -41,7 +41,7 @@ type Menu struct {
 	Path       string            `json:"path,omitempty" bson:"path,omitempty"`
 	AlwaysShow bool              `json:"alwaysShow" bson:"alwaysShow"`
 	Component  string            `json:"component,omitempty" bson:"component,omitempty"`
-	IFrame     bool              `json:"iFrame" bson:"iFrame"`
+	IFrame     bool              `json:"iframe" bson:"iframe"`
 	CreateTime int64             `json:"createTime,omitempty" bson:"createTime,omitempty"`
 	Children   []Menu            `json:"children,omitempty" bson:"children,omitempty"`
 	Roles      []model_role.Role `json:"roles,omitempty" bson:"roles,omitempty"`
@@ -172,17 +172,6 @@ func (m Menu) TotalCount(query, selector interface{}) (int, error) {
 	return m.totalCount(query, selector)
 }
 
-func (m Menu) FindPageFilter(page, limit int, query, selector interface{}, fields ...string) ([]Menu, error) {
-	results, err := m.findPage(page, limit, query, selector, fields...)
-	if err != nil {
-		return nil, err
-	}
-	makeTreeList(results, selector)
-	if err != nil {
-		return nil, err
-	}
-	return results, nil
-}
 func (m Menu) FindPageTreeFilter(page, limit int, query, selector interface{}, fields ...string) ([]Menu, error) {
 	results, err := m.findPage(page, limit, query, selector, fields...)
 	if err != nil {

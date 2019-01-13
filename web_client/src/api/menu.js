@@ -16,6 +16,11 @@ export function buildMenus() {
 }
 
 export function add(data) {
+  if (data.iframe === 'true'){
+    data.iframe = true
+  } else {
+    data.iframe = false
+  }
   return request({
     url: '/menu',
     method: 'post',
@@ -31,7 +36,11 @@ export function del(id) {
 }
 
 export function edit(data) {
-  console.log('menuEdit:', data)
+  if (data.iframe === 'true'){
+    data.iframe = true
+  } else {
+    data.iframe = false
+  }
   return request({
     url: '/menu',
     method: 'put',

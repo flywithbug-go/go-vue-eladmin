@@ -28,13 +28,13 @@ var Routers = []common.GinHandleFunc{
 		Route:      "/menu",
 	},
 	{
-		Handler:    getRoleListHandler,
+		Handler:    getMenuListHandler,
 		RouterType: common.RouterTypeNeedAuth,
 		Method:     "GET",
 		Route:      "/menu/list",
 	},
 	{
-		Handler:    getRoleTreeHandler,
+		Handler:    getMenuTreeHandler,
 		RouterType: common.RouterTypeNeedAuth,
 		Method:     "GET",
 		Route:      "/menu/tree",
