@@ -91,7 +91,7 @@
       },
       subDelete(index, row) {
         this.delLoading = true
-        del(row.id).then(res => {
+        del(row.id).then(() => {
           this.delLoading = false
           row.delPopover = false
           this.init()

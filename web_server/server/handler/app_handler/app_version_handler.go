@@ -6,8 +6,8 @@ import (
 	"strings"
 	"vue-admin/web_server/common"
 	"vue-admin/web_server/model"
-	"vue-admin/web_server/model/check_permission"
 	"vue-admin/web_server/model/model_app"
+	"vue-admin/web_server/server/handler/check_permission"
 
 	"gopkg.in/mgo.v2/bson"
 

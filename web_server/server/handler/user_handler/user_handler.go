@@ -6,8 +6,8 @@ import (
 	"strings"
 	"vue-admin/web_server/common"
 	"vue-admin/web_server/model"
-	"vue-admin/web_server/model/check_permission"
 	"vue-admin/web_server/model/model_user"
+	"vue-admin/web_server/server/handler/check_permission"
 
 	"github.com/flywithbug/log4go"
 	"github.com/gin-gonic/gin"

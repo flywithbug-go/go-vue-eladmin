@@ -43,7 +43,7 @@ type Menu struct {
 	Name       string            `json:"name,omitempty" bson:"name,omitempty"`
 	Label      string            `json:"label,omitempty" bson:"label,omitempty"`
 	Path       string            `json:"path,omitempty" bson:"path,omitempty"`
-	AlwaysShow bool              `json:"alwaysShow,omitempty" bson:"alwaysShow"`
+	AlwaysShow bool              `json:"alwaysShow" bson:"alwaysShow"`
 	Component  string            `json:"component,omitempty" bson:"component,omitempty"`
 	IFrame     bool              `json:"iframe,omitempty" bson:"iframe"`
 	CreateTime int64             `json:"createTime,omitempty" bson:"createTime,omitempty"`
@@ -125,9 +125,7 @@ func (m Menu) Insert() (int64, error) {
 	m.Roles = nil
 	m.Children = nil
 	m.IFrame = true
-	if len(m.Children) > 0 {
-		m.AlwaysShow = true
-	}
+	m.AlwaysShow = true
 	err := m.insert(m)
 	if err != nil {
 		return -1, err
