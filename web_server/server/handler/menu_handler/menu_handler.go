@@ -34,6 +34,7 @@ func addMenuHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
+
 	_, err = para.Insert()
 	if err != nil {
 		log4go.Info(err.Error())

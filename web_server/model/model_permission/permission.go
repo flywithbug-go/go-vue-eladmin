@@ -120,6 +120,9 @@ func (p Permission) FindPipeOne() (Permission, error) {
 }
 
 func (p Permission) Update() error {
+	if p.PId == p.Id {
+		p.PId = 0
+	}
 	if p.Id == 10000 {
 		return fmt.Errorf("此权限不能编辑")
 	}

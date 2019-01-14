@@ -150,6 +150,9 @@ func (m Menu) updateMenuRole() {
 }
 
 func (m Menu) Update() error {
+	if m.PId == m.Id {
+		m.PId = 0
+	}
 	m.updateMenuRole()
 	m.Roles = nil
 	m.Children = nil
@@ -314,7 +317,6 @@ func makeRoleTreeList(list []Menu, selector interface{}, roles []model_role.Role
 		}
 		list[index].Label = item.Name
 		list[index].Name = ""
-
 		makeRoleTreeList(list[index].Children, selector, roles)
 	}
 }
