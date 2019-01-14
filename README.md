@@ -1,12 +1,14 @@
 
 ## 简介
 
-[在线访问](http://118.89.108.25:9801)
+vue和go锻炼项目
+
+[在线访问](http://www.flywithme.top)
 
 
+前端使用Vue + element-ui
+后端使用 golang + mongodb
 
-Backend(go):
-Frontend(vue)
 
 - **go主要框架** 
 ``` 
@@ -337,3 +339,4 @@ npm run build --report
 
 
 使用PanJiaChen的:[vue-element-admin](https://github.com/PanJiaChen/vue-element-admin/blob/master/README.zh-CN.md)搭好的基础框架
+借鉴[elunez](https://github.com/elunez/eladmin)页面
