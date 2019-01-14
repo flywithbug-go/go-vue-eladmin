@@ -190,14 +190,6 @@ func (m Menu) FindPageTreeFilter(page, limit int, query, selector interface{}, f
 	makeTreeList(results, selector, MenuTypeTree)
 	return results, err
 }
-func (m Menu) FindPageBuildFilter(roles []model_role.Role, page, limit int, query, selector interface{}, fields ...string) ([]Menu, error) {
-	results, err := m.findPage(page, limit, query, selector, fields...)
-	if err != nil {
-		return nil, err
-	}
-	makeRoleTreeList(results, selector, roles)
-	return results, err
-}
 
 func (m Menu) FetchTreeList(selector interface{}) (results []Menu, err error) {
 	results, err = m.findAll(bson.M{"pid": 0}, selector)
@@ -283,6 +275,15 @@ func (m Menu) checkMenuSelectPermission(roles []model_role.Role) bool {
 		}
 	}
 	return false
+}
+
+func (m Menu) FindPageBuildFilter(roles []model_role.Role, page, limit int, query, selector interface{}, fields ...string) ([]Menu, error) {
+	results, err := m.findPage(page, limit, query, selector, fields...)
+	if err != nil {
+		return nil, err
+	}
+	makeRoleTreeList(results, selector, roles)
+	return results, err
 }
 
 func (m *Menu) findRoleChildren(selector interface{}, roles []model_role.Role) error {
