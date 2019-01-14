@@ -109,7 +109,6 @@ func (r Role) Insert() error {
 }
 
 func (r Role) Update() error {
-
 	if r.Id == 10000 {
 		return fmt.Errorf("超级管理员不能编辑")
 	}

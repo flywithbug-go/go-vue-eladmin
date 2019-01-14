@@ -316,7 +316,6 @@ func makeRoleTreeList(list []Menu, selector interface{}, roles []model_role.Role
 			Icon:  item.Icon,
 		}
 		list[index].Label = item.Name
-		list[index].Name = ""
 		makeRoleTreeList(list[index].Children, selector, roles)
 	}
 }
