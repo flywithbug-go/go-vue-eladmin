@@ -41,6 +41,9 @@ export default {
         roles: [],
         icon: this.data.icon
       }
+      if (!this.data.roles) {
+        this.data.roles = []
+      }
       this.data.roles.forEach(function(data, index) {
         _this.roleIds.push(data.id)
       })

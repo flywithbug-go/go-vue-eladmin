@@ -190,13 +190,13 @@ func (m Menu) FindPageTreeFilter(page, limit int, query, selector interface{}, f
 	makeTreeList(results, selector, MenuTypeTree)
 	return results, err
 }
-func (m Menu) FindPageBuildFilter(page, limit int, query, selector interface{}, fields ...string) ([]Menu, error) {
+func (m Menu) FindPageBuildFilter(roles []model_role.Role, page, limit int, query, selector interface{}, fields ...string) ([]Menu, error) {
 	results, err := m.findPage(page, limit, query, selector, fields...)
 	if err != nil {
 		return nil, err
 	}
-
 	makeTreeList(results, selector, MenuTypeBuild)
+	menusPermissionFilter(results, roles)
 	return results, err
 }
 
@@ -270,30 +270,33 @@ func makeTreeList(list []Menu, selector interface{}, menuType int) {
 	}
 }
 
-func makeMenuTreeList(list []Menu, selector interface{}, roles []model_role.Role) {
-	index1 := 0
-	for index := range list {
-		if !list[index].checkMenuSelectPermission(roles) {
-			continue
-		} else {
-			list[index1] = list[index]
-			index1++
-			list[index1].findChildren(selector)
-			makeMenuTreeList(list[index1].Children, selector, roles)
-		}
-
-	}
-}
-
 func (m Menu) checkMenuSelectPermission(roles []model_role.Role) bool {
 	mr := model_menu_role.MenuRole{}
 	results, _ := mr.FindAll(bson.M{"menu_id": m.Id}, nil)
+	js, _ := json.Marshal(results)
+	log4go.Info("mPer: %s", string(js))
+
+	js, _ = json.Marshal(roles)
+	log4go.Info("roles: %s", string(js))
 	for _, item := range results {
 		for _, role := range roles {
+			if role.Id == 10000 {
+				return true
+			}
 			if role.Id == item.RoleId {
 				return true
 			}
 		}
 	}
 	return false
+}
+
+func menusPermissionFilter(list []Menu, roles []model_role.Role) {
+	length := len(list)
+	index := 0
+	for length > 0 {
+		b := list[index].checkMenuSelectPermission(roles)
+		log4go.Info("mPer: %s", b)
+		length--
+	}
 }

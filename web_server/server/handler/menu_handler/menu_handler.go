@@ -124,12 +124,11 @@ func getMenuListHandler(c *gin.Context) {
 		c.JSON(http.StatusOK, aRes)
 	}()
 
-	if check_permission.CheckNoPermission(c, model_menu.MenuPermissionSelect) {
-		log4go.Info("has no permission")
-		aRes.SetErrorInfo(http.StatusOK, "has no permission")
-		return
-	}
-
+	//if check_permission.CheckNoPermission(c, model_menu.MenuPermissionSelect) {
+	//	log4go.Info("has no permission")
+	//	aRes.SetErrorInfo(http.StatusOK, "has no permission")
+	//	return
+	//}
 	var role = model_menu.Menu{}
 	limit, _ := strconv.Atoi(c.Query("limit"))
 	page, _ := strconv.Atoi(c.Query("page"))
@@ -159,11 +158,11 @@ func getMenuTreeHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
-	if check_permission.CheckNoPermission(c, model_menu.MenuPermissionSelect) {
-		log4go.Info("has no permission")
-		aRes.SetErrorInfo(http.StatusOK, "has no permission")
-		return
-	}
+	//if check_permission.CheckNoPermission(c, model_menu.MenuPermissionSelect) {
+	//	log4go.Info("has no permission")
+	//	aRes.SetErrorInfo(http.StatusOK, "has no permission")
+	//	return
+	//}
 	var role = model_menu.Menu{}
 	query := bson.M{"pid": 0}
 	selector := bson.M{"_id": 1, "name": 1}
@@ -181,15 +180,19 @@ func getMenuBuildHandler(c *gin.Context) {
 	defer func() {
 		c.JSON(http.StatusOK, aRes)
 	}()
-	if check_permission.CheckNoPermission(c, model_menu.MenuPermissionSelect) {
-		log4go.Info("has no permission")
-		aRes.SetErrorInfo(http.StatusOK, "has no permission")
-		return
-	}
+	//if check_permission.CheckNoPermission(c, model_menu.MenuPermissionSelect) {
+	//	log4go.Info("has no permission")
+	//	aRes.SetErrorInfo(http.StatusOK, "has no permission")
+	//	return
+	//}
 	sort := "+sort"
 	var role = model_menu.Menu{}
 	query := bson.M{"pid": 0}
-	list, err := role.FindPageBuildFilter(0, 0, query, nil, sort)
+	roles := getUserRoles(c)
+	//js, _ := json.Marshal(roles)
+	//log4go.Info(string(js))
+
+	list, err := role.FindPageBuildFilter(roles, 0, 0, query, nil, sort)
 	if err != nil {
 		log4go.Info(err.Error())
 		aRes.SetErrorInfo(http.StatusUnauthorized, "app version list find error"+err.Error())

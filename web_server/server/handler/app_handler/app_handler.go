@@ -69,7 +69,7 @@ func getApplicationsHandler(c *gin.Context) {
 	}()
 	if check_permission.CheckNoPermission(c, model_app.APPlicationPermissionSelect) {
 		log4go.Info("has no permission")
-		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
+		aRes.SetErrorInfo(http.StatusOK, "has no permission")
 		return
 	}
 	limit, _ := strconv.Atoi(c.Query("limit"))
@@ -121,7 +121,7 @@ func updateApplicationHandler(c *gin.Context) {
 	}()
 	if check_permission.CheckNoPermission(c, model_app.APPlicationPermissionEdit) {
 		log4go.Info("has no permission")
-		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
+		aRes.SetErrorInfo(http.StatusOK, "has no permission")
 		return
 	}
 	app := new(model_app.Application)
@@ -147,7 +147,7 @@ func getAllSimpleAppHandler(c *gin.Context) {
 	}()
 	if check_permission.CheckNoPermission(c, model_app.APPlicationPermissionSelect) {
 		log4go.Info("has no permission")
-		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
+		aRes.SetErrorInfo(http.StatusOK, "has no permission")
 		return
 	}
 	var app = model_app.Application{}
@@ -176,7 +176,7 @@ func removeApplicationHandler(c *gin.Context) {
 	}()
 	if check_permission.CheckNoPermission(c, model_app.APPlicationPermissionDelete) {
 		log4go.Info("has no permission")
-		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
+		aRes.SetErrorInfo(http.StatusOK, "has no permission")
 		return
 	}
 	app := model_app.Application{}
