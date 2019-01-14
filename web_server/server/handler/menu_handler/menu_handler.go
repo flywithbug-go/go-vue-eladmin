@@ -3,8 +3,11 @@ package menu_handler
 import (
 	"net/http"
 	"strconv"
+	"vue-admin/web_server/common"
 	"vue-admin/web_server/model"
 	"vue-admin/web_server/model/model_menu"
+	"vue-admin/web_server/model/model_role"
+	"vue-admin/web_server/model/model_user"
 	"vue-admin/web_server/server/handler/check_permission"
 
 	"gopkg.in/mgo.v2/bson"
@@ -193,4 +196,12 @@ func getMenuBuildHandler(c *gin.Context) {
 		return
 	}
 	aRes.AddResponseInfo("list", list)
+}
+
+func getUserRoles(c *gin.Context) model_role.Role {
+	id := common.UserId(c)
+	user := model_user.User{}
+	user.Id = id
+	user, _ = user.FindOne()
+
 }

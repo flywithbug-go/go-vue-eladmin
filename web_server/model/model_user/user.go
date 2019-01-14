@@ -236,3 +236,30 @@ func (u User) UpdatePassword() error {
 func (u User) UpdateMail() error {
 	return u.update(bson.M{"_id": u.Id}, bson.M{"email": u.Email})
 }
+
+func (u User) FindRoles() (User, error) {
+	u, err := u.findOne(bson.M{"_id": u.Id}, bson.M{"password": 0})
+	if err != nil {
+		return u, err
+	}
+	ur := model_user_role.UserRole{}
+	ur.UserId = u.Id
+	results, _ := ur.FindAll(bson.M{"user_id": u.Id}, nil)
+	u.Roles = make([]model_role.Role, len(results))
+	var rule model_role.Role
+	index1 := 0
+	for _, item := range results {
+		rule.Id = item.RoleId
+		rule, err := rule.FindSimple(bson.M{"_id": 1, "name": 1})
+		rule.Label = rule.Alias
+		rule.Alias = ""
+		if err != nil {
+			log4go.Info(err.Error())
+		} else {
+			u.Roles[index1] = rule
+			index1++
+		}
+	}
+	u.Roles = u.Roles[:index1]
+	return u, nil
+}

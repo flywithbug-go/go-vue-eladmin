@@ -146,6 +146,10 @@ func (r Role) FindOne() (role Role, err error) {
 	return r.findOne(bson.M{"_id": r.Id}, nil)
 }
 
+func (r Role) FindSimple(selector interface{}) (role Role, err error) {
+	return r.findOne(bson.M{"_id": r.Id}, selector)
+}
+
 func (r Role) FindLabelAll() ([]Role, error) {
 	results, err := r.findAll(nil, bson.M{"_id": 1, "alias": 1})
 	if err != nil {
