@@ -36,20 +36,21 @@ type meta struct {
 }
 
 type Menu struct {
-	Id         int64             `json:"id,omitempty" bson:"_id,omitempty"`
-	PId        int64             `json:"pid,omitempty" bson:"pid"` //父节点ID
-	Sort       int               `json:"sort" bson:"sort"`
-	Icon       string            `json:"icon,omitempty" bson:"icon,omitempty"`
-	Name       string            `json:"name,omitempty" bson:"name,omitempty"`
-	Label      string            `json:"label,omitempty" bson:"label,omitempty"`
-	Path       string            `json:"path,omitempty" bson:"path,omitempty"`
-	AlwaysShow bool              `json:"alwaysShow" bson:"alwaysShow"`
-	Component  string            `json:"component,omitempty" bson:"component,omitempty"`
-	IFrame     bool              `json:"iframe,omitempty" bson:"iframe"`
-	CreateTime int64             `json:"createTime,omitempty" bson:"createTime,omitempty"`
-	Children   []Menu            `json:"children,omitempty" bson:"children,omitempty"`
-	Roles      []model_role.Role `json:"roles,omitempty" bson:"roles,omitempty"`
-	Meta       meta              `json:"meta,omitempty" bson:"meta,omitempty"`
+	Id         int64                      `json:"id,omitempty" bson:"_id,omitempty"`
+	PId        int64                      `json:"pid,omitempty" bson:"pid"` //父节点ID
+	Sort       int                        `json:"sort" bson:"sort"`
+	Icon       string                     `json:"icon,omitempty" bson:"icon,omitempty"`
+	Name       string                     `json:"name,omitempty" bson:"name,omitempty"`
+	Label      string                     `json:"label,omitempty" bson:"label,omitempty"`
+	Path       string                     `json:"path,omitempty" bson:"path,omitempty"`
+	AlwaysShow bool                       `json:"alwaysShow" bson:"alwaysShow"`
+	Component  string                     `json:"component,omitempty" bson:"component,omitempty"`
+	IFrame     bool                       `json:"iframe" bson:"iframe"`
+	CreateTime int64                      `json:"createTime,omitempty" bson:"createTime,omitempty"`
+	Children   []Menu                     `json:"children,omitempty" bson:"children,omitempty"`
+	Roles      []model_role.Role          `json:"roles,omitempty" bson:"roles,omitempty"`
+	Meta       meta                       `json:"meta,omitempty" bson:"meta,omitempty"`
+	menuRoles  []model_menu_role.MenuRole `json:"menu_roles,omitempty"`
 }
 
 func (m Menu) ToJson() string {
@@ -194,6 +195,7 @@ func (m Menu) FindPageBuildFilter(page, limit int, query, selector interface{}, 
 	if err != nil {
 		return nil, err
 	}
+
 	makeTreeList(results, selector, MenuTypeBuild)
 	return results, err
 }
@@ -266,4 +268,32 @@ func makeTreeList(list []Menu, selector interface{}, menuType int) {
 		}
 		makeTreeList(list[index].Children, selector, menuType)
 	}
+}
+
+func makeMenuTreeList(list []Menu, selector interface{}, roles []model_role.Role) {
+	index1 := 0
+	for index := range list {
+		if !list[index].checkMenuSelectPermission(roles) {
+			continue
+		} else {
+			list[index1] = list[index]
+			index1++
+			list[index1].findChildren(selector)
+			makeMenuTreeList(list[index1].Children, selector, roles)
+		}
+
+	}
+}
+
+func (m Menu) checkMenuSelectPermission(roles []model_role.Role) bool {
+	mr := model_menu_role.MenuRole{}
+	results, _ := mr.FindAll(bson.M{"menu_id": m.Id}, nil)
+	for _, item := range results {
+		for _, role := range roles {
+			if role.Id == item.RoleId {
+				return true
+			}
+		}
+	}
+	return false
 }

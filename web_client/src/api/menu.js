@@ -16,10 +16,10 @@ export function buildMenus() {
 }
 
 export function add(data) {
-  if (data.iframe === 'true') {
-    data.iframe = true
-  } else {
+  if (data.iframe === 'false') {
     data.iframe = false
+  } else {
+    data.iframe = true
   }
   return request({
     url: '/menu',
@@ -40,10 +40,10 @@ export function del(id) {
 }
 
 export function edit(data) {
-  if (data.iframe === 'true') {
-    data.iframe = true
-  } else {
+  if (data.iframe === 'false') {
     data.iframe = false
+  } else {
+    data.iframe = true
   }
   return request({
     url: '/menu',
