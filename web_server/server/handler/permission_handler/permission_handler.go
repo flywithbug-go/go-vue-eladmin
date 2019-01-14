@@ -21,7 +21,7 @@ func addPermissionHandler(c *gin.Context) {
 	}()
 	if check_permission.CheckNoPermission(c, model_permission.PPermissionCreate) {
 		log4go.Info("has no permission")
-		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
+		aRes.SetErrorInfo(http.StatusOK, "has no permission")
 		return
 	}
 	p := model_permission.Permission{}
@@ -47,7 +47,7 @@ func getPermissionHandler(c *gin.Context) {
 	}()
 	if check_permission.CheckNoPermission(c, model_permission.PPermissionSelect) {
 		log4go.Info("has no permission")
-		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
+		aRes.SetErrorInfo(http.StatusOK, "has no permission")
 		return
 	}
 	ids := c.Query("id")
@@ -70,7 +70,7 @@ func updatePermissionHandler(c *gin.Context) {
 	}()
 	if check_permission.CheckNoPermission(c, model_permission.PPermissionEdit) {
 		log4go.Info("has no permission")
-		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
+		aRes.SetErrorInfo(http.StatusOK, "has no permission")
 		return
 	}
 	para := model_permission.Permission{}
@@ -95,7 +95,7 @@ func removePermissionHandler(c *gin.Context) {
 	}()
 	if check_permission.CheckNoPermission(c, model_permission.PPermissionDelete) {
 		log4go.Info("has no permission")
-		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
+		aRes.SetErrorInfo(http.StatusOK, "has no permission")
 		return
 	}
 	//need id
@@ -121,7 +121,7 @@ func getPermissionListHandler(c *gin.Context) {
 	}()
 	if check_permission.CheckNoPermission(c, model_permission.PPermissionSelect) {
 		log4go.Info("has no permission")
-		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
+		aRes.SetErrorInfo(http.StatusOK, "has no permission")
 		return
 	}
 	var per = model_permission.Permission{}
@@ -162,7 +162,7 @@ func getPermissionTreeHandler(c *gin.Context) {
 	}()
 	if check_permission.CheckNoPermission(c, model_permission.PPermissionSelect) {
 		log4go.Info("has no permission")
-		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
+		aRes.SetErrorInfo(http.StatusOK, "has no permission")
 		return
 	}
 	var per = model_permission.Permission{}

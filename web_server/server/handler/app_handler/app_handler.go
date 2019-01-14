@@ -26,7 +26,7 @@ func addApplicationHandler(c *gin.Context) {
 	}()
 	if check_permission.CheckNoPermission(c, model_app.APPlicationPermissionCreate) {
 		log4go.Info("has no permission")
-		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
+		aRes.SetErrorInfo(http.StatusOK, "has no permission")
 		return
 	}
 	app := new(appPara)

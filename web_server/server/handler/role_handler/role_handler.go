@@ -21,7 +21,7 @@ func addRoleHandler(c *gin.Context) {
 	}()
 	if check_permission.CheckNoPermission(c, model_role.RolePermissionCreate) {
 		log4go.Info("has no permission")
-		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
+		aRes.SetErrorInfo(http.StatusOK, "has no permission")
 		return
 	}
 
@@ -47,7 +47,7 @@ func getRoleHandler(c *gin.Context) {
 	}()
 	if check_permission.CheckNoPermission(c, model_role.RolePermissionSelect) {
 		log4go.Info("has no permission")
-		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
+		aRes.SetErrorInfo(http.StatusOK, "has no permission")
 		return
 	}
 
@@ -71,7 +71,7 @@ func updateRoleHandler(c *gin.Context) {
 	}()
 	if check_permission.CheckNoPermission(c, model_role.RolePermissionEdit) {
 		log4go.Info("has no permission")
-		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
+		aRes.SetErrorInfo(http.StatusOK, "has no permission")
 		return
 	}
 
@@ -97,7 +97,7 @@ func removeRoleHandler(c *gin.Context) {
 	}()
 	if check_permission.CheckNoPermission(c, model_role.RolePermissionDelete) {
 		log4go.Info("has no permission")
-		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
+		aRes.SetErrorInfo(http.StatusOK, "has no permission")
 		return
 	}
 	//need id
@@ -124,7 +124,7 @@ func getRoleListHandler(c *gin.Context) {
 
 	if check_permission.CheckNoPermission(c, model_role.RolePermissionSelect) {
 		log4go.Info("has no permission")
-		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
+		aRes.SetErrorInfo(http.StatusOK, "has no permission")
 		return
 	}
 
@@ -165,7 +165,7 @@ func getRoleTreeHandler(c *gin.Context) {
 	}()
 	if check_permission.CheckNoPermission(c, model_role.RolePermissionSelect) {
 		log4go.Info("has no permission")
-		aRes.SetErrorInfo(http.StatusForbidden, "has no permission")
+		aRes.SetErrorInfo(http.StatusOK, "has no permission")
 		return
 	}
 	var role = model_role.Role{}
