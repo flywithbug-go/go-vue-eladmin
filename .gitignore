@@ -33,5 +33,4 @@ web_client/yarn-error.log*
 !/vendor/vendor.json
 log/*
 config.json
-db_backup
 db_data_migration.sh
