@@ -84,8 +84,14 @@ func (l Log) Exist() bool {
 }
 
 func (l Log) Insert() (int64, error) {
-	//l.Id, _ = mongo.GetIncrementId(dbName, logCollection)
-	l.Id = 1
-	err := l.insert(l)
+	id, err := mongo.GetIncrementId(dbName, logCollection)
+	if err != nil {
+		return -1, err
+	}
+	l.Id = id
+	err = l.insert(l)
+	if err != nil {
+		return -1, err
+	}
 	return l.Id, err
 }

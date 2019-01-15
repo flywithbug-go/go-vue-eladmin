@@ -1,6 +1,7 @@
 package mongo
 
 import (
+	"github.com/flywithbug/log4go"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
@@ -8,6 +9,7 @@ import (
 func getMgoSession(db string) *mgo.Session {
 	tm, ok := sessionMap[db]
 	if !ok {
+		log4go.Info("")
 		return nil
 	}
 	s := tm.session.Copy()

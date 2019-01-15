@@ -63,12 +63,17 @@ func setMongoDB() {
 	//mongodb启动连接
 	//设置数据库名字
 	shareDB.SetDBName(config.Conf().DBConfig.DBName)
-	mongo.RegisterMongo(config.Conf().DBConfig.Url, config.Conf().DBConfig.DBName)
+	err := mongo.RegisterMongo(config.Conf().DBConfig.Url, config.Conf().DBConfig.DBName)
+	if err != nil {
+		panic(err)
+	}
 	//模型唯一索引
 	mongo_index.CreateMgoIndex()
 
-	mongo.RegisterMongo(config.Conf().LogDBConfig.Url, config.Conf().LogDBConfig.DBName)
-
+	err = mongo.RegisterMongo(config.Conf().LogDBConfig.Url, config.Conf().LogDBConfig.DBName)
+	if err != nil {
+		panic(err)
+	}
 }
 
 func setMail() {
