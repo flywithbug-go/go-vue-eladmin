@@ -3,7 +3,7 @@
 
 vue和go锻炼项目
 
-[在线访问](http://www.flywithme.top)
+[在线访问](https://www.flywithme.top)
 
 
 前端使用Vue + element-ui
