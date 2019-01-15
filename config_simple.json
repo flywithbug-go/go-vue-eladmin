@@ -1,10 +1,10 @@
 {
-  "api_port":":6201",
-  "web_port":":6203",
-  "static_path":"./web_client/dist/",
-  "private_key_path":"**/private_key",
-  "public_key_path":"**/public_key.pub",
-  "log_path":"../log/log-%Y%M%D.log",
+  "port":":9021",
+  "static_path":"../web_client/dist/",
+  "private_key_path":"./key_sources/private_key",
+  "public_key_path":"./key_sources/public_key.pub",
+  "log_path":"./log/log-%Y%M%D.log",
+  "local_file_path": "./image/",
   "mail_config":{
     "host":"smtp.163.com",
     "port":465,

@@ -40,7 +40,7 @@ func setJWTKey() {
 func init() {
 	fmt.Println("----------------init----------------")
 	//配置文件
-	configPath := flag.String("config", "config.json", "Configuration file to use")
+	configPath := flag.String("config", "../config.json", "Configuration file to use")
 	flag.Parse()
 	err := config.ReadConfig(*configPath)
 	if err != nil {
