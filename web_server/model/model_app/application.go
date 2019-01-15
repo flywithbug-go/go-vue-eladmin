@@ -3,6 +3,7 @@ package model_app
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"time"
 	"vue-admin/web_server/core/mongo"
 	"vue-admin/web_server/model/a_mongo_index"
@@ -73,6 +74,10 @@ func (a Application) update(selector, update interface{}) error {
 }
 
 func (a Application) remove(selector interface{}) error {
+	version := AppVersion{}
+	if version.isExist(bson.M{"app_id": a.Id}) {
+		return fmt.Errorf("app in use")
+	}
 	return mongo.Remove(shareDB.DBName(), appCollection, selector)
 }
 

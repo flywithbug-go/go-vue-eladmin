@@ -166,6 +166,7 @@ func (m Menu) Update() error {
 func (m Menu) Remove() error {
 	mr := model_menu_role.MenuRole{}
 	mr.RemoveMenuId(m.Id)
+	m.removeAllChildren()
 	return m.remove(bson.M{"_id": m.Id})
 }
 
@@ -317,5 +318,12 @@ func makeRoleTreeList(list []Menu, selector interface{}, roles []model_role.Role
 		}
 		//list[index].Label = item.Name
 		makeRoleTreeList(list[index].Children, selector, roles)
+	}
+}
+
+func (m Menu) removeAllChildren() {
+	m.findChildren(nil)
+	for index := range m.Children {
+		m.Children[index].Remove()
 	}
 }
