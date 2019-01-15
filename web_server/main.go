@@ -8,7 +8,7 @@ import (
 	"vue-admin/web_server/core/jwt"
 	"vue-admin/web_server/core/mongo"
 	"vue-admin/web_server/mail"
-	"vue-admin/web_server/model/mongo_index"
+	"vue-admin/web_server/model/a_mongo_index"
 	"vue-admin/web_server/model/shareDB"
 	"vue-admin/web_server/server"
 	"vue-admin/web_server/server/handler/file_handler"

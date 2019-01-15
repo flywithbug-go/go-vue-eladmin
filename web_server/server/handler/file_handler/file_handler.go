@@ -17,6 +17,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"vue-admin/web_server/model/model_file"
 
 	"github.com/flywithbug/file"
 	"github.com/flywithbug/log4go"
@@ -50,19 +51,25 @@ func uploadImageHandler(c *gin.Context) {
 		return
 	}
 	defer file.Close()
+
+	localFile := model_file.File{}
+
 	//获取文件名
 	ext := filepath.Ext(header.Filename)
-
+	localFile.Ext = ext
 	//获取文件的md5值
 	data, err := ioutil.ReadAll(file)
 	h := md5.New()
 	h.Write(data)
 	value := h.Sum(nil)
-	fileName := hex.EncodeToString(value) + ext
+	localFile.Md5 = hex.EncodeToString(value)
+	fileName := localFile.Md5 + ext
 
 	//文件夹创建管理
 	month := time.Now().Format("2006-01")
 	localPath := localImageFilePath + month + "/"
+	localFile.Path = localPath
+
 	//文件路径
 	localFilePath := localPath + fileName
 	bExit, err := PathExists(localFilePath)
@@ -112,6 +119,7 @@ func uploadImageHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, fmt.Sprintf("write file err : %s", err.Error()))
 		return
 	}
+	localFile.Insert()
 	avatarPath := fmt.Sprintf("/%s/%s", month, fileName)
 	aRes.SetResponseDataInfo("imagePath", avatarPath)
 }

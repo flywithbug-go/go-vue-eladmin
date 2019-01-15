@@ -5,7 +5,7 @@ import (
 	"errors"
 	"time"
 	"vue-admin/web_server/core/mongo"
-	"vue-admin/web_server/model/mongo_index"
+	"vue-admin/web_server/model/a_mongo_index"
 	"vue-admin/web_server/model/shareDB"
 
 	"gopkg.in/mgo.v2/bson"

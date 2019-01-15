@@ -1,6 +1,8 @@
 package shareDB
 
-import "vue-admin/web_server/core/mongo"
+import (
+	"vue-admin/web_server/core/mongo"
+)
 
 var db = "doc_manager"
 

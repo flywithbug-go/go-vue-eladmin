@@ -4,7 +4,7 @@
   "private_key_path":"./key_sources/private_key",
   "public_key_path":"./key_sources/public_key.pub",
   "log_path":"./log/log-%Y%M%D.log",
-  "local_file_path": "./image/",
+  "local_file_path": "../image/",
   "mail_config":{
     "host":"smtp.163.com",
     "port":465,

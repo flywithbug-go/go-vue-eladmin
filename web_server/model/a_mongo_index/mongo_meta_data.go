@@ -21,6 +21,7 @@ const (
 	CollectionVerify         = "verify"
 	CollectionMenu           = "menu"
 	CollectionMenuRole       = "menu_role"
+	CollectionFile           = "file"
 )
 
 type Index struct {
@@ -161,6 +162,17 @@ var Indexes = []Index{
 			Background: false,
 			Sparse:     true,
 			Name:       "c_menu_f_role_index",
+		},
+	},
+	{
+		Name: CollectionFile,
+		Index: mgo.Index{
+			Key:        []string{"md5"},
+			Unique:     true,
+			DropDups:   true,
+			Background: false,
+			Sparse:     true,
+			Name:       "c_file_f_md5_index",
 		},
 	},
 }

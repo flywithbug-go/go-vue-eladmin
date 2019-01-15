@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"time"
 	"vue-admin/web_server/core/mongo"
+	"vue-admin/web_server/model/a_mongo_index"
 	"vue-admin/web_server/model/model_menu_role"
 	"vue-admin/web_server/model/model_role"
-	"vue-admin/web_server/model/mongo_index"
 	"vue-admin/web_server/model/shareDB"
 
 	"github.com/flywithbug/log4go"
@@ -289,7 +289,7 @@ func (m Menu) FindPageBuildFilter(roles []model_role.Role, page, limit int, quer
 	return results, err
 }
 
-func (m *Menu) findRoleChildren(selector interface{}, roles []model_role.Role) error {
+func (m *Menu) findChildrenFilter(selector interface{}, roles []model_role.Role) error {
 	results, err := m.findPage(0, 0, bson.M{"pid": m.Id}, selector, "+sort")
 	if err != nil {
 		return err
@@ -306,7 +306,7 @@ func (m *Menu) findRoleChildren(selector interface{}, roles []model_role.Role) e
 
 func makeRoleTreeList(list []Menu, selector interface{}, roles []model_role.Role) {
 	for index := range list {
-		err := list[index].findRoleChildren(selector, roles)
+		err := list[index].findChildrenFilter(selector, roles)
 		if err != nil {
 			return
 		}

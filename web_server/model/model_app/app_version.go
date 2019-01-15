@@ -8,7 +8,7 @@ import (
 	"time"
 	"vue-admin/web_server/common"
 	"vue-admin/web_server/core/mongo"
-	"vue-admin/web_server/model/mongo_index"
+	"vue-admin/web_server/model/a_mongo_index"
 	"vue-admin/web_server/model/shareDB"
 
 	"github.com/flywithbug/log4go"

@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"testing"
-	"vue-admin/web_server/model/mongo_index"
+	"vue-admin/web_server/model/a_mongo_index"
 
 	"gopkg.in/mgo.v2/bson"
 
