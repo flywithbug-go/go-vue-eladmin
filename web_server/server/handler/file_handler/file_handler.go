@@ -173,7 +173,7 @@ func scale(in io.Reader, out io.Writer, size, quality int) error {
 func loadImageHandler(c *gin.Context) {
 	path := c.Param("path")
 	filename := c.Param("filename")
-	log4go.Info("loadImageHandler: %s %s", path, filename)
+	//log4go.Info("loadImageHandler: %s %s", path, filename)
 	if path == "" || filename == "" {
 		return
 	}

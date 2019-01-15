@@ -34,7 +34,7 @@ func Logger(notlogged ...string) gin.HandlerFunc {
 		//		xReqid,
 		//		headers,
 		//	)
-		//}
+		//}o
 		headers, _ := json.Marshal(c.Request.Header)
 		log.Infoo("[GIN] [%s] [Started]\tRequestHeader::%s\n", xReqid, headers)
 		// Process request
