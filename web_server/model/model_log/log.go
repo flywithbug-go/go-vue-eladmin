@@ -3,13 +3,12 @@ package model_log
 import (
 	"encoding/json"
 	"vue-admin/web_server/core/mongo"
-	"vue-admin/web_server/model/shareDB"
 
 	"gopkg.in/mgo.v2/bson"
 )
 
 const (
-	logCollection = "log_info"
+	logCollection = "log"
 	dbName        = "log"
 )
 
@@ -85,7 +84,8 @@ func (l Log) Exist() bool {
 }
 
 func (l Log) Insert() (int64, error) {
-	l.Id, _ = mongo.GetIncrementId(shareDB.DBName(), logCollection)
-
-	return -1, nil
+	//l.Id, _ = mongo.GetIncrementId(dbName, logCollection)
+	l.Id = 1
+	err := l.insert(l)
+	return l.Id, err
 }

@@ -8,7 +8,8 @@ import (
 
 func TestLog_Insert(t *testing.T) {
 	mongo.RegisterMongo(config.Conf().LogDBConfig.Url, config.Conf().LogDBConfig.DBName)
-	log := Log{}
-	//log.Id = mongo
 
+	log := new(Log)
+	log.Code = "23232"
+	log.Insert()
 }

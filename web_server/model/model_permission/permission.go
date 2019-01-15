@@ -140,6 +140,7 @@ func (p Permission) Remove() error {
 	if p.checkInUse() {
 		return fmt.Errorf("permission in use")
 	}
+	p.removeAllChildren()
 	return p.remove(bson.M{"_id": p.Id})
 }
 
@@ -216,4 +217,11 @@ func makeTreeList(list []Permission, selector interface{}) error {
 		}
 	}
 	return nil
+}
+
+func (p Permission) removeAllChildren() {
+	p.findChildren(nil)
+	for index := range p.Children {
+		p.Children[index].Remove()
+	}
 }
