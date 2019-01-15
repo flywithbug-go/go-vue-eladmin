@@ -4,7 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"testing"
+	"vue-admin/web_server/config"
 	"vue-admin/web_server/model/a_mongo_index"
+	"vue-admin/web_server/model/shareDB"
 
 	"gopkg.in/mgo.v2/bson"
 
@@ -12,7 +14,7 @@ import (
 )
 
 func TestPipe(t *testing.T) {
-	mongo.DialMgo("127.0.0.1:27017")
+	mongo.RegisterMongo(config.Conf().DBConfig.Url, shareDB.DBName())
 	permission := Permission{}
 
 	list, err := permission.FetchTreeList(nil)
@@ -25,7 +27,7 @@ func TestPipe(t *testing.T) {
 }
 
 func TestPipelineFetch(t *testing.T) {
-	mongo.DialMgo("127.0.0.1:27017")
+	mongo.RegisterMongo(config.Conf().DBConfig.Url, shareDB.DBName())
 	permission := Permission{}
 
 	name := "user"

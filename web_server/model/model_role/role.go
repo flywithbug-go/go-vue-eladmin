@@ -94,7 +94,7 @@ func (r Role) Insert() error {
 	if len(r.Alias) == 0 {
 		r.Alias = r.Name
 	}
-	r.Id, _ = mongo.GetIncrementId(roleCollection)
+	r.Id, _ = mongo.GetIncrementId(shareDB.DBName(), roleCollection)
 	r.CreateTime = time.Now().Unix() * 1000
 	list := r.Permissions
 	r.Permissions = nil

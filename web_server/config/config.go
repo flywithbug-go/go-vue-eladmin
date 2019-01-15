@@ -17,17 +17,19 @@ func Conf() *Config {
 }
 
 type Config struct {
-	PrivateKeyPath string     `json:"private_key_path"`
-	PublicKeyPath  string     `json:"public_key_path"`
-	LogPath        string     `json:"log_path"`
-	LocalFilePath  string     `json:"local_file_path"`
-	Port           string     `json:"port"` //httpServer
-	StaticPath     string     `json:"static_path"`
-	DBConfig       DBConfig   `json:"db_config"`     //数据库配置
-	RouterPrefix   string     `json:"router_prefix"` //api前缀
-	AuthPrefix     string     `json:"auth_prefix"`   //白名单
-	MailConfig     MailConfig `json:"mail_config"`   //邮箱
-	AppConfig      AppConfig  `json:"app_config"`
+	PrivateKeyPath string      `json:"private_key_path"`
+	PublicKeyPath  string      `json:"public_key_path"`
+	LogPath        string      `json:"log_path"`
+	LocalFilePath  string      `json:"local_file_path"`
+	Port           string      `json:"port"` //httpServer
+	StaticPath     string      `json:"static_path"`
+	DBConfig       DBConfig    `json:"db_config"`     //数据库配置
+	LogDBConfig    LogDBConfig `json:"log_db_config"` //日志数据库配置
+
+	RouterPrefix string     `json:"router_prefix"` //api前缀
+	AuthPrefix   string     `json:"auth_prefix"`   //白名单
+	MailConfig   MailConfig `json:"mail_config"`   //邮箱
+	AppConfig    AppConfig  `json:"app_config"`
 }
 
 type AppConfig struct {
@@ -43,6 +45,14 @@ type DBConfig struct {
 	Url       string `json:"url"`        //连接地址
 	DBName    string `json:"db_name"`    //用户名
 	ForceSync bool   `json:"force_sync"` //强制索引同步
+}
+
+/*
+数据库配置结构体
+*/
+type LogDBConfig struct {
+	Url    string `json:"url"`     //连接地址
+	DBName string `json:"db_name"` //用户名
 }
 
 type MailConfig struct {

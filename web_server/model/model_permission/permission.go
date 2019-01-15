@@ -100,7 +100,7 @@ func (p Permission) Insert() (int64, error) {
 	if p.PId != 0 && !p.isExist(bson.M{"_id": p.PId}) {
 		return -1, fmt.Errorf("pid  not exist")
 	}
-	p.Id, _ = mongo.GetIncrementId(permissionCollection)
+	p.Id, _ = mongo.GetIncrementId(shareDB.DBName(), permissionCollection)
 	p.Children = nil
 	p.CreateTime = time.Now().Unix() * 1000
 	return p.Id, p.insert(p)

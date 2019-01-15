@@ -39,7 +39,7 @@ func (l Login) ToJson() string {
 
 func UserLogin(userID int64, userAgent, token, ip string) (l *Login, err error) {
 	l = new(Login)
-	l.Id, _ = mongo.GetIncrementId(loginCollection)
+	l.Id, _ = mongo.GetIncrementId(shareDB.DBName(), loginCollection)
 	l.UserId = userID
 	l.UserAgent = userAgent
 	l.Token = token

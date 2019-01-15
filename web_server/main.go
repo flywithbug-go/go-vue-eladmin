@@ -9,6 +9,7 @@ import (
 	"vue-admin/web_server/core/mongo"
 	"vue-admin/web_server/mail"
 	"vue-admin/web_server/model/a_mongo_index"
+	"vue-admin/web_server/model/model_log"
 	"vue-admin/web_server/model/shareDB"
 	"vue-admin/web_server/server"
 	"vue-admin/web_server/server/handler/file_handler"
@@ -18,14 +19,23 @@ import (
 
 //log 启动配置
 func setLog() {
-	w := log.NewFileWriter()
-	w.SetPathPattern(config.Conf().LogPath)
-	c := log.NewConsoleWriter()
-	c.SetColor(true)
-	log.Register(w)
-	log.Register(c)
+	//log日志写入文件
+	//w := log.NewFileWriter()
+	//w.SetPathPattern(config.Conf().LogPath)
+	//log.Register(w)
+
+	//log日志控制台输出
+	//c := log.NewConsoleWriter()
+	//c.SetColor(true)
+	//log.Register(c)
+
+	//log日志控制台输出
+	l := model_log.NewConsoleWriter()
+	l.SetColor(true)
+	log.Register(l)
 	log.SetLevel(1)
 	log.SetLayout("2006-01-02 15:04:05")
+
 }
 
 func setFileConfig() {
@@ -53,8 +63,12 @@ func setMongoDB() {
 	//mongodb启动连接
 	//设置数据库名字
 	shareDB.SetDBName(config.Conf().DBConfig.DBName)
-	mongo.DialMgo(config.Conf().DBConfig.Url)
+	mongo.RegisterMongo(config.Conf().DBConfig.Url, config.Conf().DBConfig.DBName)
+	//模型唯一索引
 	mongo_index.CreateMgoIndex()
+
+	mongo.RegisterMongo(config.Conf().LogDBConfig.Url, config.Conf().LogDBConfig.DBName)
+
 }
 
 func setMail() {

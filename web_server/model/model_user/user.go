@@ -95,7 +95,7 @@ func (u User) removeAll(selector interface{}) error {
 	userModify
 */
 func (u User) Insert() error {
-	u.Id, _ = mongo.GetIncrementId(userCollection)
+	u.Id, _ = mongo.GetIncrementId(shareDB.DBName(), userCollection)
 	u.Enabled = true
 	u.CreateTime = time.Now().Unix() * 1000
 	list := u.Roles

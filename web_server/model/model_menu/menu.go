@@ -121,7 +121,7 @@ func (m Menu) Insert() (int64, error) {
 		return -1, fmt.Errorf("pid  not exist")
 	}
 	list := m.Roles
-	m.Id, _ = mongo.GetIncrementId(menuCollection)
+	m.Id, _ = mongo.GetIncrementId(shareDB.DBName(), menuCollection)
 	m.CreateTime = time.Now().Unix() * 1000
 	m.Roles = nil
 	m.Children = nil

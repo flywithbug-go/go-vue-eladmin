@@ -5,40 +5,33 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
-var globalS *mgo.Session
-
-func DialMgo(url string) {
-	s, err := mgo.Dial(url)
-	if err != nil {
-		panic(err)
+func getMgoSession(db string) *mgo.Session {
+	tm, ok := sessionMap[db]
+	if !ok {
+		return nil
 	}
-	globalS = s
+	s := tm.session.Copy()
+	return s
 }
 
-const (
-	ErrorCodeHeader = "E11000"
-)
-
 func connect(db, collection string) (*mgo.Session, *mgo.Collection) {
-	if globalS == nil {
-		panic("mgo disconnected")
-	}
-	s := globalS.Copy()
+	s := getMgoSession(db)
 	c := s.DB(db).C(collection)
 	return s, c
 }
 
 func Collection(db, collection string) *mgo.Collection {
-	if globalS == nil {
-		panic("mgo disconnected")
-	}
-	s := globalS.Copy()
+	s := getMgoSession(db)
 	c := s.DB(db).C(collection)
 	return c
 }
 
 func getDb(db string) (*mgo.Session, *mgo.Database) {
-	ms := globalS.Copy()
+	tm, ok := sessionMap[db]
+	if !ok {
+		return nil, nil
+	}
+	ms := tm.session.Copy()
 	return ms, ms.DB(db)
 }
 
@@ -46,7 +39,6 @@ func Insert(db, collection string, docs ...interface{}) error {
 	ms, c := connect(db, collection)
 	defer ms.Close()
 	err := c.Insert(docs...)
-
 	return err
 }
 

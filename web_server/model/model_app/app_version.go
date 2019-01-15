@@ -127,7 +127,7 @@ func (app *AppVersion) Insert() error {
 			return fmt.Errorf("platform must like (iOS,Android,H5,Server) ")
 		}
 	}
-	app.Id, _ = mongo.GetIncrementId(appVersionCollection)
+	app.Id, _ = mongo.GetIncrementId(shareDB.DBName(), appVersionCollection)
 	app.CreateTime = time.Now().Unix()
 	app.Status = appStatusTypePrepare
 	app.AppStatus = makeStatusString(appStatusTypePrepare)

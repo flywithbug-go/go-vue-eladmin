@@ -103,7 +103,7 @@ func (a *Application) Insert() error {
 	if a.isExist(bson.M{"name": a.Name}) {
 		return errors.New("name already exist")
 	}
-	a.Id, _ = mongo.GetIncrementId(appCollection)
+	a.Id, _ = mongo.GetIncrementId(shareDB.DBName(), appCollection)
 	a.CreateTime = time.Now().Unix() * 1000
 	return a.insert(a)
 }

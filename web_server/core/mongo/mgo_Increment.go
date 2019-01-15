@@ -17,18 +17,8 @@ var (
 	IncrementDBStarId int64 = IncrementIdsStarValue
 )
 
-var incrementDBName = "increment"
-
-func SetIncrementDBName(dbName string) {
-	incrementDBName = dbName
-}
-
 func SetIncrementDBStarId(startId int64) {
 	IncrementDBStarId = startId
-}
-
-func DBName() string {
-	return incrementDBName
 }
 
 func makeIncrementName(incrementName string) string {
@@ -40,26 +30,26 @@ type incrementIds struct {
 	SequenceValue int64  `json:"sequence_value" bson:"sequence_value"` //自增 id值
 }
 
-func createIncrementIds(incrementName string) error {
+func createIncrementIds(dbName, incrementName string) error {
 	cou := incrementIds{
 		Id:            incrementName,
 		SequenceValue: IncrementDBStarId,
 	}
-	return Insert(incrementDBName, collectionsIncrementIds, cou)
+	return Insert(dbName, collectionsIncrementIds, cou)
 }
 
-func GetIncrementId(incrementName string) (int64, error) {
+func GetIncrementId(dbName, incrementName string) (int64, error) {
 	incrementName = makeIncrementName(incrementName)
 	increment := new(incrementIds)
 	change := mgo.Change{
 		Update:    bson.M{"$inc": bson.M{"sequence_value": 1}},
 		ReturnNew: true,
 	}
-	ms, c := connect(incrementDBName, collectionsIncrementIds)
+	ms, c := connect(dbName, collectionsIncrementIds)
 	defer ms.Close()
 	_, err := c.Find(bson.M{"_id": incrementName}).Apply(change, increment)
 	if err != nil {
-		err = createIncrementIds(incrementName)
+		err = createIncrementIds(dbName, incrementName)
 		if err != nil {
 			log4go.Error(err.Error())
 			return -1, err

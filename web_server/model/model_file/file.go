@@ -88,7 +88,7 @@ func (f File) Insert() (id int64, err error) {
 	if len(f.Path) == 0 {
 		return -1, fmt.Errorf("path can not be nill")
 	}
-	id, _ = mongo.GetIncrementId(fileCollection)
+	id, _ = mongo.GetIncrementId(shareDB.DBName(), fileCollection)
 	f.Id = id
 	err = f.insert(f)
 	if err != nil {
