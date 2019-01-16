@@ -23,7 +23,6 @@ var (
 
 //host:port/auth_prefix/prefix/path
 func RegisterRouters(r *gin.Engine, prefix string, authPrefix string) {
-	r.NoRoute(NoRoute)
 	jwtR := r.Group(prefix + authPrefix)
 	jwtR.Use(middleware.JWTAuthMiddleware())
 
