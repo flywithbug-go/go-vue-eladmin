@@ -9,7 +9,7 @@ const (
 	KeyUserAgent        = "User-Agent"
 	KeyContextUserId    = "_key_ctx_userId_"
 	KeyContextUsername  = "_key_ctx_username_"
-	KeyContextRequestId = "_key_ctx_requestId_"
+	KeyContextRequestId = "X-Reqid"
 )
 
 func UserToken(ctx *gin.Context) string {

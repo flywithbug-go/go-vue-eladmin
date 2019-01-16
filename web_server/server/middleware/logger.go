@@ -10,26 +10,24 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type RequestHeader struct {
-}
-
+//对照表 	rid		id		m		c 			l		p
+// 		xReqId  userId 	method 	statusCode	latency	path
 func Logger() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// Start timer
 		start := time.Now()
 
-		xReqId := common.XRequestId(c)
+		xReqId := c.Request.Header.Get(common.KeyContextRequestId)
 		if xReqId == "" {
 			xReqId = GenReqID()
 		}
+		c.Header(common.KeyContextRequestId, xReqId)
 		c.Set(common.KeyContextRequestId, xReqId)
-		//headers, _ := json.Marshal(c.Request.Header)
-		//log.Info("[GIN] [%s] [Started]\tRequestHeader::%s\n", xReqId, headers)
-		// Process request
+
+		//----====----
 		c.Next()
 		end := time.Now()
 		latency := end.Sub(start)
-
 		statusCode := c.Writer.Status()
 		statusColor := colorForStatus(statusCode)
 		clientIP := c.ClientIP()
@@ -37,15 +35,15 @@ func Logger() gin.HandlerFunc {
 		methodColor := colorForMethod(method)
 		comment := c.Errors.ByType(gin.ErrorTypePrivate).String()
 		userId := common.UserId(c)
-		log.Info("【GIN】\t【id:%d】\t【reqID:%s】 【method:%s %s %s】\t 【code:%s%3d%s】\t【latency:%13v】\t【IP:%s】 【path:%s】\t【gError:%s】",
+		log.Info("【GIN】【id:%d】【m:%s %s %s】【c:%s%3d%s】【l:%13v】【ip:%s】 【p:%s】【e:%s】【rid:%s】",
 			userId,
-			xReqId,
 			methodColor, method, reset,
 			statusColor, statusCode, reset,
 			latency,
 			clientIP,
 			c.Request.URL.String(),
 			comment,
+			xReqId,
 		)
 	}
 }
