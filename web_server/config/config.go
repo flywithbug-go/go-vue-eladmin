@@ -43,7 +43,7 @@ type AppConfig struct {
 */
 type DBConfig struct {
 	Url       string `json:"url"`        //连接地址
-	DBName    string `json:"db_name"`    //用户名
+	DBName    string `json:"db_name"`    //数据库名
 	ForceSync bool   `json:"force_sync"` //强制索引同步
 }
 
@@ -52,7 +52,7 @@ type DBConfig struct {
 */
 type LogDBConfig struct {
 	Url    string `json:"url"`     //连接地址
-	DBName string `json:"db_name"` //用户名
+	DBName string `json:"db_name"` //数据库名
 }
 
 type MailConfig struct {

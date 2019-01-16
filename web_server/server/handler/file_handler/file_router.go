@@ -11,7 +11,7 @@ var Routers = []common.GinHandleFunc{
 	},
 	{
 		Handler:    loadImageHandler, //加载图片
-		RouterType: common.RouterTypeNormal,
+		RouterType: common.RouterTypeNeedAuth,
 		Method:     "GET",
 		Route:      "/image/:path/:filename",
 	},

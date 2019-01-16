@@ -60,6 +60,6 @@ func JWTAuthMiddleware() gin.HandlerFunc {
 		//	Secure:   false,
 		//}
 		//http.SetCookie(c.Writer, &cookie)
-		//c.Next()
+		c.Next()
 	}
 }

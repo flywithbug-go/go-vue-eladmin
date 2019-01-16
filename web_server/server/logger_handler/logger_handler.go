@@ -40,7 +40,7 @@ func Info(c *gin.Context, format string, args ...interface{}) {
 	} else {
 		inf = fmt.Sprint(args...)
 	}
-	log4go.Error(fmt.Sprintf("【reqID:%s】\t【info:%s】", xReqId, inf))
+	log4go.Info(fmt.Sprintf("【reqID:%s】\t【info:%s】", xReqId, inf))
 }
 
 func Error(c *gin.Context, format string, args ...interface{}) {
