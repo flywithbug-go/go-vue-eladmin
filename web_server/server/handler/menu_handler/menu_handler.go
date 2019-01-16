@@ -3,6 +3,7 @@ package menu_handler
 import (
 	"net/http"
 	"strconv"
+	"strings"
 	"vue-admin/web_server/common"
 	"vue-admin/web_server/model"
 	"vue-admin/web_server/model/model_menu"
@@ -32,6 +33,10 @@ func addMenuHandler(c *gin.Context) {
 	if err != nil {
 		log4go.Info(err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
+		return
+	}
+	if !para.IFrame && strings.HasPrefix(para.Path, "http") {
+		aRes.SetErrorInfo(http.StatusBadRequest, "外链必须以http或者https开头")
 		return
 	}
 
@@ -83,6 +88,11 @@ func updateMenuHandler(c *gin.Context) {
 	if err != nil {
 		log4go.Info(err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
+		return
+	}
+
+	if !para.IFrame && !strings.HasPrefix(para.Path, "http") {
+		aRes.SetErrorInfo(http.StatusBadRequest, "外链必须以http或者https开头")
 		return
 	}
 	err = para.Update()

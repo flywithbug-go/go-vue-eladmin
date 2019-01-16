@@ -41,8 +41,6 @@ export default {
         roles: [],
         icon: this.data.icon
       }
-      console.log('console：', this.data)
-
       if (!this.data.roles) {
         this.data.roles = []
       }
