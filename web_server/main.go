@@ -29,14 +29,14 @@ func setLog() {
 	//c.SetColor(true)
 	//log.Register(c)
 
+	//日志保存到db
+	w := log_writer.NewDBWriter()
+	log.Register(w)
+
 	//log日志控制台输出
 	l := log_writer.NewConsoleWriter()
 	l.SetColor(true)
 	log.Register(l)
-
-	//日志保存到db
-	w := log_writer.NewDBWriter()
-	log.Register(w)
 
 	log.SetLevel(1)
 	log.SetLayout("2006-01-02 15:04:05")

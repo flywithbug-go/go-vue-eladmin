@@ -10,7 +10,7 @@ import (
 type colorRecord log4go.Record
 
 var (
-	LevelFlags = [...]string{"DEBUG", "INFO", "WARN", "ERROR", "FATAL"}
+	LEVEL_FLAGS = [...]string{"DEBUG", "INFO", "WARN", "ERROR", "FATAL"}
 )
 
 type Writer interface {
@@ -30,20 +30,20 @@ func (r *colorRecord) String() string {
 	switch r.Level {
 	case DEBUG:
 		return fmt.Sprintf("\033[36m%s\033[0m [\033[34m%s\033[0m] \033[47;30m%s\033[0m %s\n",
-			r.Time, LevelFlags[r.Level], r.Code, r.Info)
+			r.Time, LEVEL_FLAGS[r.Level], r.Code, r.Info)
 
 	case INFO:
 		return fmt.Sprintf("\033[36m%s\033[0m [\033[32m%s\033[0m] \033[47;30m%s\033[0m %s\n",
-			r.Time, LevelFlags[r.Level], r.Code, r.Info)
+			r.Time, LEVEL_FLAGS[r.Level], r.Code, r.Info)
 	case WARNING:
 		return fmt.Sprintf("\033[36m%s\033[0m [\033[33m%s\033[0m] \033[47;30m%s\033[0m %s\n",
-			r.Time, LevelFlags[r.Level], r.Code, r.Info)
+			r.Time, LEVEL_FLAGS[r.Level], r.Code, r.Info)
 	case ERROR:
 		return fmt.Sprintf("\033[36m%s\033[0m [\033[31m%s\033[0m] \033[47;30m%s\033[0m %s\n",
-			r.Time, LevelFlags[r.Level], r.Code, r.Info)
+			r.Time, LEVEL_FLAGS[r.Level], r.Code, r.Info)
 	case FATAL:
 		return fmt.Sprintf("\033[36m%s\033[0m [\033[35m%s\033[0m] \033[47;30m%s\033[0m %s\n",
-			r.Time, LevelFlags[r.Level], r.Code, r.Info)
+			r.Time, LEVEL_FLAGS[r.Level], r.Code, r.Info)
 	}
 	return ""
 }

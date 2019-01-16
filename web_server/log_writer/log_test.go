@@ -11,13 +11,9 @@ func TestLog_Insert(t *testing.T) {
 
 	log1 := new(Log)
 	log1.Code = "23232"
-	log1.Ext = Log{
-		Code: "1010",
-		Info: "name",
-	}
+
 	log := new(Log)
 	log.Code = "23232"
-	log.Ext = log1
 	fmt.Println(log)
 	log.Insert()
 }

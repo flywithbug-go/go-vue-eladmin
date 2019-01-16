@@ -5,6 +5,7 @@ import (
 	"encoding/binary"
 	"time"
 	"vue-admin/web_server/common"
+	"vue-admin/web_server/log_writer"
 
 	log "github.com/flywithbug/log4go"
 	"github.com/gin-gonic/gin"
@@ -14,36 +15,38 @@ import (
 // 		xReqId  userId 	method 	statusCode	latency	path
 func Logger() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		l := log_writer.DBlogPool.Get().(*log_writer.Log)
 		// Start timer
 		start := time.Now()
-
-		xReqId := c.Request.Header.Get(common.KeyContextRequestId)
-		if xReqId == "" {
-			xReqId = GenReqID()
+		l.RequestId = c.Request.Header.Get(common.KeyContextRequestId)
+		if l.RequestId == "" {
+			l.RequestId = GenReqID()
 		}
-		c.Header(common.KeyContextRequestId, xReqId)
-		c.Set(common.KeyContextRequestId, xReqId)
+		c.Header(common.KeyContextRequestId, l.RequestId)
+		c.Set(common.KeyContextRequestId, l.RequestId)
 
 		//----====----
 		c.Next()
 		end := time.Now()
-		latency := end.Sub(start)
-		statusCode := c.Writer.Status()
-		statusColor := colorForStatus(statusCode)
-		clientIP := c.ClientIP()
-		method := c.Request.Method
-		methodColor := colorForMethod(method)
+		l.Latency = end.Sub(start)
+		l.StatusCode = c.Writer.Status()
+		statusColor := colorForStatus(l.StatusCode)
+		l.ClientIp = c.ClientIP()
+		l.Method = c.Request.Method
+		methodColor := colorForMethod(l.Method)
 		comment := c.Errors.ByType(gin.ErrorTypePrivate).String()
-		userId := common.UserId(c)
-		log.Info("【GIN】【id:%d】【m:%s %s %s】【c:%s%3d%s】【l:%13v】【ip:%s】 【p:%s】【e:%s】【rid:%s】",
-			userId,
-			methodColor, method, reset,
-			statusColor, statusCode, reset,
-			latency,
-			clientIP,
-			c.Request.URL.String(),
+		l.UserId = common.UserId(c)
+		l.Path = c.Request.URL.String()
+
+		log.InfoExt(l, "【GIN】【id:%d】【m:%s %s %s】【c:%s%3d%s】【l:%13v】【ip:%s】 【p:%s】【e:%s】【rid:%s】",
+			l.UserId,
+			methodColor, l.Method, reset,
+			statusColor, l.StatusCode, reset,
+			l.Latency,
+			l.ClientIp,
+			l.Path,
 			comment,
-			xReqId,
+			l.RequestId,
 		)
 	}
 }

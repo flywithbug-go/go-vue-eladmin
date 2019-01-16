@@ -18,7 +18,7 @@ func Debug(c *gin.Context, format string, args ...interface{}) {
 	} else {
 		inf = fmt.Sprint(args...)
 	}
-	log4go.Info(fmt.Sprintf("【GIN】reqID:%s】\t【info:%s】", xReqId, inf))
+	log4go.Info(fmt.Sprintf("【reqID:%s】\t【info:%s】", xReqId, inf))
 }
 
 func Warn(c *gin.Context, format string, args ...interface{}) {
@@ -29,7 +29,7 @@ func Warn(c *gin.Context, format string, args ...interface{}) {
 	} else {
 		inf = fmt.Sprint(args...)
 	}
-	log4go.Info(fmt.Sprintf("【GIN】\t【reqID:%s】\t【info:%s】", xReqId, inf))
+	log4go.Info(fmt.Sprintf("【【reqID:%s】\t【info:%s】", xReqId, inf))
 }
 
 func Info(c *gin.Context, format string, args ...interface{}) {
@@ -40,7 +40,7 @@ func Info(c *gin.Context, format string, args ...interface{}) {
 	} else {
 		inf = fmt.Sprint(args...)
 	}
-	log4go.Info(fmt.Sprintf("【GIN】\t【reqID:%s】\t【info:%s】", xReqId, inf))
+	log4go.Info(fmt.Sprintf("【reqID:%s】\t【info:%s】", xReqId, inf))
 }
 
 func Error(c *gin.Context, format string, args ...interface{}) {
@@ -51,7 +51,7 @@ func Error(c *gin.Context, format string, args ...interface{}) {
 	} else {
 		inf = fmt.Sprint(args...)
 	}
-	log4go.Info(fmt.Sprintf("【GIN】\t【reqID:%s】\t【info:%s】", xReqId, inf))
+	log4go.Info(fmt.Sprintf("【reqID:%s】\t【info:%s】", xReqId, inf))
 }
 
 func Fatal(c *gin.Context, format string, args ...interface{}) {
@@ -62,5 +62,5 @@ func Fatal(c *gin.Context, format string, args ...interface{}) {
 	} else {
 		inf = fmt.Sprint(args...)
 	}
-	log4go.Info(fmt.Sprintf("【GIN】\t【reqID:%s】\t【info:%s】", xReqId, inf))
+	log4go.Info(fmt.Sprintf("【reqID:%s】\t【info:%s】", xReqId, inf))
 }

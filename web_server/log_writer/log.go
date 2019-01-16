@@ -2,9 +2,9 @@ package log_writer
 
 import (
 	"encoding/json"
+	"fmt"
+	"time"
 	"vue-admin/web_server/core/mongo"
-
-	"gopkg.in/mgo.v2/bson"
 )
 
 const (
@@ -13,11 +13,18 @@ const (
 )
 
 type Log struct {
-	Id    int64  `json:"id,omitempty" bson:"_id,omitempty"`
-	Time  string `json:"time,omitempty" bson:"time,omitempty"`
-	Code  string `json:"code,omitempty" bson:"code,omitempty"`
-	Info  string `json:"info,omitempty" bson:"info,omitempty"`
-	Level int    `json:"level,omitempty" bson:"level,omitempty"`
+	Time       string        `json:"time,omitempty" bson:"time,omitempty"`
+	Code       string        `json:"code,omitempty" bson:"code,omitempty"`
+	Info       string        `json:"info,omitempty" bson:"info,omitempty"`
+	Level      int           `json:"level,omitempty" bson:"level,omitempty"`
+	Flag       string        `json:"flag,omitempty" bson:"flag,omitempty"`
+	ClientIp   string        `json:"client_ip,omitempty" bson:"client_ip,omitempty"`
+	Method     string        `json:"method,omitempty" bson:"method,omitempty"`
+	Path       string        `json:"path,omitempty" bson:"path,omitempty"`
+	RequestId  string        `json:"request_id,omitempty" bson:"request_id,omitempty"`
+	Latency    time.Duration `json:"latency,omitempty" bson:"latency,omitempty"`
+	StatusCode int           `json:"status_code,omitempty" bson:"status_code,omitempty"`
+	UserId     int64         `json:"user_id,omitempty" bson:"user_id,omitempty"`
 }
 
 func (l Log) ToJson() string {
@@ -79,19 +86,9 @@ func (l Log) explain(pipeline, result interface{}) (results []Log, err error) {
 	return
 }
 
-func (l Log) Exist() bool {
-	return l.isExist(bson.M{"_id": l.Id})
-}
-
-func (l Log) Insert() (int64, error) {
-	id, err := mongo.GetIncrementId(dbName, logCollection)
-	if err != nil {
-		return -1, err
+func (l Log) Insert() error {
+	if len(l.Info) == 0 {
+		return fmt.Errorf("info is null")
 	}
-	l.Id = id
-	err = l.insert(l)
-	if err != nil {
-		return -1, err
-	}
-	return l.Id, err
+	return l.insert(l)
 }
