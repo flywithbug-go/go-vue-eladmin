@@ -17,7 +17,7 @@
       <el-table-column :show-overflow-tooltip="true" prop="component" label="组件路径"/>
       <el-table-column prop="iframe" width="100px" label="内部菜单">
         <template slot-scope="scope">
-          <span v-if="!scope.row.iframe">是</span>
+          <span v-if="scope.row.iframe">是</span>
           <span v-else>否</span>
         </template>
       </el-table-column>
@@ -48,80 +48,80 @@
 </template>
 
 <script>
-  import checkPermission from '@/utils/permission' // 权限判断函数
-  import { getRoleTree } from '@/api/role'
-  import treeTable from '@/components/TreeTable'
-  import initData from '../../../mixins/initData'
-  import { del, getMenusTree } from '@/api/menu'
-  import { parseTime } from '@/utils/index'
-  import eHeader from './module/header'
-  import edit from './module/edit'
-  export default {
-    components: { eHeader, edit, treeTable },
-    mixins: [initData],
-    data() {
-      return {
-        columns: [
-          {
-            text: '名称',
-            value: 'name'
-          }
-        ],
-        delLoading: false, sup_this: this, menus: [], roles: []
-      }
+import checkPermission from '@/utils/permission' // 权限判断函数
+import { getRoleTree } from '@/api/role'
+import treeTable from '@/components/TreeTable'
+import initData from '../../../mixins/initData'
+import { del, getMenusTree } from '@/api/menu'
+import { parseTime } from '@/utils/index'
+import eHeader from './module/header'
+import edit from './module/edit'
+export default {
+  components: { eHeader, edit, treeTable },
+  mixins: [initData],
+  data() {
+    return {
+      columns: [
+        {
+          text: '名称',
+          value: 'name'
+        }
+      ],
+      delLoading: false, sup_this: this, menus: [], roles: []
+    }
+  },
+  created() {
+    this.getRoles()
+    this.getMenus()
+    this.$nextTick(() => {
+      this.init()
+    })
+  },
+  methods: {
+    parseTime,
+    checkPermission,
+    beforeInit() {
+      this.url = '/menu/list'
+      const sort = 'id,desc'
+      const query = this.query
+      const value = query.value
+      this.params = { page: this.page, size: this.size, sort: sort }
+      if (value) { this.params['name'] = value }
+      return true
     },
-    created() {
-      this.getRoles()
-      this.getMenus()
-      this.$nextTick(() => {
+    subDelete(index, row) {
+      this.delLoading = true
+      del(row.id).then(() => {
+        this.delLoading = false
+        row.delPopover = false
         this.init()
+        this.$notify({
+          title: '删除成功',
+          type: 'success',
+          duration: 2500
+        })
+      }).catch(err => {
+        this.delLoading = false
+        row.delPopover = false
+        console.log(err.msg)
       })
     },
-    methods: {
-      parseTime,
-      checkPermission,
-      beforeInit() {
-        this.url = '/menu/list'
-        const sort = 'id,desc'
-        const query = this.query
-        const value = query.value
-        this.params = { page: this.page, size: this.size, sort: sort }
-        if (value) { this.params['name'] = value }
-        return true
-      },
-      subDelete(index, row) {
-        this.delLoading = true
-        del(row.id).then(() => {
-          this.delLoading = false
-          row.delPopover = false
-          this.init()
-          this.$notify({
-            title: '删除成功',
-            type: 'success',
-            duration: 2500
-          })
-        }).catch(err => {
-          this.delLoading = false
-          row.delPopover = false
-          console.log(err.msg)
-        })
-      },
-      getMenus() {
-        getMenusTree().then(res => {
-          this.menus = []
-          const menu = { id: 0, label: '顶级类目', children: [] }
-          menu.children = res.list
-          this.menus.push(menu)
-        })
-      },
-      getRoles() {
-        this.roles = []
-        getRoleTree().then(res => {
-          this.roles = res.list
-        })
-      }
+    getMenus() {
+      getMenusTree().then(res => {
+        this.menus = []
+        const menu = { id: 0, label: '顶级类目', children: [] }
+        menu.children = res.list
+        this.menus.push(menu)
+      })
+    },
+    getRoles() {
+      this.roles = []
+      getRoleTree().then(res => {
+        this.roles = res.list
+      })
     }
   }
+}
 </script>
 
 <style scoped>

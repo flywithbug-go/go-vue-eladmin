@@ -21,13 +21,13 @@
         <el-input v-model.number="form.sort" placeholder="序号越小越靠前" style="width: 460px;"/>
       </el-form-item>
       <el-form-item label="内部菜单" prop="iframe">
-        <el-radio v-model="form.iframe" label="false">是</el-radio>
-        <el-radio v-model="form.iframe" label="true" >否</el-radio>
+        <el-radio v-model="form.iframe" label="true">是</el-radio>
+        <el-radio v-model="form.iframe" label="false" >否</el-radio>
       </el-form-item>
       <el-form-item label="链接地址">
         <el-input v-model="form.path" placeholder="菜单路径" style="width: 460px;"/>
       </el-form-item>
-      <el-form-item v-if="form.iframe === 'false'" label="组件路径">
+      <el-form-item v-if="form.iframe === 'true'" label="组件路径">
         <el-input v-model="form.component" placeholder="菜单路径" style="width: 460px;"/>
       </el-form-item>
       <el-form-item label="上级类目">

@@ -37,10 +37,12 @@ export default {
         sort: this.data.sort,
         pid: this.data.pid,
         path: this.data.path,
-        iframe: this.data.iframe?"true":"false",
+        iframe: this.data.iframe ? 'true' : 'false',
         roles: [],
         icon: this.data.icon
       }
+      console.log('console：', this.data)
+
       if (!this.data.roles) {
         this.data.roles = []
       }

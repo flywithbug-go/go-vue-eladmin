@@ -131,6 +131,8 @@ func (m Menu) Insert() (int64, error) {
 	if err != nil {
 		return -1, err
 	}
+	js, _ := json.Marshal(m)
+	log4go.Info("Marshal:%s", string(js))
 	m.Roles = list
 	m.updateMenuRole()
 	return m.Id, nil
