@@ -83,7 +83,7 @@ func GeneralVerifyData(source string) (string, error) {
 	verify.Code = verify.generalVCode(source)
 	verify.Source = source
 	verify.Marked = false
-	verify.Vld = time.Now().Unix() + 3600
+	verify.Vld = time.Now().Unix() + 300
 	err := verify.Insert()
 	return verify.Code, err
 }
