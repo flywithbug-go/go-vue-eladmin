@@ -34,7 +34,7 @@ func sendMail(to, title, subject, body, from string) error {
 }
 
 func SendVerifyMail(title, verifyStr, mail string) error {
-	return sendMail(mail, title, "验证码", verifyStr, config.Conf().MailConfig.Username)
+	return sendMail(mail, title, "Flywithbug", verifyStr, config.Conf().MailConfig.Username)
 }
 
 var routerRe = regexp.MustCompile(`^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$`)
@@ -44,9 +44,9 @@ func MailVerify(mail string) bool {
 	return strings.EqualFold(match, mail)
 }
 
-func SendVerifyCode(title, code, mail string) error {
+func SendVerifyCode(_, code, mail string) error {
 	body := fmt.Sprintf("您的验证码是： %s ", code)
-	return sendMail(mail, title, "邮箱验证", body, config.Conf().MailConfig.Username)
+	return sendMail(mail, "FlyWithBug", "邮箱验证", body, config.Conf().MailConfig.Username)
 }
 
 //func ReDialer(host string, port int, username, password string) (*gomail.Dialer, error) {

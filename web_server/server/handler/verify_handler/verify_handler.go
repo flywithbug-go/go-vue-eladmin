@@ -36,7 +36,7 @@ func sendVerifyMailHanlder(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusInternalServerError, "invalid"+err.Error())
 		return
 	}
-	err = mail.SendVerifyCode("验证码", vCode, verify.Mail)
+	err = mail.SendVerifyCode("", vCode, verify.Mail)
 	if err != nil {
 		log4go.Info(err.Error())
 		aRes.SetErrorInfo(http.StatusInternalServerError, err.Error())
