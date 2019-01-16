@@ -3,65 +3,30 @@ package middleware
 import (
 	"encoding/base64"
 	"encoding/binary"
-	"encoding/json"
 	"time"
+	"vue-admin/web_server/common"
 
 	log "github.com/flywithbug/log4go"
 	"github.com/gin-gonic/gin"
 )
 
-func Logger(notlogged ...string) gin.HandlerFunc {
-	//var skip map[string]struct{}
-	//if length := len(notlogged); length > 0 {
-	//	skip = make(map[string]struct{}, length)
-	//	for _, path := range notlogged {
-	//		skip[path] = struct{}{}
-	//	}
-	//}
+type RequestHeader struct {
+}
+
+func Logger() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// Start timer
 		start := time.Now()
-		xReqid := c.Request.Header.Get("X-Reqid")
-		if xReqid == "" {
-			xReqid = GenReqID()
+
+		xReqId := common.XRequestId(c)
+		if xReqId == "" {
+			xReqId = GenReqID()
 		}
-		c.Header("X-Reqid", xReqid)
-		//path := c.Request.URL.Path
-		// Log only when path is not being skipped
-		//if _, ok := skip[path]; !ok {
-		//	headers,_ := json.Marshal(c.Request.Header)
-		//	log.Info("[GIN] [%s] [Started]\tRequestHeader::%s\n",
-		//		xReqid,
-		//		headers,
-		//	)
-		//}o
-		headers, _ := json.Marshal(c.Request.Header)
-		log.Info("[GIN] [%s] [Started]\tRequestHeader::%s\n", xReqid, headers)
+		c.Set(common.KeyContextRequestId, xReqId)
+		//headers, _ := json.Marshal(c.Request.Header)
+		//log.Info("[GIN] [%s] [Started]\tRequestHeader::%s\n", xReqId, headers)
 		// Process request
 		c.Next()
-		// Log only when path is not being skipped
-		//if _, ok := skip[path]; !ok {
-		//	// Stop timer
-		//	end := time.Now()
-		//	latency := end.Sub(start)
-		//
-		//	statusCode := c.Writer.Status()
-		//	statusColor := colorForStatus(statusCode)
-		//	clientIP := c.ClientIP()
-		//	method := c.Request.Method
-		//	methodColor := colorForMethod(method)
-		//	comment := c.Errors.ByType(gin.ErrorTypePrivate).String()
-		//
-		//	log.Info("[GIN] [%s] [Completed]\t%s %3d %s| %13v | %s | %s %s %s|\t %s\n%s",
-		//		xReqid,
-		//		statusColor, statusCode, reset,
-		//		latency,
-		//		clientIP,
-		//		methodColor, method, reset,
-		//		c.Request.URL.String(),
-		//		comment,
-		//	)
-		//}
 		end := time.Now()
 		latency := end.Sub(start)
 
@@ -71,13 +36,14 @@ func Logger(notlogged ...string) gin.HandlerFunc {
 		method := c.Request.Method
 		methodColor := colorForMethod(method)
 		comment := c.Errors.ByType(gin.ErrorTypePrivate).String()
-
-		log.Info("[GIN] [%s] [Completed]\t%s %3d %s| %13v | %s | %s %s %s|\t %s\n%s",
-			xReqid,
+		userId := common.UserId(c)
+		log.Info("【GIN】\t【id:%d】\t【reqID:%s】 【method:%s %s %s】\t 【code:%s%3d%s】\t【latency:%13v】\t【IP:%s】 【path:%s】\t【gError:%s】",
+			userId,
+			xReqId,
+			methodColor, method, reset,
 			statusColor, statusCode, reset,
 			latency,
 			clientIP,
-			methodColor, method, reset,
 			c.Request.URL.String(),
 			comment,
 		)

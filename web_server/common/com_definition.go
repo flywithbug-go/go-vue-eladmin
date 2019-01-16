@@ -5,10 +5,11 @@ import (
 )
 
 const (
-	KeyAuthorization   = "Authorization"
-	KeyUserAgent       = "User-Agent"
-	KeyContextUserId   = "_key_ctx_userId_"
-	KeyContextUsername = "_key_ctx_username_"
+	KeyAuthorization    = "Authorization"
+	KeyUserAgent        = "User-Agent"
+	KeyContextUserId    = "_key_ctx_userId_"
+	KeyContextUsername  = "_key_ctx_username_"
+	KeyContextRequestId = "_key_ctx_requestId_"
 )
 
 func UserToken(ctx *gin.Context) string {
@@ -38,6 +39,18 @@ func Username(ctx *gin.Context) string {
 		return ""
 	}
 	return userId
+}
+
+func XRequestId(ctx *gin.Context) string {
+	o, ok := ctx.Get(KeyContextRequestId)
+	if !ok {
+		return ""
+	}
+	requestId, ok := o.(string)
+	if !ok {
+		return ""
+	}
+	return requestId
 }
 
 //func User(ctx *gin.Context) (*model.User, bool) {

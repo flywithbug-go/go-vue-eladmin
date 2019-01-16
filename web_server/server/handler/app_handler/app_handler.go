@@ -8,6 +8,7 @@ import (
 	"vue-admin/web_server/model"
 	"vue-admin/web_server/model/model_app"
 	"vue-admin/web_server/server/handler/check_permission"
+	"vue-admin/web_server/server/logger_handler"
 
 	"gopkg.in/mgo.v2/bson"
 
@@ -25,14 +26,14 @@ func addApplicationHandler(c *gin.Context) {
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_app.APPlicationPermissionCreate) {
-		log4go.Info("has no permission")
+		logger_handler.Info(c, "has no permission")
 		aRes.SetErrorInfo(http.StatusOK, "has no permission")
 		return
 	}
 	app := new(appPara)
 	err := c.BindJSON(app)
 	if err != nil {
-		log4go.Info(err.Error())
+		logger_handler.Info(c, err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid: "+err.Error())
 		return
 	}
@@ -68,7 +69,7 @@ func getApplicationsHandler(c *gin.Context) {
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_app.APPlicationPermissionSelect) {
-		log4go.Info("has no permission")
+		logger_handler.Info(c, "has no permission")
 		aRes.SetErrorInfo(http.StatusOK, "has no permission")
 		return
 	}
@@ -106,7 +107,7 @@ func getApplicationsHandler(c *gin.Context) {
 	totalCount, _ := app.TotalCount(query, nil)
 	appList, err := app.FindPageFilter(page, limit, query, nil, sort)
 	if err != nil {
-		log4go.Info(err.Error())
+		logger_handler.Info(c, err.Error())
 		aRes.SetErrorInfo(http.StatusUnauthorized, "apps find error"+err.Error())
 		return
 	}
@@ -120,20 +121,20 @@ func updateApplicationHandler(c *gin.Context) {
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_app.APPlicationPermissionEdit) {
-		log4go.Info("has no permission")
+		logger_handler.Info(c, "has no permission")
 		aRes.SetErrorInfo(http.StatusOK, "has no permission")
 		return
 	}
 	app := new(model_app.Application)
 	err := c.BindJSON(app)
 	if err != nil {
-		log4go.Info(err.Error())
+		logger_handler.Info(c, err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid: "+err.Error())
 		return
 	}
 	err = app.Update()
 	if err != nil {
-		log4go.Info(err.Error())
+		logger_handler.Info(c, err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "update failed: "+err.Error())
 		return
 	}
@@ -146,14 +147,14 @@ func getAllSimpleAppHandler(c *gin.Context) {
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_app.APPlicationPermissionSelect) {
-		log4go.Info("has no permission")
+		logger_handler.Info(c, "has no permission")
 		aRes.SetErrorInfo(http.StatusOK, "has no permission")
 		return
 	}
 	var app = model_app.Application{}
 	arrList, err := app.FindAll(nil, bson.M{"_id": 1, "name": 1, "icon": 1, "owner": 1, "editable": 1})
 	if err != nil {
-		log4go.Info(err.Error())
+		logger_handler.Info(c, err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "update failed: "+err.Error())
 		return
 	}
@@ -175,20 +176,20 @@ func removeApplicationHandler(c *gin.Context) {
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_app.APPlicationPermissionDelete) {
-		log4go.Info("has no permission")
+		logger_handler.Info(c, "has no permission")
 		aRes.SetErrorInfo(http.StatusOK, "has no permission")
 		return
 	}
 	app := model_app.Application{}
 	err := c.BindJSON(&app)
 	if err != nil {
-		log4go.Info(err.Error())
+		logger_handler.Info(c, err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid: "+err.Error())
 		return
 	}
 	err = app.Remove()
 	if err != nil {
-		log4go.Info(err.Error())
+		logger_handler.Info(c, err.Error())
 		aRes.SetErrorInfo(http.StatusInternalServerError, "para invalid: "+err.Error())
 		return
 	}
