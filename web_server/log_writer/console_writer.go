@@ -1,4 +1,4 @@
-package model_log
+package log_writer
 
 import (
 	"fmt"

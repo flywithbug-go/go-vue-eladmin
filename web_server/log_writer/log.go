@@ -1,4 +1,4 @@
-package model_log
+package log_writer
 
 import (
 	"encoding/json"
@@ -13,11 +13,12 @@ const (
 )
 
 type Log struct {
-	Id    int64  `json:"id,omitempty" bson:"_id,omitempty"`
-	Time  string `json:"time,omitempty" bson:"time,omitempty"`
-	Code  string `json:"code,omitempty" bson:"code,omitempty"`
-	Info  string `json:"info,omitempty" bson:"info,omitempty"`
-	Level int    `json:"level,omitempty" bson:"level,omitempty"`
+	Id    int64       `json:"id,omitempty" bson:"_id,omitempty"`
+	Time  string      `json:"time,omitempty" bson:"time,omitempty"`
+	Code  string      `json:"code,omitempty" bson:"code,omitempty"`
+	Info  string      `json:"info,omitempty" bson:"info,omitempty"`
+	Level int         `json:"level,omitempty" bson:"level,omitempty"`
+	Ext   interface{} `json:"ext,omitempty" bson:"ext,omitempty"`
 }
 
 func (l Log) ToJson() string {
@@ -89,6 +90,9 @@ func (l Log) Insert() (int64, error) {
 		return -1, err
 	}
 	l.Id = id
+	if l.Ext != nil {
+		l.Info = ""
+	}
 	err = l.insert(l)
 	if err != nil {
 		return -1, err

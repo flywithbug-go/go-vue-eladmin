@@ -7,9 +7,9 @@ import (
 	"vue-admin/web_server/config"
 	"vue-admin/web_server/core/jwt"
 	"vue-admin/web_server/core/mongo"
+	"vue-admin/web_server/log_writer"
 	"vue-admin/web_server/mail"
 	"vue-admin/web_server/model/a_mongo_index"
-	"vue-admin/web_server/model/model_log"
 	"vue-admin/web_server/model/shareDB"
 	"vue-admin/web_server/server"
 	"vue-admin/web_server/server/handler/file_handler"
@@ -30,9 +30,14 @@ func setLog() {
 	//log.Register(c)
 
 	//log日志控制台输出
-	l := model_log.NewConsoleWriter()
+	l := log_writer.NewConsoleWriter()
 	l.SetColor(true)
 	log.Register(l)
+
+	//日志保存到db
+	w := log_writer.NewDBWriter()
+	log.Register(w)
+
 	log.SetLevel(1)
 	log.SetLayout("2006-01-02 15:04:05")
 
