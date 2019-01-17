@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"vue-admin/web_server/server/handler/common"
+	"vue-admin/web_server/server/handler/handler_common"
 	"vue-admin/web_server/server/handler/menu_handler"
 	"vue-admin/web_server/server/handler/permission_handler"
 	"vue-admin/web_server/server/handler/verify_handler"
@@ -18,7 +18,7 @@ import (
 )
 
 var (
-	routerList []common.GinHandleFunc
+	routerList []handler_common.GinHandleFunc
 )
 
 //host:port/auth_prefix/prefix/path
@@ -31,9 +31,9 @@ func RegisterRouters(r *gin.Engine, prefix string, authPrefix string) {
 	for _, v := range routerList {
 		route := strings.ToLower(v.Route)
 		switch v.RouterType {
-		case common.RouterTypeNeedAuth:
+		case handler_common.RouterTypeNeedAuth:
 			funcDoRouteNeedAuthRegister(strings.ToUpper(v.Method), route, v.Handler, jwtR)
-		case common.RouterTypeNormal:
+		case handler_common.RouterTypeNormal:
 			route = strings.ToLower(prefix + route)
 			funcDoRouteRegister(strings.ToUpper(v.Method), route, v.Handler, r)
 		}

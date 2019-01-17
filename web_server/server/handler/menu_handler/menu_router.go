@@ -1,47 +1,47 @@
 package menu_handler
 
-import "vue-admin/web_server/server/handler/common"
+import "vue-admin/web_server/server/handler/handler_common"
 
-var Routers = []common.GinHandleFunc{
+var Routers = []handler_common.GinHandleFunc{
 	{
 		Handler:    addMenuHandler,
-		RouterType: common.RouterTypeNeedAuth,
+		RouterType: handler_common.RouterTypeNeedAuth,
 		Method:     "POST",
 		Route:      "/menu",
 	},
 	{
 		Handler:    getMenuHandler,
-		RouterType: common.RouterTypeNeedAuth,
+		RouterType: handler_common.RouterTypeNeedAuth,
 		Method:     "GET",
 		Route:      "/menu",
 	},
 	{
 		Handler:    updateMenuHandler,
-		RouterType: common.RouterTypeNeedAuth,
+		RouterType: handler_common.RouterTypeNeedAuth,
 		Method:     "PUT",
 		Route:      "/menu",
 	},
 	{
 		Handler:    removeMenuHandler,
-		RouterType: common.RouterTypeNeedAuth,
+		RouterType: handler_common.RouterTypeNeedAuth,
 		Method:     "DELETE",
 		Route:      "/menu",
 	},
 	{
 		Handler:    getMenuListHandler,
-		RouterType: common.RouterTypeNeedAuth,
+		RouterType: handler_common.RouterTypeNeedAuth,
 		Method:     "GET",
 		Route:      "/menu/list",
 	},
 	{
 		Handler:    getMenuTreeHandler,
-		RouterType: common.RouterTypeNeedAuth,
+		RouterType: handler_common.RouterTypeNeedAuth,
 		Method:     "GET",
 		Route:      "/menu/tree",
 	},
 	{
 		Handler:    getMenuBuildHandler,
-		RouterType: common.RouterTypeNeedAuth,
+		RouterType: handler_common.RouterTypeNeedAuth,
 		Method:     "GET",
 		Route:      "/menu/build",
 	},

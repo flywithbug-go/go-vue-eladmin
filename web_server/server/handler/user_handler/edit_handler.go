@@ -26,7 +26,7 @@ func validPasswordHandler(c *gin.Context) {
 	}()
 	password := c.Query("password")
 	if len(password) == 0 {
-		log4go.Info("password need")
+		log4go.Info(common.XRequestId(c) + "password need")
 		aRes.SetErrorInfo(http.StatusBadRequest, "password need")
 		return
 	}
@@ -34,7 +34,7 @@ func validPasswordHandler(c *gin.Context) {
 	user.Password = password
 	user.Id = common.UserId(c)
 	if !user.CheckPassword() {
-		log4go.Info("password not right")
+		log4go.Info(common.XRequestId(c) + "password not right")
 		aRes.SetErrorInfo(http.StatusBadRequest, "password not right")
 		return
 	}
@@ -49,7 +49,7 @@ func updatePasswordHandler(c *gin.Context) {
 	para := new(ParaUser)
 	err := c.BindJSON(para)
 	if err != nil {
-		log4go.Info(err.Error())
+		log4go.Info(common.XRequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
@@ -58,7 +58,7 @@ func updatePasswordHandler(c *gin.Context) {
 		return
 	}
 	if len(para.Password) == 0 || len(para.OldPassword) == 0 {
-		log4go.Info("para not right")
+		log4go.Info(common.XRequestId(c) + "para not right")
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid")
 		return
 	}
@@ -66,14 +66,14 @@ func updatePasswordHandler(c *gin.Context) {
 	user.Password = para.OldPassword
 	user.Id = common.UserId(c)
 	if !user.CheckPassword() {
-		log4go.Info("password not right")
+		log4go.Info(common.XRequestId(c) + "password not right")
 		aRes.SetErrorInfo(http.StatusBadRequest, "password not right")
 		return
 	}
 	user.Password = para.Password
 	err = user.UpdatePassword()
 	if err != nil {
-		log4go.Info(err.Error())
+		log4go.Info(common.XRequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusInternalServerError, "system error: "+err.Error())
 		return
 	}
@@ -88,7 +88,7 @@ func updateMailHandler(c *gin.Context) {
 	para := new(ParaUser)
 	err := c.BindJSON(para)
 	if err != nil {
-		log4go.Info(err.Error())
+		log4go.Info(common.XRequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
@@ -111,7 +111,7 @@ func updateMailHandler(c *gin.Context) {
 	user.Email = para.Mail
 	user.UpdateMail()
 	if err != nil {
-		log4go.Info(err.Error())
+		log4go.Info(common.XRequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusInternalServerError, "system error: "+err.Error())
 		return
 	}

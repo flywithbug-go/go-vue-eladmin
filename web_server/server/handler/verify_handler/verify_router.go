@@ -1,11 +1,11 @@
 package verify_handler
 
-import "vue-admin/web_server/server/handler/common"
+import "vue-admin/web_server/server/handler/handler_common"
 
-var Routers = []common.GinHandleFunc{
+var Routers = []handler_common.GinHandleFunc{
 	{
 		Handler:    sendVerifyMailHanlder,
-		RouterType: common.RouterTypeNeedAuth,
+		RouterType: handler_common.RouterTypeNeedAuth,
 		Method:     "POST",
 		Route:      "/mail/verify",
 	},

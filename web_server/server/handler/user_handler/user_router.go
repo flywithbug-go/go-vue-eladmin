@@ -1,71 +1,71 @@
 package user_handler
 
-import "vue-admin/web_server/server/handler/common"
+import "vue-admin/web_server/server/handler/handler_common"
 
-var Routers = []common.GinHandleFunc{
+var Routers = []handler_common.GinHandleFunc{
 	{
 		Handler:    registerHandler,
-		RouterType: common.RouterTypeNormal,
+		RouterType: handler_common.RouterTypeNormal,
 		Method:     "POST",
 		Route:      "/register",
 	},
 	{
 		Handler:    loginHandler,
-		RouterType: common.RouterTypeNormal,
+		RouterType: handler_common.RouterTypeNormal,
 		Method:     "POST",
 		Route:      "/login",
 	},
 	{
 		Handler:    logoutHandler,
-		RouterType: common.RouterTypeNeedAuth,
+		RouterType: handler_common.RouterTypeNeedAuth,
 		Route:      "/logout",
 		Method:     "POST",
 	},
 	{
 		Handler:    getUserInfoHandler, //获取userId对应的用户信息
-		RouterType: common.RouterTypeNeedAuth,
+		RouterType: handler_common.RouterTypeNeedAuth,
 		Method:     "GET",
 		Route:      "/user/info",
 	},
 	{
 		Handler:    updateUserHandler, //更新当前用户信息
-		RouterType: common.RouterTypeNeedAuth,
+		RouterType: handler_common.RouterTypeNeedAuth,
 		Method:     "PUT",
 		Route:      "/user",
 	},
 	{
 		Handler:    addUserHandler, //添加用户当前用户信息
-		RouterType: common.RouterTypeNeedAuth,
+		RouterType: handler_common.RouterTypeNeedAuth,
 		Method:     "POST",
 		Route:      "/user",
 	},
 	{
 		Handler:    deleteUserHandler, //删除当前用户信息
-		RouterType: common.RouterTypeNeedAuth,
+		RouterType: handler_common.RouterTypeNeedAuth,
 		Method:     "DELETE",
 		Route:      "/user",
 	},
 	{
 		Handler:    getUserListInfoHandler, //获取所有用户
-		RouterType: common.RouterTypeNeedAuth,
+		RouterType: handler_common.RouterTypeNeedAuth,
 		Method:     "GET",
 		Route:      "/user/list",
 	},
 	{
 		Handler:    validPasswordHandler, //验证密码
-		RouterType: common.RouterTypeNeedAuth,
+		RouterType: handler_common.RouterTypeNeedAuth,
 		Method:     "GET",
 		Route:      "/user/password/valid",
 	},
 	{
 		Handler:    updatePasswordHandler, //修改密码
-		RouterType: common.RouterTypeNeedAuth,
+		RouterType: handler_common.RouterTypeNeedAuth,
 		Method:     "PUT",
 		Route:      "/user/password",
 	},
 	{
 		Handler:    updateMailHandler, //修改邮箱
-		RouterType: common.RouterTypeNeedAuth,
+		RouterType: handler_common.RouterTypeNeedAuth,
 		Method:     "PUT",
 		Route:      "/user/mail",
 	},

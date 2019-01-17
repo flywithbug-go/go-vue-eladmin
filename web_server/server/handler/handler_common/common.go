@@ -1,4 +1,4 @@
-package common
+package handler_common
 
 import "github.com/gin-gonic/gin"
 

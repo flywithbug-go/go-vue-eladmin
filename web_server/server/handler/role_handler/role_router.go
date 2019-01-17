@@ -1,41 +1,41 @@
 package role_handler
 
-import "vue-admin/web_server/server/handler/common"
+import "vue-admin/web_server/server/handler/handler_common"
 
-var Routers = []common.GinHandleFunc{
+var Routers = []handler_common.GinHandleFunc{
 	{
 		Handler:    addRoleHandler,
-		RouterType: common.RouterTypeNeedAuth,
+		RouterType: handler_common.RouterTypeNeedAuth,
 		Method:     "POST",
 		Route:      "/role",
 	},
 	{
 		Handler:    getRoleHandler,
-		RouterType: common.RouterTypeNeedAuth,
+		RouterType: handler_common.RouterTypeNeedAuth,
 		Method:     "GET",
 		Route:      "/role",
 	},
 	{
 		Handler:    updateRoleHandler,
-		RouterType: common.RouterTypeNeedAuth,
+		RouterType: handler_common.RouterTypeNeedAuth,
 		Method:     "PUT",
 		Route:      "/role",
 	},
 	{
 		Handler:    removeRoleHandler,
-		RouterType: common.RouterTypeNeedAuth,
+		RouterType: handler_common.RouterTypeNeedAuth,
 		Method:     "DELETE",
 		Route:      "/role",
 	},
 	{
 		Handler:    getRoleListHandler,
-		RouterType: common.RouterTypeNeedAuth,
+		RouterType: handler_common.RouterTypeNeedAuth,
 		Method:     "GET",
 		Route:      "/role/list",
 	},
 	{
 		Handler:    getRoleTreeHandler,
-		RouterType: common.RouterTypeNeedAuth,
+		RouterType: handler_common.RouterTypeNeedAuth,
 		Method:     "GET",
 		Route:      "/role/tree",
 	},

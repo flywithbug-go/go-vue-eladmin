@@ -20,7 +20,7 @@ func loginHandler(c *gin.Context) {
 	user := model_user.User{}
 	err := c.BindJSON(&user)
 	if err != nil {
-		log4go.Info(err.Error())
+		log4go.Info(common.XRequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
@@ -61,7 +61,7 @@ func registerHandler(c *gin.Context) {
 	user := new(model_user.User)
 	err := c.BindJSON(user)
 	if err != nil {
-		log4go.Info(err.Error())
+		log4go.Info(common.XRequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
@@ -91,17 +91,7 @@ func logoutHandler(c *gin.Context) {
 		c.JSON(http.StatusOK, aRes)
 	}()
 	token := common.UserToken(c)
-	if token == "" {
-		log4go.Info("token not found")
-		aRes.SetErrorInfo(http.StatusBadRequest, "token not found")
-		return
-	}
 	sync_map.RemoveKey(token)
-	err := model_user.UpdateLoginStatus(token, model_user.StatusLogout)
-	if err != nil {
-		log4go.Info(err.Error())
-		aRes.SetErrorInfo(http.StatusBadRequest, err.Error())
-		return
-	}
+	model_user.UpdateLoginStatus(token, model_user.StatusLogout)
 	aRes.SetSuccessInfo(http.StatusOK, "success")
 }

@@ -1,5 +1,5 @@
 import { getToken, setToken, removeToken } from '../../utils/auth'
-import {getUserInfo, login, logout} from "../../api/user";
+import { getUserInfo, login, logout } from '../../api/user'
 import { parseTime } from '@/utils/index'
 
 const user = {
@@ -10,8 +10,8 @@ const user = {
     email: '',
     status: 0,
     // role:  -1 ,
-    roles:[],
-    createTime:undefined,
+    roles: [],
+    createTime: undefined
   },
   mutations: {
     SET_TOKEN: (state, token) => {
@@ -35,12 +35,12 @@ const user = {
     },
     SET_CREATE_TIME: (state, createTime) => {
       state.createTime = createTime
-    },
+    }
   },
   actions: {
-    Login({ commit },user) {
-      return new Promise((resolve, reject) =>{
-        login(user.username,user.password).then(response => {
+    Login({ commit }, user) {
+      return new Promise((resolve, reject) => {
+        login(user.username, user.password).then(response => {
           const token = response.token
           commit('SET_TOKEN', token)
           setToken(token)
@@ -52,7 +52,7 @@ const user = {
     },
     // 获取用户信息
     GetUserInfo({ commit }) {
-      return new  Promise((resolve ,reject)=> {
+      return new Promise((resolve, reject) => {
         getUserInfo().then(response => {
           const data = response.user
           if (data.roles && data.roles.length > 0) { // 验证返回的roles是否是一个非空数组
@@ -70,10 +70,10 @@ const user = {
           reject(error)
         })
       })
-
     },
     // 前端 登出
     FedLogOut(context) {
+      this.LogOut(context)
       return new Promise(resolve => {
         context.commit('SET_TOKEN', '')
         removeToken()
@@ -95,7 +95,7 @@ const user = {
           reject(error)
         })
       })
-    },
+    }
   }
 }
 
