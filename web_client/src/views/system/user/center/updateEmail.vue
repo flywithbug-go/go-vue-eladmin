@@ -24,7 +24,6 @@
 
 <script>
 import store from '@/store'
-import { md5 } from '@/utils/md5'
 import { validatEmail } from '@/utils/validate'
 import { validPassword, updateEmail } from '@/api/user'
 import { sendMailVerifyCode } from '@/api/user'
@@ -38,7 +37,7 @@ export default {
   data() {
     const validatePass = (rule, value, callback) => {
       validPassword(value).then(res => {
-        if (res.status === 200) {
+        if (res.code === 200) {
           callback()
         } else {
           callback(new Error('密码错误，请重新输入'))
@@ -114,7 +113,7 @@ export default {
         if (valid) {
           this.loading = true
           this.user = { email: this.form.email, password: this.form.pass }
-          updateEmail(this.form.code, this.user,this.form.pass).then(res => {
+          updateEmail(this.form.code, this.form.email, this.form.pass).then(res => {
             this.loading = false
             this.resetForm()
             this.$notify({

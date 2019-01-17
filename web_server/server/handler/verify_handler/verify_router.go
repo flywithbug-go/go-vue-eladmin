@@ -9,4 +9,10 @@ var Routers = []handler_common.GinHandleFunc{
 		Method:     "POST",
 		Route:      "/mail/verify",
 	},
+	{
+		Handler:    getVerifyListHandler,
+		RouterType: handler_common.RouterTypeNeedAuth,
+		Method:     "GET",
+		Route:      "/verify/list",
+	},
 }

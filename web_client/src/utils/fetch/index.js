@@ -1,36 +1,35 @@
 import client from 'axios'
-import { MessageBox,Message,Notification } from 'element-ui'
+import { MessageBox, Message } from 'element-ui'
 import store from '@/store'
 import global_ from '../../config'
 import { getToken } from '@/utils/auth'
 
-
-
-client.defaults.baseURL = global_.BaseURL;
-client.defaults.headers.common['Authorization'] = getToken();
-client.defaults.headers.post['Content-Type'] = 'application/json';
-client.defaults.timeout = 60000 //60秒
+client.defaults.baseURL = global_.BaseURL
+client.defaults.headers.common['Authorization'] = getToken()
+client.defaults.headers.post['Content-Type'] = 'application/json'
+client.defaults.timeout = 60000 // 60秒
 
 client.interceptors.request.use(config => {
   if (store.getters.token) {
     config.headers.common['Authorization'] = store.getters.token
-  }else {
-    config.headers.common['Authorization'] = ""
+  } else {
+    config.headers.common['Authorization'] = ''
   }
   return config
-},error => {
+}, error => {
   console.log(error) // for debug
   return Promise.reject(error)
 })
 
 client.interceptors.response.use(response => {
   const res = response.data
-  console.log("interceptorsRes:" ,res)
-  if (res.code == 200){
+  console.log('interceptorsRes:', res)
+  res.data.code = res.code
+  if (res.code === 200) {
     return res.data
   }
   if (res.code === 401) {
-    MessageBox.confirm('已登出，可以取消继续留在该页面，或者重新登录','确定登出',{
+    MessageBox.confirm('已登出，可以取消继续留在该页面，或者重新登录', '确定登出', {
       confirmButtonText: '重新登录',
       cancelButtonText: '取消',
       type: 'warning'
@@ -44,15 +43,15 @@ client.interceptors.response.use(response => {
 
   Message({
     message: res.msg,
-    type:'error',
-    duration: 5*1000
+    type: 'error',
+    duration: 5 * 1000
   })
   return Promise.reject(res)
-},error => {
+}, error => {
   Message({
     message: error.message,
-    type:'error',
-    duration: 5*1000
+    type: 'error',
+    duration: 5 * 1000
   })
   return Promise.reject(error)
 })

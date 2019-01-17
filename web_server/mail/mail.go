@@ -7,8 +7,6 @@ import (
 	"strings"
 	"vue-admin/web_server/config"
 
-	"github.com/flywithbug/log4go"
-
 	"gopkg.in/gomail.v2"
 )
 
@@ -25,8 +23,7 @@ func sendMail(to, title, subject, body, from string) error {
 	m.SetHeader("To", to)
 	m.SetHeader("Subject", subject)
 	m.SetBody("text/html", body)
-
-	log4go.Info(" %s %s ", to, m.GetHeader("To"))
+	//log4go.Info(" %s %s ", to, m.GetHeader("To"))
 	if Mail == nil {
 		return errors.New("mail is nil")
 	}
