@@ -1,7 +1,6 @@
 
 ## 简介
 
-vue和go锻炼项目
 
 [在线访问](https://www.flywithme.top)
 
