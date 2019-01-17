@@ -25,8 +25,18 @@ function padLeftZero(str) {
 
 // 入参是纳秒ns
 export function formatTimeDuration(duration) {
-  duration = duration / 1000 // us
+  duration = duration / 1000 // µs
   if (duration < 1000) {
-    return duration + 'µs'
+    return duration.toFixed(3) + 'µs'
   }
+  duration = duration / 1000
+  if (duration < 1000) {
+    return duration.toFixed(3) + 'ms'
+  }
+  duration = duration / 1000
+  if (duration < 60) {
+    return duration.toFixed(3) + 's'
+  }
+  duration = duration / 60
+  return duration.toFixed(3) + 'min'
 }

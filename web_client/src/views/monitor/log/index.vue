@@ -3,27 +3,33 @@
     <eHeader :query="query"/>
     <!--表格渲染-->
     <el-table v-loading="loading" :data="data" size="small" border style="width: 100%;">
-      <el-table-column prop="user_id" label="用户ID"/>
-      <el-table-column prop="client_ip" label="IP"/>
-      <el-table-column :show-overflow-tooltip="true" prop="method" label="方法名称"/>
-      <el-table-column :show-overflow-tooltip="true" prop="params" label="参数"/>
-      <el-table-column :show-overflow-tooltip="true" prop="exceptionDetail" label="异常堆栈信息"/>
-      <el-table-column prop="latency" label="请求耗时" align="center">
+      <el-table-column prop="user_id" label="用户ID" width="80px" />
+      <el-table-column :show-overflow-tooltip="true" prop="client_ip" label="IP" width="80px"/>
+      <el-table-column prop="method" label="Method" width="80px" />
+      <el-table-column :show-overflow-tooltip="true" prop="request_id" label="RequestId" width="140px"/>
+      <el-table-column :show-overflow-tooltip="true" prop="path" label="Path" width="180px"/>
+      <el-table-column prop="latency" label="请求耗时" align="center" width="120px">
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.latency/1000000 <= 300">{{ scope.row.latency/1000000 }}ms</el-tag>
-          <el-tag v-else-if="scope.row.latency/1000000 <= 1000" type="warning">{{ scope.row.latency/1000000 }}ms</el-tag>
-          <el-tag v-else type="danger">{{ scope.row.latency/1000000 }}ms</el-tag>
+          <el-tag v-if="scope.row.latency/1000 <= 1000" > {{ formatTimeDuration(scope.row.latency) }}</el-tag>
+          <el-tag v-else-if="scope.row.latency/1000000 <= 1000" type="success"> {{ formatTimeDuration(scope.row.latency) }}</el-tag>
+          <el-tag v-else-if="scope.row.latency/1000000000 <= 2" type="info">{{ formatTimeDuration(scope.row.latency) }}</el-tag>
+          <el-tag v-else-if="scope.row.latency/1000000000 <= 60" type="warning">{{ formatTimeDuration(scope.row.latency) }}</el-tag>
+          <el-tag v-else type="danger">{{ formatTimeDuration(scope.row.latency) }}</el-tag>
         </template>
       </el-table-column>
+      <el-table-column :show-overflow-tooltip="true" prop="info" label="日志内容"/>
+      <el-table-column :show-overflow-tooltip="true" prop="status_code" label="状态" align="center" width="50px"/>
+      <el-table-column :show-overflow-tooltip="true" prop="para" label="参数" width="80px"/>
+
       <el-table-column prop="flag" label="日志类型" width="100px" align="center">
         <template slot-scope="scope">
-          <span v-if="scope.row.flag === 'ERROR'" class="badge badge-bg-orange">{{ scope.row.flag }}</span>
-          <span v-else class="badge">{{ scope.row.logType }}</span>
+          <el-tag v-if="scope.row.flag === 'ERROR'" type="danger">{{ scope.row.flag }}</el-tag>
+          <el-tag v-else type="info">{{ scope.row.flag }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="createTime" label="创建日期" width="180px">
+      <el-table-column prop="time" label="创建日期" width="180px">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.createTime) }}</span>
+          <span>{{ parseTime(scope.row.time) }}</span>
         </template>
       </el-table-column>
     </el-table>
@@ -41,6 +47,7 @@
 import initData from '../../../mixins/initData'
 import { parseTime } from '@/utils/index'
 import eHeader from './module/header'
+import { formatTimeDuration } from '@/utils/date'
 export default {
   components: { eHeader },
   mixins: [initData],
@@ -51,6 +58,7 @@ export default {
   },
   methods: {
     parseTime,
+    formatTimeDuration,
     beforeInit() {
       this.url = 'log/list'
       const sort = 'id,desc'

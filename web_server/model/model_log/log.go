@@ -91,6 +91,12 @@ func (l Log) Insert() error {
 	if len(l.Info) == 0 {
 		return fmt.Errorf("info is null")
 	}
+	if l.Para != nil {
+		js, _ := json.Marshal(l.Para)
+		if js != nil {
+			l.Para = string(js)
+		}
+	}
 	return l.insert(l)
 }
 
