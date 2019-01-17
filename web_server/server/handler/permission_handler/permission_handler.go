@@ -4,10 +4,10 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
-	"vue-admin/web_server/common"
 	"vue-admin/web_server/model"
 	"vue-admin/web_server/model/model_permission"
 	"vue-admin/web_server/server/handler/check_permission"
+	"vue-admin/web_server/server/handler/handler_common"
 
 	"gopkg.in/mgo.v2/bson"
 
@@ -21,20 +21,20 @@ func addPermissionHandler(c *gin.Context) {
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_permission.PPermissionCreate) {
-		log4go.Info(common.XRequestId(c) + "has no permission")
+		log4go.Info(handler_common.RequestId(c) + "has no permission")
 		aRes.SetErrorInfo(http.StatusOK, "has no permission")
 		return
 	}
 	p := model_permission.Permission{}
 	err := c.BindJSON(&p)
 	if err != nil {
-		log4go.Info(common.XRequestId(c) + err.Error())
+		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
 	id, err := p.Insert()
 	if err != nil {
-		log4go.Info(common.XRequestId(c) + err.Error())
+		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusInternalServerError, "server invalid: "+err.Error())
 		return
 	}
@@ -47,7 +47,7 @@ func getPermissionHandler(c *gin.Context) {
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_permission.PPermissionSelect) {
-		log4go.Info(common.XRequestId(c) + "has no permission")
+		log4go.Info(handler_common.RequestId(c) + "has no permission")
 		aRes.SetErrorInfo(http.StatusOK, "has no permission")
 		return
 	}
@@ -57,7 +57,7 @@ func getPermissionHandler(c *gin.Context) {
 	mInfo.Id = int64(id)
 	mInfo, err := mInfo.FindOne(nil)
 	if err != nil {
-		log4go.Info(common.XRequestId(c) + err.Error())
+		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "invalid: "+err.Error())
 		return
 	}
@@ -70,20 +70,20 @@ func updatePermissionHandler(c *gin.Context) {
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_permission.PPermissionEdit) {
-		log4go.Info(common.XRequestId(c) + "has no permission")
+		log4go.Info(handler_common.RequestId(c) + "has no permission")
 		aRes.SetErrorInfo(http.StatusOK, "has no permission")
 		return
 	}
 	para := model_permission.Permission{}
 	err := c.BindJSON(&para)
 	if err != nil {
-		log4go.Info(common.XRequestId(c) + err.Error())
+		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
 	err = para.Update()
 	if err != nil {
-		log4go.Info(common.XRequestId(c) + err.Error())
+		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "invalid: "+err.Error())
 		return
 	}
@@ -95,7 +95,7 @@ func removePermissionHandler(c *gin.Context) {
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_permission.PPermissionDelete) {
-		log4go.Info(common.XRequestId(c) + "has no permission")
+		log4go.Info(handler_common.RequestId(c) + "has no permission")
 		aRes.SetErrorInfo(http.StatusOK, "has no permission")
 		return
 	}
@@ -103,13 +103,13 @@ func removePermissionHandler(c *gin.Context) {
 	para := model_permission.Permission{}
 	err := c.BindJSON(&para)
 	if err != nil {
-		log4go.Info(common.XRequestId(c) + err.Error())
+		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
 	err = para.Remove()
 	if err != nil {
-		log4go.Info(common.XRequestId(c) + err.Error())
+		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "invalid: "+err.Error())
 		return
 	}
@@ -121,7 +121,7 @@ func getPermissionListHandler(c *gin.Context) {
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_permission.PPermissionSelect) {
-		log4go.Info(common.XRequestId(c) + "has no permission")
+		log4go.Info(handler_common.RequestId(c) + "has no permission")
 		aRes.SetErrorInfo(http.StatusOK, "has no permission")
 		return
 	}
@@ -147,7 +147,7 @@ func getPermissionListHandler(c *gin.Context) {
 	totalCount, _ := per.TotalCount(query, nil)
 	list, err := per.FindPageFilter(page, limit, query, nil, sort)
 	if err != nil {
-		log4go.Info(common.XRequestId(c) + err.Error())
+		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusUnauthorized, "apps find error"+err.Error())
 		return
 	}
@@ -162,7 +162,7 @@ func getPermissionTreeHandler(c *gin.Context) {
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_permission.PPermissionSelect) {
-		log4go.Info(common.XRequestId(c) + "has no permission")
+		log4go.Info(handler_common.RequestId(c) + "has no permission")
 		aRes.SetErrorInfo(http.StatusOK, "has no permission")
 		return
 	}
@@ -172,7 +172,7 @@ func getPermissionTreeHandler(c *gin.Context) {
 	list, err := per.FindPageFilter(0, 0, query, selector)
 	//list, err := per.FetchTreeList(selector)
 	if err != nil {
-		log4go.Info(common.XRequestId(c) + err.Error())
+		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusUnauthorized, "app version list find error"+err.Error())
 		return
 	}

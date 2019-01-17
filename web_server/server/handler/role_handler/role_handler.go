@@ -4,10 +4,10 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
-	"vue-admin/web_server/common"
 	"vue-admin/web_server/model"
 	"vue-admin/web_server/model/model_role"
 	"vue-admin/web_server/server/handler/check_permission"
+	"vue-admin/web_server/server/handler/handler_common"
 
 	"gopkg.in/mgo.v2/bson"
 
@@ -21,7 +21,7 @@ func addRoleHandler(c *gin.Context) {
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_role.RolePermissionCreate) {
-		log4go.Info(common.XRequestId(c) + "has no permission")
+		log4go.Info(handler_common.RequestId(c) + "has no permission")
 		aRes.SetErrorInfo(http.StatusOK, "has no permission")
 		return
 	}
@@ -29,13 +29,13 @@ func addRoleHandler(c *gin.Context) {
 	para := model_role.Role{}
 	err := c.BindJSON(&para)
 	if err != nil {
-		log4go.Info(common.XRequestId(c) + err.Error())
+		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
 	err = para.Insert()
 	if err != nil {
-		log4go.Info(common.XRequestId(c) + err.Error())
+		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusInternalServerError, "server invalid"+err.Error())
 		return
 	}
@@ -47,7 +47,7 @@ func getRoleHandler(c *gin.Context) {
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_role.RolePermissionSelect) {
-		log4go.Info(common.XRequestId(c) + "has no permission")
+		log4go.Info(handler_common.RequestId(c) + "has no permission")
 		aRes.SetErrorInfo(http.StatusOK, "has no permission")
 		return
 	}
@@ -58,7 +58,7 @@ func getRoleHandler(c *gin.Context) {
 	role.Id = int64(id)
 	role, err := role.FindOneTree(nil)
 	if err != nil {
-		log4go.Info(common.XRequestId(c) + err.Error())
+		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "invalid: "+err.Error())
 		return
 	}
@@ -71,7 +71,7 @@ func updateRoleHandler(c *gin.Context) {
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_role.RolePermissionEdit) {
-		log4go.Info(common.XRequestId(c) + "has no permission")
+		log4go.Info(handler_common.RequestId(c) + "has no permission")
 		aRes.SetErrorInfo(http.StatusOK, "has no permission")
 		return
 	}
@@ -79,13 +79,13 @@ func updateRoleHandler(c *gin.Context) {
 	para := model_role.Role{}
 	err := c.BindJSON(&para)
 	if err != nil {
-		log4go.Info(common.XRequestId(c) + err.Error())
+		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
 	err = para.Update()
 	if err != nil {
-		log4go.Info(common.XRequestId(c) + err.Error())
+		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "invalid: "+err.Error())
 		return
 	}
@@ -97,7 +97,7 @@ func removeRoleHandler(c *gin.Context) {
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_role.RolePermissionDelete) {
-		log4go.Info(common.XRequestId(c) + "has no permission")
+		log4go.Info(handler_common.RequestId(c) + "has no permission")
 		aRes.SetErrorInfo(http.StatusOK, "has no permission")
 		return
 	}
@@ -105,13 +105,13 @@ func removeRoleHandler(c *gin.Context) {
 	para := model_role.Role{}
 	err := c.BindJSON(&para)
 	if err != nil {
-		log4go.Info(common.XRequestId(c) + err.Error())
+		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
 	err = para.Remove()
 	if err != nil {
-		log4go.Info(common.XRequestId(c) + err.Error())
+		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "invalid: "+err.Error())
 		return
 	}
@@ -124,7 +124,7 @@ func getRoleListHandler(c *gin.Context) {
 	}()
 
 	if check_permission.CheckNoPermission(c, model_role.RolePermissionSelect) {
-		log4go.Info(common.XRequestId(c) + "has no permission")
+		log4go.Info(handler_common.RequestId(c) + "has no permission")
 		aRes.SetErrorInfo(http.StatusOK, "has no permission")
 		return
 	}
@@ -151,7 +151,7 @@ func getRoleListHandler(c *gin.Context) {
 	totalCount, _ := role.TotalCount(query, nil)
 	list, err := role.FindPageTreeFilter(page, limit, query, nil, sort)
 	if err != nil {
-		log4go.Info(common.XRequestId(c) + err.Error())
+		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusUnauthorized, "apps find error"+err.Error())
 		return
 	}
@@ -165,7 +165,7 @@ func getRoleTreeHandler(c *gin.Context) {
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_role.RolePermissionSelect) {
-		log4go.Info(common.XRequestId(c) + "has no permission")
+		log4go.Info(handler_common.RequestId(c) + "has no permission")
 		aRes.SetErrorInfo(http.StatusOK, "has no permission")
 		return
 	}
@@ -173,7 +173,7 @@ func getRoleTreeHandler(c *gin.Context) {
 	selector := bson.M{"_id": 1, "alias": 1}
 	list, err := role.FindPageFilter(0, 0, nil, selector)
 	if err != nil {
-		log4go.Info(common.XRequestId(c) + err.Error())
+		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusUnauthorized, "app version list find error"+err.Error())
 		return
 	}

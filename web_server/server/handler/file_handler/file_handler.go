@@ -17,8 +17,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
-	"vue-admin/web_server/common"
 	"vue-admin/web_server/model/model_file"
+	"vue-admin/web_server/server/handler/handler_common"
 
 	"github.com/flywithbug/file"
 	"github.com/flywithbug/log4go"
@@ -47,7 +47,7 @@ func uploadImageHandler(c *gin.Context) {
 	//gin将het/http包的FormFile函数封装到c.Request
 	file, header, err := c.Request.FormFile("file")
 	if err != nil {
-		log4go.Info(common.XRequestId(c) + err.Error())
+		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, fmt.Sprintf("get file err : %s", err.Error()))
 		return
 	}
@@ -75,23 +75,23 @@ func uploadImageHandler(c *gin.Context) {
 	localFilePath := localPath + fileName
 	bExit, err := PathExists(localFilePath)
 	if err != nil {
-		log4go.Info(common.XRequestId(c) + err.Error())
+		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusInternalServerError, fmt.Sprintf("system err : %s", err.Error()))
 		return
 	}
 	if bExit {
-		log4go.Info(common.XRequestId(c)+"fileExit: %s", fileName)
+		log4go.Info(handler_common.RequestId(c)+"fileExit: %s", fileName)
 		avatarPath := fmt.Sprintf("/%s/%s", month, fileName)
 		aRes.SetResponseDataInfo("imagePath", avatarPath)
 		return
 	}
 	out, err := os.Create(localFilePath)
 	if err != nil {
-		log4go.Info(common.XRequestId(c)+"创建文件失败：%s", err.Error())
+		log4go.Info(handler_common.RequestId(c)+"创建文件失败：%s", err.Error())
 		//判断文件夹是否存在
 		bExit, err = PathExists(localPath)
 		if err != nil {
-			log4go.Info(common.XRequestId(c) + err.Error())
+			log4go.Info(handler_common.RequestId(c) + err.Error())
 			aRes.SetErrorInfo(http.StatusInternalServerError, fmt.Sprintf("get folder err : %s", err.Error()))
 			return
 		}
@@ -99,7 +99,7 @@ func uploadImageHandler(c *gin.Context) {
 		if !bExit {
 			err = os.Mkdir(localPath, os.ModePerm)
 			if err != nil {
-				log4go.Info(common.XRequestId(c) + err.Error())
+				log4go.Info(handler_common.RequestId(c) + err.Error())
 				aRes.SetErrorInfo(http.StatusInternalServerError, fmt.Sprintf("make folder err : %s", err.Error()))
 				return
 			}
@@ -107,7 +107,7 @@ func uploadImageHandler(c *gin.Context) {
 		//重新启动out
 		out, err = os.Create(localFilePath)
 		if err != nil {
-			log4go.Info(common.XRequestId(c) + err.Error())
+			log4go.Info(handler_common.RequestId(c) + err.Error())
 			aRes.SetErrorInfo(http.StatusInternalServerError, fmt.Sprintf("make file err : %s", err.Error()))
 			return
 		}
@@ -116,7 +116,7 @@ func uploadImageHandler(c *gin.Context) {
 
 	_, err = out.Write(data)
 	if err != nil {
-		log4go.Info(common.XRequestId(c) + err.Error())
+		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, fmt.Sprintf("write file err : %s", err.Error()))
 		return
 	}
@@ -174,7 +174,7 @@ func scale(in io.Reader, out io.Writer, size, quality int) error {
 func loadImageHandler(c *gin.Context) {
 	path := c.Param("path")
 	filename := c.Param("filename")
-	//log4go.Info(common.XRequestId(c) + "loadImageHandler: %s %s", path, filename)
+	//log4go.Info(handler_common.RequestId(c) + "loadImageHandler: %s %s", path, filename)
 	if path == "" || filename == "" {
 		return
 	}
@@ -199,17 +199,17 @@ func loadImageHandler(c *gin.Context) {
 			return
 		}
 		fIn, _ := os.Open(fileOrigin)
-		//log4go.Info(common.XRequestId(c) + fileOrigin)
+		//log4go.Info(handler_common.RequestId(c) + fileOrigin)
 		defer fIn.Close()
 		fOut, _ := os.Create(filePath)
-		//log4go.Info(common.XRequestId(c) + filename)
+		//log4go.Info(handler_common.RequestId(c) + filename)
 		defer fOut.Close()
 		if sizeW < 10 {
 			sizeW = 10
 		}
 		err := scale(fIn, fOut, sizeW, 100)
 		if err != nil {
-			log4go.Info(common.XRequestId(c) + err.Error())
+			log4go.Info(handler_common.RequestId(c) + err.Error())
 			http.ServeFile(c.Writer, c.Request, fileOrigin)
 			return
 		}

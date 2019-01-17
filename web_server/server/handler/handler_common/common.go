@@ -1,6 +1,11 @@
 package handler_common
 
-import "github.com/gin-gonic/gin"
+import (
+	"fmt"
+	"vue-admin/web_server/common"
+
+	"github.com/gin-gonic/gin"
+)
 
 type StateType int
 
@@ -14,4 +19,8 @@ type GinHandleFunc struct {
 	RouterType StateType
 	Method     string
 	Route      string
+}
+
+func RequestId(c *gin.Context) string {
+	return fmt.Sprintf("【rid:%s】", common.XRequestId(c))
 }

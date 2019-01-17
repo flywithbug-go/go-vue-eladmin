@@ -6,6 +6,7 @@ import (
 	"vue-admin/web_server/core/jwt"
 	"vue-admin/web_server/model"
 	"vue-admin/web_server/model/model_user"
+	"vue-admin/web_server/server/handler/handler_common"
 	"vue-admin/web_server/server/sync_map"
 
 	"github.com/flywithbug/log4go"
@@ -20,7 +21,7 @@ func loginHandler(c *gin.Context) {
 	user := model_user.User{}
 	err := c.BindJSON(&user)
 	if err != nil {
-		log4go.Info(common.XRequestId(c) + err.Error())
+		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
@@ -61,7 +62,7 @@ func registerHandler(c *gin.Context) {
 	user := new(model_user.User)
 	err := c.BindJSON(user)
 	if err != nil {
-		log4go.Info(common.XRequestId(c) + err.Error())
+		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}

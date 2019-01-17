@@ -7,6 +7,7 @@ import (
 	"vue-admin/web_server/model"
 	"vue-admin/web_server/model/model_user"
 	"vue-admin/web_server/model/model_verify"
+	"vue-admin/web_server/server/handler/handler_common"
 
 	"github.com/flywithbug/log4go"
 	"github.com/gin-gonic/gin"
@@ -26,7 +27,7 @@ func validPasswordHandler(c *gin.Context) {
 	}()
 	password := c.Query("password")
 	if len(password) == 0 {
-		log4go.Info(common.XRequestId(c) + "password need")
+		log4go.Info(handler_common.RequestId(c) + "password need")
 		aRes.SetErrorInfo(http.StatusBadRequest, "password need")
 		return
 	}
@@ -34,7 +35,7 @@ func validPasswordHandler(c *gin.Context) {
 	user.Password = password
 	user.Id = common.UserId(c)
 	if !user.CheckPassword() {
-		log4go.Info(common.XRequestId(c) + "password not right")
+		log4go.Info(handler_common.RequestId(c) + "password not right")
 		aRes.SetErrorInfo(http.StatusBadRequest, "password not right")
 		return
 	}
@@ -49,7 +50,7 @@ func updatePasswordHandler(c *gin.Context) {
 	para := new(ParaUser)
 	err := c.BindJSON(para)
 	if err != nil {
-		log4go.Info(common.XRequestId(c) + err.Error())
+		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
@@ -58,7 +59,7 @@ func updatePasswordHandler(c *gin.Context) {
 		return
 	}
 	if len(para.Password) == 0 || len(para.OldPassword) == 0 {
-		log4go.Info(common.XRequestId(c) + "para not right")
+		log4go.Info(handler_common.RequestId(c) + "para not right")
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid")
 		return
 	}
@@ -66,14 +67,14 @@ func updatePasswordHandler(c *gin.Context) {
 	user.Password = para.OldPassword
 	user.Id = common.UserId(c)
 	if !user.CheckPassword() {
-		log4go.Info(common.XRequestId(c) + "password not right")
+		log4go.Info(handler_common.RequestId(c) + "password not right")
 		aRes.SetErrorInfo(http.StatusBadRequest, "password not right")
 		return
 	}
 	user.Password = para.Password
 	err = user.UpdatePassword()
 	if err != nil {
-		log4go.Info(common.XRequestId(c) + err.Error())
+		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusInternalServerError, "system error: "+err.Error())
 		return
 	}
@@ -88,7 +89,7 @@ func updateMailHandler(c *gin.Context) {
 	para := new(ParaUser)
 	err := c.BindJSON(para)
 	if err != nil {
-		log4go.Info(common.XRequestId(c) + err.Error())
+		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
@@ -111,7 +112,7 @@ func updateMailHandler(c *gin.Context) {
 	user.Email = para.Mail
 	user.UpdateMail()
 	if err != nil {
-		log4go.Info(common.XRequestId(c) + err.Error())
+		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusInternalServerError, "system error: "+err.Error())
 		return
 	}

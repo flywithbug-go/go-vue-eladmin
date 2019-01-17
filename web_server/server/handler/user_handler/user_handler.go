@@ -8,6 +8,7 @@ import (
 	"vue-admin/web_server/model"
 	"vue-admin/web_server/model/model_user"
 	"vue-admin/web_server/server/handler/check_permission"
+	"vue-admin/web_server/server/handler/handler_common"
 
 	"github.com/flywithbug/log4go"
 	"github.com/gin-gonic/gin"
@@ -31,20 +32,20 @@ func addUserHandler(c *gin.Context) {
 	}()
 
 	if check_permission.CheckNoPermission(c, model_user.UserPermissionCreate) {
-		log4go.Info(common.XRequestId(c) + "has no permission")
+		log4go.Info(handler_common.RequestId(c) + "has no permission")
 		aRes.SetErrorInfo(http.StatusOK, "has no permission")
 		return
 	}
 	user := new(model_user.User)
 	err := c.BindJSON(user)
 	if err != nil {
-		log4go.Info(common.XRequestId(c) + err.Error())
+		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
 	err = user.Insert()
 	if err != nil {
-		log4go.Info(common.XRequestId(c) + err.Error())
+		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
@@ -63,7 +64,7 @@ func getUserInfoHandler(c *gin.Context) {
 		id = common.UserId(c)
 	} else {
 		if check_permission.CheckNoPermission(c, model_user.UserPermissionSelect) {
-			log4go.Info(common.XRequestId(c) + "has no permission")
+			log4go.Info(handler_common.RequestId(c) + "has no permission")
 			aRes.SetErrorInfo(http.StatusOK, "has no permission")
 			return
 		}
@@ -72,12 +73,12 @@ func getUserInfoHandler(c *gin.Context) {
 	user.Id = id
 	user, err := user.FindOne()
 	if err != nil {
-		log4go.Info(common.XRequestId(c) + err.Error())
+		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusUnauthorized, "user not found:"+err.Error())
 		return
 	}
 	if !user.Enabled {
-		log4go.Info(common.XRequestId(c) + "账号已停用")
+		log4go.Info(handler_common.RequestId(c) + "账号已停用")
 		aRes.SetErrorInfo(http.StatusUnauthorized, "账号已停用，请联系管理员")
 		return
 	}
@@ -97,20 +98,20 @@ func updateUserHandler(c *gin.Context) {
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_user.UserPermissionEdit) {
-		log4go.Info(common.XRequestId(c) + "has no permission")
+		log4go.Info(handler_common.RequestId(c) + "has no permission")
 		aRes.SetErrorInfo(http.StatusOK, "has no permission")
 		return
 	}
 	user := new(model_user.User)
 	err := c.BindJSON(user)
 	if err != nil {
-		log4go.Info(common.XRequestId(c) + err.Error())
+		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
 	err = user.Update()
 	if err != nil {
-		log4go.Info(common.XRequestId(c) + err.Error())
+		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "db update failed: "+err.Error())
 		return
 	}
@@ -123,25 +124,25 @@ func deleteUserHandler(c *gin.Context) {
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_user.UserPermissionDelete) {
-		log4go.Info(common.XRequestId(c) + "has no permission")
+		log4go.Info(handler_common.RequestId(c) + "has no permission")
 		aRes.SetErrorInfo(http.StatusOK, "has no permission")
 		return
 	}
 	user := new(model_user.User)
 	err := c.BindJSON(user)
 	if err != nil {
-		log4go.Info(common.XRequestId(c) + err.Error())
+		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
 	if common.UserId(c) == user.Id {
-		log4go.Info(common.XRequestId(c) + "can not delete your self")
+		log4go.Info(handler_common.RequestId(c) + "can not delete your self")
 		aRes.SetErrorInfo(http.StatusForbidden, "can not delete your self")
 		return
 	}
 	err = user.Remove()
 	if err != nil {
-		log4go.Info(common.XRequestId(c) + err.Error())
+		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "db delete failed: "+err.Error())
 		return
 	}
@@ -155,7 +156,7 @@ func getUserListInfoHandler(c *gin.Context) {
 	}()
 
 	if check_permission.CheckNoPermission(c, model_user.UserPermissionSelect) {
-		log4go.Info(common.XRequestId(c) + "has no permission")
+		log4go.Info(handler_common.RequestId(c) + "has no permission")
 		aRes.SetErrorInfo(http.StatusOK, "has no permission")
 		return
 	}
@@ -203,7 +204,7 @@ func getUserListInfoHandler(c *gin.Context) {
 	totalCount, _ := user.TotalCount(query, nil)
 	appList, err := user.FindPageFilter(page, limit, query, nil, sort)
 	if err != nil {
-		log4go.Info(common.XRequestId(c) + err.Error())
+		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusInternalServerError, err.Error())
 		return
 	}
