@@ -34,3 +34,4 @@ web_client/yarn-error.log*
 log/*
 config.json
 db_data_migration.sh
+*/dist/**
