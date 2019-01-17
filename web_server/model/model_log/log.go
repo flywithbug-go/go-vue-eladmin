@@ -25,6 +25,7 @@ type Log struct {
 	Latency    time.Duration `json:"latency,omitempty" bson:"latency,omitempty"`
 	StatusCode int           `json:"status_code,omitempty" bson:"status_code,omitempty"`
 	UserId     int64         `json:"user_id,omitempty" bson:"user_id,omitempty"`
+	Para       interface{}   `json:"para,omitempty" bson:"para,omitempty"`
 }
 
 func (l Log) ToJson() string {

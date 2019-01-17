@@ -3,22 +3,21 @@
     <eHeader :query="query"/>
     <!--表格渲染-->
     <el-table v-loading="loading" :data="data" size="small" border style="width: 100%;">
-      <el-table-column prop="username" label="用户名"/>
-      <el-table-column prop="requestIp" label="IP"/>
-      <el-table-column prop="description" label="描述"/>
+      <el-table-column prop="user_id" label="用户ID"/>
+      <el-table-column prop="client_ip" label="IP"/>
       <el-table-column :show-overflow-tooltip="true" prop="method" label="方法名称"/>
       <el-table-column :show-overflow-tooltip="true" prop="params" label="参数"/>
       <el-table-column :show-overflow-tooltip="true" prop="exceptionDetail" label="异常堆栈信息"/>
-      <el-table-column prop="time" label="请求耗时" align="center">
+      <el-table-column prop="latency" label="请求耗时" align="center">
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.time <= 300">{{ scope.row.time }}ms</el-tag>
-          <el-tag v-else-if="scope.row.time <= 1000" type="warning">{{ scope.row.time }}ms</el-tag>
-          <el-tag v-else type="danger">{{ scope.row.time }}ms</el-tag>
+          <el-tag v-if="scope.row.latency/1000000 <= 300">{{ scope.row.latency/1000000 }}ms</el-tag>
+          <el-tag v-else-if="scope.row.latency/1000000 <= 1000" type="warning">{{ scope.row.latency/1000000 }}ms</el-tag>
+          <el-tag v-else type="danger">{{ scope.row.latency/1000000 }}ms</el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="logType" label="日志类型" width="100px" align="center">
+      <el-table-column prop="flag" label="日志类型" width="100px" align="center">
         <template slot-scope="scope">
-          <span v-if="scope.row.logType === 'ERROR'" class="badge badge-bg-orange">{{ scope.row.logType }}</span>
+          <span v-if="scope.row.flag === 'ERROR'" class="badge badge-bg-orange">{{ scope.row.flag }}</span>
           <span v-else class="badge">{{ scope.row.logType }}</span>
         </template>
       </el-table-column>
@@ -53,14 +52,14 @@ export default {
   methods: {
     parseTime,
     beforeInit() {
-      this.url = 'api/logs'
+      this.url = 'log/list'
       const sort = 'id,desc'
       const query = this.query
-      const username = query.username
-      const logType = query.logType
+      const user_id = query.user_id
+      const flag = query.flag
       this.params = { page: this.page, size: this.size, sort: sort }
-      if (username && username) { this.params['username'] = username }
-      if (logType !== '' && logType !== null) { this.params['logType'] = logType }
+      if (user_id && user_id) { this.params['user_id'] = user_id }
+      if (flag !== '' && flag !== null) { this.params['flag'] = flag }
       return true
     }
   }

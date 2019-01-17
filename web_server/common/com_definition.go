@@ -7,6 +7,7 @@ import (
 const (
 	KeyAuthorization    = "Authorization"
 	KeyUserAgent        = "User-Agent"
+	KeyContextPara      = "_key_ctx_para"
 	KeyContextUserId    = "_key_ctx_userId_"
 	KeyContextRequestId = "X-Reqid"
 )
@@ -37,4 +38,12 @@ func XRequestId(ctx *gin.Context) string {
 		return ""
 	}
 	return requestId
+}
+
+func Para(c *gin.Context) interface{} {
+	para, ok := c.Get(KeyContextPara)
+	if !ok {
+		return nil
+	}
+	return para
 }

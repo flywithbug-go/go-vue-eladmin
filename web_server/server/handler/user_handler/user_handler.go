@@ -43,6 +43,8 @@ func addUserHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
+	c.Set(common.KeyContextPara, user)
+
 	err = user.Insert()
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())
@@ -109,6 +111,8 @@ func updateUserHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
+	c.Set(common.KeyContextPara, user)
+
 	err = user.Update()
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())
@@ -135,6 +139,8 @@ func deleteUserHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
+	c.Set(common.KeyContextPara, user)
+
 	if common.UserId(c) == user.Id {
 		log4go.Info(handler_common.RequestId(c) + "can not delete your self")
 		aRes.SetErrorInfo(http.StatusForbidden, "can not delete your self")

@@ -34,6 +34,8 @@ func addAppVersionHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid: "+err.Error())
 		return
 	}
+	c.Set(common.KeyContextPara, appV)
+
 	err = appV.Insert()
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())
@@ -61,6 +63,8 @@ func updateAppVersionHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid: "+err.Error())
 		return
 	}
+	c.Set(common.KeyContextPara, appV)
+
 	err = appV.Update()
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())
@@ -85,6 +89,7 @@ func getAppVersionListHandler(c *gin.Context) {
 	limit, _ := strconv.Atoi(c.Query("limit"))
 	page, _ := strconv.Atoi(c.Query("page"))
 	sort := c.Query("sort")
+
 	if strings.EqualFold(sort, "-id") {
 		sort = "-_id"
 	} else if strings.EqualFold(sort, "+id") {
@@ -137,6 +142,8 @@ func removeAppVersionHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid: "+err.Error())
 		return
 	}
+	c.Set(common.KeyContextPara, appV)
+
 	err = appV.Remove()
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())

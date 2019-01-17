@@ -2,6 +2,7 @@ package verify_handler
 
 import (
 	"net/http"
+	"vue-admin/web_server/common"
 	"vue-admin/web_server/mail"
 	"vue-admin/web_server/model"
 	"vue-admin/web_server/model/model_verify"
@@ -27,6 +28,8 @@ func sendVerifyMailHanlder(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "Param invalid"+err.Error())
 		return
 	}
+	c.Set(common.KeyContextPara, verify)
+
 	if !mail.MailVerify(verify.Mail) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "mail invalid")
 		return

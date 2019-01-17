@@ -38,6 +38,7 @@ func addApplicationHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid: "+err.Error())
 		return
 	}
+	c.Set(common.KeyContextPara, app)
 	if app.BundleId == "" {
 		aRes.SetErrorInfo(http.StatusBadRequest, "BundleId must fill")
 		return
@@ -54,6 +55,7 @@ func addApplicationHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "Desc must fill")
 		return
 	}
+
 	userId := common.UserId(c)
 	user := model_user.User{}
 	user.Id = userId
@@ -66,6 +68,14 @@ func addApplicationHandler(c *gin.Context) {
 		return
 	}
 	aRes.AddResponseInfo("app", app)
+}
+
+type appListPara struct {
+	limit int
+	page  int
+	sort  string
+	name  string
+	owner string
 }
 
 func getApplicationsHandler(c *gin.Context) {
@@ -83,6 +93,7 @@ func getApplicationsHandler(c *gin.Context) {
 	sort := c.Query("sort")
 	name := c.Query("name")
 	owner := c.Query("owner")
+
 	if strings.EqualFold(sort, "-id") {
 		sort = "-_id"
 	} else if strings.EqualFold(sort, "+id") {
@@ -137,6 +148,7 @@ func updateApplicationHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid: "+err.Error())
 		return
 	}
+	c.Set(common.KeyContextPara, app)
 	err = app.Update()
 	if err != nil {
 		log4go.Error(handler_common.RequestId(c) + err.Error())
@@ -192,6 +204,7 @@ func removeApplicationHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid: "+err.Error())
 		return
 	}
+	c.Set(common.KeyContextPara, app)
 	err = app.Remove()
 	if err != nil {
 		log4go.Error(handler_common.RequestId(c) + err.Error())

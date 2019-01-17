@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"vue-admin/web_server/common"
 	"vue-admin/web_server/model"
 	"vue-admin/web_server/model/model_permission"
 	"vue-admin/web_server/server/handler/check_permission"
@@ -32,6 +33,8 @@ func addPermissionHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
+	c.Set(common.KeyContextPara, p)
+
 	id, err := p.Insert()
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())
@@ -81,6 +84,8 @@ func updatePermissionHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
+	c.Set(common.KeyContextPara, para)
+
 	err = para.Update()
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())
@@ -107,6 +112,8 @@ func removePermissionHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
+	c.Set(common.KeyContextPara, para)
+
 	err = para.Remove()
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())

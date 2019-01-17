@@ -87,5 +87,4 @@ func addAllRouters() {
 	routerList = append(routerList, verify_handler.Routers...)
 	routerList = append(routerList, menu_handler.Routers...)
 	routerList = append(routerList, log_handelr.Routers...)
-
 }

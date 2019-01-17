@@ -36,7 +36,7 @@ type User struct {
 	Name        string            `json:"name,omitempty" bson:"name,omitempty"`     // 名字！
 	Nick        string            `json:"nick,omitempty" bson:"nick,omitempty"`     // 昵称
 	Title       string            `json:"title,omitempty" bson:"title,omitempty"`
-	Enabled     bool              `json:"enabled" bson:"enabled"`                //1 激活，
+	Enabled     bool              `json:"enabled,omitempty" bson:"enabled"`      //1 激活，
 	Note        string            `json:"note,omitempty"  bson:"note,omitempty"` //备注,
 	CreateTime  int64             `json:"createTime,omitempty"  bson:"create_time,omitempty"`
 	Roles       []model_role.Role `json:"roles,omitempty" bson:"roles,omitempty"`

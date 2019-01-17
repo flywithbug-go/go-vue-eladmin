@@ -54,6 +54,8 @@ func updatePasswordHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
+	c.Set(common.KeyContextPara, para)
+
 	if strings.EqualFold(para.Password, para.OldPassword) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "password not changed")
 		return
@@ -93,6 +95,8 @@ func updateMailHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
+	c.Set(common.KeyContextPara, para)
+
 	if len(para.Mail) == 0 || len(para.Password) == 0 || len(para.Code) == 0 {
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid")
 		return

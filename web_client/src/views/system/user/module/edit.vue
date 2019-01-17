@@ -28,7 +28,7 @@ export default {
     to() {
       const _this = this.$refs.form
       _this.roleIds = []
-      _this.form = { id: this.data.id, username: this.data.username, email: this.data.email, enabled: this.data.enabled.toString(), roles: [] }
+      _this.form = { id: this.data.id, username: this.data.username, email: this.data.email, enabled: this.data.enabled ? 'true' : 'false', roles: [] }
       if (!this.data.roles) {
         this.data.roles = []
       }

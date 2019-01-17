@@ -48,6 +48,7 @@ func Logger() gin.HandlerFunc {
 			l.Path,
 			comment)
 
+		l.Para = common.Para(c)
 		log.InfoExt(l, "【GIN】【id:%d】【rid:%s】【m:%s %s %s】【c:%s%3d%s】【l:%13v】【ip:%s】 【p:%s】【e:%s】",
 			l.UserId,
 			l.RequestId,
