@@ -13,7 +13,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="vld" label="剩余时间" width="180px" align="center">
+      <el-table-column prop="vld" label="剩余有效时间" width="180px" align="center">
         <template slot-scope="scope">
           <span>{{ formatExpTimeStamp(scope.row.vld*1000) }}</span>
         </template>
