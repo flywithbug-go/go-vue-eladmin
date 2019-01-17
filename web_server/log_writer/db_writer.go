@@ -2,6 +2,7 @@ package log_writer
 
 import (
 	"sync"
+	"vue-admin/web_server/model/model_log"
 
 	"github.com/flywithbug/log4go"
 )
@@ -13,6 +14,10 @@ var (
 	dbWriterDefault *DBWriter
 	takeup          = false
 )
+
+type Log struct {
+	model_log.Log
+}
 
 func init() {
 	dbWriterDefault = NewDBWriter()

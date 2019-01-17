@@ -8,7 +8,6 @@ const (
 	KeyAuthorization    = "Authorization"
 	KeyUserAgent        = "User-Agent"
 	KeyContextUserId    = "_key_ctx_userId_"
-	KeyContextUsername  = "_key_ctx_username_"
 	KeyContextRequestId = "X-Reqid"
 )
 
@@ -28,19 +27,6 @@ func UserId(ctx *gin.Context) int64 {
 	}
 	return userId
 }
-
-func Username(ctx *gin.Context) string {
-	o, ok := ctx.Get(KeyContextUsername)
-	if !ok {
-		return ""
-	}
-	userId, ok := o.(string)
-	if !ok {
-		return ""
-	}
-	return userId
-}
-
 func XRequestId(ctx *gin.Context) string {
 	o, ok := ctx.Get(KeyContextRequestId)
 	if !ok {
@@ -52,15 +38,3 @@ func XRequestId(ctx *gin.Context) string {
 	}
 	return requestId
 }
-
-//func User(ctx *gin.Context) (*model.User, bool) {
-//	o, ok := ctx.Get(KeyContextUser)
-//	if !ok {
-//		return nil, false
-//	}
-//	aUser, ok := o.(*model.User)
-//	if !ok {
-//		return nil, false
-//	}
-//	return aUser, true
-//}

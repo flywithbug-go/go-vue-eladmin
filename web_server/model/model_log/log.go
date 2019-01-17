@@ -1,4 +1,4 @@
-package log_writer
+package model_log
 
 import (
 	"encoding/json"
@@ -91,4 +91,11 @@ func (l Log) Insert() error {
 		return fmt.Errorf("info is null")
 	}
 	return l.insert(l)
+}
+
+func (l Log) TotalCount(query, selector interface{}) (int, error) {
+	return l.totalCount(query, selector)
+}
+func (l Log) FindPageFilter(page, limit int, query, selector interface{}, fields ...string) ([]Log, error) {
+	return l.findPage(page, limit, query, selector, fields...)
 }

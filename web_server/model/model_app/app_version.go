@@ -11,8 +11,6 @@ import (
 	"vue-admin/web_server/model/a_mongo_index"
 	"vue-admin/web_server/model/shareDB"
 
-	"github.com/flywithbug/log4go"
-
 	"gopkg.in/mgo.v2/bson"
 )
 
@@ -184,7 +182,6 @@ func (app AppVersion) Update() error {
 		app.Status = appOld.Status
 	}
 	selector := bson.M{"_id": app.Id}
-	log4go.Info(app.ToJson())
 	if app.Status > 1 {
 		//状态大于1时，可以更新锁版时间，灰度时间，状态，和发布时间
 		app.AppStatus = makeStatusString(app.Status)

@@ -2,6 +2,7 @@ package handler
 
 import (
 	"vue-admin/web_server/server/handler/handler_common"
+	"vue-admin/web_server/server/handler/log_handelr"
 	"vue-admin/web_server/server/handler/menu_handler"
 	"vue-admin/web_server/server/handler/permission_handler"
 	"vue-admin/web_server/server/handler/verify_handler"
@@ -85,4 +86,6 @@ func addAllRouters() {
 	routerList = append(routerList, permission_handler.Routers...)
 	routerList = append(routerList, verify_handler.Routers...)
 	routerList = append(routerList, menu_handler.Routers...)
+	routerList = append(routerList, log_handelr.Routers...)
+
 }

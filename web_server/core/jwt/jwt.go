@@ -49,16 +49,14 @@ var (
 //自定义载荷
 type CustomClaims struct {
 	jwt.StandardClaims
-	UserId   int64  `json:"user_id"`
-	Username string `json:"username"`
+	UserId int64 `json:"user_id"`
 }
 
 //创建claims
-func NewCustomClaims(userId int64, username string) CustomClaims {
+func NewCustomClaims(userId int64) CustomClaims {
 	now := time.Now().Unix()
 	claims := CustomClaims{
-		UserId:   userId,
-		Username: username,
+		UserId: userId,
 		StandardClaims: jwt.StandardClaims{
 			NotBefore: int64(now - notBeforeDuration), // 	签名生效时间
 			ExpiresAt: int64(now + expiresOffset),     // 	过期时间
@@ -74,7 +72,7 @@ func GenerateToken(claims CustomClaims) (string, error) {
 		log4go.Fatal("signingKey not read")
 		return "", errors.New("signingKey not load")
 	}
-	token := jwt.New(jwt.SigningMethodRS512)
+	token := jwt.New(jwt.SigningMethodRS256)
 	token.Claims = claims
 	return token.SignedString(jwtAuthBackend.privateKey)
 }

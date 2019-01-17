@@ -27,7 +27,6 @@ func addAppVersionHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusOK, "has no permission")
 		return
 	}
-
 	appV := new(model_app.AppVersion)
 	err := c.BindJSON(appV)
 	if err != nil {
@@ -93,9 +92,9 @@ func getAppVersionListHandler(c *gin.Context) {
 	} else if len(sort) == 0 {
 		sort = "+_id"
 	}
-	//if limit == 0 {
-	//	limit = 10
-	//}
+	if limit == 0 {
+		limit = 10
+	}
 	if page != 0 {
 		page--
 	}

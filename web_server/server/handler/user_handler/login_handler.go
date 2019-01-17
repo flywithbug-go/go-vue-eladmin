@@ -36,7 +36,7 @@ func loginHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "账号已停用，请联系管理员")
 		return
 	}
-	claims := jwt.NewCustomClaims(user.Id, user.Username)
+	claims := jwt.NewCustomClaims(user.Id)
 	token, err := jwt.GenerateToken(claims)
 	if err != nil {
 		log4go.Error(err.Error())

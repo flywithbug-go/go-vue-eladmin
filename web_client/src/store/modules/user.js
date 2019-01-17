@@ -73,7 +73,7 @@ const user = {
     },
     // 前端 登出
     FedLogOut(context) {
-      this.LogOut(context)
+      context.commit('LogOut')
       return new Promise(resolve => {
         context.commit('SET_TOKEN', '')
         removeToken()
