@@ -19,6 +19,7 @@ import (
 func addPermissionHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
+		c.Set(common.KeyContextResponseCode, aRes.Code)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_permission.PPermissionCreate) {
@@ -47,6 +48,7 @@ func addPermissionHandler(c *gin.Context) {
 func getPermissionHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
+		c.Set(common.KeyContextResponseCode, aRes.Code)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_permission.PPermissionSelect) {
@@ -70,6 +72,7 @@ func getPermissionHandler(c *gin.Context) {
 func updatePermissionHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
+		c.Set(common.KeyContextResponseCode, aRes.Code)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_permission.PPermissionEdit) {
@@ -97,6 +100,7 @@ func updatePermissionHandler(c *gin.Context) {
 func removePermissionHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
+		c.Set(common.KeyContextResponseCode, aRes.Code)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_permission.PPermissionDelete) {
@@ -125,6 +129,7 @@ func removePermissionHandler(c *gin.Context) {
 func getPermissionListHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
+		c.Set(common.KeyContextResponseCode, aRes.Code)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_permission.PPermissionSelect) {
@@ -133,7 +138,7 @@ func getPermissionListHandler(c *gin.Context) {
 		return
 	}
 	var per = model_permission.Permission{}
-	limit, _ := strconv.Atoi(c.Query("limit"))
+	limit, _ := strconv.Atoi(c.Query("size"))
 	page, _ := strconv.Atoi(c.Query("page"))
 	sort := c.Query("sort")
 	name := c.Query("name")
@@ -166,6 +171,7 @@ func getPermissionListHandler(c *gin.Context) {
 func getPermissionTreeHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
+		c.Set(common.KeyContextResponseCode, aRes.Code)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_permission.PPermissionSelect) {

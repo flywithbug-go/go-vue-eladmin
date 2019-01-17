@@ -151,12 +151,13 @@
       v-show="total>0"
       :total="total"
       :page.sync="listQuery.page"
-      :limit.sync="listQuery.limit"
+      :limit.sync="listQuery.size"
       @pagination="getList"/>
 
     <el-dialog
       :title="textMap[dialogStatus]"
-      :visible.sync="dialogFormVisible" width="600px">
+      :visible.sync="dialogFormVisible"
+      width="600px">
       <el-form
         ref="dataForm"
         :rules="rules"
@@ -304,7 +305,7 @@ export default {
       },
       listQuery: {
         page: 0,
-        limit: 10,
+        size: 10,
         name: '',
         owner: '',
         sort: '-id',
@@ -595,7 +596,7 @@ export default {
               return
             }
           }
-          if (this.temp.status == 5) {
+          if (this.temp.status === 5) {
             if (this.temp.gray_time > this.temp.release_time && this.temp.status >= 4) {
               this.$message.error('灰度时间必须早于发布时间')
               return
@@ -671,7 +672,7 @@ export default {
       this.handleFilter()
     },
     handleFilter() {
-      this.currentSimpleApp = this.simpleAppList.filter(item => item.id == this.listQuery.app_id)[0]
+      this.currentSimpleApp = this.simpleAppList.filter(item => item.id === this.listQuery.app_id)[0]
       this.listQuery.page = 1
       this.getList()
     }

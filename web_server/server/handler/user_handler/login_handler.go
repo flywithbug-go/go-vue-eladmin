@@ -16,6 +16,7 @@ import (
 func loginHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
+		c.Set(common.KeyContextResponseCode, aRes.Code)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	user := model_user.User{}
@@ -59,6 +60,7 @@ func loginHandler(c *gin.Context) {
 func registerHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
+		c.Set(common.KeyContextResponseCode, aRes.Code)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	user := new(model_user.User)
@@ -93,6 +95,7 @@ func registerHandler(c *gin.Context) {
 func logoutHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
+		c.Set(common.KeyContextResponseCode, aRes.Code)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	token := common.UserToken(c)

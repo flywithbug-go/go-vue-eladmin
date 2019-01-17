@@ -19,6 +19,7 @@ import (
 func addRoleHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
+		c.Set(common.KeyContextResponseCode, aRes.Code)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_role.RolePermissionCreate) {
@@ -47,6 +48,7 @@ func addRoleHandler(c *gin.Context) {
 func getRoleHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
+		c.Set(common.KeyContextResponseCode, aRes.Code)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_role.RolePermissionSelect) {
@@ -71,6 +73,7 @@ func getRoleHandler(c *gin.Context) {
 func updateRoleHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
+		c.Set(common.KeyContextResponseCode, aRes.Code)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_role.RolePermissionEdit) {
@@ -99,6 +102,7 @@ func updateRoleHandler(c *gin.Context) {
 func removeRoleHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
+		c.Set(common.KeyContextResponseCode, aRes.Code)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_role.RolePermissionDelete) {
@@ -126,6 +130,7 @@ func removeRoleHandler(c *gin.Context) {
 func getRoleListHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
+		c.Set(common.KeyContextResponseCode, aRes.Code)
 		c.JSON(http.StatusOK, aRes)
 	}()
 
@@ -136,7 +141,7 @@ func getRoleListHandler(c *gin.Context) {
 	}
 
 	var role = model_role.Role{}
-	limit, _ := strconv.Atoi(c.Query("limit"))
+	limit, _ := strconv.Atoi(c.Query("size"))
 	page, _ := strconv.Atoi(c.Query("page"))
 	sort := c.Query("sort")
 	name := c.Query("name")
@@ -168,6 +173,7 @@ func getRoleListHandler(c *gin.Context) {
 func getRoleTreeHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
+		c.Set(common.KeyContextResponseCode, aRes.Code)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_role.RolePermissionSelect) {

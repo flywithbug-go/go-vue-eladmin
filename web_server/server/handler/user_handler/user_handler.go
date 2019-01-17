@@ -28,6 +28,7 @@ type ParaUserEdit struct {
 func addUserHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
+		c.Set(common.KeyContextResponseCode, aRes.Code)
 		c.JSON(http.StatusOK, aRes)
 	}()
 
@@ -57,6 +58,7 @@ func addUserHandler(c *gin.Context) {
 func getUserInfoHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
+		c.Set(common.KeyContextResponseCode, aRes.Code)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	var id int64
@@ -97,6 +99,7 @@ func getUserInfoHandler(c *gin.Context) {
 func updateUserHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
+		c.Set(common.KeyContextResponseCode, aRes.Code)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_user.UserPermissionEdit) {
@@ -125,6 +128,7 @@ func updateUserHandler(c *gin.Context) {
 func deleteUserHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
+		c.Set(common.KeyContextResponseCode, aRes.Code)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_user.UserPermissionDelete) {
@@ -158,6 +162,7 @@ func deleteUserHandler(c *gin.Context) {
 func getUserListInfoHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
+		c.Set(common.KeyContextResponseCode, aRes.Code)
 		c.JSON(http.StatusOK, aRes)
 	}()
 
@@ -166,7 +171,7 @@ func getUserListInfoHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusOK, "has no permission")
 		return
 	}
-	limit, _ := strconv.Atoi(c.Query("limit"))
+	limit, _ := strconv.Atoi(c.Query("size"))
 	page, _ := strconv.Atoi(c.Query("page"))
 	sort := c.Query("sort")
 	name := c.Query("username")

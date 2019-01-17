@@ -151,7 +151,7 @@
       v-show="total>0"
       :total="total"
       :page.sync="listQuery.page"
-      :limit.sync="listQuery.limit"
+      :limit.sync="listQuery.size"
       @pagination="getList"/>
 
     <!--创建弹窗添加修改-->
@@ -246,7 +246,7 @@ export default {
       },
       listQuery: {
         page: 0,
-        limit: 10,
+        size: 10,
         name: '',
         owner: '',
         sort: '+_id'

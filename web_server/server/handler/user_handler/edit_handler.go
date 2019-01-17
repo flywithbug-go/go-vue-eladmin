@@ -23,6 +23,7 @@ type ParaUser struct {
 func validPasswordHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
+		c.Set(common.KeyContextResponseCode, aRes.Code)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	password := c.Query("password")
@@ -45,6 +46,7 @@ func validPasswordHandler(c *gin.Context) {
 func updatePasswordHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
+		c.Set(common.KeyContextResponseCode, aRes.Code)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	para := new(ParaUser)
@@ -86,6 +88,7 @@ func updatePasswordHandler(c *gin.Context) {
 func updateMailHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
+		c.Set(common.KeyContextResponseCode, aRes.Code)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	para := new(ParaUser)

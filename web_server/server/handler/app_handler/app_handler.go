@@ -24,6 +24,7 @@ type appPara struct {
 func addApplicationHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
+		c.Set(common.KeyContextResponseCode, aRes.Code)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_app.APPlicationPermissionCreate) {
@@ -81,6 +82,7 @@ type appListPara struct {
 func getApplicationsHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
+		c.Set(common.KeyContextResponseCode, aRes.Code)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_app.APPlicationPermissionSelect) {
@@ -88,7 +90,7 @@ func getApplicationsHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusOK, "has no permission")
 		return
 	}
-	limit, _ := strconv.Atoi(c.Query("limit"))
+	limit, _ := strconv.Atoi(c.Query("size"))
 	page, _ := strconv.Atoi(c.Query("page"))
 	sort := c.Query("sort")
 	name := c.Query("name")
@@ -134,6 +136,7 @@ func getApplicationsHandler(c *gin.Context) {
 func updateApplicationHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
+		c.Set(common.KeyContextResponseCode, aRes.Code)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_app.APPlicationPermissionEdit) {
@@ -161,6 +164,7 @@ func updateApplicationHandler(c *gin.Context) {
 func getAllSimpleAppHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
+		c.Set(common.KeyContextResponseCode, aRes.Code)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_app.APPlicationPermissionSelect) {
@@ -190,6 +194,7 @@ func getAllSimpleAppHandler(c *gin.Context) {
 func removeApplicationHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
+		c.Set(common.KeyContextResponseCode, aRes.Code)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_app.APPlicationPermissionDelete) {

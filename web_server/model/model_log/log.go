@@ -13,19 +13,20 @@ const (
 )
 
 type Log struct {
-	Time       string        `json:"time,omitempty" bson:"time,omitempty"`
-	Code       string        `json:"code,omitempty" bson:"code,omitempty"`
-	Info       string        `json:"info,omitempty" bson:"info,omitempty"`
-	Level      int           `json:"level,omitempty" bson:"level,omitempty"`
-	Flag       string        `json:"flag,omitempty" bson:"flag,omitempty"`
-	ClientIp   string        `json:"client_ip,omitempty" bson:"client_ip,omitempty"`
-	Method     string        `json:"method,omitempty" bson:"method,omitempty"`
-	Path       string        `json:"path,omitempty" bson:"path,omitempty"`
-	RequestId  string        `json:"request_id,omitempty" bson:"request_id,omitempty"`
-	Latency    time.Duration `json:"latency,omitempty" bson:"latency,omitempty"`
-	StatusCode int           `json:"status_code,omitempty" bson:"status_code,omitempty"`
-	UserId     int64         `json:"user_id,omitempty" bson:"user_id,omitempty"`
-	Para       interface{}   `json:"para,omitempty" bson:"para,omitempty"`
+	Time         string        `json:"time,omitempty" bson:"time,omitempty"`
+	Code         string        `json:"code,omitempty" bson:"code,omitempty"`
+	Info         string        `json:"info,omitempty" bson:"info,omitempty"`
+	Level        int           `json:"level,omitempty" bson:"level,omitempty"`
+	Flag         string        `json:"flag,omitempty" bson:"flag,omitempty"`
+	ClientIp     string        `json:"client_ip,omitempty" bson:"client_ip,omitempty"`
+	Method       string        `json:"method,omitempty" bson:"method,omitempty"`
+	Path         string        `json:"path,omitempty" bson:"path,omitempty"`
+	RequestId    string        `json:"request_id,omitempty" bson:"request_id,omitempty"`
+	Latency      time.Duration `json:"latency,omitempty" bson:"latency,omitempty"`
+	StatusCode   int           `json:"status_code,omitempty" bson:"status_code,omitempty"`
+	UserId       int64         `json:"user_id,omitempty" bson:"user_id,omitempty"`
+	Para         interface{}   `json:"para,omitempty" bson:"para,omitempty"`
+	ResponseCode int           `json:"response_code,omitempty" bson:"response_code,omitempty"`
 }
 
 func (l Log) ToJson() string {

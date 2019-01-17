@@ -20,6 +20,7 @@ import (
 func addAppVersionHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
+		c.Set(common.KeyContextResponseCode, aRes.Code)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_app.APPlicationPermissionCreate) {
@@ -48,6 +49,7 @@ func addAppVersionHandler(c *gin.Context) {
 func updateAppVersionHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
+		c.Set(common.KeyContextResponseCode, aRes.Code)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_app.APPlicationPermissionEdit) {
@@ -77,6 +79,7 @@ func updateAppVersionHandler(c *gin.Context) {
 func getAppVersionListHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
+		c.Set(common.KeyContextResponseCode, aRes.Code)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_app.APPlicationPermissionSelect) {
@@ -86,7 +89,7 @@ func getAppVersionListHandler(c *gin.Context) {
 	}
 
 	appId, _ := strconv.Atoi(c.Query("app_id"))
-	limit, _ := strconv.Atoi(c.Query("limit"))
+	limit, _ := strconv.Atoi(c.Query("size"))
 	page, _ := strconv.Atoi(c.Query("page"))
 	sort := c.Query("sort")
 
@@ -128,6 +131,7 @@ func getAppVersionListHandler(c *gin.Context) {
 func removeAppVersionHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
+		c.Set(common.KeyContextResponseCode, aRes.Code)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_app.APPlicationPermissionDelete) {

@@ -19,6 +19,7 @@ type mailVerifyPara struct {
 func sendVerifyMailHanlder(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
+		c.Set(common.KeyContextResponseCode, aRes.Code)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	verify := mailVerifyPara{}

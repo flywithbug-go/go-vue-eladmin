@@ -21,6 +21,7 @@ import (
 func addMenuHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
+		c.Set(common.KeyContextResponseCode, aRes.Code)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_menu.MenuPermissionSelect) {
@@ -55,6 +56,7 @@ func addMenuHandler(c *gin.Context) {
 func getMenuHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
+		c.Set(common.KeyContextResponseCode, aRes.Code)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_menu.MenuPermissionSelect) {
@@ -79,6 +81,7 @@ func getMenuHandler(c *gin.Context) {
 func updateMenuHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
+		c.Set(common.KeyContextResponseCode, aRes.Code)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_menu.MenuPermissionEdit) {
@@ -110,6 +113,7 @@ func updateMenuHandler(c *gin.Context) {
 func removeMenuHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
+		c.Set(common.KeyContextResponseCode, aRes.Code)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_menu.MenuPermissionDelete) {
@@ -138,6 +142,7 @@ func removeMenuHandler(c *gin.Context) {
 func getMenuListHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
+		c.Set(common.KeyContextResponseCode, aRes.Code)
 		c.JSON(http.StatusOK, aRes)
 	}()
 
@@ -147,7 +152,7 @@ func getMenuListHandler(c *gin.Context) {
 	//	return
 	//}
 	var role = model_menu.Menu{}
-	limit, _ := strconv.Atoi(c.Query("limit"))
+	limit, _ := strconv.Atoi(c.Query("size"))
 	page, _ := strconv.Atoi(c.Query("page"))
 	sort := "+sort"
 	name := c.Query("name")
@@ -173,6 +178,7 @@ func getMenuListHandler(c *gin.Context) {
 func getMenuTreeHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
+		c.Set(common.KeyContextResponseCode, aRes.Code)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	//if check_permission.CheckNoPermission(c, model_menu.MenuPermissionSelect) {
@@ -195,6 +201,7 @@ func getMenuTreeHandler(c *gin.Context) {
 func getMenuBuildHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
+		c.Set(common.KeyContextResponseCode, aRes.Code)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	//if check_permission.CheckNoPermission(c, model_menu.MenuPermissionSelect) {

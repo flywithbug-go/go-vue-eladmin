@@ -17,6 +17,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"vue-admin/web_server/common"
 	"vue-admin/web_server/model/model_file"
 	"vue-admin/web_server/server/handler/handler_common"
 
@@ -41,6 +42,7 @@ func SetLocalImageFilePath(path string) {
 func uploadImageHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
+		c.Set(common.KeyContextResponseCode, aRes.Code)
 		c.JSON(http.StatusOK, aRes)
 	}()
 

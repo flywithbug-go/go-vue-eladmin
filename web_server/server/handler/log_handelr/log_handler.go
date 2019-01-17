@@ -3,6 +3,7 @@ package log_handelr
 import (
 	"net/http"
 	"strconv"
+	"vue-admin/web_server/common"
 	"vue-admin/web_server/model"
 	"vue-admin/web_server/model/model_log"
 	"vue-admin/web_server/server/handler/handler_common"
@@ -15,15 +16,16 @@ import (
 func getLogListHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
+		c.Set(common.KeyContextResponseCode, aRes.Code)
 		c.JSON(http.StatusOK, aRes)
 	}()
-	limit, _ := strconv.Atoi(c.Query("limit"))
+	size, _ := strconv.Atoi(c.Query("size"))
 	page, _ := strconv.Atoi(c.Query("page"))
 	userId, _ := strconv.Atoi(c.Query("user_id"))
 	info := c.Query("info")
 
-	if limit == 0 {
-		limit = 10
+	if size == 0 {
+		size = 10
 	}
 	if page != 0 {
 		page--
@@ -37,7 +39,7 @@ func getLogListHandler(c *gin.Context) {
 	}
 	var l = model_log.Log{}
 	totalCount, _ := l.TotalCount(query, nil)
-	results, err := l.FindPageFilter(page, limit, query, nil, "-_id")
+	results, err := l.FindPageFilter(page, size, query, nil, "-_id")
 	if err != nil {
 		log4go.Error(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusInternalServerError, "list find error"+err.Error())
