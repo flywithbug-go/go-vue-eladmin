@@ -3,6 +3,7 @@ package middleware
 import (
 	"encoding/base64"
 	"encoding/binary"
+	"fmt"
 	"time"
 	"vue-admin/web_server/common"
 	"vue-admin/web_server/log_writer"
@@ -37,6 +38,16 @@ func Logger() gin.HandlerFunc {
 		comment := c.Errors.ByType(gin.ErrorTypePrivate).String()
 		l.UserId = common.UserId(c)
 		l.Path = c.Request.URL.String()
+		l.Info = fmt.Sprintf("【GIN】【id:%d】【rid:%s】【m:%s】【c:%3d】【l:%13v】【ip:%s】 【p:%s】【e:%s】",
+			l.UserId,
+			l.RequestId,
+			l.Method,
+			l.StatusCode,
+			l.Latency,
+			l.ClientIp,
+			l.Path,
+			comment)
+
 		log.InfoExt(l, "【GIN】【id:%d】【rid:%s】【m:%s %s %s】【c:%s%3d%s】【l:%13v】【ip:%s】 【p:%s】【e:%s】",
 			l.UserId,
 			l.RequestId,

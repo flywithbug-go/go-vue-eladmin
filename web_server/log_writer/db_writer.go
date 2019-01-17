@@ -52,7 +52,9 @@ func (db *DBWriter) Write(record *log4go.Record) error {
 	if !ok {
 		l = DBlogPool.Get().(*Log)
 	}
-	l.Info = record.Info
+	if len(l.Info) == 0 {
+		l.Info = record.Info
+	}
 	l.Code = record.Code
 	l.Time = record.Time
 	l.Level = record.Level

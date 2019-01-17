@@ -37,7 +37,7 @@ func getLogListHandler(c *gin.Context) {
 	}
 	var l = model_log.Log{}
 	totalCount, _ := l.TotalCount(query, nil)
-	results, err := l.FindPageFilter(page, limit, query, nil)
+	results, err := l.FindPageFilter(page, limit, query, nil, "-_id")
 	if err != nil {
 		log4go.Error(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusInternalServerError, "list find error"+err.Error())
