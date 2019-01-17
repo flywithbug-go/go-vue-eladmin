@@ -22,8 +22,8 @@ func getLogListHandler(c *gin.Context) {
 	size, _ := strconv.Atoi(c.Query("size"))
 	page, _ := strconv.Atoi(c.Query("page"))
 	userId, _ := strconv.Atoi(c.Query("user_id"))
-	info := c.Query("info")
-
+	requestId := c.Query("requestId")
+	flag := c.Query("flag")
 	if size == 0 {
 		size = 10
 	}
@@ -34,8 +34,11 @@ func getLogListHandler(c *gin.Context) {
 	if userId > 0 {
 		query["user_id"] = userId
 	}
-	if len(info) > 0 {
-		query["info"] = bson.M{"$regex": info, "$options": "i"}
+	if len(requestId) > 0 {
+		query["request_id"] = requestId
+	}
+	if len(flag) > 0 {
+		query["flag"] = flag
 	}
 	var l = model_log.Log{}
 	totalCount, _ := l.TotalCount(query, nil)
