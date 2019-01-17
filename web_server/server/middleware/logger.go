@@ -37,15 +37,15 @@ func Logger() gin.HandlerFunc {
 		comment := c.Errors.ByType(gin.ErrorTypePrivate).String()
 		l.UserId = common.UserId(c)
 		l.Path = c.Request.URL.String()
-		log.InfoExt(l, "【GIN】【id:%d】【m:%s %s %s】【c:%s%3d%s】【l:%13v】【ip:%s】 【p:%s】【e:%s】【rid:%s】",
+		log.InfoExt(l, "【GIN】【id:%d】【rid:%s】【m:%s %s %s】【c:%s%3d%s】【l:%13v】【ip:%s】 【p:%s】【e:%s】",
 			l.UserId,
+			l.RequestId,
 			methodColor, l.Method, reset,
 			statusColor, l.StatusCode, reset,
 			l.Latency,
 			l.ClientIp,
 			l.Path,
 			comment,
-			l.RequestId,
 		)
 	}
 }
