@@ -3,6 +3,7 @@ package logger_handler
 import (
 	"fmt"
 	"vue-admin/web_server/common"
+	"vue-admin/web_server/log_writer"
 
 	"github.com/flywithbug/log4go"
 	"github.com/gin-gonic/gin"
@@ -18,7 +19,11 @@ func Debug(c *gin.Context, format string, args ...interface{}) {
 	} else {
 		inf = fmt.Sprint(args...)
 	}
-	log4go.Info(fmt.Sprintf("【reqID:%s】\t【info:%s】", xReqId, inf))
+
+	l := log_writer.DBlogPool.Get().(*log_writer.Log)
+	l.RequestId = xReqId
+	l.Info = inf
+	log4go.DebugExt(l, fmt.Sprintf("【GIN】【reqID:%s】【info:%s】", xReqId, inf))
 }
 
 func Warn(c *gin.Context, format string, args ...interface{}) {
@@ -29,7 +34,10 @@ func Warn(c *gin.Context, format string, args ...interface{}) {
 	} else {
 		inf = fmt.Sprint(args...)
 	}
-	log4go.Info(fmt.Sprintf("【【reqID:%s】\t【info:%s】", xReqId, inf))
+	l := log_writer.DBlogPool.Get().(*log_writer.Log)
+	l.RequestId = xReqId
+	l.Info = inf
+	log4go.WarnExt(l, fmt.Sprintf("【GIN】【reqID:%s】【info:%s】", xReqId, inf))
 }
 
 func Info(c *gin.Context, format string, args ...interface{}) {
@@ -40,7 +48,10 @@ func Info(c *gin.Context, format string, args ...interface{}) {
 	} else {
 		inf = fmt.Sprint(args...)
 	}
-	log4go.Info(fmt.Sprintf("【reqID:%s】\t【info:%s】", xReqId, inf))
+	l := log_writer.DBlogPool.Get().(*log_writer.Log)
+	l.RequestId = xReqId
+	l.Info = inf
+	log4go.InfoExt(l, fmt.Sprintf("【GIN】【reqID:%s】【info:%s】", xReqId, inf))
 }
 
 func Error(c *gin.Context, format string, args ...interface{}) {
@@ -51,7 +62,10 @@ func Error(c *gin.Context, format string, args ...interface{}) {
 	} else {
 		inf = fmt.Sprint(args...)
 	}
-	log4go.Info(fmt.Sprintf("【reqID:%s】\t【info:%s】", xReqId, inf))
+	l := log_writer.DBlogPool.Get().(*log_writer.Log)
+	l.RequestId = xReqId
+	l.Info = inf
+	log4go.ErrorExt(l, fmt.Sprintf("【GIN】【reqID:%s】【info:%s】", xReqId, inf))
 }
 
 func Fatal(c *gin.Context, format string, args ...interface{}) {
@@ -62,5 +76,9 @@ func Fatal(c *gin.Context, format string, args ...interface{}) {
 	} else {
 		inf = fmt.Sprint(args...)
 	}
-	log4go.Info(fmt.Sprintf("【reqID:%s】\t【info:%s】", xReqId, inf))
+
+	l := log_writer.DBlogPool.Get().(*log_writer.Log)
+	l.RequestId = xReqId
+	l.Info = inf
+	log4go.FatalExt(l, fmt.Sprintf("【GIN】【reqID:%s】【info:%s】", xReqId, inf))
 }
