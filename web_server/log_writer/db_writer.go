@@ -10,7 +10,7 @@ import (
 const tunnelSizeDefault = 1024
 
 var (
-	DBlogPool       *sync.Pool
+	dblogPool       *sync.Pool
 	dbWriterDefault *DBWriter
 	takeUp          = false
 )
@@ -21,7 +21,7 @@ type Log struct {
 
 func init() {
 	dbWriterDefault = NewDBWriter()
-	DBlogPool = &sync.Pool{New: func() interface{} {
+	dblogPool = &sync.Pool{New: func() interface{} {
 		return new(Log)
 	}}
 }
@@ -50,7 +50,7 @@ func (db *DBWriter) Init() error {
 func (db *DBWriter) Write(record *log4go.Record) error {
 	l, ok := record.Ext.(*Log)
 	if !ok {
-		l = DBlogPool.Get().(*Log)
+		l = dblogPool.Get().(*Log)
 	}
 	if len(l.Info) == 0 {
 		l.Info = record.Info
@@ -83,7 +83,13 @@ func bootstrapLogWriter(db *DBWriter) {
 				return
 			}
 			go l.AddMonitorInfo()
-			DBlogPool.Put(l)
+			dblogPool.Put(l)
 		}
 	}
+}
+
+func GetLog() *Log {
+	l := dblogPool.Get().(*Log)
+	l.ReSet()
+	return l
 }

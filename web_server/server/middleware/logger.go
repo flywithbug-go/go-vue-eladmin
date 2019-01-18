@@ -17,7 +17,8 @@ import (
 // 		xReqId  userId 	method 	statusCode	latency	path
 func Logger() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		l := log_writer.DBlogPool.Get().(*log_writer.Log)
+		l := log_writer.GetLog()
+
 		l.ResponseCode = http.StatusOK
 		// Start timer
 		start := time.Now()

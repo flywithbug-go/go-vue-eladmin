@@ -34,6 +34,26 @@ type Log struct {
 	UUID         string        `json:"uuid,omitempty" bson:"uuid,omitempty"`
 }
 
+func (l *Log) ReSet() {
+	l.Time = ""
+	l.Code = ""
+	l.Info = ""
+	l.Level = 0
+	l.Flag = ""
+	l.ClientIp = ""
+	l.Method = ""
+	l.Path = ""
+	l.RequestId = ""
+	l.Latency = 0
+	l.StatusCode = 0
+	l.UserId = 0
+	l.Para = nil
+	l.ResponseCode = 0
+	l.StartTime = 0
+	l.EndTime = 0
+	l.UUID = ""
+}
+
 func (l Log) ToJson() string {
 	js, _ := json.Marshal(l)
 	return string(js)
