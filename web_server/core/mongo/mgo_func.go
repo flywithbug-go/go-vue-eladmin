@@ -11,6 +11,7 @@ import (
 // url is connection url
 // db is connection's default database name
 func RegisterMongo(url, db string) error {
+
 	if _, ok := sessionMap[db]; ok {
 		return errors.New(ErrExistConnectionDB)
 	}

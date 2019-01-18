@@ -27,7 +27,6 @@ const (
 
 // monitor
 const (
-	MonitorDBName          = "monitor"
 	CollectionLog          = "log"
 	CollectionVisitUId     = "visit_uid"
 	CollectionVisitApi     = "visit_api"
@@ -41,219 +40,8 @@ type Index struct {
 	DropIndex  []string
 }
 
-//唯一约束
-var Indexes = []Index{
-	{
-		DBName:     shareDB.DocManagerDBName(),
-		Collection: CollectionPermission,
-		Index: mgo.Index{
-			Key:        []string{"alias"},
-			Unique:     true,
-			DropDups:   true,
-			Background: false,
-			Sparse:     true,
-			Name:       "c_permission_f_alias_index",
-		},
-	},
-	{
-		DBName:     shareDB.DocManagerDBName(),
-		Collection: CollectionPermission,
-		Index: mgo.Index{
-			Key:        []string{"name"},
-			Unique:     true,
-			DropDups:   true,
-			Background: false,
-			Sparse:     true,
-			Name:       "c_permission_f_name_index",
-		},
-	},
-	{
-		DBName:     shareDB.DocManagerDBName(),
-		Collection: CollectionUser,
-		Index: mgo.Index{
-			Key:        []string{"username"},
-			Unique:     true,
-			DropDups:   true,
-			Background: false,
-			Sparse:     true,
-			Name:       "c_user_f_username_index",
-		},
-	},
-	{
-		DBName:     shareDB.DocManagerDBName(),
-		Collection: CollectionUser,
-		Index: mgo.Index{
-			Key:        []string{"email"},
-			Unique:     true,
-			DropDups:   true,
-			Background: false,
-			Sparse:     true,
-			Name:       "c_user_f_email_index",
-		},
-	},
-	{
-		DBName:     shareDB.DocManagerDBName(),
-		Collection: CollectionRole,
-		Index: mgo.Index{
-			Key:        []string{"name"},
-			Unique:     true,
-			DropDups:   true,
-			Background: false,
-			Sparse:     true,
-			Name:       "c_role_f_name_index",
-		},
-	},
-	{
-		DBName:     shareDB.DocManagerDBName(),
-		Collection: CollectionRole,
-		Index: mgo.Index{
-			Key:        []string{"alias"},
-			Unique:     true,
-			DropDups:   true,
-			Background: false,
-			Sparse:     true,
-			Name:       "c_role_f_alias_index",
-		},
-	},
-	{
-		DBName:     shareDB.DocManagerDBName(),
-		Collection: CollectionApp,
-		Index: mgo.Index{
-			Key:        []string{"bundle_id"},
-			Unique:     true,
-			DropDups:   true,
-			Background: false,
-			Sparse:     true,
-			Name:       "c_app_f_bundle_id_index",
-		},
-	},
-	{
-		DBName:     shareDB.DocManagerDBName(),
-		Collection: CollectionApp,
-		Index: mgo.Index{
-			Key:        []string{"name"},
-			Unique:     true,
-			DropDups:   true,
-			Background: false,
-			Sparse:     true,
-			Name:       "c_app_f_name_index",
-		},
-	},
-	{
-		DBName:     shareDB.DocManagerDBName(),
-		Collection: CollectionAppVersion,
-		Index: mgo.Index{
-			Key:        []string{"version", "app_id"},
-			Unique:     true,
-			DropDups:   true,
-			Background: false,
-			Sparse:     true,
-			Name:       "c_appVersion_f_version_f_appId_index",
-		},
-	},
-	{
-		DBName:     shareDB.DocManagerDBName(),
-		Collection: CollectionRolePermission,
-		Index: mgo.Index{
-			Key:        []string{"role_id", "permission_id"},
-			Unique:     true,
-			DropDups:   true,
-			Background: false,
-			Sparse:     true,
-			Name:       "c_role_f_permission_f_role_index",
-		},
-	},
-	{
-		DBName:     shareDB.DocManagerDBName(),
-		Collection: CollectionUserRole,
-		Index: mgo.Index{
-			Key:        []string{"role_id", "user_id"},
-			Unique:     true,
-			DropDups:   true,
-			Background: false,
-			Sparse:     true,
-			Name:       "c_user_f_role_index",
-		},
-	},
-	{
-		DBName:     shareDB.DocManagerDBName(),
-		Collection: CollectionMenuRole,
-		Index: mgo.Index{
-			Key:        []string{"role_id", "menu_id"},
-			Unique:     true,
-			DropDups:   true,
-			Background: false,
-			Sparse:     true,
-			Name:       "c_menu_f_role_index",
-		},
-	},
-	{
-		DBName:     shareDB.DocManagerDBName(),
-		Collection: CollectionFile,
-		Index: mgo.Index{
-			Key:        []string{"md5"},
-			Unique:     true,
-			DropDups:   true,
-			Background: false,
-			Sparse:     true,
-			Name:       "c_file_f_md5_index",
-		},
-	},
-}
-
-var MonitorIndexes = []Index{
-	{
-		DBName:     MonitorDBName,
-		Collection: CollectionLog,
-		Index: mgo.Index{
-			Key:        []string{"request_id"},
-			Unique:     true,
-			DropDups:   true,
-			Background: false,
-			Sparse:     true,
-			Name:       "c_request_id_f_index",
-		},
-	},
-	{
-		DBName:     MonitorDBName,
-		Collection: CollectionVisitUId,
-		Index: mgo.Index{
-			Key:        []string{"client_ip", "uuid", "time_date"},
-			Unique:     true,
-			DropDups:   true,
-			Background: false,
-			Sparse:     true,
-			Name:       "c_client_ip_f_uuid_time_date_index",
-		},
-	},
-	{
-		DBName:     MonitorDBName,
-		Collection: CollectionVisitApi,
-		Index: mgo.Index{
-			Key:        []string{"path", "method", "time_date"},
-			Unique:     true,
-			DropDups:   true,
-			Background: false,
-			Sparse:     true,
-			Name:       "c_path_f_method_time_date_index",
-		},
-	},
-	{
-		DBName:     MonitorDBName,
-		Collection: CollectionMonitorCount,
-		Index: mgo.Index{
-			Key:        []string{"monitor"},
-			Unique:     true,
-			DropDups:   true,
-			Background: false,
-			Sparse:     true,
-			Name:       "c_monitor_f_count_index",
-		},
-	},
-}
-
 func CreateMgoIndex() {
-	Indexes = append(Indexes, MonitorIndexes...)
+	Indexes := FormatIndex()
 	aMCfg := config.Conf().DBConfig
 	for _, aMongoIndex := range Indexes {
 		_, c := mongo.Collection(aMongoIndex.DBName, aMongoIndex.Collection)
@@ -274,4 +62,218 @@ func CreateMgoIndex() {
 			log4go.Warn(err.Error())
 		}
 	}
+}
+
+func FormatIndex() []Index {
+	//唯一约束
+	var Indexes = []Index{
+		{
+			DBName:     shareDB.DocManagerDBName(),
+			Collection: CollectionPermission,
+			Index: mgo.Index{
+				Key:        []string{"alias"},
+				Unique:     true,
+				DropDups:   true,
+				Background: false,
+				Sparse:     true,
+				Name:       "c_permission_f_alias_index",
+			},
+		},
+		{
+			DBName:     shareDB.DocManagerDBName(),
+			Collection: CollectionPermission,
+			Index: mgo.Index{
+				Key:        []string{"name"},
+				Unique:     true,
+				DropDups:   true,
+				Background: false,
+				Sparse:     true,
+				Name:       "c_permission_f_name_index",
+			},
+		},
+		{
+			DBName:     shareDB.DocManagerDBName(),
+			Collection: CollectionUser,
+			Index: mgo.Index{
+				Key:        []string{"username"},
+				Unique:     true,
+				DropDups:   true,
+				Background: false,
+				Sparse:     true,
+				Name:       "c_user_f_username_index",
+			},
+		},
+		{
+			DBName:     shareDB.DocManagerDBName(),
+			Collection: CollectionUser,
+			Index: mgo.Index{
+				Key:        []string{"email"},
+				Unique:     true,
+				DropDups:   true,
+				Background: false,
+				Sparse:     true,
+				Name:       "c_user_f_email_index",
+			},
+		},
+		{
+			DBName:     shareDB.DocManagerDBName(),
+			Collection: CollectionRole,
+			Index: mgo.Index{
+				Key:        []string{"name"},
+				Unique:     true,
+				DropDups:   true,
+				Background: false,
+				Sparse:     true,
+				Name:       "c_role_f_name_index",
+			},
+		},
+		{
+			DBName:     shareDB.DocManagerDBName(),
+			Collection: CollectionRole,
+			Index: mgo.Index{
+				Key:        []string{"alias"},
+				Unique:     true,
+				DropDups:   true,
+				Background: false,
+				Sparse:     true,
+				Name:       "c_role_f_alias_index",
+			},
+		},
+		{
+			DBName:     shareDB.DocManagerDBName(),
+			Collection: CollectionApp,
+			Index: mgo.Index{
+				Key:        []string{"bundle_id"},
+				Unique:     true,
+				DropDups:   true,
+				Background: false,
+				Sparse:     true,
+				Name:       "c_app_f_bundle_id_index",
+			},
+		},
+		{
+			DBName:     shareDB.DocManagerDBName(),
+			Collection: CollectionApp,
+			Index: mgo.Index{
+				Key:        []string{"name"},
+				Unique:     true,
+				DropDups:   true,
+				Background: false,
+				Sparse:     true,
+				Name:       "c_app_f_name_index",
+			},
+		},
+		{
+			DBName:     shareDB.DocManagerDBName(),
+			Collection: CollectionAppVersion,
+			Index: mgo.Index{
+				Key:        []string{"version", "app_id"},
+				Unique:     true,
+				DropDups:   true,
+				Background: false,
+				Sparse:     true,
+				Name:       "c_appVersion_f_version_f_appId_index",
+			},
+		},
+		{
+			DBName:     shareDB.DocManagerDBName(),
+			Collection: CollectionRolePermission,
+			Index: mgo.Index{
+				Key:        []string{"role_id", "permission_id"},
+				Unique:     true,
+				DropDups:   true,
+				Background: false,
+				Sparse:     true,
+				Name:       "c_role_f_permission_f_role_index",
+			},
+		},
+		{
+			DBName:     shareDB.DocManagerDBName(),
+			Collection: CollectionUserRole,
+			Index: mgo.Index{
+				Key:        []string{"role_id", "user_id"},
+				Unique:     true,
+				DropDups:   true,
+				Background: false,
+				Sparse:     true,
+				Name:       "c_user_f_role_index",
+			},
+		},
+		{
+			DBName:     shareDB.DocManagerDBName(),
+			Collection: CollectionMenuRole,
+			Index: mgo.Index{
+				Key:        []string{"role_id", "menu_id"},
+				Unique:     true,
+				DropDups:   true,
+				Background: false,
+				Sparse:     true,
+				Name:       "c_menu_f_role_index",
+			},
+		},
+		{
+			DBName:     shareDB.DocManagerDBName(),
+			Collection: CollectionFile,
+			Index: mgo.Index{
+				Key:        []string{"md5"},
+				Unique:     true,
+				DropDups:   true,
+				Background: false,
+				Sparse:     true,
+				Name:       "c_file_f_md5_index",
+			},
+		},
+	}
+
+	var MonitorIndexes = []Index{
+		{
+			DBName:     shareDB.MonitorDBName(),
+			Collection: CollectionLog,
+			Index: mgo.Index{
+				Key:        []string{"request_id"},
+				Unique:     true,
+				DropDups:   true,
+				Background: false,
+				Sparse:     true,
+				Name:       "c_request_id_f_index",
+			},
+		},
+		{
+			DBName:     shareDB.MonitorDBName(),
+			Collection: CollectionVisitUId,
+			Index: mgo.Index{
+				Key:        []string{"client_ip", "uuid", "time_date"},
+				Unique:     true,
+				DropDups:   true,
+				Background: false,
+				Sparse:     true,
+				Name:       "c_client_ip_f_uuid_time_date_index",
+			},
+		},
+		{
+			DBName:     shareDB.MonitorDBName(),
+			Collection: CollectionVisitApi,
+			Index: mgo.Index{
+				Key:        []string{"path", "method", "time_date"},
+				Unique:     true,
+				DropDups:   true,
+				Background: false,
+				Sparse:     true,
+				Name:       "c_path_f_method_time_date_index",
+			},
+		},
+		{
+			DBName:     shareDB.MonitorDBName(),
+			Collection: CollectionMonitorCount,
+			Index: mgo.Index{
+				Key:        []string{"monitor"},
+				Unique:     true,
+				DropDups:   true,
+				Background: false,
+				Sparse:     true,
+				Name:       "c_monitor_f_count_index",
+			},
+		},
+	}
+	return append(Indexes, MonitorIndexes...)
 }

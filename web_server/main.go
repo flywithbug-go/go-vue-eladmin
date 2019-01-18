@@ -61,12 +61,12 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
-
 }
 
 func setMongoDB() {
 	//mongodb启动连接
 	//设置数据库名字
+
 	shareDB.SetDocMangerDBName(config.Conf().DBConfig.DBName)
 	shareDB.SetMonitorDBName(config.Conf().MonitorDBConfig.DBName)
 
@@ -74,12 +74,10 @@ func setMongoDB() {
 	if err != nil {
 		panic(err)
 	}
-
 	err = mongo.RegisterMongo(config.Conf().MonitorDBConfig.Url, config.Conf().MonitorDBConfig.DBName)
 	if err != nil {
 		panic(err)
 	}
-
 	//模型唯一索引
 	mongo_index.CreateMgoIndex()
 }
@@ -94,17 +92,18 @@ func setMail() {
 }
 
 func main() {
+	setMongoDB()
+
 	//log配置
 	setLog()
 	defer log.Close()
 	//文件存储位置
 	setFileConfig()
+
 	setMail()
 
 	//jwt验证
 	setJWTKey()
-
-	setMongoDB()
 
 	//启动ApiServer服务
 	server.StartServer(config.Conf().Port, config.Conf().StaticPath, config.Conf().RouterPrefix, config.Conf().AuthPrefix)
