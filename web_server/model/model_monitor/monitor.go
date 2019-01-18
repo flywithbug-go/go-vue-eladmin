@@ -1,6 +1,7 @@
 package model_monitor
 
 import (
+	"fmt"
 	"strings"
 	"sync"
 	"time"
@@ -28,6 +29,10 @@ func init() {
 
 func (l Log) AddMonitorInfo() {
 	if l.UserId <= 0 {
+		return
+	}
+	fmt.Println("AddMonitorInfo:", l.Path)
+	if strings.HasPrefix(l.Path, "/api/log") && l.ResponseCode == 200 {
 		return
 	}
 	visitUid := visitUIdPool.Get().(*VisitUId)

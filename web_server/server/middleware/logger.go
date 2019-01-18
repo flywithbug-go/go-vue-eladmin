@@ -18,7 +18,7 @@ import (
 func Logger() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		l := log_writer.GetLog()
-
+		l.ReSet()
 		l.ResponseCode = http.StatusOK
 		// Start timer
 		start := time.Now()
