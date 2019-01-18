@@ -34,7 +34,6 @@ func loginHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "username or password not right")
 		return
 	}
-
 	if !user.Enabled {
 		aRes.SetErrorInfo(http.StatusBadRequest, "账号已停用，请联系管理员")
 		return

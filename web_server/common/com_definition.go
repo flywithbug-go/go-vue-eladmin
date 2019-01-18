@@ -5,7 +5,9 @@ import (
 )
 
 const (
-	KeyAuthorization       = "Authorization"
+	KeyAuthorization = "Authorization"
+	KeyUUID          = "UUID"
+
 	KeyUserAgent           = "User-Agent"
 	KeyContextPara         = "_key_ctx_para"
 	KeyContextUserId       = "_key_ctx_userId_"
@@ -16,6 +18,10 @@ const (
 func UserToken(ctx *gin.Context) string {
 	token := ctx.GetHeader(KeyAuthorization)
 	return token
+}
+func UUID(ctx *gin.Context) string {
+	uuid, _ := ctx.Cookie(KeyUUID)
+	return uuid
 }
 
 func UserId(ctx *gin.Context) int64 {

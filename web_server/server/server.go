@@ -22,7 +22,7 @@ func StartServer(port, staticPath, rPrefix, authPrefix string) {
 	r.Use(cors.New(cors.Config{
 		AllowAllOrigins:  true,
 		AllowMethods:     []string{"GET", "PUT", "POST", "DELETE"},
-		AllowHeaders:     []string{"Origin", "Authorization", "Content-Type", "Content-Length"},
+		AllowHeaders:     []string{"Origin", "Authorization", "UUID", "Content-Type", "Content-Length"},
 		ExposeHeaders:    []string{},
 		MaxAge:           12 * time.Hour,
 		AllowCredentials: false,

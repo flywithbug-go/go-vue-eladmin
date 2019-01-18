@@ -23,6 +23,8 @@ func Logger() gin.HandlerFunc {
 		if l.RequestId == "" {
 			l.RequestId = GenReqID()
 		}
+		l.UUID = c.Request.Header.Get(common.KeyUUID)
+
 		c.Header(common.KeyContextRequestId, l.RequestId)
 		c.Set(common.KeyContextRequestId, l.RequestId)
 		l.StartTime = start.UnixNano()
@@ -56,7 +58,6 @@ func Logger() gin.HandlerFunc {
 
 		l.Para = common.Para(c)
 		l.ResponseCode = common.ResponseCode(c)
-
 		log.InfoExt(l, "【GIN】【Completed】【id:%d】【rid:%s】【m:%s %s %s】【c:%s%3d%s】【l:%13v】【ip:%s】 【p:%s】【e:%s】",
 			l.UserId,
 			l.RequestId,

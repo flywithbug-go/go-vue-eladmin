@@ -2,10 +2,13 @@ import client from 'axios'
 import { MessageBox, Message } from 'element-ui'
 import store from '@/store'
 import global_ from '../../config'
-import { getToken } from '@/utils/auth'
+import { getToken } from '../auth'
+import { getUUID } from '../auth'
 
 client.defaults.baseURL = global_.BaseURL
 client.defaults.headers.common['Authorization'] = getToken()
+client.defaults.headers.common['UUID'] = getUUID()
+
 client.defaults.headers.post['Content-Type'] = 'application/json'
 client.defaults.timeout = 60000 // 60秒
 
