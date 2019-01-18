@@ -2,9 +2,11 @@ package handler
 
 import (
 	"vue-admin/web_server/server/handler/handler_common"
+	"vue-admin/web_server/server/handler/index_handler"
 	"vue-admin/web_server/server/handler/log_handelr"
 	"vue-admin/web_server/server/handler/menu_handler"
 	"vue-admin/web_server/server/handler/permission_handler"
+	"vue-admin/web_server/server/handler/system_handler"
 	"vue-admin/web_server/server/handler/verify_handler"
 
 	"vue-admin/web_server/server/handler/app_handler"
@@ -26,7 +28,6 @@ var (
 func RegisterRouters(r *gin.Engine, prefix string, authPrefix string) {
 	jwtR := r.Group(prefix + authPrefix)
 	jwtR.Use(middleware.JWTAuthMiddleware())
-
 	addAllRouters()
 
 	for _, v := range routerList {
@@ -87,4 +88,6 @@ func addAllRouters() {
 	routerList = append(routerList, verify_handler.Routers...)
 	routerList = append(routerList, menu_handler.Routers...)
 	routerList = append(routerList, log_handelr.Routers...)
+	routerList = append(routerList, system_handler.Routers...)
+	routerList = append(routerList, index_handler.Routers...)
 }
