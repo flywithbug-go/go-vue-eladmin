@@ -27,9 +27,10 @@ const (
 
 // monitor
 const (
-	MonitorDBName   = "monitor"
-	CollectionLog   = "log"
-	CollectionVisit = "visit"
+	MonitorDBName      = "monitor"
+	CollectionLog      = "log"
+	CollectionVisitUId = "visit_uid"
+	CollectionVisitApi = "visit_api"
 )
 
 type Index struct {
@@ -197,19 +198,9 @@ var Indexes = []Index{
 			Name:       "c_file_f_md5_index",
 		},
 	},
-	{
-		DBName:     MonitorDBName,
-		Collection: CollectionVisit,
-		Index: mgo.Index{
-			Key:        []string{"client_ip", "uuid"},
-			Unique:     true,
-			DropDups:   true,
-			Background: false,
-			Sparse:     true,
-			Name:       "c_uuid_f_client_ip_index",
-		},
-	},
+}
 
+var MonitorIndexes = []Index{
 	{
 		DBName:     MonitorDBName,
 		Collection: CollectionLog,
@@ -222,9 +213,34 @@ var Indexes = []Index{
 			Name:       "c_request_id_f_index",
 		},
 	},
+	{
+		DBName:     MonitorDBName,
+		Collection: CollectionVisitUId,
+		Index: mgo.Index{
+			Key:        []string{"client_ip", "uuid", "time_date"},
+			Unique:     true,
+			DropDups:   true,
+			Background: false,
+			Sparse:     true,
+			Name:       "c_client_ip_f_uuid_time_date_index",
+		},
+	},
+	{
+		DBName:     MonitorDBName,
+		Collection: CollectionVisitApi,
+		Index: mgo.Index{
+			Key:        []string{"path", "method", "time_date"},
+			Unique:     true,
+			DropDups:   true,
+			Background: false,
+			Sparse:     true,
+			Name:       "c_path_f_method_time_date_index",
+		},
+	},
 }
 
 func CreateMgoIndex() {
+	Indexes = append(Indexes, MonitorIndexes...)
 	aMCfg := config.Conf().DBConfig
 	for _, aMongoIndex := range Indexes {
 		_, c := mongo.Collection(aMongoIndex.DBName, aMongoIndex.Collection)

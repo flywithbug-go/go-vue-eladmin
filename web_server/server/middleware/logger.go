@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"fmt"
+	"net/http"
 	"time"
 	"vue-admin/web_server/common"
 	"vue-admin/web_server/log_writer"
@@ -17,6 +18,7 @@ import (
 func Logger() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		l := log_writer.DBlogPool.Get().(*log_writer.Log)
+		l.ResponseCode = http.StatusOK
 		// Start timer
 		start := time.Now()
 		l.RequestId = c.Request.Header.Get(common.KeyContextRequestId)
