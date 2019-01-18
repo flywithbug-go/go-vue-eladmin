@@ -45,14 +45,13 @@ func visitHandler(c *gin.Context) {
 	query = bson.M{"time_date": bson.M{"$regex": timeF, "$options": "i"}}
 	resVisit.DayApi, _ = vApi.TotalSumCount(query)
 	resVisit.DayVisit, _ = monitorCount.TotalSumCount(query) //日访问
-
 	resVisit.DayIP, _ = vUId.TotalCount(query, nil)
 
 	query = bson.M{"time_date": bson.M{"$regex": "", "$options": "i"}}
 	resVisit.TotalApi, _ = vApi.TotalSumCount(query)
 	resVisit.TotalVisit, _ = monitorCount.TotalSumCount(query) //总访问
 
-	resVisit.TotalIp, _ = vUId.TotalSumCount(query)
+	resVisit.TotalIp, _ = vUId.TotalCount(nil, nil)
 
 	aRes.AddResponseInfo("visit", resVisit)
 }
@@ -66,7 +65,6 @@ func visitCountHandler(c *gin.Context) {
 
 	mon := model_monitor.MonitorCount{}
 	mon.Monitor = MonitorVisit
-
 	mon.IncrementMonitorCount()
 	aRes.SetSuccess()
 }
