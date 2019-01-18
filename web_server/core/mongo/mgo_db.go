@@ -9,7 +9,7 @@ import (
 func getMgoSession(db string) *mgo.Session {
 	tm, ok := sessionMap[db]
 	if !ok {
-		log4go.Info("")
+		log4go.Info("db error", db)
 		return nil
 	}
 	s := tm.session.Copy()

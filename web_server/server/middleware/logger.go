@@ -1,12 +1,12 @@
 package middleware
 
 import (
-	"encoding/base64"
-	"encoding/binary"
 	"fmt"
 	"time"
 	"vue-admin/web_server/common"
 	"vue-admin/web_server/log_writer"
+
+	"gopkg.in/mgo.v2/bson"
 
 	log "github.com/flywithbug/log4go"
 	"github.com/gin-gonic/gin"
@@ -30,6 +30,7 @@ func Logger() gin.HandlerFunc {
 		l.ClientIp = c.ClientIP()
 		l.Method = c.Request.Method
 		l.Path = c.Request.URL.String()
+
 		methodColor := colorForMethod(l.Method)
 		log.InfoExt(l, "【GIN】【Start】【rid:%s】【m:%s %s %s】【ip:%s】 【p:%s】",
 			l.RequestId,
@@ -70,14 +71,9 @@ func Logger() gin.HandlerFunc {
 	}
 }
 
-var pid = uint32(time.Now().UnixNano() % 4294967291)
-
 // GenReqID is a random generate string func
 func GenReqID() string {
-	var b [12]byte
-	binary.LittleEndian.PutUint32(b[:], pid)
-	binary.LittleEndian.PutUint64(b[4:], uint64(time.Now().UnixNano()))
-	return base64.URLEncoding.EncodeToString(b[:])
+	return bson.NewObjectId().String()
 }
 
 var (

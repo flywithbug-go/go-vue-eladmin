@@ -25,6 +25,13 @@ const (
 	CollectionPicture        = "picture"
 )
 
+// monitor
+const (
+	MonitorDBName   = "monitor"
+	CollectionLog   = "log"
+	CollectionVisit = "visit"
+)
+
 type Index struct {
 	Collection string
 	DBName     string
@@ -188,6 +195,31 @@ var Indexes = []Index{
 			Background: false,
 			Sparse:     true,
 			Name:       "c_file_f_md5_index",
+		},
+	},
+	{
+		DBName:     MonitorDBName,
+		Collection: CollectionVisit,
+		Index: mgo.Index{
+			Key:        []string{"client_ip,uuid"},
+			Unique:     true,
+			DropDups:   true,
+			Background: false,
+			Sparse:     true,
+			Name:       "c_uuid_f_client_ip_index",
+		},
+	},
+
+	{
+		DBName:     MonitorDBName,
+		Collection: CollectionLog,
+		Index: mgo.Index{
+			Key:        []string{"request_id"},
+			Unique:     true,
+			DropDups:   true,
+			Background: false,
+			Sparse:     true,
+			Name:       "c_request_id_f_index",
 		},
 	},
 }

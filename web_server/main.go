@@ -72,13 +72,13 @@ func setMongoDB() {
 	if err != nil {
 		panic(err)
 	}
-	//模型唯一索引
-	mongo_index.CreateMgoIndex()
-
 	err = mongo.RegisterMongo(config.Conf().LogDBConfig.Url, config.Conf().LogDBConfig.DBName)
 	if err != nil {
 		panic(err)
 	}
+
+	//模型唯一索引
+	mongo_index.CreateMgoIndex()
 }
 
 func setMail() {

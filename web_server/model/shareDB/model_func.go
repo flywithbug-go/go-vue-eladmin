@@ -1,6 +1,11 @@
 package shareDB
 
 var db = "doc_manager"
+var monitorDB = "monitor"
+
+func SetMonitorDBName(dbName string) {
+	monitorDB = dbName
+}
 
 func SetDBName(dbName string) {
 	db = dbName
@@ -8,6 +13,9 @@ func SetDBName(dbName string) {
 
 func DBName() string {
 	return db
+}
+func MonitorDBName() string {
+	return monitorDB
 }
 
 type OperationModel interface {

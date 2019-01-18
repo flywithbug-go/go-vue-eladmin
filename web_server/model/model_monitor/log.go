@@ -4,13 +4,14 @@ import (
 	"encoding/json"
 	"time"
 	"vue-admin/web_server/core/mongo"
+	"vue-admin/web_server/model/a_mongo_index"
+	"vue-admin/web_server/model/shareDB"
 
 	"gopkg.in/mgo.v2/bson"
 )
 
 const (
-	logCollection = "log"
-	dbName        = "monitor"
+	logCollection = mongo_index.CollectionLog
 )
 
 type Log struct {
@@ -39,56 +40,56 @@ func (l Log) ToJson() string {
 }
 
 func (l Log) isExist(query interface{}) bool {
-	return mongo.IsExist(dbName, logCollection, query)
+	return mongo.IsExist(shareDB.MonitorDBName(), logCollection, query)
 }
 
 func (l Log) insert(docs ...interface{}) error {
-	return mongo.Insert(dbName, logCollection, docs...)
+	return mongo.Insert(shareDB.MonitorDBName(), logCollection, docs...)
 }
 
 func (l Log) update(selector, update interface{}) error {
-	return mongo.Update(dbName, logCollection, selector, update, true)
+	return mongo.Update(shareDB.MonitorDBName(), logCollection, selector, update, true)
 }
 
 func (l Log) findOne(query, selector interface{}) (Log, error) {
 	ap := Log{}
-	err := mongo.FindOne(dbName, logCollection, query, selector, &ap)
+	err := mongo.FindOne(shareDB.MonitorDBName(), logCollection, query, selector, &ap)
 	return ap, err
 }
 func (l Log) findAll(query, selector interface{}) (results []Log, err error) {
 	results = []Log{}
-	err = mongo.FindAll(dbName, logCollection, query, selector, &results)
+	err = mongo.FindAll(shareDB.MonitorDBName(), logCollection, query, selector, &results)
 	return results, err
 }
 
 func (l Log) remove(selector interface{}) error {
-	return mongo.Remove(dbName, logCollection, selector)
+	return mongo.Remove(shareDB.MonitorDBName(), logCollection, selector)
 }
 
 func (l Log) removeAll(selector interface{}) error {
-	return mongo.RemoveAll(dbName, logCollection, selector)
+	return mongo.RemoveAll(shareDB.MonitorDBName(), logCollection, selector)
 }
 
 func (l Log) totalCount(query, selector interface{}) (int, error) {
-	return mongo.TotalCount(dbName, logCollection, query, selector)
+	return mongo.TotalCount(shareDB.MonitorDBName(), logCollection, query, selector)
 }
 
 func (l Log) findPage(page, limit int, query, selector interface{}, fields ...string) (results []Log, err error) {
 	results = []Log{}
-	err = mongo.FindPage(dbName, logCollection, page, limit, query, selector, &results, fields...)
+	err = mongo.FindPage(shareDB.MonitorDBName(), logCollection, page, limit, query, selector, &results, fields...)
 	return
 }
 
 func (l Log) pipeAll(pipeline, result interface{}, allowDiskUse bool) error {
-	return mongo.PipeAll(dbName, logCollection, pipeline, result, allowDiskUse)
+	return mongo.PipeAll(shareDB.MonitorDBName(), logCollection, pipeline, result, allowDiskUse)
 }
 
 func (l Log) pipeOne(pipeline, result interface{}, allowDiskUse bool) error {
-	return mongo.PipeOne(dbName, logCollection, pipeline, result, allowDiskUse)
+	return mongo.PipeOne(shareDB.MonitorDBName(), logCollection, pipeline, result, allowDiskUse)
 }
 
 func (l Log) explain(pipeline, result interface{}) (results []Log, err error) {
-	err = mongo.Explain(dbName, logCollection, pipeline, result)
+	err = mongo.Explain(shareDB.MonitorDBName(), logCollection, pipeline, result)
 	return
 }
 
