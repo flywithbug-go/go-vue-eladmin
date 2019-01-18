@@ -69,4 +69,10 @@ var Routers = []handler_common.GinHandleFunc{
 		Method:     "PUT",
 		Route:      "/user/mail",
 	},
+	{
+		Handler:    updateAvatar, //修改头像
+		RouterType: handler_common.RouterTypeNeedAuth,
+		Method:     "PUT",
+		Route:      "/user/avatar",
+	},
 }

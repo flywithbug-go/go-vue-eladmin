@@ -2,6 +2,7 @@ package server
 
 import (
 	"fmt"
+	"net/http"
 	"time"
 	"vue-admin/web_server/server/handler"
 	"vue-admin/web_server/server/middleware"
@@ -28,7 +29,15 @@ func StartServer(port, staticPath, rPrefix, authPrefix string) {
 	}))
 	r.Use(middleware.CookieMiddleware())
 	handler.RegisterRouters(r, rPrefix, authPrefix)
-	err := r.Run(port)
+	//err := r.Run(port)
+	s := &http.Server{
+		Addr:           port,
+		Handler:        r,
+		ReadTimeout:    60 * time.Second,
+		WriteTimeout:   60 * time.Second,
+		MaxHeaderBytes: 1 << 20,
+	}
+	err := s.ListenAndServe()
 	if err != nil {
 		panic(fmt.Errorf("server启动失败 %s", err.Error()))
 	}

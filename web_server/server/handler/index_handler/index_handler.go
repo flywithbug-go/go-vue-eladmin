@@ -17,5 +17,4 @@ func indexHandler(c *gin.Context) {
 	}()
 	aRes.SetSuccess()
 	time.Sleep(time.Second * 100)
-
 }

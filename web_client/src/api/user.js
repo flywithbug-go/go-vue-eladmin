@@ -114,3 +114,14 @@ export function sendMailVerifyCode(mail) {
     data
   })
 }
+
+export function updateAvatar(avatar) {
+  const data = {
+    avatar
+  }
+  return client({
+    url: '/user/avatar',
+    method: 'put',
+    data
+  })
+}

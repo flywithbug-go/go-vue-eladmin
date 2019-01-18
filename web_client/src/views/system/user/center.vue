@@ -7,6 +7,7 @@
             :show-file-list="false"
             :on-success="handleSuccess"
             :on-error="handleError"
+            :on-progress="handleProgress"
             :headers="headers"
             :action="updateAvatarApi"
             class="avatar-uploader">
@@ -42,54 +43,60 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
-  import { regEmail } from '@/utils/index'
-  import updatePass from './center/updatePass'
-  import updateEmail from './center/updateEmail'
-  import global_ from '@/config'
-  import store from '@/store'
-  export default {
-    name: 'Center',
-    components: { updatePass, updateEmail },
-    data() {
-      return {
-        updateAvatarApi:global_.UploadImageURL,
-        headers: {
-          'Authorization':store.getters.token
-        }
+import { mapGetters } from 'vuex'
+import { regEmail } from '@/utils/index'
+import { updateAvatar } from '@/api/user'
+import updatePass from './center/updatePass'
+import updateEmail from './center/updateEmail'
+import global_ from '@/config'
+import store from '@/store'
+export default {
+  name: 'Center',
+  components: { updatePass, updateEmail },
+  data() {
+    return {
+      updateAvatarApi: global_.UploadImageURL,
+      headers: {
+        'Authorization': store.getters.token
       }
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'avatar',
+      'name',
+      'email',
+      'createTime'
+    ])
+  },
+  methods: {
+    formatEmail(mail) {
+      return regEmail(mail)
     },
-    computed: {
-      ...mapGetters([
-        'avatar',
-        'name',
-        'email',
-        'createTime'
-      ])
-    },
-    methods: {
-      formatEmail(mail) {
-        return regEmail(mail)
-      },
-      handleSuccess(response, file, fileList) {
+    handleSuccess(response, file, fileList) {
+      updateAvatar(global_.downloadImageURL + response.data['imagePath']).then(() => {
         this.$notify({
           title: '头像修改成功',
           type: 'success',
           duration: 1500
         })
-        store.dispatch('GetInfo').then(() => {})
-      },
-      // 监听上传失败
-      handleError(e) {
-        const msg = JSON.parse(e.msg)
-        this.$notify({
-          title: msg.message,
-          type: 'error',
-          duration: 1500
-        })
-      }
+        store.dispatch('GetUserInfo').then(() => {})
+      })
+    },
+    handleProgress(event, file, fileList) {
+      console.log('progress:', event.percent)
+    },
+    // 监听上传失败
+    handleError(e) {
+      const msg = JSON.parse(e.msg)
+      this.$notify({
+        title: msg.message,
+        type: 'error',
+        duration: 1500
+      })
     }
   }
+}
 </script>
 
 <style rel="stylesheet/scss" lang="scss">

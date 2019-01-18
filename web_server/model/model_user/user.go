@@ -139,6 +139,14 @@ func (u User) Update() error {
 	return err
 }
 
+func (u User) UpdateAvatar() error {
+	selector := bson.M{"_id": u.Id}
+	if len(u.Avatar) == 0 {
+		return fmt.Errorf("avata is null")
+	}
+	return u.update(selector, bson.M{"avatar": u.Avatar})
+}
+
 func (u User) Remove() error {
 	if u.Id == 10000 {
 		return fmt.Errorf("超级管理员无法被删除")

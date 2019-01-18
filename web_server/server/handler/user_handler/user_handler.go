@@ -222,3 +222,27 @@ func getUserListInfoHandler(c *gin.Context) {
 	aRes.AddResponseInfo("list", appList)
 	aRes.AddResponseInfo("total", totalCount)
 }
+
+func updateAvatar(c *gin.Context) {
+	aRes := model.NewResponse()
+	defer func() {
+		c.Set(common.KeyContextResponseCode, aRes.Code)
+		c.JSON(http.StatusOK, aRes)
+	}()
+	para := new(model_user.User)
+	err := c.BindJSON(para)
+	if err != nil {
+		log4go.Info(handler_common.RequestId(c) + err.Error())
+		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
+		return
+	}
+	para.Id = common.UserId(c)
+	c.Set(common.KeyContextPara, para)
+	err = para.UpdateAvatar()
+	if err != nil {
+		log4go.Info(handler_common.RequestId(c) + err.Error())
+		aRes.SetErrorInfo(http.StatusBadRequest, "db update error:"+err.Error())
+		return
+	}
+	aRes.SetSuccess()
+}

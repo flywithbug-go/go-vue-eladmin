@@ -10,7 +10,7 @@ import (
 
 const (
 	logCollection = "log"
-	dbName        = "log"
+	dbName        = "monitor"
 )
 
 type Log struct {
@@ -30,7 +30,6 @@ type Log struct {
 	ResponseCode int           `json:"response_code,omitempty" bson:"response_code,omitempty"`
 	StartTime    int64         `json:"start_time,omitempty" bson:"start_time,omitempty"`
 	EndTime      int64         `json:"end_time,omitempty" bson:"end_time,omitempty"`
-	ErrorMsg     string        `json:"error_msg,omitempty" bson:"error_msg,omitempty"`
 }
 
 func (l Log) ToJson() string {
