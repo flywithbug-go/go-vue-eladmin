@@ -6,7 +6,7 @@
       <el-table-column prop="user_id" label="用户ID" width="80px" />
       <el-table-column :show-overflow-tooltip="true" prop="client_ip" label="IP" width="120px"/>
       <el-table-column prop="method" label="Method" width="80px" />
-      <el-table-column :show-overflow-tooltip="true" prop="request_id" label="RequestId" width="140px"/>
+      <el-table-column :show-overflow-tooltip="true" prop="request_id" label="RequestId" width="200px"/>
       <el-table-column :show-overflow-tooltip="true" prop="path" label="Path" width="150px"/>
       <el-table-column prop="latency" label="请求耗时" align="center" width="120px">
         <template slot-scope="scope">

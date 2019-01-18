@@ -7,8 +7,8 @@ import (
 	"vue-admin/web_server/config"
 	"vue-admin/web_server/core/jwt"
 	"vue-admin/web_server/core/mongo"
+	"vue-admin/web_server/email"
 	"vue-admin/web_server/log_writer"
-	"vue-admin/web_server/mail"
 	"vue-admin/web_server/model/a_mongo_index"
 	"vue-admin/web_server/model/shareDB"
 	"vue-admin/web_server/server"
@@ -84,7 +84,7 @@ func setMongoDB() {
 
 func setMail() {
 	var err error
-	mail.Mail, err = config.Conf().MailConfig.Dialer()
+	email.Mail, err = config.Conf().MailConfig.Dialer()
 	if err != nil {
 		log.Fatal(err.Error())
 		os.Exit(0)

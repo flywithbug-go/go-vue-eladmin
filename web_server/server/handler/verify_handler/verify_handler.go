@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strconv"
 	"vue-admin/web_server/common"
-	"vue-admin/web_server/mail"
+	"vue-admin/web_server/email"
 	"vue-admin/web_server/model"
 	"vue-admin/web_server/model/model_verify"
 	"vue-admin/web_server/server/handler/handler_common"
@@ -34,7 +34,7 @@ func sendVerifyMailHanlder(c *gin.Context) {
 	}
 	c.Set(common.KeyContextPara, verify)
 
-	if !mail.MailVerify(verify.Mail) {
+	if !email.MailVerify(verify.Mail) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "mail invalid")
 		return
 	}
@@ -44,7 +44,7 @@ func sendVerifyMailHanlder(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusInternalServerError, "invalid"+err.Error())
 		return
 	}
-	err = mail.SendVerifyCode("", vCode, verify.Mail)
+	err = email.SendVerifyCode("", vCode, verify.Mail)
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusInternalServerError, err.Error())
