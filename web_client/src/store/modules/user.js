@@ -1,5 +1,5 @@
 import { getToken, setToken, removeToken } from '../../utils/auth'
-import { getUserInfo, login, logout } from '../../api/user'
+import { getUserInfo, login, logout } from '@/api/user'
 import { parseTime } from '@/utils/index'
 
 const user = {

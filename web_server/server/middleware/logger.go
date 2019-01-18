@@ -25,20 +25,26 @@ func Logger() gin.HandlerFunc {
 		}
 		c.Header(common.KeyContextRequestId, l.RequestId)
 		c.Set(common.KeyContextRequestId, l.RequestId)
-
+		l.StartTime = start.UnixNano()
+		l.ClientIp = c.ClientIP()
+		l.Method = c.Request.Method
+		l.Path = c.Request.URL.String()
+		statusColor := colorForStatus(l.StatusCode)
+		methodColor := colorForMethod(l.Method)
+		log.InfoExt(l, "【GIN】【Start】【rid:%s】【m:%s %s %s】【ip:%s】 【p:%s】",
+			l.RequestId,
+			methodColor, l.Method, reset,
+			l.ClientIp,
+			l.Path)
 		//----====----
 		c.Next()
 		end := time.Now()
+		l.EndTime = end.UnixNano()
 		l.Latency = end.Sub(start)
 		l.StatusCode = c.Writer.Status()
-		statusColor := colorForStatus(l.StatusCode)
-		l.ClientIp = c.ClientIP()
-		l.Method = c.Request.Method
-		methodColor := colorForMethod(l.Method)
 		comment := c.Errors.ByType(gin.ErrorTypePrivate).String()
 		l.UserId = common.UserId(c)
-		l.Path = c.Request.URL.String()
-		l.Info = fmt.Sprintf("【GIN】【id:%d】【rid:%s】【m:%s】【c:%3d】【l:%13v】【ip:%s】 【p:%s】【e:%s】",
+		l.Info = fmt.Sprintf("【GIN】【Completed】【id:%d】【rid:%s】【m:%s】【c:%3d】【l:%13v】【ip:%s】 【p:%s】【e:%s】",
 			l.UserId,
 			l.RequestId,
 			l.Method,
@@ -47,10 +53,9 @@ func Logger() gin.HandlerFunc {
 			l.ClientIp,
 			l.Path,
 			comment)
-
 		l.Para = common.Para(c)
 		l.ResponseCode = common.ResponseCode(c)
-		log.InfoExt(l, "【GIN】【id:%d】【rid:%s】【m:%s %s %s】【c:%s%3d%s】【l:%13v】【ip:%s】 【p:%s】【e:%s】",
+		log.InfoExt(l, "【GIN】【Completed】【id:%d】【rid:%s】【m:%s %s %s】【c:%s%3d%s】【l:%13v】【ip:%s】 【p:%s】【e:%s】",
 			l.UserId,
 			l.RequestId,
 			methodColor, l.Method, reset,

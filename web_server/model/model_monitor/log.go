@@ -2,9 +2,10 @@ package model_monitor
 
 import (
 	"encoding/json"
-	"fmt"
 	"time"
 	"vue-admin/web_server/core/mongo"
+
+	"gopkg.in/mgo.v2/bson"
 )
 
 const (
@@ -27,6 +28,9 @@ type Log struct {
 	UserId       int64         `json:"user_id,omitempty" bson:"user_id,omitempty"`
 	Para         interface{}   `json:"para,omitempty" bson:"para,omitempty"`
 	ResponseCode int           `json:"response_code,omitempty" bson:"response_code,omitempty"`
+	StartTime    int64         `json:"start_time,omitempty" bson:"start_time,omitempty"`
+	EndTime      int64         `json:"end_time,omitempty" bson:"end_time,omitempty"`
+	ErrorMsg     string        `json:"error_msg,omitempty" bson:"error_msg,omitempty"`
 }
 
 func (l Log) ToJson() string {
@@ -88,9 +92,16 @@ func (l Log) explain(pipeline, result interface{}) (results []Log, err error) {
 	return
 }
 
+func (l Log) Update() error {
+	if !l.isExist(bson.M{"request_id": l.RequestId}) {
+		return l.Insert()
+	}
+	return l.update(bson.M{"request_id": l.RequestId}, l)
+}
+
 func (l Log) Insert() error {
-	if len(l.Info) == 0 {
-		return fmt.Errorf("info is null")
+	if l.isExist(bson.M{"request_id": l.RequestId}) {
+		return l.Update()
 	}
 	if l.Para != nil {
 		js, _ := json.Marshal(l.Para)
@@ -98,7 +109,6 @@ func (l Log) Insert() error {
 			l.Para = string(js)
 		}
 	}
-
 	return l.insert(l)
 }
 

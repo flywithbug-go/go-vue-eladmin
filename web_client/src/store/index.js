@@ -8,7 +8,6 @@ import getters from './getters'
 import permission from './modules/permission'
 import tagsView from './modules/tagsView'
 
-
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
@@ -23,6 +22,4 @@ const store = new Vuex.Store({
 })
 
 export default store
-
-
 
