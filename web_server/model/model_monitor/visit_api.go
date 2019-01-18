@@ -14,9 +14,9 @@ import (
 type VisitApi struct {
 	Path     string `json:"path,omitempty" bson:"path,omitempty"`
 	TimeDate string `json:"time_date,omitempty" bson:"time_date,omitempty"` //2006-01-02:15 小时计算计算
-	Count    int64  `json:"count,omitempty" bson:"count,omitempty"`
+	Count    int    `json:"count,omitempty" bson:"count,omitempty"`
 	Method   string `json:"method,omitempty" bson:"method,omitempty"`
-	Total    int64  `json:"total,omitempty" bson:"total,omitempty"`
+	Total    int    `json:"total,omitempty" bson:"total,omitempty"`
 }
 
 const (
@@ -94,7 +94,7 @@ func (v VisitApi) Insert() error {
 	return v.insert(v)
 }
 
-func (v VisitApi) IncrementVisitApi() (int64, error) {
+func (v VisitApi) IncrementVisitApi() (int, error) {
 	if len(v.Path) == 0 || len(v.Method) == 0 {
 		return -1, fmt.Errorf("path or method is null")
 	}
@@ -124,15 +124,11 @@ func (v VisitApi) FindPageFilter(page, limit int, query, selector interface{}, f
 
 func (v VisitApi) TotalSumCount(query interface{}) (int, error) {
 	match := bson.M{"$match": query}
-	group := bson.M{"$group": bson.M{"total": bson.M{"$sum": "%count"}}}
-	project := bson.M{"$project": bson.M{"total": 1}}
+	group := bson.M{"$group": bson.M{"_id": "time_date", "total": bson.M{"$sum": "$count"}}}
 	pipeline := []bson.M{
 		match,
 		group,
-		project,
 	}
-	resp := bson.M{}
-	v.pipeAll(pipeline, &resp, true)
-	fmt.Printf("%v", resp)
-	return -1, nil
+	v.pipeOne(pipeline, &v, true)
+	return v.Total, nil
 }

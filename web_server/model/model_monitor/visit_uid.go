@@ -19,8 +19,9 @@ type VisitUId struct {
 	ClientIp string `json:"client_ip,omitempty" bson:"client_ip,omitempty"`
 	UUID     string `json:"uuid,omitempty" bson:"uuid,omitempty"`
 	UserId   int64  `json:"user_id,omitempty" bson:"user_id,omitempty"`
-	Count    int64  `json:"count,omitempty" bson:"count,omitempty"`         //访问次数
+	Count    int    `json:"count,omitempty" bson:"count,omitempty"`         //访问次数
 	TimeDate string `json:"time_date,omitempty" bson:"time_date,omitempty"` //2018-06-10
+	Total    int    `json:"total,omitempty" bson:"total,omitempty"`
 }
 
 func (v VisitUId) ToJson() string {
@@ -89,7 +90,7 @@ func (v VisitUId) Insert() error {
 	return v.insert(v)
 }
 
-func (v VisitUId) IncrementVisitUId() (int64, error) {
+func (v VisitUId) IncrementVisitUId() (int, error) {
 	if len(v.ClientIp) == 0 || len(v.UUID) == 0 {
 		return -1, fmt.Errorf("client_ip or uuid is null")
 	}
@@ -112,6 +113,18 @@ func (v VisitUId) IncrementVisitUId() (int64, error) {
 func (v VisitUId) TotalCount(query, selector interface{}) (int, error) {
 	return v.totalCount(query, selector)
 }
+
 func (v VisitUId) FindPageFilter(page, limit int, query, selector interface{}, fields ...string) ([]VisitUId, error) {
 	return v.findPage(page, limit, query, selector, fields...)
+}
+
+func (v VisitUId) TotalSumCount(query interface{}) (int, error) {
+	match := bson.M{"$match": query}
+	group := bson.M{"$group": bson.M{"_id": "time_date", "total": bson.M{"$sum": "$count"}}}
+	pipeline := []bson.M{
+		match,
+		group,
+	}
+	v.pipeOne(pipeline, &v, true)
+	return v.Total, nil
 }

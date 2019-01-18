@@ -7,7 +7,7 @@ import (
 )
 
 func TestGenerVerifyData(t *testing.T) {
-	mongo.DialMgo("127.0.0.1:27017")
+	mongo.RegisterMongo("127.0.0.1:27017", "doc_manager")
 
 	source := "addadad232323a"
 	vCode, err := GeneralVerifyData(source)

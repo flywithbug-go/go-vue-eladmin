@@ -14,7 +14,7 @@ import (
 )
 
 func TestPipe(t *testing.T) {
-	mongo.RegisterMongo(config.Conf().DBConfig.Url, shareDB.DBName())
+	mongo.RegisterMongo("127.0.0.1:27017", "doc_manager")
 	permission := Permission{}
 
 	list, err := permission.FetchTreeList(nil)
