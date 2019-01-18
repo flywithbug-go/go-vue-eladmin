@@ -266,12 +266,12 @@ func FormatIndex() []Index {
 			DBName:     shareDB.MonitorDBName(),
 			Collection: CollectionMonitorCount,
 			Index: mgo.Index{
-				Key:        []string{"monitor"},
+				Key:        []string{"monitor", "time_date"},
 				Unique:     true,
 				DropDups:   true,
 				Background: false,
 				Sparse:     true,
-				Name:       "c_monitor_f_count_index",
+				Name:       "c_monitor_f_time_date_index",
 			},
 		},
 	}

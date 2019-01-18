@@ -6,8 +6,8 @@
           <svg-icon icon-class="visits" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
-          <div class="card-panel-text">New Visits</div>
-          <count-to :start-val="0" :end-val="count.newVisits" :duration="2600" class="card-panel-num"/>
+          <div class="card-panel-text">Day Visits</div>
+          <count-to :start-val="0" :end-val="count.dayVisits" :duration="2600" class="card-panel-num"/>
         </div>
       </div>
     </el-col>
@@ -17,8 +17,8 @@
           <svg-icon icon-class="ipvisits" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
-          <div class="card-panel-text">New Ip</div>
-          <count-to :start-val="0" :end-val="count.newIp" :duration="3000" class="card-panel-num"/>
+          <div class="card-panel-text">Day Ip</div>
+          <count-to :start-val="0" :end-val="count.dayIp" :duration="3000" class="card-panel-num"/>
         </div>
       </div>
     </el-col>
@@ -28,8 +28,8 @@
           <svg-icon icon-class="visits" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
-          <div class="card-panel-text">Recent Visits</div>
-          <count-to :start-val="0" :end-val="count.recentVisits" :duration="3200" class="card-panel-num"/>
+          <div class="card-panel-text">Total Visits</div>
+          <count-to :start-val="0" :end-val="count.totalVisits" :duration="3200" class="card-panel-num"/>
         </div>
       </div>
     </el-col>
@@ -39,8 +39,8 @@
           <svg-icon icon-class="ipvisits" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
-          <div class="card-panel-text">Recent Ip</div>
-          <count-to :start-val="0" :end-val="count.recentIp" :duration="3600" class="card-panel-num"/>
+          <div class="card-panel-text">Total Ip</div>
+          <count-to :start-val="0" :end-val="count.totalIp" :duration="3600" class="card-panel-num"/>
         </div>
       </div>
     </el-col>
@@ -56,16 +56,16 @@ export default {
   },
   data() {
     return {
-      count: { newIp: 0, newVisits: 0, recentIp: 0, recentVisits: 0 }
+      count: { dayIp: 0, dayVisits: 0, totalIp: 0, totalVisits: 0 }
     }
   },
   mounted() {
     get().then(res => {
       const visit = res.visit
-      this.count.newIp = visit.dayIp
-      this.count.newVisits = visit.dayVisit
-      this.count.recentIp = visit.dayIp
-      this.count.recentVisits = visit.totalVisit
+      this.count.dayIp = visit.dayIp
+      this.count.dayVisits = visit.dayVisit
+      this.count.totalIp = visit.totalIp
+      this.count.totalVisits = visit.totalVisit
     })
   }
 }

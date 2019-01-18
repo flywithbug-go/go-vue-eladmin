@@ -13,7 +13,6 @@ import (
 )
 
 const (
-	timeLayout   = "2006-01-02"
 	MonitorVisit = "visit"
 )
 
@@ -37,14 +36,15 @@ func visitHandler(c *gin.Context) {
 	monitorCount := model_monitor.MonitorCount{}
 
 	resVisit := responseVisit{}
-	timeF := time.Now().Format(timeLayout)
-	//log4go.Info(timeF)
+	timeF := time.Now().Format(model_monitor.TimeLayout)
+	timeF = timeF[:10]
 	vApi := model_monitor.VisitApi{}
 	vUId := model_monitor.VisitUId{}
 
 	query = bson.M{"time_date": bson.M{"$regex": timeF, "$options": "i"}}
 	resVisit.DayApi, _ = vApi.TotalSumCount(query)
-	resVisit.DayVisit, _ = monitorCount.TotalSumCount(query) //日访问
+	monitorCount, _ = monitorCount.FindOne(bson.M{"monitor": MonitorVisit, "time_date": timeF}) //日访问
+	resVisit.DayVisit = monitorCount.Count
 	resVisit.DayIP, _ = vUId.TotalCount(query, nil)
 
 	query = bson.M{"time_date": bson.M{"$regex": "", "$options": "i"}}

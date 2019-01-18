@@ -16,7 +16,7 @@ var Routers = []handler_common.GinHandleFunc{
 		Route:      "/visit",
 	},
 	{
-		Handler:    visitCountHandler,
+		Handler:    chartListHandler,
 		RouterType: handler_common.RouterTypeNeedAuth,
 		Method:     "GET",
 		Route:      "/visit/chart",

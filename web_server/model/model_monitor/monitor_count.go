@@ -40,13 +40,13 @@ func (v MonitorCount) update(selector, update interface{}) error {
 	return mongo.Update(shareDB.MonitorDBName(), monitorCountCollection, selector, update, true)
 }
 
-func (v MonitorCount) findOne(query, selector interface{}) (Log, error) {
-	ap := Log{}
+func (v MonitorCount) findOne(query, selector interface{}) (MonitorCount, error) {
+	ap := MonitorCount{}
 	err := mongo.FindOne(shareDB.MonitorDBName(), monitorCountCollection, query, selector, &ap)
 	return ap, err
 }
-func (v MonitorCount) findAll(query, selector interface{}) (results []Log, err error) {
-	results = []Log{}
+func (v MonitorCount) findAll(query, selector interface{}) (results []MonitorCount, err error) {
+	results = []MonitorCount{}
 	err = mongo.FindAll(shareDB.MonitorDBName(), monitorCountCollection, query, selector, &results)
 	return results, err
 }
@@ -83,17 +83,21 @@ func (v MonitorCount) explain(pipeline, result interface{}) (results []MonitorCo
 }
 
 func (v MonitorCount) Insert() error {
-	timeF := time.Now().Format(timeDayLayout)
-	v.TimeDate = timeF
+	timeF := time.Now().Format(TimeLayout)
+	v.TimeDate = timeF[:10]
 	return v.insert(v)
+}
+
+func (v MonitorCount) FindOne(query interface{}) (MonitorCount, error) {
+	return v.findOne(query, nil)
 }
 
 func (v MonitorCount) IncrementMonitorCount() (int, error) {
 	if len(v.Monitor) == 0 {
 		return -1, fmt.Errorf("monitor is null")
 	}
-	timeF := time.Now().Format(timeDayLayout)
-	v.TimeDate = timeF
+	timeF := time.Now().Format(TimeLayout)
+	v.TimeDate = timeF[:10]
 	change := mgo.Change{
 		Update:    bson.M{"$inc": bson.M{"count": 1}},
 		ReturnNew: true,

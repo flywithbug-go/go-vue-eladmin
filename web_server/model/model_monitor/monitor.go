@@ -9,8 +9,7 @@ import (
 )
 
 const (
-	timeLayout    = "2006-01-02 15:04:05"
-	timeDayLayout = "2006-01-02"
+	TimeLayout = "2006-01-02 15:04:05"
 )
 
 var (
@@ -38,7 +37,7 @@ func (l Log) AddMonitorInfo() {
 		l.UUID = visitUid.UUID
 	}
 	l.Insert()
-	timeF := time.Now().Format(timeLayout)
+	timeF := time.Now().Format(TimeLayout)
 	if l.Latency > 0 {
 		if len(l.UUID) > 0 {
 			visitUid.TimeDate = timeF[:10]
