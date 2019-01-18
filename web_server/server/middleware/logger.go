@@ -39,6 +39,7 @@ func Logger() gin.HandlerFunc {
 			l.Path)
 		//----====----
 		c.Next()
+
 		end := time.Now()
 		l.EndTime = end.UnixNano()
 		l.Latency = end.Sub(start)
@@ -58,6 +59,7 @@ func Logger() gin.HandlerFunc {
 
 		l.Para = common.Para(c)
 		l.ResponseCode = common.ResponseCode(c)
+
 		log.InfoExt(l, "【GIN】【Completed】【id:%d】【rid:%s】【m:%s %s %s】【c:%s%3d%s】【l:%13v】【ip:%s】 【p:%s】【e:%s】",
 			l.UserId,
 			l.RequestId,
@@ -73,7 +75,7 @@ func Logger() gin.HandlerFunc {
 
 // GenReqID is a random generate string func
 func GenReqID() string {
-	return bson.NewObjectId().String()
+	return bson.NewObjectId().Hex()
 }
 
 var (

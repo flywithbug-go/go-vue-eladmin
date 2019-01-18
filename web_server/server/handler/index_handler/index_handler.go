@@ -2,7 +2,6 @@ package index_handler
 
 import (
 	"net/http"
-	"time"
 	"vue-admin/web_server/common"
 	"vue-admin/web_server/model"
 
@@ -16,5 +15,4 @@ func indexHandler(c *gin.Context) {
 		c.JSON(http.StatusOK, aRes)
 	}()
 	aRes.SetSuccess()
-	time.Sleep(time.Second * 6)
 }
