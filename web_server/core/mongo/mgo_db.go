@@ -22,10 +22,10 @@ func connect(db, collection string) (*mgo.Session, *mgo.Collection) {
 	return s, c
 }
 
-func Collection(db, collection string) *mgo.Collection {
+func Collection(db, collection string) (*mgo.Session, *mgo.Collection) {
 	s := getMgoSession(db)
 	c := s.DB(db).C(collection)
-	return c
+	return s, c
 }
 
 func getDb(db string) (*mgo.Session, *mgo.Database) {

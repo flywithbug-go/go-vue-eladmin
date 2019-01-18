@@ -6,6 +6,9 @@ import (
 	"vue-admin/web_server/core/mongo"
 	"vue-admin/web_server/model/a_mongo_index"
 	"vue-admin/web_server/model/shareDB"
+
+	"gopkg.in/mgo.v2"
+	"gopkg.in/mgo.v2/bson"
 )
 
 const (
@@ -14,8 +17,9 @@ const (
 
 type Visit struct {
 	ClientIp string `json:"client_ip,omitempty" bson:"client_ip,omitempty"`
-	UUID     int64  `json:"uuid,omitempty" bson:"uuid,omitempty"`
-	Count    int    `json:"count,omitempty" bson:"count,omitempty"` //访问次数
+	UUID     string `json:"uuid,omitempty" bson:"uuid,omitempty"`
+	Count    int64  `json:"count,omitempty" bson:"count,omitempty"`         //访问次数
+	TimeDate string `json:"time_date,omitempty" bson:"time_date,omitempty"` //2018-06-10
 }
 
 func (v Visit) ToJson() string {
@@ -78,10 +82,30 @@ func (v Visit) explain(pipeline, result interface{}) (results []Visit, err error
 }
 
 func (v Visit) Insert() error {
-	if len(v.ClientIp) == 0 {
-		return fmt.Errorf("client_ip is null")
+	if len(v.ClientIp) == 0 || len(v.UUID) == 0 {
+		return fmt.Errorf("client_ip or uuid is null")
 	}
 	return v.insert(v)
+}
+
+func (v Visit) IncrementVisit() (int64, error) {
+	if len(v.ClientIp) == 0 || len(v.UUID) == 0 {
+		return -1, fmt.Errorf("client_ip or uuid is null")
+	}
+	change := mgo.Change{
+		Update:    bson.M{"$inc": bson.M{"count": 1}, "$set": bson.M{"time_date": v.TimeDate}},
+		ReturnNew: true,
+	}
+	_, c := mongo.Collection(shareDB.MonitorDBName(), visitCollection)
+	_, err := c.Find(bson.M{"client_ip": v.ClientIp, "uuid": v.UUID}).Apply(change, v)
+	if err != nil {
+		v.Count = 1
+		err = v.Insert()
+		if err != nil {
+			return -1, err
+		}
+	}
+	return v.Count, nil
 }
 
 func (v Visit) TotalCount(query, selector interface{}) (int, error) {

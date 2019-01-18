@@ -201,7 +201,7 @@ var Indexes = []Index{
 		DBName:     MonitorDBName,
 		Collection: CollectionVisit,
 		Index: mgo.Index{
-			Key:        []string{"client_ip,uuid"},
+			Key:        []string{"client_ip", "uuid"},
 			Unique:     true,
 			DropDups:   true,
 			Background: false,
@@ -227,7 +227,7 @@ var Indexes = []Index{
 func CreateMgoIndex() {
 	aMCfg := config.Conf().DBConfig
 	for _, aMongoIndex := range Indexes {
-		c := mongo.Collection(aMongoIndex.DBName, aMongoIndex.Collection)
+		_, c := mongo.Collection(aMongoIndex.DBName, aMongoIndex.Collection)
 		if len(aMongoIndex.DropIndex) > 0 {
 			for _, idxName := range aMongoIndex.DropIndex {
 				if err := c.DropIndexName(idxName); err != nil {

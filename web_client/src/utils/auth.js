@@ -16,13 +16,10 @@ export function removeToken() {
 }
 
 export function getUUID() {
-  let uuid = Cookies.get(UUIDKey)
+  let uuid = localStorage.getItem(UUIDKey)
   if (!uuid) {
     uuid = guid()
-    Cookies.set(UUIDKey, uuid, {
-      expires: 365,
-      http: true
-    })
+    localStorage.setItem(UUIDKey, uuid)
   }
   return uuid
 }
@@ -33,3 +30,4 @@ function guid() {
   }
   return (S4() + S4() + '-' + S4() + '-' + S4() + '-' + S4() + '-' + S4() + S4() + S4())
 }
+

@@ -13,6 +13,7 @@ client.defaults.headers.post['Content-Type'] = 'application/json'
 client.defaults.timeout = 60000 // 60秒
 
 client.interceptors.request.use(config => {
+  client.defaults.headers.common['UUID'] = getUUID()
   if (store.getters.token) {
     config.headers.common['Authorization'] = store.getters.token
   } else {
