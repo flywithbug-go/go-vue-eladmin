@@ -47,6 +47,52 @@ type AppVersion struct {
 	ReleaseTime   int64      `json:"release_time,omitempty" bson:"release_time,omitempty"`
 }
 
+func versionTime(a, b int64) int64 {
+	if a > 0 {
+		return a
+	}
+	return b
+}
+
+func (app AppVersion) checkAppVersionTime() error {
+	if app.Id == 0 {
+		if app.ApprovalTime > app.LockTime {
+			return fmt.Errorf("立项时间不能晚于锁版时间")
+		}
+		if app.LockTime > app.GrayTime {
+			return fmt.Errorf("锁版时间不能晚于灰度时间")
+		}
+		if app.GrayTime > app.ReleaseTime {
+			return fmt.Errorf("灰度时间不能晚于发布时间")
+		}
+	}
+	a, err := app.FindOne()
+	if err != nil {
+		return err
+	}
+	if app.ApprovalTime > 0 {
+		if app.ApprovalTime > versionTime(app.LockTime, a.LockTime) {
+			return fmt.Errorf("立项时间不能晚于锁版时间")
+		}
+	}
+	if app.LockTime > 0 {
+		if app.LockTime > versionTime(app.GrayTime, a.GrayTime) {
+			return fmt.Errorf("锁版时间时间不能早于灰度时间")
+		}
+	}
+	if app.GrayTime > 0 {
+		if app.GrayTime < versionTime(app.LockTime, a.LockTime) {
+			return fmt.Errorf("灰度时间不能早于锁版时间")
+		}
+	}
+	if app.ReleaseTime > 0 {
+		if app.ReleaseTime < versionTime(app.GrayTime, a.GrayTime) {
+			return fmt.Errorf("发布时间不能早于灰度时间")
+		}
+	}
+	return nil
+}
+
 func (app AppVersion) ToJson() string {
 	js, _ := json.Marshal(app)
 	return string(js)
@@ -100,9 +146,11 @@ func (app AppVersion) FindOne() (AppVersion, error) {
 }
 
 func (app *AppVersion) Insert() error {
-	if err := app.checkTimeValid(); err != nil {
+	err := app.checkTimeValid()
+	if err != nil {
 		return err
 	}
+
 	var application = Application{}
 
 	if !application.isExist(bson.M{"_id": app.AppId}) {
@@ -124,6 +172,10 @@ func (app *AppVersion) Insert() error {
 		if !ok {
 			return fmt.Errorf("platform must like (iOS,Android,H5,Server) ")
 		}
+	}
+	err = app.checkAppVersionTime()
+	if err != nil {
+		return err
 	}
 	app.Id, _ = mongo.GetIncrementId(shareDB.DocManagerDBName(), appVersionCollection)
 	app.CreateTime = time.Now().Unix()
@@ -172,6 +224,10 @@ func (app AppVersion) Remove() error {
 
 func (app AppVersion) Update() error {
 	if err := app.checkTimeValid(); err != nil {
+		return err
+	}
+	err := app.checkAppVersionTime()
+	if err != nil {
 		return err
 	}
 	appOld, _ := app.findOne(bson.M{"_id": app.Id}, nil)

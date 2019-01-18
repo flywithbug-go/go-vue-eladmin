@@ -568,8 +568,22 @@ export default {
         this.dialogFormVisible = false
         return
       }
+
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
+          if (this.temp.approval_time > this.temp.lock_time) {
+            this.$message.error('锁版时间必须晚于立项时间')
+            return
+          }
+          if (this.temp.lock_time > this.temp.gray_time) {
+            this.$message.error('灰度时间必须晚于锁版时间')
+            return
+          }
+          if (this.temp.release_time && this.temp.release_time < this.temp.gray_time) {
+            this.$message.error('发布时间必须晚于灰度时间')
+            return
+          }
+
           let gray_time = parseInt('0')
           let lock_time = parseInt('0')
           let approval_time = parseInt('0')

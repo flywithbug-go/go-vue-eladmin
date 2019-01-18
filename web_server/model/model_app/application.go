@@ -123,16 +123,10 @@ func (a *Application) Insert() error {
 //}
 
 func (a Application) Update() error {
-	selector := bson.M{}
-	if a.Id > 0 {
-		selector = bson.M{"_id": a.Id}
-	} else {
-		return errors.New("id & app_id is null")
-	}
 	a.BundleId = ""
 	a.Owner = ""
 	a.CreateTime = 0
-	return a.update(selector, a)
+	return a.update(bson.M{"_id": a.Id}, a)
 }
 
 func (a Application) Remove() error {
