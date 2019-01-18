@@ -33,44 +33,44 @@ func (v VerificationCode) ToJson() string {
 }
 
 func (v VerificationCode) insert(docs ...interface{}) error {
-	return mongo.Insert(shareDB.DBName(), verifyCollection, docs...)
+	return mongo.Insert(shareDB.DocManagerDBName(), verifyCollection, docs...)
 }
 
 func (v VerificationCode) isExist(query interface{}) bool {
-	return mongo.IsExist(shareDB.DBName(), verifyCollection, query)
+	return mongo.IsExist(shareDB.DocManagerDBName(), verifyCollection, query)
 }
 
 func (v VerificationCode) findOne(query, selector interface{}) (VerificationCode, error) {
 	ap := VerificationCode{}
-	err := mongo.FindOne(shareDB.DBName(), verifyCollection, query, selector, &ap)
+	err := mongo.FindOne(shareDB.DocManagerDBName(), verifyCollection, query, selector, &ap)
 	return ap, err
 }
 
 func (v VerificationCode) findAll(query, selector interface{}) (results []VerificationCode, err error) {
 	results = []VerificationCode{}
-	err = mongo.FindAll(shareDB.DBName(), verifyCollection, query, selector, &results)
+	err = mongo.FindAll(shareDB.DocManagerDBName(), verifyCollection, query, selector, &results)
 	return results, err
 }
 
 func (v VerificationCode) update(selector, update interface{}) error {
-	return mongo.Update(shareDB.DBName(), verifyCollection, selector, update, true)
+	return mongo.Update(shareDB.DocManagerDBName(), verifyCollection, selector, update, true)
 }
 
 func (v VerificationCode) remove(selector interface{}) error {
-	return mongo.Remove(shareDB.DBName(), verifyCollection, selector)
+	return mongo.Remove(shareDB.DocManagerDBName(), verifyCollection, selector)
 }
 
 func (v VerificationCode) removeAll(selector interface{}) error {
-	return mongo.RemoveAll(shareDB.DBName(), verifyCollection, selector)
+	return mongo.RemoveAll(shareDB.DocManagerDBName(), verifyCollection, selector)
 }
 
 func (v VerificationCode) totalCount(query, selector interface{}) (int, error) {
-	return mongo.TotalCount(shareDB.DBName(), verifyCollection, query, selector)
+	return mongo.TotalCount(shareDB.DocManagerDBName(), verifyCollection, query, selector)
 }
 
 func (v VerificationCode) findPage(page, limit int, query, selector interface{}, fields ...string) (results []VerificationCode, err error) {
 	results = []VerificationCode{}
-	err = mongo.FindPage(shareDB.DBName(), verifyCollection, page, limit, query, selector, &results, fields...)
+	err = mongo.FindPage(shareDB.DocManagerDBName(), verifyCollection, page, limit, query, selector, &results, fields...)
 	return
 }
 

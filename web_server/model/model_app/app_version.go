@@ -53,44 +53,44 @@ func (app AppVersion) ToJson() string {
 }
 
 func (app AppVersion) insert(docs ...interface{}) error {
-	return mongo.Insert(shareDB.DBName(), appVersionCollection, docs...)
+	return mongo.Insert(shareDB.DocManagerDBName(), appVersionCollection, docs...)
 }
 
 func (app AppVersion) isExist(query interface{}) bool {
-	return mongo.IsExist(shareDB.DBName(), appVersionCollection, query)
+	return mongo.IsExist(shareDB.DocManagerDBName(), appVersionCollection, query)
 }
 
 func (app AppVersion) findOne(query, selector interface{}) (AppVersion, error) {
 	ap := AppVersion{}
-	err := mongo.FindOne(shareDB.DBName(), appVersionCollection, query, selector, &ap)
+	err := mongo.FindOne(shareDB.DocManagerDBName(), appVersionCollection, query, selector, &ap)
 	return ap, err
 }
 
 func (app AppVersion) findAll(query, selector interface{}) (results []AppVersion, err error) {
 	results = []AppVersion{}
-	err = mongo.FindAll(shareDB.DBName(), appVersionCollection, query, selector, &results)
+	err = mongo.FindAll(shareDB.DocManagerDBName(), appVersionCollection, query, selector, &results)
 	return results, err
 }
 
 func (app AppVersion) update(selector, update interface{}) error {
-	return mongo.Update(shareDB.DBName(), appVersionCollection, selector, update, true)
+	return mongo.Update(shareDB.DocManagerDBName(), appVersionCollection, selector, update, true)
 }
 
 func (app AppVersion) remove(selector interface{}) error {
-	return mongo.Remove(shareDB.DBName(), appVersionCollection, selector)
+	return mongo.Remove(shareDB.DocManagerDBName(), appVersionCollection, selector)
 }
 
 func (app AppVersion) removeAll(selector interface{}) error {
-	return mongo.RemoveAll(shareDB.DBName(), appVersionCollection, selector)
+	return mongo.RemoveAll(shareDB.DocManagerDBName(), appVersionCollection, selector)
 }
 
 func (app AppVersion) totalCount(query, selector interface{}) (int, error) {
-	return mongo.TotalCount(shareDB.DBName(), appVersionCollection, query, selector)
+	return mongo.TotalCount(shareDB.DocManagerDBName(), appVersionCollection, query, selector)
 }
 
 func (app AppVersion) findPage(page, limit int, query, selector interface{}, fields ...string) (results []AppVersion, err error) {
 	results = []AppVersion{}
-	err = mongo.FindPage(shareDB.DBName(), appVersionCollection, page, limit, query, selector, &results, fields...)
+	err = mongo.FindPage(shareDB.DocManagerDBName(), appVersionCollection, page, limit, query, selector, &results, fields...)
 	return
 }
 
@@ -125,7 +125,7 @@ func (app *AppVersion) Insert() error {
 			return fmt.Errorf("platform must like (iOS,Android,H5,Server) ")
 		}
 	}
-	app.Id, _ = mongo.GetIncrementId(shareDB.DBName(), appVersionCollection)
+	app.Id, _ = mongo.GetIncrementId(shareDB.DocManagerDBName(), appVersionCollection)
 	app.CreateTime = time.Now().Unix()
 	app.Status = appStatusTypePrepare
 	app.AppStatus = makeStatusString(appStatusTypePrepare)

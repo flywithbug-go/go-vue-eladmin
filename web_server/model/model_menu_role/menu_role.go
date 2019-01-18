@@ -27,43 +27,43 @@ func (m MenuRole) ToJson() string {
 }
 
 func (m MenuRole) isExist(query interface{}) bool {
-	return mongo.IsExist(shareDB.DBName(), menuRoleCollection, query)
+	return mongo.IsExist(shareDB.DocManagerDBName(), menuRoleCollection, query)
 }
 
 func (m MenuRole) insert(docs ...interface{}) error {
-	return mongo.Insert(shareDB.DBName(), menuRoleCollection, docs...)
+	return mongo.Insert(shareDB.DocManagerDBName(), menuRoleCollection, docs...)
 }
 
 func (m MenuRole) update(selector, update interface{}) error {
-	return mongo.Update(shareDB.DBName(), menuRoleCollection, selector, update, true)
+	return mongo.Update(shareDB.DocManagerDBName(), menuRoleCollection, selector, update, true)
 }
 
 func (m MenuRole) findOne(query, selector interface{}) (MenuRole, error) {
 	ap := MenuRole{}
-	err := mongo.FindOne(shareDB.DBName(), menuRoleCollection, query, selector, &ap)
+	err := mongo.FindOne(shareDB.DocManagerDBName(), menuRoleCollection, query, selector, &ap)
 	return ap, err
 }
 func (m MenuRole) findAll(query, selector interface{}) (results []MenuRole, err error) {
 	results = []MenuRole{}
-	err = mongo.FindAll(shareDB.DBName(), menuRoleCollection, query, selector, &results)
+	err = mongo.FindAll(shareDB.DocManagerDBName(), menuRoleCollection, query, selector, &results)
 	return results, err
 }
 
 func (m MenuRole) remove(selector interface{}) error {
-	return mongo.Remove(shareDB.DBName(), menuRoleCollection, selector)
+	return mongo.Remove(shareDB.DocManagerDBName(), menuRoleCollection, selector)
 }
 
 func (m MenuRole) removeAll(selector interface{}) error {
-	return mongo.RemoveAll(shareDB.DBName(), menuRoleCollection, selector)
+	return mongo.RemoveAll(shareDB.DocManagerDBName(), menuRoleCollection, selector)
 }
 
 func (m MenuRole) totalCount(query, selector interface{}) (int, error) {
-	return mongo.TotalCount(shareDB.DBName(), menuRoleCollection, query, selector)
+	return mongo.TotalCount(shareDB.DocManagerDBName(), menuRoleCollection, query, selector)
 }
 
 func (m MenuRole) findPage(page, limit int, query, selector interface{}, fields ...string) (results []MenuRole, err error) {
 	results = []MenuRole{}
-	err = mongo.FindPage(shareDB.DBName(), menuRoleCollection, page, limit, query, selector, &results, fields...)
+	err = mongo.FindPage(shareDB.DocManagerDBName(), menuRoleCollection, page, limit, query, selector, &results, fields...)
 	return
 }
 
@@ -82,7 +82,7 @@ func (m MenuRole) Exist(query interface{}) bool {
 }
 
 func (m MenuRole) Insert() error {
-	m.Id, _ = mongo.GetIncrementId(shareDB.DBName(), menuRoleCollection)
+	m.Id, _ = mongo.GetIncrementId(shareDB.DocManagerDBName(), menuRoleCollection)
 	m.CreateTime = time.Now().Unix() * 1000
 	return m.insert(m)
 }

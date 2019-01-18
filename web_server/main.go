@@ -67,12 +67,15 @@ func init() {
 func setMongoDB() {
 	//mongodb启动连接
 	//设置数据库名字
-	shareDB.SetDBName(config.Conf().DBConfig.DBName)
+	shareDB.SetDocMangerDBName(config.Conf().DBConfig.DBName)
+	shareDB.SetMonitorDBName(config.Conf().MonitorDBConfig.DBName)
+
 	err := mongo.RegisterMongo(config.Conf().DBConfig.Url, config.Conf().DBConfig.DBName)
 	if err != nil {
 		panic(err)
 	}
-	err = mongo.RegisterMongo(config.Conf().LogDBConfig.Url, config.Conf().LogDBConfig.DBName)
+
+	err = mongo.RegisterMongo(config.Conf().MonitorDBConfig.Url, config.Conf().MonitorDBConfig.DBName)
 	if err != nil {
 		panic(err)
 	}

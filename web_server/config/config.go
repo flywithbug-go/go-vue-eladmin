@@ -17,14 +17,14 @@ func Conf() *Config {
 }
 
 type Config struct {
-	PrivateKeyPath string      `json:"private_key_path"`
-	PublicKeyPath  string      `json:"public_key_path"`
-	LogPath        string      `json:"log_path"`
-	LocalFilePath  string      `json:"local_file_path"`
-	Port           string      `json:"port"` //httpServer
-	StaticPath     string      `json:"static_path"`
-	DBConfig       DBConfig    `json:"db_config"`     //数据库配置
-	LogDBConfig    LogDBConfig `json:"log_db_config"` //日志数据库配置
+	PrivateKeyPath  string          `json:"private_key_path"`
+	PublicKeyPath   string          `json:"public_key_path"`
+	LogPath         string          `json:"log_path"`
+	LocalFilePath   string          `json:"local_file_path"`
+	Port            string          `json:"port"` //httpServer
+	StaticPath      string          `json:"static_path"`
+	DBConfig        DBConfig        `json:"db_config"`         //数据库配置
+	MonitorDBConfig MonitorDBConfig `json:"monitor_db_config"` //日志数据库配置
 
 	RouterPrefix string     `json:"router_prefix"` //api前缀
 	AuthPrefix   string     `json:"auth_prefix"`   //白名单
@@ -50,7 +50,7 @@ type DBConfig struct {
 /*
 数据库配置结构体
 */
-type LogDBConfig struct {
+type MonitorDBConfig struct {
 	Url    string `json:"url"`     //连接地址
 	DBName string `json:"db_name"` //数据库名
 }

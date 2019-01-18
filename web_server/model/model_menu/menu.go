@@ -59,56 +59,56 @@ func (m Menu) ToJson() string {
 }
 
 func (m Menu) isExist(query interface{}) bool {
-	return mongo.IsExist(shareDB.DBName(), menuCollection, query)
+	return mongo.IsExist(shareDB.DocManagerDBName(), menuCollection, query)
 }
 
 func (m Menu) insert(docs ...interface{}) error {
-	return mongo.Insert(shareDB.DBName(), menuCollection, docs...)
+	return mongo.Insert(shareDB.DocManagerDBName(), menuCollection, docs...)
 }
 
 func (m Menu) update(selector, update interface{}) error {
-	return mongo.Update(shareDB.DBName(), menuCollection, selector, update, true)
+	return mongo.Update(shareDB.DocManagerDBName(), menuCollection, selector, update, true)
 }
 
 func (m Menu) findOne(query, selector interface{}) (Menu, error) {
 	ap := Menu{}
-	err := mongo.FindOne(shareDB.DBName(), menuCollection, query, selector, &ap)
+	err := mongo.FindOne(shareDB.DocManagerDBName(), menuCollection, query, selector, &ap)
 	return ap, err
 }
 func (m Menu) findAll(query, selector interface{}) (results []Menu, err error) {
 	results = []Menu{}
-	err = mongo.FindAll(shareDB.DBName(), menuCollection, query, selector, &results)
+	err = mongo.FindAll(shareDB.DocManagerDBName(), menuCollection, query, selector, &results)
 	return results, err
 }
 
 func (m Menu) remove(selector interface{}) error {
-	return mongo.Remove(shareDB.DBName(), menuCollection, selector)
+	return mongo.Remove(shareDB.DocManagerDBName(), menuCollection, selector)
 }
 
 func (m Menu) removeAll(selector interface{}) error {
-	return mongo.RemoveAll(shareDB.DBName(), menuCollection, selector)
+	return mongo.RemoveAll(shareDB.DocManagerDBName(), menuCollection, selector)
 }
 
 func (m Menu) totalCount(query, selector interface{}) (int, error) {
-	return mongo.TotalCount(shareDB.DBName(), menuCollection, query, selector)
+	return mongo.TotalCount(shareDB.DocManagerDBName(), menuCollection, query, selector)
 }
 
 func (m Menu) findPage(page, limit int, query, selector interface{}, fields ...string) (results []Menu, err error) {
 	results = []Menu{}
-	err = mongo.FindPage(shareDB.DBName(), menuCollection, page, limit, query, selector, &results, fields...)
+	err = mongo.FindPage(shareDB.DocManagerDBName(), menuCollection, page, limit, query, selector, &results, fields...)
 	return
 }
 
 func (m Menu) pipeAll(pipeline, result interface{}, allowDiskUse bool) error {
-	return mongo.PipeAll(shareDB.DBName(), menuCollection, pipeline, result, allowDiskUse)
+	return mongo.PipeAll(shareDB.DocManagerDBName(), menuCollection, pipeline, result, allowDiskUse)
 }
 
 func (m Menu) pipeOne(pipeline, result interface{}, allowDiskUse bool) error {
-	return mongo.PipeOne(shareDB.DBName(), menuCollection, pipeline, result, allowDiskUse)
+	return mongo.PipeOne(shareDB.DocManagerDBName(), menuCollection, pipeline, result, allowDiskUse)
 }
 
 func (m Menu) explain(pipeline, result interface{}) (results []Menu, err error) {
-	err = mongo.Explain(shareDB.DBName(), menuCollection, pipeline, result)
+	err = mongo.Explain(shareDB.DocManagerDBName(), menuCollection, pipeline, result)
 	return
 }
 
@@ -121,7 +121,7 @@ func (m Menu) Insert() (int64, error) {
 		return -1, fmt.Errorf("pid  not exist")
 	}
 	list := m.Roles
-	m.Id, _ = mongo.GetIncrementId(shareDB.DBName(), menuCollection)
+	m.Id, _ = mongo.GetIncrementId(shareDB.DocManagerDBName(), menuCollection)
 	m.CreateTime = time.Now().Unix() * 1000
 	m.Roles = nil
 	m.Children = nil

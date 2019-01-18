@@ -28,56 +28,56 @@ func (f File) ToJson() string {
 }
 
 func (f File) isExist(query interface{}) bool {
-	return mongo.IsExist(shareDB.DBName(), fileCollection, query)
+	return mongo.IsExist(shareDB.DocManagerDBName(), fileCollection, query)
 }
 
 func (f File) insert(docs ...interface{}) error {
-	return mongo.Insert(shareDB.DBName(), fileCollection, docs...)
+	return mongo.Insert(shareDB.DocManagerDBName(), fileCollection, docs...)
 }
 
 func (f File) update(selector, update interface{}) error {
-	return mongo.Update(shareDB.DBName(), fileCollection, selector, update, true)
+	return mongo.Update(shareDB.DocManagerDBName(), fileCollection, selector, update, true)
 }
 
 func (f File) findOne(query, selector interface{}) (File, error) {
 	ap := File{}
-	err := mongo.FindOne(shareDB.DBName(), fileCollection, query, selector, &ap)
+	err := mongo.FindOne(shareDB.DocManagerDBName(), fileCollection, query, selector, &ap)
 	return ap, err
 }
 func (f File) findAll(query, selector interface{}) (results []File, err error) {
 	results = []File{}
-	err = mongo.FindAll(shareDB.DBName(), fileCollection, query, selector, &results)
+	err = mongo.FindAll(shareDB.DocManagerDBName(), fileCollection, query, selector, &results)
 	return results, err
 }
 
 func (f File) remove(selector interface{}) error {
-	return mongo.Remove(shareDB.DBName(), fileCollection, selector)
+	return mongo.Remove(shareDB.DocManagerDBName(), fileCollection, selector)
 }
 
 func (f File) removeAll(selector interface{}) error {
-	return mongo.RemoveAll(shareDB.DBName(), fileCollection, selector)
+	return mongo.RemoveAll(shareDB.DocManagerDBName(), fileCollection, selector)
 }
 
 func (f File) totalCount(query, selector interface{}) (int, error) {
-	return mongo.TotalCount(shareDB.DBName(), fileCollection, query, selector)
+	return mongo.TotalCount(shareDB.DocManagerDBName(), fileCollection, query, selector)
 }
 
 func (f File) findPage(page, limit int, query, selector interface{}, fields ...string) (results []File, err error) {
 	results = []File{}
-	err = mongo.FindPage(shareDB.DBName(), fileCollection, page, limit, query, selector, &results, fields...)
+	err = mongo.FindPage(shareDB.DocManagerDBName(), fileCollection, page, limit, query, selector, &results, fields...)
 	return
 }
 
 func (f File) pipeAll(pipeline, result interface{}, allowDiskUse bool) error {
-	return mongo.PipeAll(shareDB.DBName(), fileCollection, pipeline, result, allowDiskUse)
+	return mongo.PipeAll(shareDB.DocManagerDBName(), fileCollection, pipeline, result, allowDiskUse)
 }
 
 func (f File) pipeOne(pipeline, result interface{}, allowDiskUse bool) error {
-	return mongo.PipeOne(shareDB.DBName(), fileCollection, pipeline, result, allowDiskUse)
+	return mongo.PipeOne(shareDB.DocManagerDBName(), fileCollection, pipeline, result, allowDiskUse)
 }
 
 func (f File) explain(pipeline, result interface{}) (results []File, err error) {
-	err = mongo.Explain(shareDB.DBName(), fileCollection, pipeline, result)
+	err = mongo.Explain(shareDB.DocManagerDBName(), fileCollection, pipeline, result)
 	return
 }
 
@@ -89,7 +89,7 @@ func (f File) Insert() (id int64, err error) {
 	if len(f.Path) == 0 {
 		return -1, fmt.Errorf("path can not be nill")
 	}
-	id, _ = mongo.GetIncrementId(shareDB.DBName(), fileCollection)
+	id, _ = mongo.GetIncrementId(shareDB.DocManagerDBName(), fileCollection)
 	f.Id = id
 	err = f.insert(f)
 	if err != nil {

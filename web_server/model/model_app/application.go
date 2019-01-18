@@ -40,37 +40,37 @@ func (a Application) ToJson() string {
 }
 
 func (a Application) insert(docs ...interface{}) error {
-	return mongo.Insert(shareDB.DBName(), appCollection, docs...)
+	return mongo.Insert(shareDB.DocManagerDBName(), appCollection, docs...)
 }
 
 func (a Application) isExist(query interface{}) bool {
-	return mongo.IsExist(shareDB.DBName(), appCollection, query)
+	return mongo.IsExist(shareDB.DocManagerDBName(), appCollection, query)
 }
 
 func (a Application) findOne(query, selector interface{}) (Application, error) {
 	ap := Application{}
-	err := mongo.FindOne(shareDB.DBName(), appCollection, query, selector, &ap)
+	err := mongo.FindOne(shareDB.DocManagerDBName(), appCollection, query, selector, &ap)
 	return ap, err
 }
 
 func (a Application) findAll(query, selector interface{}) (results []Application, err error) {
 	results = []Application{}
-	err = mongo.FindAll(shareDB.DBName(), appCollection, query, selector, &results)
+	err = mongo.FindAll(shareDB.DocManagerDBName(), appCollection, query, selector, &results)
 	return results, err
 }
 
 func (a Application) totalCount(query, selector interface{}) (int, error) {
-	return mongo.TotalCount(shareDB.DBName(), appCollection, query, selector)
+	return mongo.TotalCount(shareDB.DocManagerDBName(), appCollection, query, selector)
 }
 
 func (a Application) findPage(page, limit int, query, selector interface{}, fields ...string) (results []Application, err error) {
 	results = []Application{}
-	err = mongo.FindPage(shareDB.DBName(), appCollection, page, limit, query, selector, &results, fields...)
+	err = mongo.FindPage(shareDB.DocManagerDBName(), appCollection, page, limit, query, selector, &results, fields...)
 	return
 }
 
 func (a Application) update(selector, update interface{}) error {
-	return mongo.Update(shareDB.DBName(), appCollection, selector, update, true)
+	return mongo.Update(shareDB.DocManagerDBName(), appCollection, selector, update, true)
 }
 
 func (a Application) remove(selector interface{}) error {
@@ -78,11 +78,11 @@ func (a Application) remove(selector interface{}) error {
 	if version.isExist(bson.M{"app_id": a.Id}) {
 		return fmt.Errorf("app in use")
 	}
-	return mongo.Remove(shareDB.DBName(), appCollection, selector)
+	return mongo.Remove(shareDB.DocManagerDBName(), appCollection, selector)
 }
 
 func (a Application) removeAll(selector interface{}) error {
-	return mongo.RemoveAll(shareDB.DBName(), appCollection, selector)
+	return mongo.RemoveAll(shareDB.DocManagerDBName(), appCollection, selector)
 }
 
 func (a *Application) Insert() error {
@@ -108,7 +108,7 @@ func (a *Application) Insert() error {
 	if a.isExist(bson.M{"name": a.Name}) {
 		return errors.New("name already exist")
 	}
-	a.Id, _ = mongo.GetIncrementId(shareDB.DBName(), appCollection)
+	a.Id, _ = mongo.GetIncrementId(shareDB.DocManagerDBName(), appCollection)
 	a.CreateTime = time.Now().Unix() * 1000
 	return a.insert(a)
 }

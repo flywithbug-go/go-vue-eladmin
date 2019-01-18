@@ -43,43 +43,43 @@ func (r Role) ToJson() string {
 }
 
 func (r Role) isExist(query interface{}) bool {
-	return mongo.IsExist(shareDB.DBName(), roleCollection, query)
+	return mongo.IsExist(shareDB.DocManagerDBName(), roleCollection, query)
 }
 
 func (r Role) insert(docs ...interface{}) error {
-	return mongo.Insert(shareDB.DBName(), roleCollection, docs...)
+	return mongo.Insert(shareDB.DocManagerDBName(), roleCollection, docs...)
 }
 
 func (r Role) update(selector, update interface{}) error {
-	return mongo.Update(shareDB.DBName(), roleCollection, selector, update, true)
+	return mongo.Update(shareDB.DocManagerDBName(), roleCollection, selector, update, true)
 }
 
 func (r Role) findOne(query, selector interface{}) (Role, error) {
 	ap := Role{}
-	err := mongo.FindOne(shareDB.DBName(), roleCollection, query, selector, &ap)
+	err := mongo.FindOne(shareDB.DocManagerDBName(), roleCollection, query, selector, &ap)
 	return ap, err
 }
 func (r Role) findAll(query, selector interface{}) (results []Role, err error) {
 	results = []Role{}
-	err = mongo.FindAll(shareDB.DBName(), roleCollection, query, selector, &results)
+	err = mongo.FindAll(shareDB.DocManagerDBName(), roleCollection, query, selector, &results)
 	return results, err
 }
 
 func (r Role) remove(selector interface{}) error {
-	return mongo.Remove(shareDB.DBName(), roleCollection, selector)
+	return mongo.Remove(shareDB.DocManagerDBName(), roleCollection, selector)
 }
 
 func (r Role) removeAll(selector interface{}) error {
-	return mongo.RemoveAll(shareDB.DBName(), roleCollection, selector)
+	return mongo.RemoveAll(shareDB.DocManagerDBName(), roleCollection, selector)
 }
 
 func (r Role) totalCount(query, selector interface{}) (int, error) {
-	return mongo.TotalCount(shareDB.DBName(), roleCollection, query, selector)
+	return mongo.TotalCount(shareDB.DocManagerDBName(), roleCollection, query, selector)
 }
 
 func (r Role) findPage(page, limit int, query, selector interface{}, fields ...string) (results []Role, err error) {
 	results = []Role{}
-	err = mongo.FindPage(shareDB.DBName(), roleCollection, page, limit, query, selector, &results, fields...)
+	err = mongo.FindPage(shareDB.DocManagerDBName(), roleCollection, page, limit, query, selector, &results, fields...)
 	return
 }
 
@@ -94,7 +94,7 @@ func (r Role) Insert() error {
 	if len(r.Alias) == 0 {
 		r.Alias = r.Name
 	}
-	r.Id, _ = mongo.GetIncrementId(shareDB.DBName(), roleCollection)
+	r.Id, _ = mongo.GetIncrementId(shareDB.DocManagerDBName(), roleCollection)
 	r.CreateTime = time.Now().Unix() * 1000
 	list := r.Permissions
 	r.Permissions = nil

@@ -19,6 +19,7 @@ func RegisterMongo(url, db string) error {
 	}
 	aSession, err := mgo.Dial(url)
 	if err != nil {
+
 		return err
 	}
 	aMongo := new(tMongo)

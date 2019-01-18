@@ -6,7 +6,6 @@ import (
 	"testing"
 	"vue-admin/web_server/config"
 	"vue-admin/web_server/model/a_mongo_index"
-	"vue-admin/web_server/model/shareDB"
 
 	"gopkg.in/mgo.v2/bson"
 
@@ -27,7 +26,7 @@ func TestPipe(t *testing.T) {
 }
 
 func TestPipelineFetch(t *testing.T) {
-	mongo.RegisterMongo(config.Conf().DBConfig.Url, shareDB.DBName())
+	mongo.RegisterMongo(config.Conf().DBConfig.Url, shareDB.DocManagerDBName()())
 	permission := Permission{}
 
 	name := "user"

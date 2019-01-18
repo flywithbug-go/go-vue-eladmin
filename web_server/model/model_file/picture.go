@@ -32,56 +32,56 @@ func (p Picture) ToJson() string {
 }
 
 func (p Picture) isExist(query interface{}) bool {
-	return mongo.IsExist(shareDB.DBName(), pictureCollection, query)
+	return mongo.IsExist(shareDB.DocManagerDBName(), pictureCollection, query)
 }
 
 func (p Picture) insert(docs ...interface{}) error {
-	return mongo.Insert(shareDB.DBName(), pictureCollection, docs...)
+	return mongo.Insert(shareDB.DocManagerDBName(), pictureCollection, docs...)
 }
 
 func (p Picture) update(selector, update interface{}) error {
-	return mongo.Update(shareDB.DBName(), pictureCollection, selector, update, true)
+	return mongo.Update(shareDB.DocManagerDBName(), pictureCollection, selector, update, true)
 }
 
 func (p Picture) findOne(query, selector interface{}) (Picture, error) {
 	ap := Picture{}
-	err := mongo.FindOne(shareDB.DBName(), pictureCollection, query, selector, &ap)
+	err := mongo.FindOne(shareDB.DocManagerDBName(), pictureCollection, query, selector, &ap)
 	return ap, err
 }
 func (p Picture) findAll(query, selector interface{}) (results []Picture, err error) {
 	results = []Picture{}
-	err = mongo.FindAll(shareDB.DBName(), pictureCollection, query, selector, &results)
+	err = mongo.FindAll(shareDB.DocManagerDBName(), pictureCollection, query, selector, &results)
 	return results, err
 }
 
 func (p Picture) remove(selector interface{}) error {
-	return mongo.Remove(shareDB.DBName(), pictureCollection, selector)
+	return mongo.Remove(shareDB.DocManagerDBName(), pictureCollection, selector)
 }
 
 func (p Picture) removeAll(selector interface{}) error {
-	return mongo.RemoveAll(shareDB.DBName(), pictureCollection, selector)
+	return mongo.RemoveAll(shareDB.DocManagerDBName(), pictureCollection, selector)
 }
 
 func (p Picture) totalCount(query, selector interface{}) (int, error) {
-	return mongo.TotalCount(shareDB.DBName(), pictureCollection, query, selector)
+	return mongo.TotalCount(shareDB.DocManagerDBName(), pictureCollection, query, selector)
 }
 
 func (p Picture) findPage(page, limit int, query, selector interface{}, fields ...string) (results []Picture, err error) {
 	results = []Picture{}
-	err = mongo.FindPage(shareDB.DBName(), pictureCollection, page, limit, query, selector, &results, fields...)
+	err = mongo.FindPage(shareDB.DocManagerDBName(), pictureCollection, page, limit, query, selector, &results, fields...)
 	return
 }
 
 func (p Picture) pipeAll(pipeline, result interface{}, allowDiskUse bool) error {
-	return mongo.PipeAll(shareDB.DBName(), pictureCollection, pipeline, result, allowDiskUse)
+	return mongo.PipeAll(shareDB.DocManagerDBName(), pictureCollection, pipeline, result, allowDiskUse)
 }
 
 func (p Picture) pipeOne(pipeline, result interface{}, allowDiskUse bool) error {
-	return mongo.PipeOne(shareDB.DBName(), pictureCollection, pipeline, result, allowDiskUse)
+	return mongo.PipeOne(shareDB.DocManagerDBName(), pictureCollection, pipeline, result, allowDiskUse)
 }
 
 func (p Picture) explain(pipeline, result interface{}) (results []Picture, err error) {
-	err = mongo.Explain(shareDB.DBName(), pictureCollection, pipeline, result)
+	err = mongo.Explain(shareDB.DocManagerDBName(), pictureCollection, pipeline, result)
 	return
 }
 
@@ -93,7 +93,7 @@ func (p Picture) Insert() (id int64, err error) {
 	if len(p.Path) == 0 {
 		return -1, fmt.Errorf("path can not be nill")
 	}
-	id, _ = mongo.GetIncrementId(shareDB.DBName(), pictureCollection)
+	id, _ = mongo.GetIncrementId(shareDB.DocManagerDBName(), pictureCollection)
 	p.Id = id
 	err = p.insert(p)
 	if err != nil {

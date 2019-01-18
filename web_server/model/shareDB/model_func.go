@@ -1,18 +1,20 @@
 package shareDB
 
-var db = "doc_manager"
-var monitorDB = "monitor"
+var (
+	docManager = "doc_manager"
+	monitorDB  = "monitor"
+)
 
 func SetMonitorDBName(dbName string) {
 	monitorDB = dbName
 }
 
-func SetDBName(dbName string) {
-	db = dbName
+func SetDocMangerDBName(dbName string) {
+	docManager = dbName
 }
 
-func DBName() string {
-	return db
+func DocManagerDBName() string {
+	return docManager
 }
 func MonitorDBName() string {
 	return monitorDB

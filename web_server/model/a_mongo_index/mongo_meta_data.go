@@ -44,7 +44,7 @@ type Index struct {
 //唯一约束
 var Indexes = []Index{
 	{
-		DBName:     shareDB.DBName(),
+		DBName:     shareDB.DocManagerDBName(),
 		Collection: CollectionPermission,
 		Index: mgo.Index{
 			Key:        []string{"alias"},
@@ -56,7 +56,7 @@ var Indexes = []Index{
 		},
 	},
 	{
-		DBName:     shareDB.DBName(),
+		DBName:     shareDB.DocManagerDBName(),
 		Collection: CollectionPermission,
 		Index: mgo.Index{
 			Key:        []string{"name"},
@@ -68,7 +68,7 @@ var Indexes = []Index{
 		},
 	},
 	{
-		DBName:     shareDB.DBName(),
+		DBName:     shareDB.DocManagerDBName(),
 		Collection: CollectionUser,
 		Index: mgo.Index{
 			Key:        []string{"username"},
@@ -80,7 +80,7 @@ var Indexes = []Index{
 		},
 	},
 	{
-		DBName:     shareDB.DBName(),
+		DBName:     shareDB.DocManagerDBName(),
 		Collection: CollectionUser,
 		Index: mgo.Index{
 			Key:        []string{"email"},
@@ -92,7 +92,7 @@ var Indexes = []Index{
 		},
 	},
 	{
-		DBName:     shareDB.DBName(),
+		DBName:     shareDB.DocManagerDBName(),
 		Collection: CollectionRole,
 		Index: mgo.Index{
 			Key:        []string{"name"},
@@ -104,7 +104,7 @@ var Indexes = []Index{
 		},
 	},
 	{
-		DBName:     shareDB.DBName(),
+		DBName:     shareDB.DocManagerDBName(),
 		Collection: CollectionRole,
 		Index: mgo.Index{
 			Key:        []string{"alias"},
@@ -116,7 +116,7 @@ var Indexes = []Index{
 		},
 	},
 	{
-		DBName:     shareDB.DBName(),
+		DBName:     shareDB.DocManagerDBName(),
 		Collection: CollectionApp,
 		Index: mgo.Index{
 			Key:        []string{"bundle_id"},
@@ -128,7 +128,7 @@ var Indexes = []Index{
 		},
 	},
 	{
-		DBName:     shareDB.DBName(),
+		DBName:     shareDB.DocManagerDBName(),
 		Collection: CollectionApp,
 		Index: mgo.Index{
 			Key:        []string{"name"},
@@ -140,7 +140,7 @@ var Indexes = []Index{
 		},
 	},
 	{
-		DBName:     shareDB.DBName(),
+		DBName:     shareDB.DocManagerDBName(),
 		Collection: CollectionAppVersion,
 		Index: mgo.Index{
 			Key:        []string{"version", "app_id"},
@@ -152,7 +152,7 @@ var Indexes = []Index{
 		},
 	},
 	{
-		DBName:     shareDB.DBName(),
+		DBName:     shareDB.DocManagerDBName(),
 		Collection: CollectionRolePermission,
 		Index: mgo.Index{
 			Key:        []string{"role_id", "permission_id"},
@@ -164,7 +164,7 @@ var Indexes = []Index{
 		},
 	},
 	{
-		DBName:     shareDB.DBName(),
+		DBName:     shareDB.DocManagerDBName(),
 		Collection: CollectionUserRole,
 		Index: mgo.Index{
 			Key:        []string{"role_id", "user_id"},
@@ -176,7 +176,7 @@ var Indexes = []Index{
 		},
 	},
 	{
-		DBName:     shareDB.DBName(),
+		DBName:     shareDB.DocManagerDBName(),
 		Collection: CollectionMenuRole,
 		Index: mgo.Index{
 			Key:        []string{"role_id", "menu_id"},
@@ -188,7 +188,7 @@ var Indexes = []Index{
 		},
 	},
 	{
-		DBName:     shareDB.DBName(),
+		DBName:     shareDB.DocManagerDBName(),
 		Collection: CollectionFile,
 		Index: mgo.Index{
 			Key:        []string{"md5"},

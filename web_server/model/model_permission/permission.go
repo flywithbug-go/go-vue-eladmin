@@ -39,56 +39,56 @@ func (p Permission) ToJson() string {
 }
 
 func (p Permission) isExist(query interface{}) bool {
-	return mongo.IsExist(shareDB.DBName(), permissionCollection, query)
+	return mongo.IsExist(shareDB.DocManagerDBName(), permissionCollection, query)
 }
 
 func (p Permission) insert(docs ...interface{}) error {
-	return mongo.Insert(shareDB.DBName(), permissionCollection, docs...)
+	return mongo.Insert(shareDB.DocManagerDBName(), permissionCollection, docs...)
 }
 
 func (p Permission) update(selector, update interface{}) error {
-	return mongo.Update(shareDB.DBName(), permissionCollection, selector, update, true)
+	return mongo.Update(shareDB.DocManagerDBName(), permissionCollection, selector, update, true)
 }
 
 func (p Permission) findOne(query, selector interface{}) (Permission, error) {
 	ap := Permission{}
-	err := mongo.FindOne(shareDB.DBName(), permissionCollection, query, selector, &ap)
+	err := mongo.FindOne(shareDB.DocManagerDBName(), permissionCollection, query, selector, &ap)
 	return ap, err
 }
 func (p Permission) findAll(query, selector interface{}) (results []Permission, err error) {
 	results = []Permission{}
-	err = mongo.FindAll(shareDB.DBName(), permissionCollection, query, selector, &results)
+	err = mongo.FindAll(shareDB.DocManagerDBName(), permissionCollection, query, selector, &results)
 	return results, err
 }
 
 func (p Permission) remove(selector interface{}) error {
-	return mongo.Remove(shareDB.DBName(), permissionCollection, selector)
+	return mongo.Remove(shareDB.DocManagerDBName(), permissionCollection, selector)
 }
 
 func (p Permission) removeAll(selector interface{}) error {
-	return mongo.RemoveAll(shareDB.DBName(), permissionCollection, selector)
+	return mongo.RemoveAll(shareDB.DocManagerDBName(), permissionCollection, selector)
 }
 
 func (p Permission) totalCount(query, selector interface{}) (int, error) {
-	return mongo.TotalCount(shareDB.DBName(), permissionCollection, query, selector)
+	return mongo.TotalCount(shareDB.DocManagerDBName(), permissionCollection, query, selector)
 }
 
 func (p Permission) findPage(page, limit int, query, selector interface{}, fields ...string) (results []Permission, err error) {
 	results = []Permission{}
-	err = mongo.FindPage(shareDB.DBName(), permissionCollection, page, limit, query, selector, &results, fields...)
+	err = mongo.FindPage(shareDB.DocManagerDBName(), permissionCollection, page, limit, query, selector, &results, fields...)
 	return
 }
 
 func (p Permission) pipeAll(pipeline, result interface{}, allowDiskUse bool) error {
-	return mongo.PipeAll(shareDB.DBName(), permissionCollection, pipeline, result, allowDiskUse)
+	return mongo.PipeAll(shareDB.DocManagerDBName(), permissionCollection, pipeline, result, allowDiskUse)
 }
 
 func (p Permission) pipeOne(pipeline, result interface{}, allowDiskUse bool) error {
-	return mongo.PipeOne(shareDB.DBName(), permissionCollection, pipeline, result, allowDiskUse)
+	return mongo.PipeOne(shareDB.DocManagerDBName(), permissionCollection, pipeline, result, allowDiskUse)
 }
 
 func (p Permission) explain(pipeline, result interface{}) (results []Permission, err error) {
-	err = mongo.Explain(shareDB.DBName(), permissionCollection, pipeline, result)
+	err = mongo.Explain(shareDB.DocManagerDBName(), permissionCollection, pipeline, result)
 	return
 }
 
@@ -100,7 +100,7 @@ func (p Permission) Insert() (int64, error) {
 	if p.PId != 0 && !p.isExist(bson.M{"_id": p.PId}) {
 		return -1, fmt.Errorf("pid  not exist")
 	}
-	p.Id, _ = mongo.GetIncrementId(shareDB.DBName(), permissionCollection)
+	p.Id, _ = mongo.GetIncrementId(shareDB.DocManagerDBName(), permissionCollection)
 	p.Children = nil
 	p.CreateTime = time.Now().Unix() * 1000
 	return p.Id, p.insert(p)

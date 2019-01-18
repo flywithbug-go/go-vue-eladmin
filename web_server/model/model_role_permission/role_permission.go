@@ -27,43 +27,43 @@ func (r RolePermission) ToJson() string {
 }
 
 func (r RolePermission) isExist(query interface{}) bool {
-	return mongo.IsExist(shareDB.DBName(), rolePermissionCollection, query)
+	return mongo.IsExist(shareDB.DocManagerDBName(), rolePermissionCollection, query)
 }
 
 func (r RolePermission) insert(docs ...interface{}) error {
-	return mongo.Insert(shareDB.DBName(), rolePermissionCollection, docs...)
+	return mongo.Insert(shareDB.DocManagerDBName(), rolePermissionCollection, docs...)
 }
 
 func (r RolePermission) update(selector, update interface{}) error {
-	return mongo.Update(shareDB.DBName(), rolePermissionCollection, selector, update, true)
+	return mongo.Update(shareDB.DocManagerDBName(), rolePermissionCollection, selector, update, true)
 }
 
 func (r RolePermission) findOne(query, selector interface{}) (RolePermission, error) {
 	ap := RolePermission{}
-	err := mongo.FindOne(shareDB.DBName(), rolePermissionCollection, query, selector, &ap)
+	err := mongo.FindOne(shareDB.DocManagerDBName(), rolePermissionCollection, query, selector, &ap)
 	return ap, err
 }
 func (r RolePermission) findAll(query, selector interface{}) (results []RolePermission, err error) {
 	results = []RolePermission{}
-	err = mongo.FindAll(shareDB.DBName(), rolePermissionCollection, query, selector, &results)
+	err = mongo.FindAll(shareDB.DocManagerDBName(), rolePermissionCollection, query, selector, &results)
 	return results, err
 }
 
 func (r RolePermission) remove(selector interface{}) error {
-	return mongo.Remove(shareDB.DBName(), rolePermissionCollection, selector)
+	return mongo.Remove(shareDB.DocManagerDBName(), rolePermissionCollection, selector)
 }
 
 func (r RolePermission) removeAll(selector interface{}) error {
-	return mongo.RemoveAll(shareDB.DBName(), rolePermissionCollection, selector)
+	return mongo.RemoveAll(shareDB.DocManagerDBName(), rolePermissionCollection, selector)
 }
 
 func (r RolePermission) totalCount(query, selector interface{}) (int, error) {
-	return mongo.TotalCount(shareDB.DBName(), rolePermissionCollection, query, selector)
+	return mongo.TotalCount(shareDB.DocManagerDBName(), rolePermissionCollection, query, selector)
 }
 
 func (r RolePermission) findPage(page, limit int, query, selector interface{}, fields ...string) (results []RolePermission, err error) {
 	results = []RolePermission{}
-	err = mongo.FindPage(shareDB.DBName(), rolePermissionCollection, page, limit, query, selector, &results, fields...)
+	err = mongo.FindPage(shareDB.DocManagerDBName(), rolePermissionCollection, page, limit, query, selector, &results, fields...)
 	return
 }
 
@@ -82,7 +82,7 @@ func (r RolePermission) Exist(query interface{}) bool {
 }
 
 func (r RolePermission) Insert() error {
-	r.Id, _ = mongo.GetIncrementId(shareDB.DBName(), rolePermissionCollection)
+	r.Id, _ = mongo.GetIncrementId(shareDB.DocManagerDBName(), rolePermissionCollection)
 	r.CreateTime = time.Now().Unix() * 1000
 	return r.insert(r)
 }
