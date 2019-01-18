@@ -18,13 +18,13 @@ const (
 )
 
 type responseVisit struct {
-	DayVisit   int `json:"day_visit"`
-	TotalVisit int `json:"total_visit"`
-	DayApi     int `json:"day_api"`
-	TotalApi   int `json:"total_api"`
+	DayVisit   int `json:"dayVisit"`
+	TotalVisit int `json:"totalVisit"`
+	DayApi     int `json:"dayApi"`
+	TotalApi   int `json:"totalApi"`
 
-	DayIP   int `json:"day_ip"`
-	TotalIp int `json:"total_ip"`
+	DayIP   int `json:"dayIp"`
+	TotalIp int `json:"totalIp"`
 }
 
 func visitHandler(c *gin.Context) {
@@ -67,4 +67,13 @@ func visitCountHandler(c *gin.Context) {
 	mon.Monitor = MonitorVisit
 	mon.IncrementMonitorCount()
 	aRes.SetSuccess()
+}
+
+func chartListHandler(c *gin.Context) {
+	aRes := model.NewResponse()
+	defer func() {
+		c.Set(common.KeyContextResponseCode, aRes.Code)
+		c.JSON(http.StatusOK, aRes)
+	}()
+
 }

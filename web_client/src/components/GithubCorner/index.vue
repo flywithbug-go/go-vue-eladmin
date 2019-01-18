@@ -1,5 +1,5 @@
 <template>
-  <a href="https://github.com/elunez/eladmin" target="_blank" class="github-corner" aria-label="View source on Github">
+  <a href="https://github.com/flywithbug-vue-admin/vue-admin" target="_blank" class="github-corner" aria-label="View source on Github">
     <svg
       width="80"
       height="80"

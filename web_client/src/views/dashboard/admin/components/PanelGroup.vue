@@ -61,10 +61,11 @@ export default {
   },
   mounted() {
     get().then(res => {
-      this.count.newIp = res.newIp
-      this.count.newVisits = res.newVisits
-      this.count.recentIp = res.recentIp
-      this.count.recentVisits = res.recentVisits
+      const visit = res.visit
+      this.count.newIp = visit.dayIp
+      this.count.newVisits = visit.dayVisit
+      this.count.recentIp = visit.dayIp
+      this.count.recentVisits = visit.totalVisit
     })
   }
 }
