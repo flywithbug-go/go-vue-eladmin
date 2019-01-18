@@ -1,7 +1,6 @@
 package model_monitor
 
 import (
-	"fmt"
 	"strings"
 	"sync"
 	"time"
@@ -28,9 +27,12 @@ func init() {
 }
 
 func (l Log) AddMonitorInfo() {
+	if l.UserId <= 0 {
+		return
+	}
 	visitUid := visitUIdPool.Get().(*VisitUId)
 	vApi := visitApiPool.Get().(*VisitApi)
-	if len(l.UUID) == 0 {
+	if len(l.UUID) == 0 && l.UserId > 0 {
 		visitUid.findOne(bson.M{"user_id": l.UserId}, nil)
 		l.UUID = visitUid.UUID
 	}
@@ -54,8 +56,4 @@ func (l Log) AddMonitorInfo() {
 	}
 	visitUIdPool.Put(visitUid)
 	visitApiPool.Put(vApi)
-}
-
-func formatMd5(userId int64, clientIp string) string {
-	return fmt.Sprintf("uid:%d-clientIp:%s", userId, clientIp)
 }

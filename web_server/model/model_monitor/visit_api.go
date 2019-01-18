@@ -16,6 +16,7 @@ type VisitApi struct {
 	TimeDate string `json:"time_date,omitempty" bson:"time_date,omitempty"` //2006-01-02:15 小时计算计算
 	Count    int64  `json:"count,omitempty" bson:"count,omitempty"`
 	Method   string `json:"method,omitempty" bson:"method,omitempty"`
+	Total    int64  `json:"total,omitempty" bson:"total,omitempty"`
 }
 
 const (
@@ -67,6 +68,11 @@ func (v VisitApi) findPage(page, limit int, query, selector interface{}, fields 
 	err = mongo.FindPage(shareDB.MonitorDBName(), visitApiApiCollection, page, limit, query, selector, &results, fields...)
 	return
 }
+func (v VisitApi) FindPipeline(pipeline []bson.M) (results []VisitApi, err error) {
+	results = make([]VisitApi, 0)
+	err = v.pipeAll(pipeline, &results, true)
+	return
+}
 
 func (v VisitApi) pipeAll(pipeline, result interface{}, allowDiskUse bool) error {
 	return mongo.PipeAll(shareDB.MonitorDBName(), visitApiApiCollection, pipeline, result, allowDiskUse)
@@ -111,6 +117,22 @@ func (v VisitApi) IncrementVisitApi() (int64, error) {
 func (v VisitApi) TotalCount(query, selector interface{}) (int, error) {
 	return v.totalCount(query, selector)
 }
+
 func (v VisitApi) FindPageFilter(page, limit int, query, selector interface{}, fields ...string) ([]VisitApi, error) {
 	return v.findPage(page, limit, query, selector, fields...)
+}
+
+func (v VisitApi) TotalSumCount(query interface{}) (int, error) {
+	match := bson.M{"$match": query}
+	group := bson.M{"$group": bson.M{"total": bson.M{"$sum": "%count"}}}
+	project := bson.M{"$project": bson.M{"total": 1}}
+	pipeline := []bson.M{
+		match,
+		group,
+		project,
+	}
+	resp := bson.M{}
+	v.pipeAll(pipeline, &resp, true)
+	fmt.Printf("%v", resp)
+	return -1, nil
 }

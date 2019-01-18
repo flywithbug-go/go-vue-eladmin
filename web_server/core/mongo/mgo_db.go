@@ -116,7 +116,6 @@ func FindPage(db, collection string, page, limit int, query, selector, results i
 func FindIter(db, collection string, query interface{}) *mgo.Iter {
 	ms, c := connect(db, collection)
 	defer ms.Close()
-
 	return c.Find(query).Iter()
 }
 

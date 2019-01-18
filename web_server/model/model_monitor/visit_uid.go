@@ -94,7 +94,7 @@ func (v VisitUId) IncrementVisitUId() (int64, error) {
 		return -1, fmt.Errorf("client_ip or uuid is null")
 	}
 	change := mgo.Change{
-		Update:    bson.M{"$inc": bson.M{"count": 1}},
+		Update:    bson.M{"$inc": bson.M{"count": 1}, "$set": bson.M{"user_id": v.UserId}},
 		ReturnNew: true,
 	}
 	_, c := mongo.Collection(shareDB.MonitorDBName(), visitUIdCollection)
