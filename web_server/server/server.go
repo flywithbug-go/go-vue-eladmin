@@ -33,8 +33,8 @@ func StartServer(port, staticPath, rPrefix, authPrefix string) {
 	s := &http.Server{
 		Addr:           port,
 		Handler:        r,
-		ReadTimeout:    30 * time.Second,
-		WriteTimeout:   30 * time.Second,
+		ReadTimeout:    20 * time.Second,
+		WriteTimeout:   50 * time.Second,
 		MaxHeaderBytes: 1 << 20,
 	}
 	err := s.ListenAndServe()
