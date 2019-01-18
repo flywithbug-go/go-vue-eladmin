@@ -496,7 +496,7 @@ export default {
         this.$message.error('图片宽高比需为1:1')
         return Promise.reject()
       })
-      return isLt10M && isSize
+      return isSize
     }
   }
 }

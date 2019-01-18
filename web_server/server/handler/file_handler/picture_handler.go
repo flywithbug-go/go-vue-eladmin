@@ -35,6 +35,11 @@ import (
 	_ "image/png"
 )
 
+const (
+	MaxPictureSize     int64 = 10485760
+	MaxPictureSizeInfo       = "10m"
+)
+
 var (
 	localImageDirPath = "../image/"
 )
@@ -63,9 +68,10 @@ func uploadImageHandler(c *gin.Context) {
 		picture.Size = statInterface.Size()
 	}
 	//10M
-	if picture.Size > 10485760 {
-		log4go.Info(handler_common.RequestId(c) + "picture size > 10m")
-		aRes.SetErrorInfo(http.StatusBadRequest, "picture size > 10m")
+	if picture.Size > MaxPictureSize {
+		msg := fmt.Sprintf("图片大小不能超过%s", MaxPictureSizeInfo)
+		log4go.Info(handler_common.RequestId(c) + msg)
+		aRes.SetErrorInfo(http.StatusBadRequest, msg)
 		return
 	}
 	//获取文件名
