@@ -26,15 +26,17 @@ const (
 )
 
 type Index struct {
-	Name      string
-	Index     mgo.Index
-	DropIndex []string
+	Collection string
+	DBName     string
+	Index      mgo.Index
+	DropIndex  []string
 }
 
 //唯一约束
 var Indexes = []Index{
 	{
-		Name: CollectionPermission,
+		DBName:     shareDB.DBName(),
+		Collection: CollectionPermission,
 		Index: mgo.Index{
 			Key:        []string{"alias"},
 			Unique:     true,
@@ -45,7 +47,8 @@ var Indexes = []Index{
 		},
 	},
 	{
-		Name: CollectionPermission,
+		DBName:     shareDB.DBName(),
+		Collection: CollectionPermission,
 		Index: mgo.Index{
 			Key:        []string{"name"},
 			Unique:     true,
@@ -56,7 +59,8 @@ var Indexes = []Index{
 		},
 	},
 	{
-		Name: CollectionUser,
+		DBName:     shareDB.DBName(),
+		Collection: CollectionUser,
 		Index: mgo.Index{
 			Key:        []string{"username"},
 			Unique:     true,
@@ -67,7 +71,8 @@ var Indexes = []Index{
 		},
 	},
 	{
-		Name: CollectionUser,
+		DBName:     shareDB.DBName(),
+		Collection: CollectionUser,
 		Index: mgo.Index{
 			Key:        []string{"email"},
 			Unique:     true,
@@ -78,7 +83,8 @@ var Indexes = []Index{
 		},
 	},
 	{
-		Name: CollectionRole,
+		DBName:     shareDB.DBName(),
+		Collection: CollectionRole,
 		Index: mgo.Index{
 			Key:        []string{"name"},
 			Unique:     true,
@@ -89,7 +95,8 @@ var Indexes = []Index{
 		},
 	},
 	{
-		Name: CollectionRole,
+		DBName:     shareDB.DBName(),
+		Collection: CollectionRole,
 		Index: mgo.Index{
 			Key:        []string{"alias"},
 			Unique:     true,
@@ -100,7 +107,8 @@ var Indexes = []Index{
 		},
 	},
 	{
-		Name: CollectionApp,
+		DBName:     shareDB.DBName(),
+		Collection: CollectionApp,
 		Index: mgo.Index{
 			Key:        []string{"bundle_id"},
 			Unique:     true,
@@ -111,7 +119,8 @@ var Indexes = []Index{
 		},
 	},
 	{
-		Name: CollectionApp,
+		DBName:     shareDB.DBName(),
+		Collection: CollectionApp,
 		Index: mgo.Index{
 			Key:        []string{"name"},
 			Unique:     true,
@@ -122,7 +131,8 @@ var Indexes = []Index{
 		},
 	},
 	{
-		Name: CollectionAppVersion,
+		DBName:     shareDB.DBName(),
+		Collection: CollectionAppVersion,
 		Index: mgo.Index{
 			Key:        []string{"version", "app_id"},
 			Unique:     true,
@@ -133,7 +143,8 @@ var Indexes = []Index{
 		},
 	},
 	{
-		Name: CollectionRolePermission,
+		DBName:     shareDB.DBName(),
+		Collection: CollectionRolePermission,
 		Index: mgo.Index{
 			Key:        []string{"role_id", "permission_id"},
 			Unique:     true,
@@ -144,7 +155,8 @@ var Indexes = []Index{
 		},
 	},
 	{
-		Name: CollectionUserRole,
+		DBName:     shareDB.DBName(),
+		Collection: CollectionUserRole,
 		Index: mgo.Index{
 			Key:        []string{"role_id", "user_id"},
 			Unique:     true,
@@ -155,7 +167,8 @@ var Indexes = []Index{
 		},
 	},
 	{
-		Name: CollectionMenuRole,
+		DBName:     shareDB.DBName(),
+		Collection: CollectionMenuRole,
 		Index: mgo.Index{
 			Key:        []string{"role_id", "menu_id"},
 			Unique:     true,
@@ -166,7 +179,8 @@ var Indexes = []Index{
 		},
 	},
 	{
-		Name: CollectionFile,
+		DBName:     shareDB.DBName(),
+		Collection: CollectionFile,
 		Index: mgo.Index{
 			Key:        []string{"md5"},
 			Unique:     true,
@@ -181,7 +195,7 @@ var Indexes = []Index{
 func CreateMgoIndex() {
 	aMCfg := config.Conf().DBConfig
 	for _, aMongoIndex := range Indexes {
-		c := mongo.Collection(shareDB.DBName(), aMongoIndex.Name)
+		c := mongo.Collection(aMongoIndex.DBName, aMongoIndex.Collection)
 		if len(aMongoIndex.DropIndex) > 0 {
 			for _, idxName := range aMongoIndex.DropIndex {
 				if err := c.DropIndexName(idxName); err != nil {

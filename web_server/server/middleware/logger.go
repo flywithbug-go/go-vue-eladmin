@@ -24,7 +24,6 @@ func Logger() gin.HandlerFunc {
 			l.RequestId = GenReqID()
 		}
 		l.UUID = c.Request.Header.Get(common.KeyUUID)
-
 		c.Header(common.KeyContextRequestId, l.RequestId)
 		c.Set(common.KeyContextRequestId, l.RequestId)
 		l.StartTime = start.UnixNano()

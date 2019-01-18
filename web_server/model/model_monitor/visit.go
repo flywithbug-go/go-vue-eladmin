@@ -8,7 +8,7 @@ import (
 
 type Visit struct {
 	ClientIp string `json:"client_ip,omitempty" bson:"client_ip,omitempty"`
-	UserId   int64  `json:"user_id,omitempty" bson:"user_id,omitempty"`
+	UUID     int64  `json:"uuid,omitempty" bson:"uuid,omitempty"`
 }
 
 func (v Visit) ToJson() string {

@@ -82,7 +82,7 @@ func bootstrapLogWriter(db *DBWriter) {
 				db.c <- true
 				return
 			}
-			l.Insert()
+			l.AddMonitorInfo()
 			DBlogPool.Put(l)
 		}
 	}
