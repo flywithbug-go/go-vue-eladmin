@@ -29,7 +29,6 @@ func Logger() gin.HandlerFunc {
 		l.ClientIp = c.ClientIP()
 		l.Method = c.Request.Method
 		l.Path = c.Request.URL.String()
-		statusColor := colorForStatus(l.StatusCode)
 		methodColor := colorForMethod(l.Method)
 		log.InfoExt(l, "【GIN】【Start】【rid:%s】【m:%s %s %s】【ip:%s】 【p:%s】",
 			l.RequestId,
@@ -42,6 +41,7 @@ func Logger() gin.HandlerFunc {
 		l.EndTime = end.UnixNano()
 		l.Latency = end.Sub(start)
 		l.StatusCode = c.Writer.Status()
+		statusColor := colorForStatus(l.StatusCode)
 		comment := c.Errors.ByType(gin.ErrorTypePrivate).String()
 		l.UserId = common.UserId(c)
 		l.Info = fmt.Sprintf("【GIN】【Completed】【id:%d】【rid:%s】【m:%s】【c:%3d】【l:%13v】【ip:%s】 【p:%s】【e:%s】",
@@ -53,8 +53,10 @@ func Logger() gin.HandlerFunc {
 			l.ClientIp,
 			l.Path,
 			comment)
+
 		l.Para = common.Para(c)
 		l.ResponseCode = common.ResponseCode(c)
+
 		log.InfoExt(l, "【GIN】【Completed】【id:%d】【rid:%s】【m:%s %s %s】【c:%s%3d%s】【l:%13v】【ip:%s】 【p:%s】【e:%s】",
 			l.UserId,
 			l.RequestId,
@@ -138,3 +140,7 @@ func colorForMethod(method string) string {
 		return reset
 	}
 }
+
+var (
+	skipPaths = []string{""}
+)

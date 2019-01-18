@@ -84,7 +84,7 @@ export default {
       })
     },
     handleProgress(event, file, fileList) {
-      console.log('progress:', event.percent)
+      console.log('progress:', event)
     },
     // 监听上传失败
     handleError(e) {

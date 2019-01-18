@@ -16,5 +16,5 @@ func indexHandler(c *gin.Context) {
 		c.JSON(http.StatusOK, aRes)
 	}()
 	aRes.SetSuccess()
-	time.Sleep(time.Second * 100)
+	time.Sleep(time.Second * 6)
 }
