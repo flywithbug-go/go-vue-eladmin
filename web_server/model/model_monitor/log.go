@@ -1,4 +1,4 @@
-package model_log
+package model_monitor
 
 import (
 	"encoding/json"
@@ -98,6 +98,7 @@ func (l Log) Insert() error {
 			l.Para = string(js)
 		}
 	}
+
 	return l.insert(l)
 }
 

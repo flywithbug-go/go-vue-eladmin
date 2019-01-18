@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"vue-admin/web_server/common"
 	"vue-admin/web_server/model"
-	"vue-admin/web_server/model/model_log"
+	"vue-admin/web_server/model/model_monitor"
 	"vue-admin/web_server/server/handler/handler_common"
 
 	"github.com/flywithbug/log4go"
@@ -40,7 +40,7 @@ func getLogListHandler(c *gin.Context) {
 	if len(flag) > 0 {
 		query["flag"] = flag
 	}
-	var l = model_log.Log{}
+	var l = model_monitor.Log{}
 	totalCount, _ := l.TotalCount(query, nil)
 	results, err := l.FindPageFilter(page, size, query, nil, "-_id")
 	if err != nil {

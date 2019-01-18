@@ -16,9 +16,10 @@ const (
 
 type File struct {
 	Id   int64  `json:"id,omitempty" bson:"_id,omitempty"`
-	Md5  string `json:"md5" bson:"md5"`    //文件md5值
-	Path string `json:"path"  bson:"path"` //本地路径
-	Ext  string `json:"ext" bson:"ext"`    //文件后缀
+	Md5  string `json:"md5" bson:"md5"`                       //文件md5值
+	Path string `json:"path"  bson:"path"`                    //本地路径
+	Ext  string `json:"ext" bson:"ext"`                       //文件后缀
+	Size int64  `json:"size,omitempty" bson:"size,omitempty"` //文件大小
 }
 
 func (f File) ToJson() string {

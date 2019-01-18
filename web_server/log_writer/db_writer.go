@@ -2,7 +2,7 @@ package log_writer
 
 import (
 	"sync"
-	"vue-admin/web_server/model/model_log"
+	"vue-admin/web_server/model/model_monitor"
 
 	"github.com/flywithbug/log4go"
 )
@@ -12,11 +12,11 @@ const tunnelSizeDefault = 1024
 var (
 	DBlogPool       *sync.Pool
 	dbWriterDefault *DBWriter
-	takeup          = false
+	takeUp          = false
 )
 
 type Log struct {
-	model_log.Log
+	model_monitor.Log
 }
 
 func init() {
@@ -32,8 +32,8 @@ type DBWriter struct {
 }
 
 func NewDBWriter() *DBWriter {
-	if dbWriterDefault != nil && takeup == false {
-		takeup = true
+	if dbWriterDefault != nil && takeUp == false {
+		takeUp = true
 		return dbWriterDefault
 	}
 	dw := new(DBWriter)

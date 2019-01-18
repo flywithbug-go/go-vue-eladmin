@@ -22,6 +22,7 @@ const (
 	CollectionMenu           = "menu"
 	CollectionMenuRole       = "menu_role"
 	CollectionFile           = "file"
+	CollectionPicture        = "picture"
 )
 
 type Index struct {

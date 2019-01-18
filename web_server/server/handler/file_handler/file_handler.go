@@ -3,28 +3,17 @@ package file_handler
 import (
 	"crypto/md5"
 	"encoding/hex"
-	"errors"
 	"fmt"
-	"image"
-	"image/gif"
-	"image/jpeg"
-	"image/png"
-	"io"
 	"io/ioutil"
 	"net/http"
 	"os"
 	"path/filepath"
-	"strconv"
-	"strings"
 	"time"
 	"vue-admin/web_server/common"
 	"vue-admin/web_server/model/model_file"
 	"vue-admin/web_server/server/handler/handler_common"
 
-	"github.com/flywithbug/file"
 	"github.com/flywithbug/log4go"
-	"github.com/nfnt/resize"
-	"golang.org/x/image/bmp"
 
 	"vue-admin/web_server/model"
 
@@ -32,14 +21,24 @@ import (
 )
 
 var (
-	localImageFilePath = "../image/"
+	localFileDirPath = "../file/"
 )
 
-func SetLocalImageFilePath(path string) {
-	localImageFilePath = path
+func SetLocalFilePath(path string) {
+	localFileDirPath = path
 }
 
-func uploadImageHandler(c *gin.Context) {
+// 获取文件大小的接口
+type Size interface {
+	Size() int64
+}
+
+// 获取文件信息的接口
+type Stat interface {
+	Stat() (os.FileInfo, error)
+}
+
+func uploadFileHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
 		c.Set(common.KeyContextResponseCode, aRes.Code)
@@ -56,7 +55,9 @@ func uploadImageHandler(c *gin.Context) {
 	defer file.Close()
 
 	localFile := model_file.File{}
-
+	if statInterface, ok := file.(Size); ok {
+		localFile.Size = statInterface.Size()
+	}
 	//获取文件名
 	ext := filepath.Ext(header.Filename)
 	localFile.Ext = ext
@@ -70,7 +71,7 @@ func uploadImageHandler(c *gin.Context) {
 
 	//文件夹创建管理
 	month := time.Now().Format("2006-01")
-	localPath := localImageFilePath + month + "/"
+	localPath := localFileDirPath + month + "/"
 	localFile.Path = localPath
 
 	//文件路径
@@ -123,98 +124,6 @@ func uploadImageHandler(c *gin.Context) {
 		return
 	}
 	localFile.Insert()
-	avatarPath := fmt.Sprintf("/%s/%s", month, fileName)
-	aRes.SetResponseDataInfo("imagePath", avatarPath)
-}
-
-// 判断文件夹是否存在
-func PathExists(path string) (bool, error) {
-	_, err := os.Stat(path)
-	if err == nil {
-		return true, nil
-	}
-	if os.IsNotExist(err) {
-		return false, nil
-	}
-	return false, err
-}
-
-func scale(in io.Reader, out io.Writer, size, quality int) error {
-	origin, fm, err := image.Decode(in)
-	if err != nil {
-		return err
-	}
-	width := size
-	height := size
-	if size == 0 {
-		width = origin.Bounds().Max.X
-		height = origin.Bounds().Max.Y
-	} else {
-		height = origin.Bounds().Max.Y * (size / origin.Bounds().Max.X)
-	}
-
-	if quality == 0 {
-		quality = 100
-	}
-	canvas := resize.Thumbnail(uint(width), uint(height), origin, resize.Lanczos3)
-
-	switch fm {
-	case "jpeg":
-		return jpeg.Encode(out, canvas, &jpeg.Options{Quality: quality})
-	case "png":
-		return png.Encode(out, canvas)
-	case "gif":
-		return gif.Encode(out, canvas, &gif.Options{})
-	case "bmp":
-		return bmp.Encode(out, canvas)
-	default:
-		return errors.New("ERROR FORMAT")
-	}
-	return nil
-}
-
-func loadImageHandler(c *gin.Context) {
-	path := c.Param("path")
-	filename := c.Param("filename")
-	//log4go.Info(handler_common.RequestId(c) + "loadImageHandler: %s %s", path, filename)
-	if path == "" || filename == "" {
-		return
-	}
-	size := c.Query("size")
-
-	fileOrigin := localImageFilePath + path + "/" + filename
-	sizeW, err := strconv.Atoi(size)
-
-	if len(size) == 0 || err != nil {
-		http.ServeFile(c.Writer, c.Request, fileOrigin)
-		return
-	}
-	ext := filepath.Ext(filename)
-	if strings.EqualFold(ext, ".gif") {
-		http.ServeFile(c.Writer, c.Request, fileOrigin)
-		return
-	}
-	filePath := localImageFilePath + path + "/" + size + "-" + filename
-	if !file.FileExists(filePath) {
-		if !file.FileExists(fileOrigin) {
-			c.Writer.Write([]byte("Error: Image Not found."))
-			return
-		}
-		fIn, _ := os.Open(fileOrigin)
-		//log4go.Info(handler_common.RequestId(c) + fileOrigin)
-		defer fIn.Close()
-		fOut, _ := os.Create(filePath)
-		//log4go.Info(handler_common.RequestId(c) + filename)
-		defer fOut.Close()
-		if sizeW < 10 {
-			sizeW = 10
-		}
-		err := scale(fIn, fOut, sizeW, 100)
-		if err != nil {
-			log4go.Info(handler_common.RequestId(c) + err.Error())
-			http.ServeFile(c.Writer, c.Request, fileOrigin)
-			return
-		}
-	}
-	http.ServeFile(c.Writer, c.Request, filePath)
+	filePath := fmt.Sprintf("/%s/%s", month, fileName)
+	aRes.SetResponseDataInfo("filePath", filePath)
 }
