@@ -27,10 +27,11 @@ const (
 
 // monitor
 const (
-	MonitorDBName      = "monitor"
-	CollectionLog      = "log"
-	CollectionVisitUId = "visit_uid"
-	CollectionVisitApi = "visit_api"
+	MonitorDBName          = "monitor"
+	CollectionLog          = "log"
+	CollectionVisitUId     = "visit_uid"
+	CollectionVisitApi     = "visit_api"
+	CollectionMonitorCount = "monitor_count"
 )
 
 type Index struct {
@@ -235,6 +236,18 @@ var MonitorIndexes = []Index{
 			Background: false,
 			Sparse:     true,
 			Name:       "c_path_f_method_time_date_index",
+		},
+	},
+	{
+		DBName:     MonitorDBName,
+		Collection: CollectionMonitorCount,
+		Index: mgo.Index{
+			Key:        []string{"monitor"},
+			Unique:     true,
+			DropDups:   true,
+			Background: false,
+			Sparse:     true,
+			Name:       "c_monitor_f_count_index",
 		},
 	},
 }

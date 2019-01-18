@@ -9,4 +9,10 @@ var Routers = []handler_common.GinHandleFunc{
 		Method:     "GET",
 		Route:      "/visit/info",
 	},
+	{
+		Handler:    visitCountHandler,
+		RouterType: handler_common.RouterTypeNeedAuth,
+		Method:     "POST",
+		Route:      "/visit",
+	},
 }

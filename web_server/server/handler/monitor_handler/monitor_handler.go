@@ -13,17 +13,18 @@ import (
 )
 
 const (
-	timeLayout = "2006-01-02"
+	timeLayout   = "2006-01-02"
+	MonitorVisit = "visit"
 )
 
 type responseVisit struct {
-	DayVisit   int `json:"day_visit,omitempty"`
-	TotalVisit int `json:"total_visit,omitempty"`
-	DayApi     int `json:"day_api,omitempty"`
-	TotalApi   int `json:"total_api,omitempty"`
+	DayVisit   int `json:"day_visit"`
+	TotalVisit int `json:"total_visit"`
+	DayApi     int `json:"day_api"`
+	TotalApi   int `json:"total_api"`
 
-	DayIP   int `json:"day_ip,omitempty"`
-	TotalIp int `json:"total_ip,omitempty"`
+	DayIP   int `json:"day_ip"`
+	TotalIp int `json:"total_ip"`
 }
 
 func visitHandler(c *gin.Context) {
@@ -33,19 +34,39 @@ func visitHandler(c *gin.Context) {
 		c.JSON(http.StatusOK, aRes)
 	}()
 	query := bson.M{}
+	monitorCount := model_monitor.MonitorCount{}
+
 	resVisit := responseVisit{}
 	timeF := time.Now().Format(timeLayout)
+	//log4go.Info(timeF)
 	vApi := model_monitor.VisitApi{}
 	vUId := model_monitor.VisitUId{}
 
 	query = bson.M{"time_date": bson.M{"$regex": timeF, "$options": "i"}}
-	resVisit.DayIP, _ = vApi.TotalSumCount(query)
+	resVisit.DayApi, _ = vApi.TotalSumCount(query)
+	resVisit.DayVisit, _ = monitorCount.TotalSumCount(query) //日访问
 
-	resVisit.DayVisit, _ = vUId.TotalSumCount(query)
 	resVisit.DayIP, _ = vUId.TotalCount(query, nil)
+
 	query = bson.M{"time_date": bson.M{"$regex": "", "$options": "i"}}
-	resVisit.TotalVisit, _ = vUId.TotalSumCount(query)
-	resVisit.TotalIp, _ = vUId.TotalCount(nil, nil)
-	resVisit.TotalApi, _ = vApi.TotalCount(nil, nil)
+	resVisit.TotalApi, _ = vApi.TotalSumCount(query)
+	resVisit.TotalVisit, _ = monitorCount.TotalSumCount(query) //总访问
+
+	resVisit.TotalIp, _ = vUId.TotalSumCount(query)
+
 	aRes.AddResponseInfo("visit", resVisit)
+}
+
+func visitCountHandler(c *gin.Context) {
+	aRes := model.NewResponse()
+	defer func() {
+		c.Set(common.KeyContextResponseCode, aRes.Code)
+		c.JSON(http.StatusOK, aRes)
+	}()
+
+	mon := model_monitor.MonitorCount{}
+	mon.Monitor = MonitorVisit
+
+	mon.IncrementMonitorCount()
+	aRes.SetSuccess()
 }

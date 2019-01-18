@@ -1,46 +1,31 @@
 <template>
-  <section class="content">
-    <fixed-icon :bottom="3" class="fixed-container" @clickEvent="chat">
-      <svg-icon icon-class="add" class="icon-add"/>
-    </fixed-icon>
-  </section>
+  <div class="dashboard-container">
+    <component :is="currentRole"/>
+  </div>
 </template>
 
 <script>
-import fixedIcon from '../../components/FixedButton'
+import { mapGetters } from 'vuex'
+import adminDashboard from './admin'
+import { count } from '@/api/visits'
+
+/**
+   * 记录访问，只有页面刷新或者第一次加载才会记录
+   */
+count().then(res => {})
+
 export default {
   name: 'Dashboard',
-  components: {
-    fixedIcon
-  },
+  components: { adminDashboard },
   data() {
     return {
+      currentRole: 'adminDashboard'
     }
   },
-  mounted() {
-    document.title = 'Dashboard'
-  },
-  methods: {
-    chat() { // 图标点击事件
-      console.log('你好')
-    }
+  computed: {
+    ...mapGetters([
+      'roles'
+    ])
   }
 }
-
 </script>
-
-<style scoped lang="scss">
-  .content{
-    height: 100vh;
-  }
-  .fixed-container{
-    background-color: #eef1f6;
-    .icon-add{
-      width: 2rem;
-      height: 1.9rem;
-      background-size: 2rem 1.9rem;
-    }
-  }
-
-</style>
-
