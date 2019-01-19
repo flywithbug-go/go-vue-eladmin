@@ -175,7 +175,7 @@ func (u User) FindTreeOne() (User, error) {
 		return u, err
 	}
 	list := []User{u}
-	makeTreeList(list, nil)
+	makeTreeList(list, bson.M{"password": 0})
 	return list[0], nil
 }
 
