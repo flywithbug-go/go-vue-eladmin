@@ -48,7 +48,9 @@
 
           <el-option
             v-for="item in users"
-            :key="item.id"/>
+            :key="item.id"
+            :label="item.username"
+            :value="item.id"/>
 
         </el-select>
 
@@ -130,20 +132,20 @@ export default {
           { max: 200, message: '请输入不多于200个字符', trigger: 'blur' }
         ]
       }
-
     }
   },
   methods: {
-    queryList() {
+    queryList(name) {
+      if (name.length === 0) {
+        return
+      }
       this.url = '/user/list'
       const sort = '+id'
-      const query = this.query
-      const name = query.value
       this.params = { page: this.page, size: this.size, sort: sort }
       this.params['enabled'] = true
       this.params['username'] = name
       queryList(this.params).then(res => {
-
+        this.users = res.list
       })
     },
     resetForm() {
