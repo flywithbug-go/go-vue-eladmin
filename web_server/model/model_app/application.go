@@ -177,7 +177,11 @@ func (a *Application) fetchManagers() error {
 }
 
 func (a Application) FindAll(query, selector interface{}) (apps []Application, err error) {
-	return a.findAll(query, selector)
+	apps, err = a.findAll(query, selector)
+	for index := range apps {
+		apps[index].fetchManagers()
+	}
+	return
 }
 
 //func FindPageApplications(page, limit int, fields ...string) (apps *[]Application, err error) {
@@ -188,5 +192,9 @@ func (a Application) TotalCount(query, selector interface{}) (int, error) {
 	return a.totalCount(query, selector)
 }
 func (a Application) FindPageFilter(page, limit int, query, selector interface{}, fields ...string) (apps []Application, err error) {
-	return a.findPage(page, limit, query, selector, fields...)
+	apps, err = a.findPage(page, limit, query, selector, fields...)
+	for index := range apps {
+		apps[index].fetchManagers()
+	}
+	return
 }
