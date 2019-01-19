@@ -61,14 +61,23 @@ export default {
     formatTimeDuration,
     beforeInit() {
       this.url = 'log/list'
-      const sort = 'id,desc'
+      const sort = '-id'
       const query = this.query
       const user_id = query.user_id
       const flag = query.flag
       const requestId = query.requestId
-      this.params = { page: this.page, size: this.size, sort: sort, requestId: requestId }
-      if (user_id && user_id) { this.params['user_id'] = user_id }
-      if (flag !== '' && flag !== null) { this.params['flag'] = flag }
+      this.params = { page: this.page, size: this.size, sort: sort }
+      if (requestId && requestId.length > 0) {
+        this.params['requestId'] = requestId
+      }
+
+      if (user_id && user_id.length > 0) {
+        this.params['user_id'] = user_id
+      }
+      if (flag && flag.length > 0) {
+        this.params['flag'] = flag
+      }
+      console.log(':query', this.params)
       return true
     }
   }

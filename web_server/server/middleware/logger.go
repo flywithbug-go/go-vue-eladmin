@@ -1,13 +1,13 @@
 package middleware
 
 import (
+	"encoding/base64"
+	"encoding/binary"
 	"fmt"
 	"net/http"
 	"time"
 	"vue-admin/web_server/common"
 	"vue-admin/web_server/log_writer"
-
-	"gopkg.in/mgo.v2/bson"
 
 	log "github.com/flywithbug/log4go"
 	"github.com/gin-gonic/gin"
@@ -35,11 +35,11 @@ func Logger() gin.HandlerFunc {
 		l.Path = c.Request.URL.String()
 
 		methodColor := colorForMethod(l.Method)
-		log.InfoExt(l, "【GIN】【Start】【rid:%s】【m:%s %s %s】【ip:%s】 【p:%s】",
+		log.InfoExt(l, "[GIN] [%s] [Start]\t%s %s %s|%s|\t%s",
 			l.RequestId,
 			methodColor, l.Method, reset,
-			l.ClientIp,
-			l.Path)
+			l.Path,
+			l.ClientIp)
 		//----====----
 		c.Next()
 
@@ -50,10 +50,10 @@ func Logger() gin.HandlerFunc {
 		statusColor := colorForStatus(l.StatusCode)
 		comment := c.Errors.ByType(gin.ErrorTypePrivate).String()
 		l.UserId = common.UserId(c)
-		l.Info = fmt.Sprintf("【GIN】【Completed】【id:%d】【rid:%s】【m:%s】【c:%3d】【l:%13v】【ip:%s】 【p:%s】【e:%s】",
-			l.UserId,
+		l.Info = fmt.Sprintf("[GIN] [%s] [Completed]\t%s|%5d\t%3d|\t3d\t%13v|\t%s\t%s|\t%s",
 			l.RequestId,
 			l.Method,
+			l.UserId,
 			l.StatusCode,
 			l.Latency,
 			l.ClientIp,
@@ -63,22 +63,27 @@ func Logger() gin.HandlerFunc {
 		l.Para = common.Para(c)
 		l.ResponseCode = common.ResponseCode(c)
 
-		log.InfoExt(l, "【GIN】【Completed】【id:%d】【rid:%s】【m:%s %s %s】【c:%s%3d%s】【l:%13v】【ip:%s】 【p:%s】【e:%s】",
-			l.UserId,
+		log.InfoExt(l, "[GIN] [%s] [Completed]\t%s %s %s|%s|\t%5d|\t%s%3d%s|\t%13v|\t%s|\t%s|\t%s",
 			l.RequestId,
 			methodColor, l.Method, reset,
+			l.Path,
+			l.UserId,
 			statusColor, l.StatusCode, reset,
 			l.Latency,
 			l.ClientIp,
-			l.Path,
 			comment,
 		)
 	}
 }
 
+var pid = uint32(time.Now().UnixNano() % 4294967291)
+
 // GenReqID is a random generate string func
 func GenReqID() string {
-	return bson.NewObjectId().Hex()
+	var b [12]byte
+	binary.LittleEndian.PutUint32(b[:], pid)
+	binary.LittleEndian.PutUint64(b[4:], uint64(time.Now().UnixNano()))
+	return base64.URLEncoding.EncodeToString(b[:])
 }
 
 var (

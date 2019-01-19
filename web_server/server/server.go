@@ -8,16 +8,15 @@ import (
 	"vue-admin/web_server/server/middleware"
 
 	"github.com/gin-contrib/cors"
-	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
 )
 
 func StartServer(port, staticPath, rPrefix, authPrefix string) {
 	r := gin.New()
 	r.Use(middleware.Logger(), gin.Recovery())
-	r.Use(static.Serve("/", static.LocalFile(staticPath, true)))
-	r.LoadHTMLGlob(staticPath + "/index.html")
-	r.NoRoute(NoRoute)
+	//r.Use(static.Serve("/", static.LocalFile(staticPath, true)))
+	//r.LoadHTMLGlob(staticPath + "/index.html")
+	//r.NoRoute(NoRoute)
 	cors.Default()
 	r.Use(cors.New(cors.Config{
 		AllowAllOrigins:  true,
