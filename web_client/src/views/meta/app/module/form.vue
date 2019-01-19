@@ -176,7 +176,7 @@ export default {
           duration: 2500
         })
         this.loading = false
-        this.sup_this.init()
+        this.$parent.$parent.init()
       }).catch(err => {
         this.loading = false
         console.log(err.msg)

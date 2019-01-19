@@ -56,11 +56,9 @@ func addApplicationHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "Desc must fill")
 		return
 	}
-
-	userId := common.UserId(c)
 	user := model_user.User{}
-	user.Id = userId
-	user.FindOne()
+	user.Id = common.UserId(c)
+	user, _ = user.FindOne()
 	app.Owner = user.Username
 	err = app.Insert()
 	if err != nil {
