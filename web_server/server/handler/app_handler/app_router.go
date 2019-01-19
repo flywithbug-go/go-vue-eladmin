@@ -7,7 +7,13 @@ var Routers = []handler_common.GinHandleFunc{
 		Handler:    addApplicationHandler, //添加应用
 		RouterType: handler_common.RouterTypeNeedAuth,
 		Method:     "POST",
-		Route:      "/app/add",
+		Route:      "/app",
+	},
+	{
+		Handler:    updateApplicationHandler,
+		RouterType: handler_common.RouterTypeNeedAuth,
+		Method:     "PUT",
+		Route:      "/app",
 	},
 	{
 		Handler:    getApplicationsHandler,
@@ -20,12 +26,6 @@ var Routers = []handler_common.GinHandleFunc{
 		RouterType: handler_common.RouterTypeNeedAuth,
 		Method:     "GET",
 		Route:      "/app/list/simple",
-	},
-	{
-		Handler:    updateApplicationHandler,
-		RouterType: handler_common.RouterTypeNeedAuth,
-		Method:     "POST",
-		Route:      "/app/update",
 	},
 	{
 		Handler:    removeApplicationHandler,

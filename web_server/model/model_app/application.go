@@ -15,11 +15,11 @@ import (
 const (
 	appCollection = mongo_index.CollectionApp
 
-	//APPlicationPermissionAll    = "APP_ALL"
-	APPlicationPermissionSelect = "APP_SELECT"
-	APPlicationPermissionCreate = "APP_CREATE"
-	APPlicationPermissionEdit   = "APP_EDIT"
-	APPlicationPermissionDelete = "APP_DELETE"
+	//ApplicationPermissionAll    = "APP_ALL"
+	ApplicationPermissionSelect = "APP_SELECT"
+	ApplicationPermissionCreate = "APP_CREATE"
+	ApplicationPermissionEdit   = "APP_EDIT"
+	ApplicationPermissionDelete = "APP_DELETE"
 )
 
 //修改规则，等级

@@ -27,7 +27,7 @@ func addApplicationHandler(c *gin.Context) {
 		c.Set(common.KeyContextResponseCode, aRes.Code)
 		c.JSON(http.StatusOK, aRes)
 	}()
-	if check_permission.CheckNoPermission(c, model_app.APPlicationPermissionCreate) {
+	if check_permission.CheckNoPermission(c, model_app.ApplicationPermissionCreate) {
 		log4go.Info(handler_common.RequestId(c) + "has no permission")
 		aRes.SetErrorInfo(http.StatusOK, "has no permission")
 		return
@@ -85,7 +85,7 @@ func getApplicationsHandler(c *gin.Context) {
 		c.Set(common.KeyContextResponseCode, aRes.Code)
 		c.JSON(http.StatusOK, aRes)
 	}()
-	if check_permission.CheckNoPermission(c, model_app.APPlicationPermissionSelect) {
+	if check_permission.CheckNoPermission(c, model_app.ApplicationPermissionSelect) {
 		log4go.Info(handler_common.RequestId(c) + "has no permission")
 		aRes.SetErrorInfo(http.StatusOK, "has no permission")
 		return
@@ -139,7 +139,7 @@ func updateApplicationHandler(c *gin.Context) {
 		c.Set(common.KeyContextResponseCode, aRes.Code)
 		c.JSON(http.StatusOK, aRes)
 	}()
-	if check_permission.CheckNoPermission(c, model_app.APPlicationPermissionEdit) {
+	if check_permission.CheckNoPermission(c, model_app.ApplicationPermissionEdit) {
 		log4go.Info(handler_common.RequestId(c) + "has no permission")
 		aRes.SetErrorInfo(http.StatusOK, "has no permission")
 		return
@@ -167,7 +167,7 @@ func getAllSimpleAppHandler(c *gin.Context) {
 		c.Set(common.KeyContextResponseCode, aRes.Code)
 		c.JSON(http.StatusOK, aRes)
 	}()
-	if check_permission.CheckNoPermission(c, model_app.APPlicationPermissionSelect) {
+	if check_permission.CheckNoPermission(c, model_app.ApplicationPermissionSelect) {
 		log4go.Info(handler_common.RequestId(c) + "has no permission")
 		aRes.SetErrorInfo(http.StatusOK, "has no permission")
 		return
@@ -197,7 +197,7 @@ func removeApplicationHandler(c *gin.Context) {
 		c.Set(common.KeyContextResponseCode, aRes.Code)
 		c.JSON(http.StatusOK, aRes)
 	}()
-	if check_permission.CheckNoPermission(c, model_app.APPlicationPermissionDelete) {
+	if check_permission.CheckNoPermission(c, model_app.ApplicationPermissionDelete) {
 		log4go.Info(handler_common.RequestId(c) + "has no permission")
 		aRes.SetErrorInfo(http.StatusOK, "has no permission")
 		return

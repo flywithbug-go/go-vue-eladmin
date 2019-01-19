@@ -8,11 +8,38 @@ export function addApplicationRequest(para) {
     desc: para.desc
   }
   return client({
-    url: '/app/add',
+    url: '/app',
     method: 'post',
     data
   })
 }
+export function add(para) {
+  const data = {
+    bundle_id: para.bundle_id,
+    icon: para.icon,
+    name: para.name,
+    desc: para.desc
+  }
+  return client({
+    url: '/app',
+    method: 'post',
+    data
+  })
+}
+export function edit(para) {
+  const data = {
+    icon: para.icon,
+    name: para.name,
+    desc: para.desc,
+    id: para.id
+  }
+  return client({
+    url: '/app',
+    method: 'put',
+    data
+  })
+}
+
 export function deleteApplication(data) {
   return client({
     url: '/app',
@@ -44,8 +71,8 @@ export function updateApplicationRequest(para) {
     id: para.id
   }
   return client({
-    url: '/app/update',
-    method: 'post',
+    url: '/app',
+    method: 'put',
     data
   })
 }
