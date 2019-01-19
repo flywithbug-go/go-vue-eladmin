@@ -258,13 +258,8 @@
 <script>
 import fixedButton from '@/components/FixedButton'
 import Pagination from '@/components/Pagination'
-
-import {
-  getSimpleApplicationListRequest,
-  getAppVersionListRequest,
-  addAppVersionRequest,
-  updateAppVersionRequest,
-  updateStatusAppVersionRequest, removeAppVersionRequest } from '@/api/app'
+import { simpleList } from '@/api/app'
+import { list, add, edit, editStatus, del } from '@/api/appVersion'
 import { formatDate } from '@/utils/date'
 import ElTableFooter from 'element-ui'
 
@@ -401,7 +396,7 @@ export default {
   methods: {
     getSimpleAppList() {
       this.listLoading = true
-      getSimpleApplicationListRequest().then(response => {
+      simpleList().then(response => {
         this.simpleAppList = response.list
         this.currentSimpleApp = this.simpleAppList[0]
         this.listQuery.app_id = this.currentSimpleApp.id
@@ -409,7 +404,7 @@ export default {
       })
     },
     getList() {
-      getAppVersionListRequest(this.listQuery).then(response => {
+      list(this.listQuery).then(response => {
         this.list = response.list
         this.total = response.total
         this.listLoading = false
@@ -515,7 +510,7 @@ export default {
       }
     },
     removeAppVersion(data) {
-      removeAppVersionRequest(data.id).then(() => {
+      del(data.id).then(() => {
         this.getList()
       })
     },
@@ -531,7 +526,7 @@ export default {
             return
           }
 
-          addAppVersionRequest(
+          add(
             this.listQuery.app_id,
             this.temp.version,
             this.temp.parent_version,
@@ -553,7 +548,7 @@ export default {
       })
     },
     updateStatus(data) {
-      updateStatusAppVersionRequest(data.id, data.status + 1).then(() => {
+      editStatus(data.id, data.status + 1).then(() => {
         this.getList()
         this.$notify({
           title: '成功',
@@ -623,7 +618,7 @@ export default {
             parent_version = ''
           }
 
-          updateAppVersionRequest(
+          edit(
             this.temp.id,
             this.temp.app_id,
             this.temp.version,
