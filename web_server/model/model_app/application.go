@@ -27,17 +27,16 @@ const (
 //修改规则，等级
 // role 等级为1 的用户可以编辑
 type Application struct {
-	Id         int64    `json:"id,omitempty" bson:"_id,omitempty"`
-	Name       string   `json:"name,omitempty" bson:"name,omitempty"`        //应用（组件）名称
-	Desc       string   `json:"desc,omitempty" bson:"desc,omitempty"`        //项目描述
-	CreateTime int64    `json:"time,omitempty" bson:"create_time,omitempty"` //创建时间
-	Icon       string   `json:"icon,omitempty" bson:"icon,omitempty"`        //icon 地址
-	Owner      string   `json:"owner,omitempty" bson:"owner,omitempty"`      //应用所有者
-	OwnerId    int64    `json:"owner_id,omitempty" bson:"owner_id,omitempty"`
-	BundleId   string   `json:"bundle_id,omitempty" bson:"bundle_id,omitempty"`
-	Managers   []string `json:"managers,omitempty" bson:"managers,omitempty"` //管理员
-
-	ManagerIds []int64 `json:"manager_ids,omitempty" bson:"manager_ids,omitempty"` //管理员Id
+	Id         int64             `json:"id,omitempty" bson:"_id,omitempty"`
+	Name       string            `json:"name,omitempty" bson:"name,omitempty"`        //应用（组件）名称
+	Desc       string            `json:"desc,omitempty" bson:"desc,omitempty"`        //项目描述
+	CreateTime int64             `json:"time,omitempty" bson:"create_time,omitempty"` //创建时间
+	Icon       string            `json:"icon,omitempty" bson:"icon,omitempty"`        //icon 地址
+	Owner      *model_user.User  `json:"owner,omitempty" bson:"owner,omitempty"`      //应用所有者
+	OwnerId    int64             `json:"owner_id,omitempty" bson:"owner_id,omitempty"`
+	BundleId   string            `json:"bundle_id,omitempty" bson:"bundle_id,omitempty"`
+	Managers   []model_user.User `json:"managers,omitempty" bson:"managers,omitempty"`       //管理员
+	ManagerIds []int64           `json:"manager_ids,omitempty" bson:"manager_ids,omitempty"` //管理员Id
 }
 
 func (a Application) ToJson() string {
@@ -118,7 +117,7 @@ func (a *Application) Insert() error {
 	a.CreateTime = time.Now().Unix() * 1000
 	list := a.ManagerIds
 	a.ManagerIds = nil
-	a.Owner = ""
+	a.Owner = nil
 	err := a.insert(a)
 	if err != nil {
 		return err
@@ -133,6 +132,7 @@ func (a Application) updateAppManagers() error {
 		return nil
 	}
 	aM := model_app_manager.AppManager{}
+	aM.RemoveAppId(a.Id)
 	for _, userId := range a.ManagerIds {
 		aM.UserId = userId
 		aM.AppId = a.Id
@@ -143,7 +143,7 @@ func (a Application) updateAppManagers() error {
 
 func (a Application) Update() error {
 	a.BundleId = ""
-	a.Owner = ""
+	a.Owner = nil
 	a.CreateTime = 0
 	a.updateAppManagers()
 	a.ManagerIds = nil
@@ -157,32 +157,30 @@ func (a Application) Remove() error {
 	return a.remove(bson.M{"_id": a.Id})
 }
 
-func (a Application) fetchOwnerManagers() (model_user.User, []string) {
+func (a Application) fetchOwnerManagers() (model_user.User, []model_user.User, []string) {
 	user := model_user.User{}
 	user.Id = a.OwnerId
 	user, _ = user.FindOne()
 
 	aM := model_app_manager.AppManager{}
 	aMs, _ := aM.FindAll(bson.M{"app_id": a.Id}, nil)
-	users := make([]string, 0)
+	users := make([]model_user.User, 0)
+	managerInfo := make([]string, 0)
 	for _, item := range aMs {
 		u := model_user.User{}
 		u.Id = item.UserId
 		u, err := u.FindOne()
 		if err == nil {
-			users = append(users, u.Username)
+			users = append(users, u)
+			managerInfo = append(managerInfo, u.Username)
 		}
 	}
-	return user, users
+	return user, users, managerInfo
 }
 
 func (a Application) FindAll(query, selector interface{}) (apps []Application, err error) {
 	apps, err = a.findAll(query, selector)
-	for index := range apps {
-		user, users := apps[index].fetchOwnerManagers()
-		apps[index].Owner = user.Username
-		apps[index].Managers = users
-	}
+	makeTreeApplication(apps)
 	return
 }
 
@@ -195,10 +193,14 @@ func (a Application) TotalCount(query, selector interface{}) (int, error) {
 }
 func (a Application) FindPageFilter(page, limit int, query, selector interface{}, fields ...string) (apps []Application, err error) {
 	apps, err = a.findPage(page, limit, query, selector, fields...)
+	makeTreeApplication(apps)
+	return
+}
+
+func makeTreeApplication(apps []Application) {
 	for index := range apps {
-		user, users := apps[index].fetchOwnerManagers()
-		apps[index].Owner = user.Username
+		user, users, _ := apps[index].fetchOwnerManagers()
+		apps[index].Owner = &user
 		apps[index].Managers = users
 	}
-	return
 }

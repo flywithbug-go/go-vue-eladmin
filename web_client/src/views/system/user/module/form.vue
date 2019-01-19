@@ -12,7 +12,7 @@
         <el-radio v-model="form.enabled" label="false" >锁定</el-radio>
       </el-form-item>
       <el-form-item style="margin-bottom: 0px;" label="角色">
-        <treeselect v-model="roleIds" :multiple="true" :options="roles" style="width: 370px;" placeholder="请选择角色" />
+        <TreeSelect v-model="roleIds" :multiple="true" :options="roles" style="width: 370px;" placeholder="请选择角色" />
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -24,11 +24,11 @@
 
 <script>
 import { add, edit } from '@/api/user'
-import Treeselect from '@riophae/vue-treeselect'
+import TreeSelect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 export default {
   name: 'Form',
-  components: { Treeselect },
+  components: { TreeSelect },
   props: {
     roles: {
       type: Array,

@@ -35,24 +35,39 @@
       </el-form-item>
       <el-form-item
         :label="$t('table.manager')"
-        prop="manager">
-        <el-select
-          v-model="form.managers"
-          :loading="loading"
-          :remote-method="queryList"
-          multiple
-          filterable
-          remote
-          reserve-keyword
-          placeholder="请输入关键字">
+        prop="managers">
 
-          <el-option
-            v-for="item in users"
-            :key="item.id"
-            :label="item.username"
-            :value="item.id"/>
-
-        </el-select>
+        <div >
+          <el-tag
+            v-for="(item,id) in form.managers"
+            :key="id"
+            :disable-transitions="false"
+            closable
+            type="info"
+            style="margin-left: 5px;"
+            @close="handleClose(item.id)">
+            {{ item.username }}
+          </el-tag>
+        </div>
+        <div class="head-container">
+          <el-select
+            v-model="manager_ids"
+            :remote-method="queryList"
+            :loading="loading"
+            style="margin-top: 5px"
+            remote
+            reserve-keyword
+            multiple
+            filterable
+            placeholder="请输入关键词">
+            <el-option
+              v-for="item in options"
+              :key="item.id"
+              :label="item.username"
+              :value="item.id"/>
+          </el-select>
+          <el-button @click="addAction">{{ "添加" }}</el-button>
+        </div>
 
       </el-form-item>
 
@@ -106,13 +121,14 @@ export default {
   },
   data() {
     return {
-      users: [],
+      options: [],
+      manager_ids: [],
       headers: { 'Authorization': store.getters.token },
       actionURL: global_.UploadImageURL,
       imagePlaceHolder: require('@/assets/image_placeholder.png'),
       dialog: false,
       loading: false,
-      form: { id: 0, name: '', owner: '', desc: '', icon: '', bundle_id: '', managers: [] },
+      form: { id: 0, name: '', owner: '', desc: '', icon: '', bundle_id: '', managers: [], manager_ids: [] },
       rules: {
         name: [
           { required: true, message: this.$t('placeholder.name'), trigger: 'blur' },
@@ -131,27 +147,41 @@ export default {
           { min: 10, message: '请输入不少于10个字符', trigger: 'blur' },
           { max: 200, message: '请输入不多于200个字符', trigger: 'blur' }
         ]
+
       }
     }
   },
+  computed: {
+
+  },
   methods: {
+    handleClose(tag) {
+      this.form.managers.splice(this.form.managers.indexOf(tag), 1)
+    },
     queryList(name) {
-      if (name.length === 0) {
+      if (!name) {
         return
       }
+      this.loading = true
       this.url = '/user/list'
       const sort = '+id'
       this.params = { page: this.page, size: this.size, sort: sort }
       this.params['enabled'] = true
       this.params['username'] = name
       queryList(this.params).then(res => {
-        this.users = res.list
+        this.options = res.list
+        this.loading = false
+      }).catch(() => {
+        this.loading = false
       })
+    },
+    addAction() {
+      console.log('addAction:', this.manager_ids)
     },
     resetForm() {
       this.dialog = false
       this.$refs['form'].resetFields()
-      this.form = { id: 0, name: '', owner: '', desc: '', icon: '', bundle_id: '' }
+      this.form = { id: 0, name: '', owner: '', desc: '', icon: '', bundle_id: '', managers: [], manager_ids: [] }
     },
     cancel() {
       this.resetForm()
@@ -193,8 +223,9 @@ export default {
       return isSize
     },
     doSubmit() {
+      // console.log('form', this.form, 'users:', this.users)
+      // return
       this.$refs['form'].validate((valid) => {
-        console.log(valid)
         if (valid) {
           this.loading = true
           if (this.isAdd) {

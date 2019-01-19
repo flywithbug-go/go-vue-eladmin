@@ -5,7 +5,8 @@ export function add(para) {
     bundle_id: para.bundle_id,
     icon: para.icon,
     name: para.name,
-    desc: para.desc
+    desc: para.desc,
+    manager_ids: para.manager_ids
   }
   return client({
     url: '/app',
@@ -18,7 +19,8 @@ export function edit(para) {
     icon: para.icon,
     name: para.name,
     desc: para.desc,
-    id: para.id
+    id: para.id,
+    manager_ids: para.manager_ids
   }
   return client({
     url: '/app',

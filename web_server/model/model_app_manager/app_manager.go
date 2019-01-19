@@ -97,3 +97,7 @@ func (r AppManager) Remove() error {
 func (r AppManager) RemoveUserId(userId int64) error {
 	return r.removeAll(bson.M{"user_id": userId})
 }
+
+func (r AppManager) RemoveAppId(appId int64) error {
+	return r.removeAll(bson.M{"app_id": appId})
+}

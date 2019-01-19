@@ -26,7 +26,6 @@ export default {
   },
   methods: {
     to() {
-      console.log('editTo: ', this.data)
       const _this = this.$refs.form
       _this.form = {
         id: this.data.id,
@@ -34,9 +33,12 @@ export default {
         owner: this.data.owner,
         desc: this.data.desc,
         icon: this.data.icon,
-        bundle_id: this.data.bundle_id
+        bundle_id: this.data.bundle_id,
+        managers: this.data.managers
       }
+
       _this.dialog = true
+      console.log('edit:', _this.form)
     }
 
   }

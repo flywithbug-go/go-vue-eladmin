@@ -51,16 +51,18 @@
         align="center"
         width="150px">
         <template slot-scope="scope">
-          <span> {{ scope.row.owner }} </span>
+          <span> {{ scope.row.owner.username }} </span>
         </template>
       </el-table-column>
       <el-table-column
         :label="$t('table.manager')"
         prop="id"
         align="center"
-        width="150px">
+        min-width="150px">
         <template slot-scope="scope">
-          <span> {{ scope.row.managers }} </span>
+          <el-tag v-for="(item,id) in scope.row.managers" :key="id" type="info" style="margin-left: 5px" >
+            {{ item.username }}
+          </el-tag>
         </template>
       </el-table-column>
 

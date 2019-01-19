@@ -1,6 +1,8 @@
 package app_handler
 
 import (
+	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -76,15 +78,17 @@ func editHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusOK, "has no permission")
 		return
 	}
-	app := new(model_app.Application)
-	err := c.BindJSON(app)
+	para := new(model_app.Application)
+	err := c.BindJSON(para)
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid: "+err.Error())
 		return
 	}
-	c.Set(common.KeyContextPara, app)
-	err = app.Update()
+	c.Set(common.KeyContextPara, para)
+	js, _ := json.Marshal(para)
+	fmt.Println(string(js))
+	err = para.Update()
 	if err != nil {
 		log4go.Error(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "update failed: "+err.Error())
