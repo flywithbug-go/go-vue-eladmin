@@ -1,19 +1,19 @@
 export default {
   route: {
-    versionManager:'版本管理',
+    versionManager: '版本管理',
     index: '首页',
-    appManager:'APP管理',
+    appManager: 'APP管理',
     metadata: '元数据',
     userManager: '人员管理',
-    organizationStruct:'组织架构',
-    systemManager:"系统管理",
+    organizationStruct: '组织架构',
+    systemManager: '系统管理',
     permissionManager: '权限管理',
-    roleManager:'角色管理',
-    menuManager:'菜单管理',
+    roleManager: '角色管理',
+    menuManager: '菜单管理',
     user: '人员',
     dashboard: '首页',
     guide: '引导页',
-    icons: '图标',
+    icons: '图标'
   },
   navbar: {
     logOut: '退出登录',
@@ -22,9 +22,9 @@ export default {
     screenfull: '全屏',
     theme: '换肤',
     size: '布局大小',
-    personal:"个人中心"
+    personal: '个人中心'
   },
-  actions:{
+  actions: {
     action: '操 作',
     search: '搜 索',
     add: '添 加',
@@ -32,26 +32,26 @@ export default {
     delete: '删 除',
     cancel: '取 消',
     confirm: '确 定',
-    export: "导出",
+    export: '导出'
   },
-  placeholder:{
-    name: "请输入名字",
-    alias:"请输入别名",
-    bundle_id: "请输入应用包名,格式: com.xxx.xx",
-    desc: "请输入描述内容",
-    sup_dir:"请选择上级目录",
-    permission:"请选择权限",
+  placeholder: {
+    name: '请输入名字',
+    alias: '请输入别名',
+    bundle_id: '请输入应用包名,格式: com.xxx.xx',
+    desc: '请输入描述内容',
+    sup_dir: '请选择上级目录',
+    permission: '请选择权限'
   },
   application: {
-    table_app_icon: "应用图标",
-    table_app_icon_warning: "请上传应用图标",
+    table_app_icon: '应用图标',
+    table_app_icon_warning: '请上传应用图标'
   },
   login: {
     title: '系统登录',
     logIn: '登录',
     username: '账号',
     password: '密码',
-    any: '随便填',
+    any: '随便填'
   },
   documentation: {
     documentation: '文档',
@@ -63,15 +63,16 @@ export default {
     id: '序号',
     date: '时间',
     status: '状态',
-    icon: "图标",
-    owner:"负责人",
-    create_time:"创建时间",
-    desc:"描述",
-    name: "名称",
-    alias:'别名',
-    bundle:'包名',
-    sup_dir:"上级目录",
-    permission:"权限",
+    icon: '图标',
+    owner: '负责人',
+    managers: '管理员',
+    create_time: '创建时间',
+    desc: '描述',
+    name: '名称',
+    alias: '别名',
+    bundle: '包名',
+    sup_dir: '上级目录',
+    permission: '权限'
   },
   errorLog: {
     tips: '请点击右上角bug小图标',
@@ -90,45 +91,43 @@ export default {
     closeAll: '关闭所有'
   },
   appVersion: {
-    versionN: "版本号",
-    parentVN: "父版本号",
-    parentVNPlaceholder:"父版本号(必须已存在）",
-    platform: "平台",
-    approvalTime: "立项时间",
-    lockTime: "锁版时间",
-    releaseTime:"发布时间",
-    grayTime: "灰度时间",
-    status: "状态",
-    createTime: "添加时间",
+    versionN: '版本号',
+    parentVN: '父版本号',
+    parentVNPlaceholder: '父版本号(必须已存在）',
+    platform: '平台',
+    approvalTime: '立项时间',
+    lockTime: '锁版时间',
+    releaseTime: '发布时间',
+    grayTime: '灰度时间',
+    status: '状态',
+    createTime: '添加时间'
   },
   selector: {
-    placeholder: "请选择",
-    preparing: "准备中",
-    developing: "开发中",
-    gray:"灰度",
-    release: "已发布",
-    workDone: "Work done",
-    changeStatus:"状态",
-    develop: "开发",
-    releasing: "发布",
-    confirmChange:"切换状态到",
-    confirmDelete:"确定要删除当前版本？"
+    placeholder: '请选择',
+    preparing: '准备中',
+    developing: '开发中',
+    gray: '灰度',
+    release: '已发布',
+    workDone: 'Work done',
+    changeStatus: '状态',
+    develop: '开发',
+    releasing: '发布',
+    confirmChange: '切换状态到',
+    confirmDelete: '确定要删除当前版本？'
   },
-  system:{
-    name: "名字",
-    phone:"电话",
-    title: "职位",
-    status:"状态",
-    note:"备注",
-    avatar:"头像",
-    email:"邮箱",
-    username: "用户名",
-    code: "代码",
-    type:"类型",
-    per_confirm_del:'确定删除吗,如果存在下级节点则一并删除，此操作不能撤销！',
-    role_confirm_del:'确定删除本条数据吗？',
-  },
-
-
+  system: {
+    name: '名字',
+    phone: '电话',
+    title: '职位',
+    status: '状态',
+    note: '备注',
+    avatar: '头像',
+    email: '邮箱',
+    username: '用户名',
+    code: '代码',
+    type: '类型',
+    per_confirm_del: '确定删除吗,如果存在下级节点则一并删除，此操作不能撤销！',
+    role_confirm_del: '确定删除本条数据吗？'
+  }
 
 }

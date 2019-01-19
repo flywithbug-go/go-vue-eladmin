@@ -33,6 +33,11 @@
         prop="name">
         <el-input v-model="form.name"/>
       </el-form-item>
+      <el-form-item
+        :label="$t('table.name')"
+        prop="name">
+        <el-input v-model="form.name"/>
+      </el-form-item>
 
       <el-form-item
         :label="$t('table.bundle')"

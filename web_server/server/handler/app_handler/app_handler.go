@@ -7,7 +7,6 @@ import (
 	"vue-admin/web_server/common"
 	"vue-admin/web_server/model"
 	"vue-admin/web_server/model/model_app"
-	"vue-admin/web_server/model/model_user"
 	"vue-admin/web_server/server/handler/check_permission"
 	"vue-admin/web_server/server/handler/handler_common"
 
@@ -56,10 +55,7 @@ func addHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "Desc must fill")
 		return
 	}
-	user := model_user.User{}
-	user.Id = common.UserId(c)
-	user, _ = user.FindOne()
-	app.Owner = user.Username
+	app.OwnerId = common.UserId(c)
 	err = app.Insert()
 	if err != nil {
 		log4go.Error(handler_common.RequestId(c) + err.Error())
