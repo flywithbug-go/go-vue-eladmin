@@ -7,6 +7,8 @@ import (
 	"time"
 	"vue-admin/web_server/core/mongo"
 	"vue-admin/web_server/model/a_mongo_index"
+	"vue-admin/web_server/model/model_app_manager"
+	"vue-admin/web_server/model/model_user"
 	"vue-admin/web_server/model/shareDB"
 
 	"gopkg.in/mgo.v2/bson"
@@ -25,16 +27,16 @@ const (
 //修改规则，等级
 // role 等级为1 的用户可以编辑
 type Application struct {
-	Id         int64    `json:"id,omitempty" bson:"_id,omitempty"`
-	Name       string   `json:"name,omitempty" bson:"name,omitempty"`        //应用（组件）名称
-	Desc       string   `json:"desc,omitempty" bson:"desc,omitempty"`        //项目描述
-	CreateTime int64    `json:"time,omitempty" bson:"create_time,omitempty"` //创建时间
-	Icon       string   `json:"icon,omitempty" bson:"icon,omitempty"`        //icon 地址
-	Owner      string   `json:"owner,omitempty" bson:"owner,omitempty"`      //应用所有者
-	OwnerId    int64    `json:"owner_id,omitempty" bson:"owner_id,omitempty"`
-	BundleId   string   `json:"bundle_id,omitempty" bson:"bundle_id,omitempty"`
-	Managers   []string `json:"manager,omitempty" bson:"manager,omitempty"`         //管理员账号
-	ManagerIds []int64  `json:"manager_ids,omitempty" bson:"manager_ids,omitempty"` //管理员Id
+	Id         int64             `json:"id,omitempty" bson:"_id,omitempty"`
+	Name       string            `json:"name,omitempty" bson:"name,omitempty"`        //应用（组件）名称
+	Desc       string            `json:"desc,omitempty" bson:"desc,omitempty"`        //项目描述
+	CreateTime int64             `json:"time,omitempty" bson:"create_time,omitempty"` //创建时间
+	Icon       string            `json:"icon,omitempty" bson:"icon,omitempty"`        //icon 地址
+	Owner      string            `json:"owner,omitempty" bson:"owner,omitempty"`      //应用所有者
+	OwnerId    int64             `json:"owner_id,omitempty" bson:"owner_id,omitempty"`
+	BundleId   string            `json:"bundle_id,omitempty" bson:"bundle_id,omitempty"`
+	Managers   []model_user.User `json:"manager,omitempty" bson:"manager,omitempty"`         //管理员
+	ManagerIds []int64           `json:"manager_ids,omitempty" bson:"manager_ids,omitempty"` //管理员Id
 }
 
 func (a Application) ToJson() string {
@@ -113,22 +115,36 @@ func (a *Application) Insert() error {
 	}
 	a.Id, _ = mongo.GetIncrementId(shareDB.DocManagerDBName(), appCollection)
 	a.CreateTime = time.Now().Unix() * 1000
-	return a.insert(a)
+	list := a.ManagerIds
+	a.ManagerIds = nil
+	err := a.insert(a)
+	if err != nil {
+		return err
+	}
+	a.ManagerIds = list
+	a.updateAppManagers()
+	return nil
 }
 
-//func UpdateApplication(a *Application) error {
-//	selector := bson.M{"_id": a.Id}
-//	a.AppId = ""
-//	a.BundleId = ""
-//	a.Owner = ""
-//	a.CreateTime = 0
-//	return appC.update(selector, a)
-//}
+func (a Application) updateAppManagers() error {
+	if len(a.ManagerIds) == 0 {
+		return nil
+	}
+	aM := model_app_manager.AppManager{}
+	for _, userId := range a.ManagerIds {
+		aM.UserId = userId
+		aM.AppId = a.Id
+		aM.Insert()
+	}
+	return nil
+}
 
 func (a Application) Update() error {
 	a.BundleId = ""
 	a.Owner = ""
 	a.CreateTime = 0
+	a.updateAppManagers()
+	a.ManagerIds = nil
 	return a.update(bson.M{"_id": a.Id}, a)
 }
 
@@ -139,16 +155,26 @@ func (a Application) Remove() error {
 	return a.remove(bson.M{"_id": a.Id})
 }
 
-//func FindApplicationById(id int64) (Application, error) {
-//	return a.findOne(bson.M{"_id": id}, nil)
-//}
-//
-//func FindApplicationAppId(appId string) (Application, error) {
-//	return a.findOne(bson.M{"app_id": appId}, nil)
-//}
-//func FindApplication(query, selector interface{}) (Application, error) {
-//	return a.findOne(query, selector)
-//}
+func (a *Application) fetchManagers() error {
+	user := model_user.User{}
+	user.Id = a.OwnerId
+	user, err := user.FindOne()
+	if err != nil {
+		return err
+	}
+	aM := model_app_manager.AppManager{}
+	aMs, _ := aM.FindAll(bson.M{"app_id": a.Id}, nil)
+	a.Managers = make([]model_user.User, 0)
+	for _, item := range aMs {
+		u := model_user.User{}
+		u.Id = item.UserId
+		u, err := u.FindOne()
+		if err == nil {
+			a.Managers = append(a.Managers, u)
+		}
+	}
+	return nil
+}
 
 func (a Application) FindAll(query, selector interface{}) (apps []Application, err error) {
 	return a.findAll(query, selector)

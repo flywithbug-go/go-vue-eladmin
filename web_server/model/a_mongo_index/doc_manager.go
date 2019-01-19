@@ -10,7 +10,7 @@ const (
 	CollectionUser           = "user"
 	CollectionLogin          = "login"
 	CollectionApp            = "application"
-	CollectionAppUser        = "app_user"
+	CollectionAppManager     = "app_manager"
 	CollectionAppVersion     = "app_version"
 	CollectionPermission     = "permission"
 	CollectionRole           = "role"
@@ -85,7 +85,7 @@ func appIndex() []Index {
 		},
 		{
 			DBName:     shareDB.DocManagerDBName(),
-			Collection: CollectionAppUser,
+			Collection: CollectionAppManager,
 			Index: mgo.Index{
 				Key:        []string{"user_id", "app_id"},
 				Unique:     true,

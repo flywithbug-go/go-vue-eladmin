@@ -235,8 +235,7 @@ func makeTreeList(list []Menu, selector interface{}, menuType int) {
 		if menuType == MenuTypeList {
 			mr := model_menu_role.MenuRole{}
 			results, _ := mr.FindAll(bson.M{"menu_id": item.Id}, nil)
-			list[index].Roles = make([]model_role.Role, len(results))
-			index1 := 0
+			list[index].Roles = make([]model_role.Role, 0)
 			var role model_role.Role
 			for _, mr = range results {
 				role.Id = mr.RoleId
@@ -246,11 +245,9 @@ func makeTreeList(list []Menu, selector interface{}, menuType int) {
 				} else {
 					role.Label = role.Alias
 					role.Alias = ""
-					list[index].Roles[index1] = role
-					index1++
+					list[index].Roles = append(list[index].Roles, role)
 				}
 			}
-			list[index].Roles = list[index].Roles[:index1]
 		}
 
 		if selector == nil {

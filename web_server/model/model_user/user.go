@@ -202,24 +202,21 @@ func makeTreeList(list []User, selector interface{}) error {
 	for index := range list {
 		ur := model_user_role.UserRole{}
 		results, _ := ur.FindAll(bson.M{"user_id": list[index].Id}, selector)
-		list[index].Roles = make([]model_role.Role, len(results))
-		rolesString := make([]string, 0, 128)
-		var rule model_role.Role
-		index1 := 0
+		list[index].Roles = make([]model_role.Role, 0)
+		rolesString := make([]string, 0)
+		var role model_role.Role
 		for _, item := range results {
-			rule.Id = item.RoleId
-			rule, err := rule.FindOneTree(nil)
-			rule.Label = rule.Alias
-			rule.Alias = ""
+			role.Id = item.RoleId
+			role, err := role.FindOneTree(nil)
+			role.Label = role.Alias
+			role.Alias = ""
 			if err != nil {
 				log4go.Info(err.Error())
 			} else {
-				list[index].Roles[index1] = rule
-				rolesString = append(rolesString, rule.PerString...)
-				index1++
+				list[index].Roles = append(list[index].Roles, role)
+				rolesString = append(rolesString, role.PerString...)
 			}
 		}
-		list[index].Roles = list[index].Roles[:index1]
 		list[index].RolesString = rolesString
 	}
 
@@ -253,21 +250,19 @@ func (u User) FindRoles() (User, error) {
 	ur := model_user_role.UserRole{}
 	ur.UserId = u.Id
 	results, _ := ur.FindAll(bson.M{"user_id": u.Id}, nil)
-	u.Roles = make([]model_role.Role, len(results))
-	var rule model_role.Role
-	index1 := 0
+	u.Roles = make([]model_role.Role, 0)
+	var role model_role.Role
 	for _, item := range results {
-		rule.Id = item.RoleId
-		rule, err := rule.FindSimple(bson.M{"_id": 1, "name": 1})
-		rule.Label = rule.Alias
-		rule.Alias = ""
+		role.Id = item.RoleId
+		role, err := role.FindSimple(bson.M{"_id": 1, "name": 1})
+		role.Label = role.Alias
+		role.Alias = ""
 		if err != nil {
 			log4go.Info(err.Error())
 		} else {
-			u.Roles[index1] = rule
-			index1++
+			u.Roles = append(u.Roles, role)
 		}
 	}
-	u.Roles = u.Roles[:index1]
+
 	return u, nil
 }

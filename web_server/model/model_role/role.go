@@ -209,10 +209,9 @@ func makeTreeList(list []Role, selector interface{}) error {
 	for index := range list {
 		rp := model_role_permission.RolePermission{}
 		results, _ := rp.FindAll(bson.M{"role_id": list[index].Id}, nil)
-		list[index].Permissions = make([]model_permission.Permission, len(results))
-		list[index].PerString = make([]string, len(results))
+		list[index].Permissions = make([]model_permission.Permission, 0)
+		list[index].PerString = make([]string, 0)
 		var per model_permission.Permission
-		index1 := 0
 		for _, item := range results {
 			per.Id = item.PermissionId
 			per, err := per.FindOne(selector)
@@ -220,14 +219,11 @@ func makeTreeList(list []Role, selector interface{}) error {
 				log4go.Info(err.Error())
 			} else {
 				per.Label = per.Alias
-				list[index].Permissions[index1] = per
-				list[index].PerString[index1] = per.Name
-				index1++
+				list[index].Permissions = append(list[index].Permissions, per)
+				list[index].PerString = append(list[index].PerString, per.Name)
 				per.Alias = ""
 			}
 		}
-		list[index].Permissions = list[index].Permissions[:index1]
-		list[index].PerString = list[index].PerString[:index1]
 	}
 	return nil
 }
