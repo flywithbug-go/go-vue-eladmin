@@ -16,7 +16,7 @@ func CheckNoPermission(c *gin.Context, permission string) bool {
 	id := common.UserId(c)
 	user := model_user.User{}
 	user.Id = id
-	user, err := user.FindOne()
+	user, err := user.FindTreeOne()
 	if err != nil {
 		return true
 	}

@@ -166,6 +166,10 @@ func (u User) FindAll() ([]User, error) {
 }
 
 func (u User) FindOne() (User, error) {
+	return u.findOne(bson.M{"_id": u.Id}, bson.M{"password": 0})
+}
+
+func (u User) FindTreeOne() (User, error) {
 	u, err := u.findOne(bson.M{"_id": u.Id}, bson.M{"password": 0})
 	if err != nil {
 		return u, err

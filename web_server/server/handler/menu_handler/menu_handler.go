@@ -229,6 +229,6 @@ func getUserRoles(c *gin.Context) []model_role.Role {
 	id := common.UserId(c)
 	user := model_user.User{}
 	user.Id = id
-	user, _ = user.FindOne()
+	user, _ = user.FindTreeOne()
 	return user.Roles
 }

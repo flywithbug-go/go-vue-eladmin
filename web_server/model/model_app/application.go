@@ -32,7 +32,7 @@ type Application struct {
 	Desc       string            `json:"desc,omitempty" bson:"desc,omitempty"`        //项目描述
 	CreateTime int64             `json:"time,omitempty" bson:"create_time,omitempty"` //创建时间
 	Icon       string            `json:"icon,omitempty" bson:"icon,omitempty"`        //icon 地址
-	Owner      string            `json:"owner,omitempty" bson:"owner,omitempty"`      //应用所有者
+	Owner      *model_user.User  `json:"owner,omitempty" bson:"owner,omitempty"`      //应用所有者
 	OwnerId    int64             `json:"owner_id,omitempty" bson:"owner_id,omitempty"`
 	BundleId   string            `json:"bundle_id,omitempty" bson:"bundle_id,omitempty"`
 	Managers   []model_user.User `json:"manager,omitempty" bson:"manager,omitempty"`         //管理员
@@ -141,7 +141,7 @@ func (a Application) updateAppManagers() error {
 
 func (a Application) Update() error {
 	a.BundleId = ""
-	a.Owner = ""
+	a.Owner = nil
 	a.CreateTime = 0
 	a.updateAppManagers()
 	a.ManagerIds = nil
@@ -155,31 +155,31 @@ func (a Application) Remove() error {
 	return a.remove(bson.M{"_id": a.Id})
 }
 
-func (a *Application) fetchManagers() error {
+func (a Application) fetchOwnerManagers() (model_user.User, []model_user.User) {
 	user := model_user.User{}
 	user.Id = a.OwnerId
-	user, err := user.FindOne()
-	if err != nil {
-		return err
-	}
+	user, _ = user.FindOne()
+
 	aM := model_app_manager.AppManager{}
 	aMs, _ := aM.FindAll(bson.M{"app_id": a.Id}, nil)
-	a.Managers = make([]model_user.User, 0)
+	users := make([]model_user.User, 0)
 	for _, item := range aMs {
 		u := model_user.User{}
 		u.Id = item.UserId
 		u, err := u.FindOne()
 		if err == nil {
-			a.Managers = append(a.Managers, u)
+			users = append(a.Managers, u)
 		}
 	}
-	return nil
+	return user, users
 }
 
 func (a Application) FindAll(query, selector interface{}) (apps []Application, err error) {
 	apps, err = a.findAll(query, selector)
 	for index := range apps {
-		apps[index].fetchManagers()
+		user, users := apps[index].fetchOwnerManagers()
+		apps[index].Owner = &user
+		apps[index].Managers = users
 	}
 	return
 }
@@ -194,7 +194,10 @@ func (a Application) TotalCount(query, selector interface{}) (int, error) {
 func (a Application) FindPageFilter(page, limit int, query, selector interface{}, fields ...string) (apps []Application, err error) {
 	apps, err = a.findPage(page, limit, query, selector, fields...)
 	for index := range apps {
-		apps[index].fetchManagers()
+		user, users := apps[index].fetchOwnerManagers()
+		apps[index].Owner = &user
+		apps[index].Managers = users
 	}
+
 	return
 }

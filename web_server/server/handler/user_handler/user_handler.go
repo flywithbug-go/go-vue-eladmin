@@ -75,7 +75,7 @@ func getUserInfoHandler(c *gin.Context) {
 	}
 	user := model_user.User{}
 	user.Id = id
-	user, err := user.FindOne()
+	user, err := user.FindTreeOne()
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusUnauthorized, "user not found:"+err.Error())
