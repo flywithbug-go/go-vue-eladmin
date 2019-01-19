@@ -30,7 +30,7 @@ export function add(app_id, version, parent_version, platform, approval_time, lo
     gray_time
   }
   return client({
-    url: '/app/version/add',
+    url: '/app/version',
     method: 'post',
     data
   })
@@ -48,8 +48,8 @@ export function edit(id, app_id, version, parent_version, platform, approval_tim
     release_time
   }
   return client({
-    url: '/app/version/update',
-    method: 'post',
+    url: '/app/version',
+    method: 'put',
     data
   })
 }
@@ -59,8 +59,8 @@ export function del(id) {
     id
   }
   return client({
-    url: '/app/version/remove',
-    method: 'post',
+    url: '/app/version',
+    method: 'delete',
     data
   })
 }
@@ -71,8 +71,8 @@ export function editStatus(id, status) {
     status
   }
   return client({
-    url: '/app/version/update',
-    method: 'post',
+    url: '/app/version',
+    method: 'put',
     data
   })
 }

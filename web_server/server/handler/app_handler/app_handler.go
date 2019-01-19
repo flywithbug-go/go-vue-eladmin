@@ -21,7 +21,7 @@ type appPara struct {
 	model_app.Application
 }
 
-func addApplicationHandler(c *gin.Context) {
+func addHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
 		c.Set(common.KeyContextResponseCode, aRes.Code)
@@ -69,6 +69,34 @@ func addApplicationHandler(c *gin.Context) {
 	aRes.AddResponseInfo("app", app)
 }
 
+func editHandler(c *gin.Context) {
+	aRes := model.NewResponse()
+	defer func() {
+		c.Set(common.KeyContextResponseCode, aRes.Code)
+		c.JSON(http.StatusOK, aRes)
+	}()
+	if check_permission.CheckNoPermission(c, model_app.ApplicationPermissionEdit) {
+		log4go.Info(handler_common.RequestId(c) + "has no permission")
+		aRes.SetErrorInfo(http.StatusOK, "has no permission")
+		return
+	}
+	app := new(model_app.Application)
+	err := c.BindJSON(app)
+	if err != nil {
+		log4go.Info(handler_common.RequestId(c) + err.Error())
+		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid: "+err.Error())
+		return
+	}
+	c.Set(common.KeyContextPara, app)
+	err = app.Update()
+	if err != nil {
+		log4go.Error(handler_common.RequestId(c) + err.Error())
+		aRes.SetErrorInfo(http.StatusBadRequest, "update failed: "+err.Error())
+		return
+	}
+	aRes.SetSuccessInfo(http.StatusOK, "success")
+}
+
 type appListPara struct {
 	limit int
 	page  int
@@ -77,7 +105,7 @@ type appListPara struct {
 	owner string
 }
 
-func getApplicationsHandler(c *gin.Context) {
+func listHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
 		c.Set(common.KeyContextResponseCode, aRes.Code)
@@ -131,35 +159,7 @@ func getApplicationsHandler(c *gin.Context) {
 	aRes.AddResponseInfo("total", totalCount)
 }
 
-func updateApplicationHandler(c *gin.Context) {
-	aRes := model.NewResponse()
-	defer func() {
-		c.Set(common.KeyContextResponseCode, aRes.Code)
-		c.JSON(http.StatusOK, aRes)
-	}()
-	if check_permission.CheckNoPermission(c, model_app.ApplicationPermissionEdit) {
-		log4go.Info(handler_common.RequestId(c) + "has no permission")
-		aRes.SetErrorInfo(http.StatusOK, "has no permission")
-		return
-	}
-	app := new(model_app.Application)
-	err := c.BindJSON(app)
-	if err != nil {
-		log4go.Info(handler_common.RequestId(c) + err.Error())
-		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid: "+err.Error())
-		return
-	}
-	c.Set(common.KeyContextPara, app)
-	err = app.Update()
-	if err != nil {
-		log4go.Error(handler_common.RequestId(c) + err.Error())
-		aRes.SetErrorInfo(http.StatusBadRequest, "update failed: "+err.Error())
-		return
-	}
-	aRes.SetSuccessInfo(http.StatusOK, "success")
-}
-
-func getAllSimpleAppHandler(c *gin.Context) {
+func simpleListHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
 		c.Set(common.KeyContextResponseCode, aRes.Code)
@@ -189,7 +189,7 @@ func getAllSimpleAppHandler(c *gin.Context) {
 	aRes.AddResponseInfo("list", arrList)
 }
 
-func removeApplicationHandler(c *gin.Context) {
+func delHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
 		c.Set(common.KeyContextResponseCode, aRes.Code)
