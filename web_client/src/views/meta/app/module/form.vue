@@ -34,9 +34,24 @@
         <el-input v-model="form.name"/>
       </el-form-item>
       <el-form-item
-        :label="$t('table.name')"
-        prop="name">
-        <el-input v-model="form.name"/>
+        :label="$t('table.manager')"
+        prop="manager">
+        <el-select
+          v-model="form.managers"
+          :loading="loading"
+          :remote-method="queryList"
+          multiple
+          filterable
+          remote
+          reserve-keyword
+          placeholder="请输入关键字">
+
+          <el-option
+            v-for="item in users"
+            :key="item.id"/>
+
+        </el-select>
+
       </el-form-item>
 
       <el-form-item
@@ -71,9 +86,12 @@
 import store from '@/store'
 import global_ from '@/config'
 import { add, edit } from '@/api/app'
+import initData from '@/mixins/initData'
+import { queryList } from '@/api/user'
 
 export default {
   name: 'Form',
+  mixins: [initData],
   props: {
     isAdd: {
       type: Boolean,
@@ -86,12 +104,13 @@ export default {
   },
   data() {
     return {
+      users: [],
       headers: { 'Authorization': store.getters.token },
       actionURL: global_.UploadImageURL,
       imagePlaceHolder: require('@/assets/image_placeholder.png'),
       dialog: false,
       loading: false,
-      form: { id: 0, name: '', owner: '', desc: '', icon: '', bundle_id: '' },
+      form: { id: 0, name: '', owner: '', desc: '', icon: '', bundle_id: '', managers: [] },
       rules: {
         name: [
           { required: true, message: this.$t('placeholder.name'), trigger: 'blur' },
@@ -111,9 +130,22 @@ export default {
           { max: 200, message: '请输入不多于200个字符', trigger: 'blur' }
         ]
       }
+
     }
   },
   methods: {
+    queryList() {
+      this.url = '/user/list'
+      const sort = '+id'
+      const query = this.query
+      const name = query.value
+      this.params = { page: this.page, size: this.size, sort: sort }
+      this.params['enabled'] = true
+      this.params['username'] = name
+      queryList(this.params).then(res => {
+
+      })
+    },
     resetForm() {
       this.dialog = false
       this.$refs['form'].resetFields()

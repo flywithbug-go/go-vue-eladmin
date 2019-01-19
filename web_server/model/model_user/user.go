@@ -170,12 +170,14 @@ func (u User) FindOne() (User, error) {
 }
 
 func (u User) FindTreeOne() (User, error) {
-	u, err := u.findOne(bson.M{"_id": u.Id}, bson.M{"password": 0})
+	query := bson.M{"_id": u.Id}
+	selector := bson.M{"password": 0}
+	u, err := u.findOne(query, selector)
 	if err != nil {
 		return u, err
 	}
 	list := []User{u}
-	makeTreeList(list, bson.M{"password": 0})
+	makeTreeList(list, selector)
 	return list[0], nil
 }
 
@@ -190,6 +192,14 @@ func (u User) totalCount(query, selector interface{}) (int, error) {
 }
 
 func (u User) FindPageFilter(page, limit int, query, selector interface{}, fields ...string) ([]User, error) {
+	results, err := u.findPage(page, limit, query, selector, fields...)
+	if err != nil {
+		return nil, err
+	}
+	return results, nil
+}
+
+func (u User) FindPageTreeFilter(page, limit int, query, selector interface{}, fields ...string) ([]User, error) {
 	results, err := u.findPage(page, limit, query, selector, fields...)
 	if err != nil {
 		return nil, err
@@ -267,6 +277,5 @@ func (u User) FindRoles() (User, error) {
 			u.Roles = append(u.Roles, role)
 		}
 	}
-
 	return u, nil
 }

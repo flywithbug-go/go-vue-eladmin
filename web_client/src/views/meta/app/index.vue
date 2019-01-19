@@ -54,14 +54,13 @@
           <span> {{ scope.row.owner }} </span>
         </template>
       </el-table-column>
-
       <el-table-column
-        :label="$t('table.create_time')"
+        :label="$t('table.manager')"
         prop="id"
         align="center"
         width="150px">
         <template slot-scope="scope">
-          <span> {{ parseTime(scope.row.time) }} </span>
+          <span> {{ scope.row.managers }} </span>
         </template>
       </el-table-column>
 
@@ -72,6 +71,16 @@
         min-width="150px">
         <template slot-scope="scope">
           <span> {{ scope.row.desc }} </span>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+        :label="$t('table.create_time')"
+        prop="id"
+        align="center"
+        width="200px">
+        <template slot-scope="scope">
+          <span> {{ parseTime(scope.row.time) }} </span>
         </template>
       </el-table-column>
       <el-table-column
@@ -96,6 +105,7 @@
 </template>
 
 <script>
+
 import initData from '@/mixins/initData'
 import eHeader from './module/header'
 import edit from './module/edit'

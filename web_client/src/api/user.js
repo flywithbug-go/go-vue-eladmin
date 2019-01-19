@@ -25,8 +25,15 @@ export function logout() {
     method: 'post'
   })
 }
+export function tree(query) {
+  return client({
+    url: '/user/tree',
+    method: 'get',
+    params: query
+  })
+}
 
-export function getUserListInfoRequest(query) {
+export function queryList(query) {
   return client({
     url: '/user/list',
     method: 'get',
@@ -125,3 +132,4 @@ export function updateAvatar(avatar) {
     data
   })
 }
+

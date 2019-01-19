@@ -65,7 +65,7 @@ export default {
     status: '状态',
     icon: '图标',
     owner: '负责人',
-    managers: '管理员',
+    manager: '管理员',
     create_time: '创建时间',
     desc: '描述',
     name: '名称',

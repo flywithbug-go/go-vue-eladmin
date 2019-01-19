@@ -1,7 +1,7 @@
 <template>
   <div class="head-container">
     <!-- 搜索 -->
-    <el-input v-model="query.value" clearable placeholder="输入关键字搜索" style="width: 200px;" class="filter-item" @keyup.enter.native="toQuery"/>
+    <el-input v-model="query.value" clearable placeholder="请输入用户名" style="width: 200px;" class="filter-item" @keyup.enter.native="toQuery"/>
     <el-select v-model="query.type" clearable placeholder="类型" class="filter-item" style="width: 130px">
       <el-option v-for="item in queryTypeOptions" :key="item.key" :label="item.display_name" :value="item.key"/>
     </el-select>

@@ -70,6 +70,8 @@ export default {
     }
   },
   created() {
+    this.query.type = 'username'
+    this.query.enabled = '激活'
     this.getRoles()
     this.$nextTick(() => {
       this.init()
@@ -79,8 +81,8 @@ export default {
     parseTime,
     checkPermission,
     beforeInit() {
-      this.url = '/user/list'
-      const sort = 'id,desc'
+      this.url = '/user/tree'
+      const sort = '+id'
       const query = this.query
       const type = query.type
       const value = query.value

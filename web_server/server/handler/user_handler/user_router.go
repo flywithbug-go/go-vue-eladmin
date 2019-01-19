@@ -46,7 +46,13 @@ var Routers = []handler_common.GinHandleFunc{
 		Route:      "/user",
 	},
 	{
-		Handler:    getUserListInfoHandler, //获取所有用户
+		Handler:    getUserTreeListInfoHandler, //获取所有用户
+		RouterType: handler_common.RouterTypeNeedAuth,
+		Method:     "GET",
+		Route:      "/user/tree",
+	},
+	{
+		Handler:    queryListHandler, //获取所有用户
 		RouterType: handler_common.RouterTypeNeedAuth,
 		Method:     "GET",
 		Route:      "/user/list",

@@ -173,15 +173,6 @@ func simpleListHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, err.Error())
 		return
 	}
-	//user ,ok := common.User(c)
-	//if !ok {
-	//	aRes.SetErrorInfo(http.StatusBadRequest, "user not  found: "))
-	//	return
-	//}
-	//for i := 0; i < len(arrList); i++ {
-	//
-	//	arrList[i].Editable = true
-	//}
 	aRes.AddResponseInfo("list", arrList)
 }
 

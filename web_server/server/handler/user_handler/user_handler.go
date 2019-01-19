@@ -159,13 +159,12 @@ func deleteUserHandler(c *gin.Context) {
 	aRes.SetSuccessInfo(http.StatusOK, "success")
 }
 
-func getUserListInfoHandler(c *gin.Context) {
+func getUserTreeListInfoHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
 		c.Set(common.KeyContextResponseCode, aRes.Code)
 		c.JSON(http.StatusOK, aRes)
 	}()
-
 	if check_permission.CheckNoPermission(c, model_user.UserPermissionSelect) {
 		log4go.Info(handler_common.RequestId(c) + "has no permission")
 		aRes.SetErrorInfo(http.StatusOK, "has no permission")
@@ -213,7 +212,70 @@ func getUserListInfoHandler(c *gin.Context) {
 
 	var user = model_user.User{}
 	totalCount, _ := user.TotalCount(query, nil)
-	appList, err := user.FindPageFilter(page, limit, query, nil, sort)
+	appList, err := user.FindPageTreeFilter(page, limit, query, bson.M{"password": 0}, sort)
+	if err != nil {
+		log4go.Info(handler_common.RequestId(c) + err.Error())
+		aRes.SetErrorInfo(http.StatusInternalServerError, err.Error())
+		return
+	}
+	aRes.AddResponseInfo("list", appList)
+	aRes.AddResponseInfo("total", totalCount)
+}
+
+func queryListHandler(c *gin.Context) {
+	aRes := model.NewResponse()
+	defer func() {
+		c.Set(common.KeyContextResponseCode, aRes.Code)
+		c.JSON(http.StatusOK, aRes)
+	}()
+	if check_permission.CheckNoPermission(c, model_user.UserPermissionSelect) {
+		log4go.Info(handler_common.RequestId(c) + "has no permission")
+		aRes.SetErrorInfo(http.StatusOK, "has no permission")
+		return
+	}
+	limit, _ := strconv.Atoi(c.Query("size"))
+	page, _ := strconv.Atoi(c.Query("page"))
+	sort := c.Query("sort")
+	name := c.Query("username")
+	email := c.Query("email")
+	enabled := c.Query("enabled")
+
+	if strings.EqualFold(sort, "-id") {
+		sort = "-_id"
+	} else if strings.EqualFold(sort, "+id") {
+		sort = "+_id"
+	} else if len(sort) == 0 {
+		sort = "+_id"
+	}
+	if limit == 0 {
+		limit = 10
+	}
+	if page != 0 {
+		page--
+	}
+	userId := common.UserId(c)
+	if userId <= 0 {
+		aRes.SetErrorInfo(http.StatusUnauthorized, "user not found")
+		return
+	}
+	query := bson.M{}
+	if len(name) > 0 {
+		query["username"] = bson.M{"$regex": name, "$options": "i"}
+	}
+	if len(email) > 0 {
+		query["email"] = bson.M{"$regex": email, "$options": "i"}
+	}
+
+	if strings.EqualFold(enabled, "true") {
+		query["enabled"] = true
+	}
+	if strings.EqualFold(enabled, "false") {
+		query["enabled"] = false
+	}
+
+	var user = model_user.User{}
+	totalCount, _ := user.TotalCount(query, nil)
+	appList, err := user.FindPageFilter(page, limit, query, bson.M{"password": 0}, sort)
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusInternalServerError, err.Error())
