@@ -154,16 +154,15 @@ export default {
   },
   methods: {
     dialogClose() {
-      console.log('close')
+      const allManagers = this.form.managers
       this.managers.forEach(function(item) {
-        this.form.managers.splice(this.form.managers.indexOf(item.id), 1)
+        allManagers.splice(allManagers.indexOf(item.id), 1)
       })
+      this.form.managers = allManagers
+      this.dialog = false
     },
     handleClose(tag) {
       this.form.managers.splice(this.form.managers.indexOf(tag), 1)
-    },
-    handleCloseTemp(tag) {
-      this.form.temp.splice(this.form.temp.indexOf(tag), 1)
     },
     queryList(name) {
       if (!name) {
@@ -206,6 +205,7 @@ export default {
       this.form = { id: 0, name: '', owner: '', desc: '', icon: '', bundle_id: '', managers: [], manager_ids: [] }
     },
     cancel() {
+      this.dialogClose()
       this.resetForm()
     },
     dialogTitle() {

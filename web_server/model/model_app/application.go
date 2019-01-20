@@ -35,8 +35,7 @@ type Application struct {
 	Owner      *model_user.User  `json:"owner,omitempty" bson:"owner,omitempty"`      //应用所有者
 	OwnerId    int64             `json:"owner_id,omitempty" bson:"owner_id,omitempty"`
 	BundleId   string            `json:"bundle_id,omitempty" bson:"bundle_id,omitempty"`
-	Managers   []model_user.User `json:"managers,omitempty" bson:"managers,omitempty"`       //管理员
-	ManagerIds []int64           `json:"manager_ids,omitempty" bson:"manager_ids,omitempty"` //管理员Id
+	Managers   []model_user.User `json:"managers,omitempty" bson:"managers,omitempty"` //管理员
 }
 
 func (a Application) ToJson() string {
@@ -115,29 +114,30 @@ func (a *Application) Insert() error {
 	}
 	a.Id, _ = mongo.GetIncrementId(shareDB.DocManagerDBName(), appCollection)
 	a.CreateTime = time.Now().Unix() * 1000
-	list := a.ManagerIds
-	a.ManagerIds = nil
+	list := a.Managers
+	a.Managers = nil
 	a.Owner = nil
 	err := a.insert(a)
 	if err != nil {
 		return err
 	}
-	a.ManagerIds = list
+	a.Managers = list
 	a.updateAppManagers()
 	return nil
 }
 
-func (a Application) updateAppManagers() error {
-	if len(a.ManagerIds) == 0 {
+func (a *Application) updateAppManagers() error {
+	if len(a.Managers) == 0 {
 		return nil
 	}
 	aM := model_app_manager.AppManager{}
 	aM.RemoveAppId(a.Id)
-	for _, userId := range a.ManagerIds {
-		aM.UserId = userId
+	for _, user := range a.Managers {
+		aM.UserId = user.Id
 		aM.AppId = a.Id
 		aM.Insert()
 	}
+	a.Managers = nil
 	return nil
 }
 
@@ -146,7 +146,6 @@ func (a Application) Update() error {
 	a.Owner = nil
 	a.CreateTime = 0
 	a.updateAppManagers()
-	a.ManagerIds = nil
 	return a.update(bson.M{"_id": a.Id}, a)
 }
 
