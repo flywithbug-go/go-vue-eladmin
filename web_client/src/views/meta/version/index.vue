@@ -372,8 +372,8 @@ export default {
         ],
         platform: [
           {
-            required: true,
-            message: '必选',
+            required: false,
+            message: '选填',
             trigger: 'change'
           }
         ]
