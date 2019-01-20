@@ -165,7 +165,11 @@ export default {
       this.params = { page: this.page, size: this.size, sort: sort }
       this.params['enabled'] = true
       this.params['username'] = name
-
+      const ids = []
+      this.form.managers.forEach(function(item) {
+        ids.push(item.id)
+      })
+      this.params['exc'] = ids.join(',')
       queryList(this.params).then(res => {
         this.options = res.list
         this.loading = false
