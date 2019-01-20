@@ -58,5 +58,23 @@ func CheckNoAppManagerPermission(c *gin.Context, app model_app.Application) bool
 		}
 	}
 	return true
+}
 
+func CheckNoAppVersionManagerPermission(c *gin.Context, appV model_app.AppVersion) bool {
+	app := model_app.Application{}
+	app.Id = appV.AppId
+	app, err := app.FindOne()
+	if err != nil {
+		return true
+	}
+	userId := common.UserId(c)
+	if app.Owner.Id == userId {
+		return false
+	}
+	for _, item := range app.Managers {
+		if item.Id == userId {
+			return false
+		}
+	}
+	return true
 }

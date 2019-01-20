@@ -23,7 +23,7 @@
         :src="currentSimpleApp?currentSimpleApp.icon:imagePlaceHolder"
         style="height: 50px; display: inline-block; margin-bottom: -15px;margin-left: 10px">
       <span style="color: #2d2f33">{{ $t( 'table.owner') }}:</span>
-      <label style="color: #2d2f33">{{ currentSimpleApp?currentSimpleApp.owner:'' }}</label>
+      <label style="color: #2d2f33">{{ currentSimpleApp?currentSimpleApp.owner.username:'' }}</label>
     </div>
 
     <!--列表-->
@@ -87,10 +87,11 @@
       </el-table-column>
 
       <el-table-column
+        v-if="checkPermission"
         :label="$t('actions.action')"
         align="center"
         min-width="200px"
-        class-name="small-padding fixed-width">
+        class-name="small-padding fixed-width" >
         <template slot-scope="scope">
           <el-button
             type="primary"
@@ -262,6 +263,7 @@ import { simpleList } from '@/api/app'
 import { list, add, edit, editStatus, del } from '@/api/appVersion'
 import { formatDate } from '@/utils/date'
 import ElTableFooter from 'element-ui'
+import store from '@/store'
 
 export default {
   name: 'MetaData',
@@ -270,9 +272,9 @@ export default {
     fixedButton,
     Pagination
   },
-
   data() {
     return {
+      showAction: false,
       listLoading: true,
       list: null,
       total: 10,
@@ -307,7 +309,7 @@ export default {
         app_id: 0
       },
       simpleAppList: null,
-      currentSimpleApp: null,
+      currentSimpleApp: { owner_id: 0, name: '', managers: [], id: 0, icon: '', owner: { username: '', id: 0 }},
       platformOptions: [{
         value: 'iOS',
         label: 'iOS'
@@ -377,6 +379,22 @@ export default {
         ]
       }
 
+    }
+  },
+  computed: {
+    checkPermission() {
+      const userId = store.getters.userId
+      if (this.currentSimpleApp.owner_id === userId) {
+        return true
+      }
+      if (this.currentSimpleApp.managers) {
+        for (const value of this.currentSimpleApp.managers) {
+          if (value.id === userId) {
+            return true
+          }
+        }
+      }
+      return false
     }
   },
 

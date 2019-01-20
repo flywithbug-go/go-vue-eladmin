@@ -164,7 +164,7 @@ func simpleListHandler(c *gin.Context) {
 		return
 	}
 	var app = model_app.Application{}
-	arrList, err := app.FindAll(nil, bson.M{"_id": 1, "name": 1, "icon": 1, "owner": 1, "editable": 1})
+	arrList, err := app.FindAll(nil, bson.M{"_id": 1, "name": 1, "icon": 1, "owner_id": 1, "editable": 1})
 	if err != nil {
 		log4go.Info(err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, err.Error())
@@ -189,6 +189,11 @@ func delHandler(c *gin.Context) {
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid: "+err.Error())
+		return
+	}
+	if check_permission.CheckNoAppManagerPermission(c, app) {
+		log4go.Info(handler_common.RequestId(c) + "has no permission")
+		aRes.SetErrorInfo(http.StatusOK, "has no permission")
 		return
 	}
 	c.Set(common.KeyContextPara, app)
