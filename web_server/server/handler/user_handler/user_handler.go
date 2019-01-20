@@ -239,6 +239,7 @@ func queryListHandler(c *gin.Context) {
 	name := c.Query("username")
 	email := c.Query("email")
 	enabled := c.Query("enabled")
+	exc := c.Query("exc")
 
 	if strings.EqualFold(sort, "-id") {
 		sort = "-_id"
@@ -261,6 +262,7 @@ func queryListHandler(c *gin.Context) {
 	query := bson.M{}
 	if len(name) > 0 {
 		query["username"] = bson.M{"$regex": name, "$options": "i"}
+
 	}
 	if len(email) > 0 {
 		query["email"] = bson.M{"$regex": email, "$options": "i"}
@@ -273,6 +275,14 @@ func queryListHandler(c *gin.Context) {
 		query["enabled"] = false
 	}
 
+	if len(exc) > 0 {
+		excepts := strings.Split(exc, ",")
+		ids := make([]int64, len(excepts))
+		for index, item := range excepts {
+			ids[index], _ = strconv.ParseInt(item, 10, 64)
+		}
+		query["_id"] = bson.M{"nin": ids}
+	}
 	var user = model_user.User{}
 	totalCount, _ := user.TotalCount(query, nil)
 	appList, err := user.FindPageFilter(page, limit, query, bson.M{"password": 0}, sort)

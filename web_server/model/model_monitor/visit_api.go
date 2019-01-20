@@ -99,8 +99,9 @@ func (v VisitApi) IncrementVisitApi() (int, error) {
 	if len(v.Path) == 0 || len(v.Method) == 0 {
 		return -1, fmt.Errorf("path or method is null")
 	}
+
 	change := mgo.Change{
-		Update:    bson.M{"$inc": bson.M{"count": 1}},
+		Update:    bson.M{"$inc": bson.M{"count": 1}, "para": v.Para},
 		ReturnNew: true,
 	}
 	_, c := mongo.Collection(shareDB.MonitorDBName(), visitApiApiCollection)

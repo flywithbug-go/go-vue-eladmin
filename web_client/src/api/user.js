@@ -41,6 +41,16 @@ export function queryList(query) {
   })
 }
 
+export function info(id) {
+  const data = {
+    id
+  }
+  return client({
+    url: '/user/info',
+    method: 'get',
+    data
+  })
+}
 export function add(data) {
   if (data.enabled === 'true') {
     data.enabled = true

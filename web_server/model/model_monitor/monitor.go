@@ -49,8 +49,8 @@ func (l Log) AddMonitorInfo() {
 		if len(l.Path) > 0 {
 			vApi.TimeDate = timeF[:10]
 			vApi.Method = l.Method
-			list := strings.Split(l.Path, "?")
-			vApi.Path = list[0]
+			vApi.Path = l.Path
+			vApi.Para = l.Para
 			vApi.IncrementVisitApi()
 		}
 	}
