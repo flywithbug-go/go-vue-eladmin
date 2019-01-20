@@ -91,7 +91,7 @@
         width="180px"
         class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <edit v-if="checkPermission(['ADMIN','APP_ALL','APP_EDIT'])" :data="scope.row" :sup_this="sup_this"/>
+          <edit :data="scope.row" :sup_this="sup_this"/>
         </template>
       </el-table-column>
 

@@ -1,11 +1,13 @@
 <template>
   <div>
-    <el-button :disabled="disabled" size="mini" type="success" @click="to">{{ $t('actions.edit') }}</el-button>
+    <el-button v-show="checkPermission" size="mini" type="success" @click="to">{{ $t('actions.edit') }}</el-button>
     <eForm ref="form" :sup_this="sup_this" :is-add="false"/>
   </div>
 </template>
 <script>
 import eForm from './form'
+import store from '@/store'
+
 export default {
   components: { eForm },
   props: {
@@ -24,6 +26,25 @@ export default {
       required: true
     }
   },
+  computed: {
+    checkPermission() {
+      console.log('data', this.data.managers)
+      const userId = store.getters.userId
+      console.log('userId', userId)
+
+      if (this.data.owner_id === userId) {
+        return true
+      }
+      if (this.data.managers) {
+        for (const value of this.data.managers) {
+          if (value.id === userId) {
+            return true
+          }
+        }
+      }
+      return false
+    }
+  },
   methods: {
     to() {
       const _this = this.$refs.form
@@ -40,6 +61,7 @@ export default {
       _this.dialog = true
       console.log('edit:', _this.form)
     }
+
   }
 }
 </script>

@@ -174,6 +174,17 @@ func (a Application) fetchOwnerManagers() (model_user.User, []model_user.User, [
 	return user, users, managerInfo
 }
 
+func (a Application) FindOne() (Application, error) {
+	a, err := a.findOne(bson.M{"_id": a.Id}, nil)
+	if err != nil {
+		return a, err
+	}
+	user, managers, _ := a.fetchOwnerManagers()
+	a.Owner = &user
+	a.Managers = managers
+	return a, nil
+}
+
 func (a Application) FindAll(query, selector interface{}) (apps []Application, err error) {
 	apps, err = a.findAll(query, selector)
 	makeTreeApplication(apps)

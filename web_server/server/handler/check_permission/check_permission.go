@@ -3,6 +3,7 @@ package check_permission
 import (
 	"strings"
 	"vue-admin/web_server/common"
+	"vue-admin/web_server/model/model_app"
 	"vue-admin/web_server/model/model_user"
 
 	"github.com/gin-gonic/gin"
@@ -14,6 +15,9 @@ const (
 
 func CheckNoPermission(c *gin.Context, permission string) bool {
 	id := common.UserId(c)
+	if id == 10000 {
+		return false
+	}
 	user := model_user.User{}
 	user.Id = id
 	user, err := user.FindTreeOne()
@@ -36,4 +40,23 @@ func CheckNoPermission(c *gin.Context, permission string) bool {
 		}
 	}
 	return true
+}
+
+func CheckNoAppManagerPermission(c *gin.Context, app model_app.Application) bool {
+	app, err := app.FindOne()
+	if err != nil {
+		return true
+	}
+
+	userId := common.UserId(c)
+	if app.Owner.Id == userId {
+		return false
+	}
+	for _, item := range app.Managers {
+		if item.Id == userId {
+			return false
+		}
+	}
+	return true
+
 }

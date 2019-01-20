@@ -76,14 +76,19 @@ func editHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusOK, "has no permission")
 		return
 	}
-	para := new(model_app.Application)
-	err := c.BindJSON(para)
+	para := model_app.Application{}
+	err := c.BindJSON(&para)
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid: "+err.Error())
 		return
 	}
 	c.Set(common.KeyContextPara, para)
+	if check_permission.CheckNoAppManagerPermission(c, para) {
+		log4go.Info(handler_common.RequestId(c) + "has no permission")
+		aRes.SetErrorInfo(http.StatusOK, "has no permission")
+		return
+	}
 	err = para.Update()
 	if err != nil {
 		log4go.Error(handler_common.RequestId(c) + err.Error())

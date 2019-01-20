@@ -27,6 +27,9 @@ func init() {
 }
 
 func (l Log) AddMonitorInfo() {
+	if !strings.HasPrefix(l.Path, "/api") {
+		return
+	}
 	if strings.HasPrefix(l.Path, "/api/log") && (l.ResponseCode == 200 || l.ResponseCode == 204) {
 		return
 	}
