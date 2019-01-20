@@ -181,17 +181,6 @@ export default {
       console.log('addAction:', this.manager_ids)
       console.log('addAction:', this.options)
       console.log('managers:', this.form.managers)
-
-      this.manager_ids.forEach(function(value) {
-        console.log('forEach:', this.checkExist(value))
-      })
-    },
-    checkExist(value) {
-      this.form.managers.forEach(function(item) {
-        if (item.id === value) {
-          return true
-        }
-      })
     },
     resetForm() {
       this.dialog = false
