@@ -65,13 +65,16 @@ func updateAppVersionHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid: "+err.Error())
 		return
 	}
+
 	c.Set(common.KeyContextPara, appV)
-	if check_permission.CheckNoAppVersionManagerPermission(c, appV) {
+	appVersion, _ := appV.FindOne()
+	if check_permission.CheckNoAppVersionManagerPermission(c, appVersion) {
 		log4go.Info(handler_common.RequestId(c) + "has no permission")
 		aRes.SetErrorInfo(http.StatusOK, "has no permission")
 		return
 	}
 	err = appV.Update()
+
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusInternalServerError, "para invalid: "+err.Error())

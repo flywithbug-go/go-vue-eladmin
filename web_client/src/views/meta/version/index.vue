@@ -94,6 +94,7 @@
         class-name="small-padding fixed-width" >
         <template slot-scope="scope">
           <el-button
+            :disabled="scope.row.status == 5"
             type="primary"
             size="mini"
             @click="handleUpdate(scope.row)">
