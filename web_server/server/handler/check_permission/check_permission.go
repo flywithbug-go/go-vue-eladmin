@@ -1,6 +1,8 @@
 package check_permission
 
 import (
+	"encoding/json"
+	"fmt"
 	"strings"
 	"vue-admin/web_server/common"
 	"vue-admin/web_server/model/model_app"
@@ -24,6 +26,8 @@ func CheckNoPermission(c *gin.Context, permission string) bool {
 	if err != nil {
 		return true
 	}
+	js, _ := json.Marshal(user.RolesString)
+	fmt.Println(string(js), permission)
 	for index := range user.RolesString {
 		item := user.RolesString[index]
 		if strings.EqualFold(item, SUPERADMIN) {
@@ -34,7 +38,7 @@ func CheckNoPermission(c *gin.Context, permission string) bool {
 		}
 		if strings.HasSuffix(item, "ALL") {
 			splits := strings.Split(item, "_")
-			if strings.HasPrefix(item, splits[0]) {
+			if strings.HasPrefix(permission, splits[0]) {
 				return false
 			}
 		}

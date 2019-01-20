@@ -25,7 +25,7 @@ func addAppVersionHandler(c *gin.Context) {
 	}()
 	if check_permission.CheckNoPermission(c, model_app.ApplicationPermissionCreate) {
 		log4go.Info(handler_common.RequestId(c) + "has no permission")
-		aRes.SetErrorInfo(http.StatusOK, "has no permission")
+		aRes.SetErrorInfo(http.StatusBadRequest, "has no permission")
 		return
 	}
 	appV := new(model_app.AppVersion)
@@ -52,12 +52,12 @@ func updateAppVersionHandler(c *gin.Context) {
 		c.Set(common.KeyContextResponseCode, aRes.Code)
 		c.JSON(http.StatusOK, aRes)
 	}()
-	if check_permission.CheckNoPermission(c, model_app.ApplicationPermissionEdit) {
-		log4go.Info(handler_common.RequestId(c) + "has no permission")
-		aRes.SetErrorInfo(http.StatusOK, "has no permission")
-		return
-	}
 
+	//if check_permission.CheckNoPermission(c, model_app.ApplicationPermissionEdit) {
+	//	log4go.Info(handler_common.RequestId(c) + "has no permission")
+	//	aRes.SetErrorInfo(http.StatusBadRequest, "has no permission")
+	//	return
+	//}
 	appV := model_app.AppVersion{}
 	err := c.BindJSON(&appV)
 	if err != nil {
@@ -68,9 +68,10 @@ func updateAppVersionHandler(c *gin.Context) {
 
 	c.Set(common.KeyContextPara, appV)
 	appVersion, _ := appV.FindOne()
-	if check_permission.CheckNoAppVersionManagerPermission(c, appVersion) {
+	if check_permission.CheckNoAppVersionManagerPermission(c, appVersion) &&
+		check_permission.CheckNoPermission(c, model_app.ApplicationPermissionEdit) {
 		log4go.Info(handler_common.RequestId(c) + "has no permission")
-		aRes.SetErrorInfo(http.StatusOK, "has no permission")
+		aRes.SetErrorInfo(http.StatusBadRequest, "has no permission")
 		return
 	}
 	err = appV.Update()
@@ -91,7 +92,7 @@ func getAppVersionListHandler(c *gin.Context) {
 	}()
 	if check_permission.CheckNoPermission(c, model_app.ApplicationPermissionSelect) {
 		log4go.Info(handler_common.RequestId(c) + "has no permission")
-		aRes.SetErrorInfo(http.StatusOK, "has no permission")
+		aRes.SetErrorInfo(http.StatusBadRequest, "has no permission")
 		return
 	}
 
@@ -143,7 +144,7 @@ func removeAppVersionHandler(c *gin.Context) {
 	}()
 	if check_permission.CheckNoPermission(c, model_app.ApplicationPermissionDelete) {
 		log4go.Info(handler_common.RequestId(c) + "has no permission")
-		aRes.SetErrorInfo(http.StatusOK, "has no permission")
+		aRes.SetErrorInfo(http.StatusBadRequest, "has no permission")
 		return
 	}
 	appV := model_app.AppVersion{}
@@ -156,7 +157,7 @@ func removeAppVersionHandler(c *gin.Context) {
 	c.Set(common.KeyContextPara, appV)
 	if check_permission.CheckNoAppVersionManagerPermission(c, appV) {
 		log4go.Info(handler_common.RequestId(c) + "has no permission")
-		aRes.SetErrorInfo(http.StatusOK, "has no permission")
+		aRes.SetErrorInfo(http.StatusBadRequest, "has no permission")
 		return
 	}
 	err = appV.Remove()

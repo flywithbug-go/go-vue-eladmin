@@ -36,7 +36,6 @@
       </el-form-item>
 
       <el-form-item
-        v-show="checkPermission"
         :label="$t('table.owner')"
         prop="owner">
         <div class="filter-item">

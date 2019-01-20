@@ -34,7 +34,7 @@ func addUserHandler(c *gin.Context) {
 
 	if check_permission.CheckNoPermission(c, model_user.UserPermissionCreate) {
 		log4go.Info(handler_common.RequestId(c) + "has no permission")
-		aRes.SetErrorInfo(http.StatusOK, "has no permission")
+		aRes.SetErrorInfo(http.StatusBadRequest, "has no permission")
 		return
 	}
 	user := new(model_user.User)
@@ -69,7 +69,7 @@ func getUserInfoHandler(c *gin.Context) {
 	} else {
 		if check_permission.CheckNoPermission(c, model_user.UserPermissionSelect) {
 			log4go.Info(handler_common.RequestId(c) + "has no permission")
-			aRes.SetErrorInfo(http.StatusOK, "has no permission")
+			aRes.SetErrorInfo(http.StatusBadRequest, "has no permission")
 			return
 		}
 	}
@@ -104,7 +104,7 @@ func updateUserHandler(c *gin.Context) {
 	}()
 	if check_permission.CheckNoPermission(c, model_user.UserPermissionEdit) {
 		log4go.Info(handler_common.RequestId(c) + "has no permission")
-		aRes.SetErrorInfo(http.StatusOK, "has no permission")
+		aRes.SetErrorInfo(http.StatusBadRequest, "has no permission")
 		return
 	}
 	user := new(model_user.User)
@@ -133,7 +133,7 @@ func deleteUserHandler(c *gin.Context) {
 	}()
 	if check_permission.CheckNoPermission(c, model_user.UserPermissionDelete) {
 		log4go.Info(handler_common.RequestId(c) + "has no permission")
-		aRes.SetErrorInfo(http.StatusOK, "has no permission")
+		aRes.SetErrorInfo(http.StatusBadRequest, "has no permission")
 		return
 	}
 	user := new(model_user.User)
@@ -167,7 +167,7 @@ func getUserTreeListInfoHandler(c *gin.Context) {
 	}()
 	if check_permission.CheckNoPermission(c, model_user.UserPermissionSelect) {
 		log4go.Info(handler_common.RequestId(c) + "has no permission")
-		aRes.SetErrorInfo(http.StatusOK, "has no permission")
+		aRes.SetErrorInfo(http.StatusBadRequest, "has no permission")
 		return
 	}
 	limit, _ := strconv.Atoi(c.Query("size"))
@@ -230,7 +230,7 @@ func queryListHandler(c *gin.Context) {
 	}()
 	if check_permission.CheckNoPermission(c, model_user.UserPermissionSelect) {
 		log4go.Info(handler_common.RequestId(c) + "has no permission")
-		aRes.SetErrorInfo(http.StatusOK, "has no permission")
+		aRes.SetErrorInfo(http.StatusBadRequest, "has no permission")
 		return
 	}
 	limit, _ := strconv.Atoi(c.Query("size"))
