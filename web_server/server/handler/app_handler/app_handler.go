@@ -1,8 +1,6 @@
 package app_handler
 
 import (
-	"encoding/json"
-	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -86,8 +84,6 @@ func editHandler(c *gin.Context) {
 		return
 	}
 	c.Set(common.KeyContextPara, para)
-	js, _ := json.Marshal(para)
-	fmt.Println(string(js))
 	err = para.Update()
 	if err != nil {
 		log4go.Error(handler_common.RequestId(c) + err.Error())
@@ -95,14 +91,6 @@ func editHandler(c *gin.Context) {
 		return
 	}
 	aRes.SetSuccessInfo(http.StatusOK, "success")
-}
-
-type appListPara struct {
-	limit int
-	page  int
-	sort  string
-	name  string
-	owner string
 }
 
 func listHandler(c *gin.Context) {

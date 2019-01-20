@@ -34,7 +34,7 @@ func Logger() gin.HandlerFunc {
 		l.ClientIp = c.ClientIP()
 		l.Method = c.Request.Method
 		path := c.Request.URL.String()
-		if l.Method != "GET" {
+		if l.Method != "GET" && l.Method != "OPTIONS" {
 			l.Path = path
 		} else {
 			paths := strings.Split(path, "?")
@@ -44,7 +44,7 @@ func Logger() gin.HandlerFunc {
 			l.Path = paths[0]
 		}
 		methodColor := colorForMethod(l.Method)
-		log.InfoExt(l, "[GIN] [%s] [Start]\t%s %s %s|%s|\t%s",
+		log.NeverShow(l, "[GIN] [%s] [Start]\t%s %s %s|\t%s|\t%s",
 			l.RequestId,
 			methodColor, l.Method, reset,
 			l.Path,
@@ -68,16 +68,18 @@ func Logger() gin.HandlerFunc {
 			l.Path,
 			comment)
 
-		l.Para = common.Para(c)
+		para := common.Para(c)
+		if para != nil {
+			l.Para = common.Para(c)
+		}
 		l.ResponseCode = common.ResponseCode(c)
-
-		log.InfoExt(l, "[GIN] [%s] [Completed]\t%s %s %s|%s|\t%5d|\t%s%3d%s|\t%13v|\t%s",
+		log.InfoExt(l, "[GIN] [%s] [Completed]\t%s %s %s|\t%8v|\t%s|\t%5d|\t%s%3d%s|\t%s",
 			l.RequestId,
 			methodColor, l.Method, reset,
+			l.Latency,
 			l.Path,
 			l.UserId,
 			statusColor, l.StatusCode, reset,
-			l.Latency,
 			comment,
 		)
 	}

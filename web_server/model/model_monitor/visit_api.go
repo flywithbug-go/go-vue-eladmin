@@ -12,11 +12,12 @@ import (
 )
 
 type VisitApi struct {
-	Path     string `json:"path,omitempty" bson:"path,omitempty"`
-	TimeDate string `json:"time_date,omitempty" bson:"time_date,omitempty"` //2006-01-02:15 小时计算计算
-	Count    int    `json:"count,omitempty" bson:"count,omitempty"`
-	Method   string `json:"method,omitempty" bson:"method,omitempty"`
-	Total    int    `json:"total,omitempty" bson:"total,omitempty"`
+	Path     string      `json:"path,omitempty" bson:"path,omitempty"`
+	TimeDate string      `json:"time_date,omitempty" bson:"time_date,omitempty"` //2006-01-02:15 小时计算计算
+	Count    int         `json:"count,omitempty" bson:"count,omitempty"`
+	Method   string      `json:"method,omitempty" bson:"method,omitempty"`
+	Total    int         `json:"total,omitempty" bson:"total,omitempty"`
+	Para     interface{} `json:"para,omitempty" bson:"para,omitempty"`
 }
 
 const (

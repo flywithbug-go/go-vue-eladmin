@@ -10,7 +10,7 @@ import (
 type colorRecord log4go.Record
 
 var (
-	LEVEL_FLAGS = [...]string{"DEBUG", "INFO", "WARN", "ERROR", "FATAL"}
+	LEVEL_FLAGS = [...]string{"DEBUG", "INFO", "NEVERSHOW", "WARN", "ERROR", "FATAL"}
 )
 
 type Writer interface {
@@ -21,6 +21,7 @@ type Writer interface {
 const (
 	DEBUG = iota
 	INFO
+	NEVERSHOW
 	WARNING
 	ERROR
 	FATAL
@@ -31,7 +32,7 @@ func (r *colorRecord) String() string {
 	case DEBUG:
 		return fmt.Sprintf("\033[36m%s\033[0m [\033[34m%s\033[0m] \033[47;30m%s\033[0m %s\n",
 			r.Time, LEVEL_FLAGS[r.Level], r.Code, r.Info)
-	case INFO:
+	case INFO, NEVERSHOW:
 		return fmt.Sprintf("\033[36m%s\033[0m [\033[32m%s\033[0m] \033[47;30m%s\033[0m %s\n",
 			r.Time, LEVEL_FLAGS[r.Level], r.Code, r.Info)
 	case WARNING:
@@ -56,6 +57,9 @@ func NewConsoleWriter() *ConsoleWriter {
 }
 
 func (w *ConsoleWriter) Write(r *log4go.Record) error {
+	//if r.Level == log4go.NEVERSHOW {
+	//	return nil
+	//}
 	if w.color {
 		fmt.Fprint(os.Stdout, ((*colorRecord)(r)).String())
 	} else {
