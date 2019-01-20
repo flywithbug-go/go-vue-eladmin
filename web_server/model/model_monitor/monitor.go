@@ -30,7 +30,7 @@ func (l Log) AddMonitorInfo() {
 	if !strings.HasPrefix(l.Path, "/api") {
 		return
 	}
-	if strings.HasPrefix(l.Path, "/api/log") && (l.ResponseCode == 200 || l.ResponseCode == 204) {
+	if strings.HasPrefix(l.Path, "/api/log") && (l.ResponseCode == 200 || l.StatusCode == 204) {
 		return
 	}
 	visitUid := visitUIdPool.Get().(*VisitUId)
