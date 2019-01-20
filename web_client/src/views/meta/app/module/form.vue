@@ -47,8 +47,8 @@
           </el-tag>
         </div>
         <el-select
-          v-model="optionValue"
-          :remote-method="queryList"
+          v-model="optionValue1"
+          :remote-method="queryOwner"
           :loading="loading"
           style="margin-top: 5px"
           remote
@@ -82,7 +82,7 @@
         <div class="head-container">
           <el-select
             v-model="optionValue"
-            :remote-method="queryList"
+            :remote-method="queryManager"
             :loading="loading"
             style="margin-top: 5px"
             remote
@@ -95,7 +95,7 @@
               :label="item.username"
               :value="item.id"/>
           </el-select>
-          <el-button @click="addManagerAction">{{ "添加" }}</el-button>
+          <el-button @click="addManagerAction">{{ "添加管理员" }}</el-button>
         </div>
 
       </el-form-item>
@@ -151,8 +151,10 @@ export default {
   data() {
     return {
       ownerEdit: false,
+      editType: 'manager',
       options: [],
       optionValue: '',
+      optionValue1: '',
       headers: { 'Authorization': store.getters.token },
       actionURL: global_.UploadImageURL,
       imagePlaceHolder: require('@/assets/image_placeholder.png'),
@@ -198,6 +200,14 @@ export default {
     handleClose(tag) {
       this.form.managers.splice(this.form.managers.indexOf(tag), 1)
     },
+    queryOwner(name) {
+      this.editType = 'owner'
+      this.queryList(name)
+    },
+    queryManager(name) {
+      this.editType = 'manager'
+      this.queryList(name)
+    },
     queryList(name) {
       if (!name) {
         return
@@ -208,14 +218,14 @@ export default {
       this.params = { page: this.page, size: this.size, sort: sort }
       this.params['enabled'] = true
       this.params['username'] = name
-
       const ids = []
       if (this.form.owner) ids.push(this.form.owner.id)
-
-      if (!this.form.managers) this.form.managers = []
-      this.form.managers.forEach(function(item) {
-        ids.push(item.id)
-      })
+      if (this.editType === 'manager') {
+        if (!this.form.managers) this.form.managers = []
+        this.form.managers.forEach(function(item) {
+          ids.push(item.id)
+        })
+      }
       this.params['exc'] = ids.join(',')
       queryList(this.params).then(res => {
         this.options = res.list
@@ -225,14 +235,14 @@ export default {
       })
     },
     changeOwnerAction() {
-      const optionValue = this.optionValue
+      const optionValue = this.optionValue1
       let temp
       for (const value of this.options) {
         if (value.id === optionValue) {
           temp = value
         }
       }
-      this.optionValue = ''
+      this.optionValue1 = ''
       this.options = []
       if (temp) {
         this.ownerEdit = true

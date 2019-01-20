@@ -130,6 +130,9 @@ func (a Application) updateAppManagers() error {
 	aM := model_app_manager.AppManager{}
 	aM.RemoveAppId(a.Id)
 	for _, user := range a.Managers {
+		if user.Id == a.OwnerId {
+			continue
+		}
 		aM.UserId = user.Id
 		aM.AppId = a.Id
 		aM.Insert()
