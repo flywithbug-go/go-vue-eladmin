@@ -40,7 +40,6 @@ export default {
       _this.dialog = true
       console.log('edit:', _this.form)
     }
-
   }
 }
 </script>

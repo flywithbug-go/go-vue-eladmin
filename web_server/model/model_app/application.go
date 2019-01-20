@@ -127,9 +127,6 @@ func (a *Application) Insert() error {
 }
 
 func (a Application) updateAppManagers() error {
-	if len(a.Managers) == 0 {
-		return nil
-	}
 	aM := model_app_manager.AppManager{}
 	aM.RemoveAppId(a.Id)
 	for _, user := range a.Managers {

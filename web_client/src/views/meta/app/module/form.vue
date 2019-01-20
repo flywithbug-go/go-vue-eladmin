@@ -42,11 +42,10 @@
           <el-tag
             v-for="(item,id) in form.managers"
             :key="id"
-            :disable-transitions="false"
             closable
             type="info"
             style="margin-left: 5px;"
-            @close="handleClose(item.id)">
+            @close="handleClose(item)">
             {{ item.username }}
           </el-tag>
         </div>
@@ -123,7 +122,6 @@ export default {
     return {
       options: [],
       optionValue: '',
-      managers: [],
       headers: { 'Authorization': store.getters.token },
       actionURL: global_.UploadImageURL,
       imagePlaceHolder: require('@/assets/image_placeholder.png'),
@@ -154,12 +152,8 @@ export default {
   },
   methods: {
     dialogClose() {
-      const allManagers = this.form.managers
-      this.managers.forEach(function(item) {
-        allManagers.splice(allManagers.indexOf(item.id), 1)
-      })
-      this.form.managers = allManagers
       this.dialog = false
+      this.sup_this.init()
     },
     handleClose(tag) {
       this.form.managers.splice(this.form.managers.indexOf(tag), 1)
@@ -174,7 +168,11 @@ export default {
       this.params = { page: this.page, size: this.size, sort: sort }
       this.params['enabled'] = true
       this.params['username'] = name
+
       const ids = []
+      if (this.form.owner) ids.push(this.form.owner.id)
+
+      if (!this.form.managers) this.form.managers = []
       this.form.managers.forEach(function(item) {
         ids.push(item.id)
       })
@@ -196,8 +194,10 @@ export default {
       })
       this.optionValue = ''
       this.options = []
+      // if (!this.form.managers){
+      //   this.form.managers = []
+      // }
       this.form.managers.push(...temp)
-      this.managers.push(...temp)
     },
     resetForm() {
       this.dialog = false
