@@ -59,7 +59,7 @@ func updateAppVersionHandler(c *gin.Context) {
 	}
 
 	appV := model_app.AppVersion{}
-	err := c.BindJSON(appV)
+	err := c.BindJSON(&appV)
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid: "+err.Error())

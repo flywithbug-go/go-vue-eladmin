@@ -70,6 +70,8 @@ export function editStatus(id, status) {
     id,
     status
   }
+  console.log('editStatus', data)
+
   return client({
     url: '/app/version',
     method: 'put',
