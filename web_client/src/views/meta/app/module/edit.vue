@@ -28,10 +28,7 @@ export default {
   },
   computed: {
     checkPermission() {
-      console.log('data', this.data.managers)
       const userId = store.getters.userId
-      console.log('userId', userId)
-
       if (this.data.owner_id === userId) {
         return true
       }
@@ -54,12 +51,11 @@ export default {
         owner: this.data.owner,
         desc: this.data.desc,
         icon: this.data.icon,
+        owner_id: this.data.owner_id,
         bundle_id: this.data.bundle_id,
         managers: this.data.managers
       }
-
       _this.dialog = true
-      console.log('edit:', _this.form)
     }
 
   }

@@ -21,7 +21,6 @@ export function add(data) {
   } else {
     data.iframe = true
   }
-  console.log("data:",data)
   return request({
     url: '/menu',
     method: 'post',

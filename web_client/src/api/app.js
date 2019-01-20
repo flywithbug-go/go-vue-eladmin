@@ -20,7 +20,8 @@ export function edit(para) {
     name: para.name,
     desc: para.desc,
     id: para.id,
-    managers: para.managers
+    managers: para.managers,
+    owner_id: para.owner_id
   }
   return client({
     url: '/app',

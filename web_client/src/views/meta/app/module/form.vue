@@ -34,10 +34,40 @@
         prop="name">
         <el-input v-model="form.name"/>
       </el-form-item>
+
+      <el-form-item
+        v-show="checkPermission"
+        :label="$t('table.owner')"
+        prop="owner">
+        <div class="filter-item">
+          <el-tag
+            type="info"
+            style="margin-left: 5px;">
+            {{ form.owner.username }}
+          </el-tag>
+        </div>
+        <el-select
+          v-model="optionValue"
+          :remote-method="queryList"
+          :loading="loading"
+          style="margin-top: 5px"
+          remote
+          reserve-keyword
+          filterable
+          placeholder="请输入关键词">
+          <el-option
+            v-for="item in options"
+            :key="item.id"
+            :label="item.username"
+            :value="item.id"/>
+        </el-select>
+        <el-button @click="changeOwnerAction" >{{ "更换负责人" }}</el-button>
+
+      </el-form-item>
+
       <el-form-item
         :label="$t('table.manager')"
         prop="managers">
-
         <div >
           <el-tag
             v-for="(item,id) in form.managers"
@@ -65,7 +95,7 @@
               :label="item.username"
               :value="item.id"/>
           </el-select>
-          <el-button @click="addAction">{{ "添加" }}</el-button>
+          <el-button @click="addManagerAction">{{ "添加" }}</el-button>
         </div>
 
       </el-form-item>
@@ -120,6 +150,7 @@ export default {
   },
   data() {
     return {
+      ownerEdit: false,
       options: [],
       optionValue: '',
       headers: { 'Authorization': store.getters.token },
@@ -127,7 +158,7 @@ export default {
       imagePlaceHolder: require('@/assets/image_placeholder.png'),
       dialog: false,
       loading: false,
-      form: { id: 0, name: '', owner: '', desc: '', icon: '', bundle_id: '', managers: [], manager_ids: [] },
+      form: { id: 0, name: '', owner: '', owner_id: 0, desc: '', icon: '', bundle_id: '', managers: [], manager_ids: [] },
       rules: {
         name: [
           { required: true, message: this.$t('placeholder.name'), trigger: 'blur' },
@@ -148,6 +179,15 @@ export default {
         ]
 
       }
+    }
+  },
+  computed: {
+    checkPermission() {
+      const userId = store.getters.userId
+      if (this.form.owner.id === userId || this.ownerEdit) {
+        return true
+      }
+      return false
     }
   },
   methods: {
@@ -184,7 +224,23 @@ export default {
         this.loading = false
       })
     },
-    addAction() {
+    changeOwnerAction() {
+      const optionValue = this.optionValue
+      let temp
+      for (const value of this.options) {
+        if (value.id === optionValue) {
+          temp = value
+        }
+      }
+      this.optionValue = ''
+      this.options = []
+      if (temp) {
+        this.ownerEdit = true
+        this.form.owner = temp
+        this.form.owner_id = optionValue
+      }
+    },
+    addManagerAction() {
       const optionValue = this.optionValue
       const temp = []
       this.options.forEach(function(item) {
@@ -194,15 +250,12 @@ export default {
       })
       this.optionValue = ''
       this.options = []
-      // if (!this.form.managers){
-      //   this.form.managers = []
-      // }
       this.form.managers.push(...temp)
     },
     resetForm() {
       this.dialog = false
       this.$refs['form'].resetFields()
-      this.form = { id: 0, name: '', owner: '', desc: '', icon: '', bundle_id: '', managers: [], manager_ids: [] }
+      this.form = { id: 0, name: '', owner: '', owner_id: 0, desc: '', icon: '', bundle_id: '', managers: [], manager_ids: [] }
     },
     cancel() {
       this.dialogClose()

@@ -139,10 +139,10 @@ func (a Application) updateAppManagers() error {
 
 func (a Application) Update() error {
 	a.BundleId = ""
-	a.Owner = nil
 	a.CreateTime = 0
 	a.updateAppManagers()
 	a.Managers = nil
+	a.Owner = nil
 	return a.update(bson.M{"_id": a.Id}, a)
 }
 
