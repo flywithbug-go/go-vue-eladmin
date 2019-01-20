@@ -126,7 +126,7 @@ func (a *Application) Insert() error {
 	return nil
 }
 
-func (a *Application) updateAppManagers() error {
+func (a Application) updateAppManagers() error {
 	if len(a.Managers) == 0 {
 		return nil
 	}
@@ -137,7 +137,6 @@ func (a *Application) updateAppManagers() error {
 		aM.AppId = a.Id
 		aM.Insert()
 	}
-	a.Managers = nil
 	return nil
 }
 
@@ -146,6 +145,7 @@ func (a Application) Update() error {
 	a.Owner = nil
 	a.CreateTime = 0
 	a.updateAppManagers()
+	a.Managers = nil
 	return a.update(bson.M{"_id": a.Id}, a)
 }
 

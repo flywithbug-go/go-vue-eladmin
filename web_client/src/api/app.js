@@ -6,7 +6,7 @@ export function add(para) {
     icon: para.icon,
     name: para.name,
     desc: para.desc,
-    manager_ids: para.manager_ids
+    managers: para.managers
   }
   return client({
     url: '/app',
@@ -20,7 +20,7 @@ export function edit(para) {
     name: para.name,
     desc: para.desc,
     id: para.id,
-    manager_ids: para.manager_ids
+    managers: para.managers
   }
   return client({
     url: '/app',
