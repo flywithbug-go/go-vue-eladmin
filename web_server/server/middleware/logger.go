@@ -5,6 +5,7 @@ import (
 	"encoding/binary"
 	"fmt"
 	"net/http"
+	"strings"
 	"time"
 	"vue-admin/web_server/common"
 	"vue-admin/web_server/log_writer"
@@ -32,8 +33,16 @@ func Logger() gin.HandlerFunc {
 		l.StartTime = start.UnixNano()
 		l.ClientIp = c.ClientIP()
 		l.Method = c.Request.Method
-		l.Path = c.Request.URL.String()
-
+		path := c.Request.URL.String()
+		if l.Method != "GET" {
+			l.Path = path
+		} else {
+			paths := strings.Split(path, "?")
+			if len(paths) == 2 {
+				l.Para = paths[1]
+			}
+			l.Path = paths[0]
+		}
 		methodColor := colorForMethod(l.Method)
 		log.InfoExt(l, "[GIN] [%s] [Start]\t%s %s %s|%s|\t%s",
 			l.RequestId,
@@ -50,27 +59,25 @@ func Logger() gin.HandlerFunc {
 		statusColor := colorForStatus(l.StatusCode)
 		comment := c.Errors.ByType(gin.ErrorTypePrivate).String()
 		l.UserId = common.UserId(c)
-		l.Info = fmt.Sprintf("[GIN] [%s] [Completed]\t%s|%5d\t%3d|\t3d\t%13v|\t%s\t%s|\t%s",
+		l.Info = fmt.Sprintf("[GIN] [%s] [Completed]\t%s|%5d\t%3d|\t3d\t%13v|\t%s\t%s",
 			l.RequestId,
 			l.Method,
 			l.UserId,
 			l.StatusCode,
 			l.Latency,
-			l.ClientIp,
 			l.Path,
 			comment)
 
 		l.Para = common.Para(c)
 		l.ResponseCode = common.ResponseCode(c)
 
-		log.InfoExt(l, "[GIN] [%s] [Completed]\t%s %s %s|%s|\t%5d|\t%s%3d%s|\t%13v|\t%s|\t%s|\t%s",
+		log.InfoExt(l, "[GIN] [%s] [Completed]\t%s %s %s|%s|\t%5d|\t%s%3d%s|\t%13v|\t%s",
 			l.RequestId,
 			methodColor, l.Method, reset,
 			l.Path,
 			l.UserId,
 			statusColor, l.StatusCode, reset,
 			l.Latency,
-			l.ClientIp,
 			comment,
 		)
 	}

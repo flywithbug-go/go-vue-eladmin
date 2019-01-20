@@ -151,9 +151,6 @@ export default {
       }
     }
   },
-  computed: {
-
-  },
   methods: {
     handleClose(tag) {
       this.form.managers.splice(this.form.managers.indexOf(tag), 1)
@@ -177,6 +174,7 @@ export default {
     },
     addAction() {
       console.log('addAction:', this.manager_ids)
+      console.log('addAction:', this.options)
     },
     resetForm() {
       this.dialog = false

@@ -40,5 +40,7 @@ func CreateMgoIndex() {
 }
 
 func formatIndex() []Index {
-	return append(docManagerIndex(), monitorIndex()...)
+	Indexes := append(docManagerIndex(), monitorIndex()...)
+
+	return Indexes
 }
