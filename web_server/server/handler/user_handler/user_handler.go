@@ -274,14 +274,13 @@ func queryListHandler(c *gin.Context) {
 	if strings.EqualFold(enabled, "false") {
 		query["enabled"] = false
 	}
-
 	if len(exc) > 0 {
 		excepts := strings.Split(exc, ",")
 		ids := make([]int64, len(excepts))
 		for index, item := range excepts {
 			ids[index], _ = strconv.ParseInt(item, 10, 64)
 		}
-		query["_id"] = bson.M{"nin": ids}
+		query["_id"] = bson.M{"$nin": ids}
 	}
 	var user = model_user.User{}
 	totalCount, _ := user.TotalCount(query, nil)
