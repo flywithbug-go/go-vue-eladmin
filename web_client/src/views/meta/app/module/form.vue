@@ -2,6 +2,7 @@
   <el-dialog
     :append-to-body="true"
     :visible.sync="dialog"
+    :before-close="dialogClose"
     :title="dialogTitle()"
     width="500px">
     <el-form
@@ -51,13 +52,12 @@
         </div>
         <div class="head-container">
           <el-select
-            v-model="manager_ids"
+            v-model="optionValue"
             :remote-method="queryList"
             :loading="loading"
             style="margin-top: 5px"
             remote
             reserve-keyword
-            multiple
             filterable
             placeholder="请输入关键词">
             <el-option
@@ -122,7 +122,8 @@ export default {
   data() {
     return {
       options: [],
-      manager_ids: [],
+      optionValue: '',
+      managers: [],
       headers: { 'Authorization': store.getters.token },
       actionURL: global_.UploadImageURL,
       imagePlaceHolder: require('@/assets/image_placeholder.png'),
@@ -152,8 +153,17 @@ export default {
     }
   },
   methods: {
+    dialogClose() {
+      console.log('close')
+      this.managers.forEach(function(item) {
+        this.form.managers.splice(this.form.managers.indexOf(item.id), 1)
+      })
+    },
     handleClose(tag) {
       this.form.managers.splice(this.form.managers.indexOf(tag), 1)
+    },
+    handleCloseTemp(tag) {
+      this.form.temp.splice(this.form.temp.indexOf(tag), 1)
     },
     queryList(name) {
       if (!name) {
@@ -178,9 +188,17 @@ export default {
       })
     },
     addAction() {
-      console.log('addAction:', this.manager_ids)
-      console.log('addAction:', this.options)
-      console.log('managers:', this.form.managers)
+      const optionValue = this.optionValue
+      const temp = []
+      this.options.forEach(function(item) {
+        if (item.id === optionValue) {
+          temp.push(item)
+        }
+      })
+      this.optionValue = ''
+      this.options = []
+      this.form.managers.push(...temp)
+      this.managers.push(...temp)
     },
     resetForm() {
       this.dialog = false
