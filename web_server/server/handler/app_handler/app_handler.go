@@ -141,9 +141,10 @@ func listHandler(c *gin.Context) {
 	if len(owner) > 0 {
 		query["owner"] = bson.M{"$regex": owner, "$options": "i"}
 	}
+	selector := bson.M{"_id": 1, "name": 1, "icon": 1, "create_time": 1, "owner_id": 1, "desc": 1}
 	var app = model_app.Application{}
 	totalCount, _ := app.TotalCount(query, nil)
-	appList, err := app.FindPageFilter(page, limit, query, nil, sort)
+	appList, err := app.FindPageFilter(page, limit, query, selector, sort)
 	if err != nil {
 		log4go.Error(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusUnauthorized, "apps find error"+err.Error())
@@ -165,7 +166,8 @@ func simpleListHandler(c *gin.Context) {
 		return
 	}
 	var app = model_app.Application{}
-	arrList, err := app.FindAll(nil, bson.M{"_id": 1, "name": 1, "icon": 1, "owner_id": 1, "editable": 1})
+	selector := bson.M{"_id": 1, "name": 1, "icon": 1, "create_time": 1, "owner_id": 1}
+	arrList, err := app.FindAll(nil, selector)
 	if err != nil {
 		log4go.Info(err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, err.Error())
