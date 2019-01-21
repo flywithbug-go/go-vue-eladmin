@@ -122,7 +122,7 @@ func (m Menu) Insert() (int64, error) {
 	}
 	list := m.Roles
 	m.Id, _ = mongo.GetIncrementId(shareDB.DocManagerDBName(), menuCollection)
-	m.CreateTime = time.Now().Unix() * 1000
+	m.CreateTime = time.Now().Unix()
 	m.Roles = nil
 	m.Children = nil
 	m.IFrame = true

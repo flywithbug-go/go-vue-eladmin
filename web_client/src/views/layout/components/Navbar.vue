@@ -34,7 +34,7 @@
               {{ $t('navbar.dashboard') }}
             </el-dropdown-item>
           </router-link>
-          <router-link to="/user/center">
+          <router-link :to="{path:'/user/center',query :{id:'10000'}}">
             <el-dropdown-item>
               {{ $t('navbar.personal') }}
             </el-dropdown-item>

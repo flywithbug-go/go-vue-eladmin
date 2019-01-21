@@ -82,7 +82,7 @@ func (r UserRole) Exist(query interface{}) bool {
 
 func (r UserRole) Insert() error {
 	r.Id, _ = mongo.GetIncrementId(shareDB.DocManagerDBName(), UserRoleCollection)
-	r.CreateTime = time.Now().Unix() * 1000
+	r.CreateTime = time.Now().Unix()
 	return r.insert(r)
 }
 

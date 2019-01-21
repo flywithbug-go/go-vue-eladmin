@@ -97,7 +97,7 @@ func (u User) removeAll(selector interface{}) error {
 func (u User) Insert() error {
 	u.Id, _ = mongo.GetIncrementId(shareDB.DocManagerDBName(), userCollection)
 	u.Enabled = true
-	u.CreateTime = time.Now().Unix() * 1000
+	u.CreateTime = time.Now().Unix()
 	list := u.Roles
 	u.Roles = nil
 	if len(u.Avatar) == 0 {

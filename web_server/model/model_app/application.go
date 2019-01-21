@@ -28,11 +28,11 @@ const (
 // role 等级为1 的用户可以编辑
 type Application struct {
 	Id         int64             `json:"id,omitempty" bson:"_id,omitempty"`
-	Name       string            `json:"name,omitempty" bson:"name,omitempty"`        //应用（组件）名称
-	Desc       string            `json:"desc,omitempty" bson:"desc,omitempty"`        //项目描述
-	CreateTime int64             `json:"time,omitempty" bson:"create_time,omitempty"` //创建时间
-	Icon       string            `json:"icon,omitempty" bson:"icon,omitempty"`        //icon 地址
-	Owner      *model_user.User  `json:"owner,omitempty" bson:"owner,omitempty"`      //应用所有者
+	Name       string            `json:"name,omitempty" bson:"name,omitempty"`               //应用（组件）名称
+	Desc       string            `json:"desc,omitempty" bson:"desc,omitempty"`               //项目描述
+	CreateTime int64             `json:"create_time,omitempty" bson:"create_time,omitempty"` //创建时间
+	Icon       string            `json:"icon,omitempty" bson:"icon,omitempty"`               //icon 地址
+	Owner      *model_user.User  `json:"owner,omitempty" bson:"owner,omitempty"`             //应用所有者
 	OwnerId    int64             `json:"owner_id,omitempty" bson:"owner_id,omitempty"`
 	BundleId   string            `json:"bundle_id,omitempty" bson:"bundle_id,omitempty"`
 	Managers   []model_user.User `json:"managers,omitempty" bson:"managers,omitempty"` //管理员
@@ -113,7 +113,7 @@ func (a *Application) Insert() error {
 		return errors.New("name already exist")
 	}
 	a.Id, _ = mongo.GetIncrementId(shareDB.DocManagerDBName(), appCollection)
-	a.CreateTime = time.Now().Unix() * 1000
+	a.CreateTime = time.Now().Unix()
 	list := a.Managers
 	a.Managers = nil
 	a.Owner = nil

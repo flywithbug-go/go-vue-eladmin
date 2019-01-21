@@ -43,7 +43,7 @@ func UserLogin(userID int64, userAgent, token, ip string) (l *Login, err error) 
 	l.UserId = userID
 	l.UserAgent = userAgent
 	l.Token = token
-	l.CreateTime = time.Now().Unix() * 1000
+	l.CreateTime = time.Now().Unix()
 	l.UpdatedAt = l.CreateTime
 	l.Status = StatusLogin
 	l.LoginIp = ip

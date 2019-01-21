@@ -83,7 +83,7 @@ func (m MenuRole) Exist(query interface{}) bool {
 
 func (m MenuRole) Insert() error {
 	m.Id, _ = mongo.GetIncrementId(shareDB.DocManagerDBName(), menuRoleCollection)
-	m.CreateTime = time.Now().Unix() * 1000
+	m.CreateTime = time.Now().Unix()
 	return m.insert(m)
 }
 

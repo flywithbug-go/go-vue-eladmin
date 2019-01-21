@@ -82,7 +82,7 @@ func (r AppManager) Exist(query interface{}) bool {
 
 func (r AppManager) Insert() error {
 	r.Id, _ = mongo.GetIncrementId(shareDB.DocManagerDBName(), AppManagerCollection)
-	r.CreateTime = time.Now().Unix() * 1000
+	r.CreateTime = time.Now().Unix()
 	return r.insert(r)
 }
 

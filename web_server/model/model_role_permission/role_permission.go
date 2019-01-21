@@ -83,7 +83,7 @@ func (r RolePermission) Exist(query interface{}) bool {
 
 func (r RolePermission) Insert() error {
 	r.Id, _ = mongo.GetIncrementId(shareDB.DocManagerDBName(), rolePermissionCollection)
-	r.CreateTime = time.Now().Unix() * 1000
+	r.CreateTime = time.Now().Unix()
 	return r.insert(r)
 }
 

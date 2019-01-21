@@ -102,7 +102,7 @@ func (p Permission) Insert() (int64, error) {
 	}
 	p.Id, _ = mongo.GetIncrementId(shareDB.DocManagerDBName(), permissionCollection)
 	p.Children = nil
-	p.CreateTime = time.Now().Unix() * 1000
+	p.CreateTime = time.Now().Unix()
 	return p.Id, p.insert(p)
 }
 
