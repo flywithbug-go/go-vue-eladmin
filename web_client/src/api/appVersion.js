@@ -35,18 +35,7 @@ export function add(app_id, version, parent_version, platform, approval_time, lo
     data
   })
 }
-export function edit(id, app_id, version, parent_version, platform, approval_time, lock_time, gray_time, release_time) {
-  const data = {
-    id,
-    app_id,
-    version,
-    parent_version,
-    platform,
-    approval_time,
-    lock_time,
-    gray_time,
-    release_time
-  }
+export function edit(data) {
   return client({
     url: '/app/version',
     method: 'put',

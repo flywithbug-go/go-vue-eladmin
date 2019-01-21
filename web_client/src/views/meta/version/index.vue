@@ -602,34 +602,28 @@ export default {
           let lock_time = parseInt('0')
           let approval_time = parseInt('0')
           let release_time = parseInt('0')
-          let parent_version = this.temp.parent_version
-
+          let parent_version = ''
+          let platform = []
+          let version = ''
           this.temp.lock_time = this.temp.lock_time.getTime() / 1000
           this.temp.gray_time = this.temp.gray_time.getTime() / 1000
           this.temp.approval_time = this.temp.approval_time.getTime() / 1000
+          this.temp.release_time = this.temp.release_time.getTime() / 1000
+
           if (this.temp.status < 2) {
             approval_time = this.temp.approval_time
+            platform = this.temp.platform
+            version = this.temp.version
+            parent_version = this.temp.parent_version
           }
           if (this.temp.status < 3) {
             lock_time = this.temp.lock_time
-            if (this.temp.approval_time > this.temp.lock_time) {
-              this.$message.error('立项时间必须早于锁版时间')
-              return
-            }
           }
           if (this.temp.status < 4) {
             gray_time = this.temp.gray_time
-            if (this.temp.lock_time > this.temp.gray_time) {
-              this.$message.error('锁版时间必须早于灰度时间')
-              return
-            }
           }
-          if (this.temp.status === 5) {
-            if (this.temp.gray_time > this.temp.release_time && this.temp.status >= 4) {
-              this.$message.error('灰度时间必须早于发布时间')
-              return
-            }
-            this.temp.release_time = this.temp.release_time.valueOf() / 1000
+          console.log('status', this.temp.status)
+          if (this.temp.status === 4) {
             release_time = this.temp.release_time
           }
 
@@ -637,16 +631,17 @@ export default {
             parent_version = ''
           }
 
-          edit(
-            this.temp.id,
-            this.temp.app_id,
-            this.temp.version,
-            parent_version,
-            this.temp.platform,
-            approval_time,
-            lock_time,
-            gray_time,
-            release_time).then(() => {
+          const data = {
+            id: this.temp.id,
+            version: version,
+            parent_version: parent_version,
+            platform: platform,
+            approval_time: approval_time,
+            lock_time: lock_time,
+            gray_time: gray_time,
+            release_time: release_time
+          }
+          edit(data).then(() => {
             for (const v of this.list) {
               if (v.id === this.temp.id) {
                 const index = this.list.indexOf(v)

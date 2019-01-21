@@ -1,6 +1,8 @@
 package app_handler
 
 import (
+	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -53,11 +55,6 @@ func updateAppVersionHandler(c *gin.Context) {
 		c.JSON(http.StatusOK, aRes)
 	}()
 
-	//if check_permission.CheckNoPermission(c, model_app.ApplicationPermissionEdit) {
-	//	log4go.Info(handler_common.RequestId(c) + "has no permission")
-	//	aRes.SetErrorInfo(http.StatusBadRequest, "has no permission")
-	//	return
-	//}
 	appV := model_app.AppVersion{}
 	err := c.BindJSON(&appV)
 	if err != nil {
@@ -67,6 +64,8 @@ func updateAppVersionHandler(c *gin.Context) {
 	}
 
 	c.Set(common.KeyContextPara, appV)
+	js, _ := json.Marshal(appV)
+	fmt.Println(string(js))
 	appVersion, _ := appV.FindOne()
 	if check_permission.CheckNoAppVersionManagerPermission(c, appVersion) &&
 		check_permission.CheckNoPermission(c, model_app.ApplicationPermissionEdit) {
