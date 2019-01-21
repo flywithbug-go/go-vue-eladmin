@@ -275,6 +275,7 @@ export default {
   },
   data() {
     return {
+      appId: 0,
       showAction: false,
       listLoading: true,
       list: null,
