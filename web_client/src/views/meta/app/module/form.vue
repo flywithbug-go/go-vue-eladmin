@@ -53,7 +53,7 @@
           remote
           reserve-keyword
           filterable
-          placeholder="请输入关键词">
+          placeholder="搜索用户名">
           <el-option
             v-for="item in options"
             :key="item.id"
@@ -87,7 +87,7 @@
             remote
             reserve-keyword
             filterable
-            placeholder="请输入关键词">
+            placeholder="搜索用户名">
             <el-option
               v-for="item in options"
               :key="item.id"
