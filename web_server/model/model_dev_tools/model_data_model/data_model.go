@@ -3,7 +3,6 @@ package model_data_model
 import (
 	"encoding/json"
 	"fmt"
-	"reflect"
 	"time"
 	"vue-admin/web_server/core/mongo"
 	"vue-admin/web_server/model/a_mongo_index"
@@ -108,6 +107,10 @@ func (d DataModel) Update() error {
 	return d.update(bson.M{"_id": d.Id}, d)
 }
 
+func (d DataModel) Remove() error {
+	return d.remove(bson.M{"_id": d.Id})
+}
+
 func (d DataModel) AddAttribute(a Attribute) error {
 	if len(a.Name) == 0 {
 		return fmt.Errorf("attribute name can not be nil")
@@ -128,6 +131,9 @@ func (d DataModel) AddAttribute(a Attribute) error {
 
 func (d DataModel) AddAttributes(list []Attribute) error {
 	for _, item := range list {
+		if item.ModelId > 0 {
+
+		}
 		err := d.AddAttribute(item)
 		if err != nil {
 			return err
@@ -171,15 +177,4 @@ func (d DataModel) TotalCount(query, selector interface{}) (int, error) {
 }
 func (d DataModel) FindPageFilter(page, limit int, query, selector interface{}, fields ...string) ([]DataModel, error) {
 	return d.findPage(page, limit, query, selector, fields...)
-}
-
-func duplicate(a interface{}) (ret []interface{}) {
-	va := reflect.ValueOf(a)
-	for i := 0; i < va.Len(); i++ {
-		if i > 0 && reflect.DeepEqual(va.Index(i-1).Interface(), va.Index(i).Interface()) {
-			continue
-		}
-		ret = append(ret, va.Index(i).Interface())
-	}
-	return ret
 }
