@@ -23,17 +23,6 @@ func devToolsIndex() []Index {
 				Sparse:     true,
 				Name:       "c_data_model_f_name_index",
 			},
-		}, {
-			DBName:     shareDB.DocManagerDBName(),
-			Collection: CollectionDataModel,
-			Index: mgo.Index{
-				Key:        []string{"attributes.name"},
-				Unique:     true,
-				DropDups:   true,
-				Background: false,
-				Sparse:     true,
-				Name:       "c_data_model_f_attributes_name_index",
-			},
 		},
 	}
 	return Indexes

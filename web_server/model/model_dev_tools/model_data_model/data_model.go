@@ -109,6 +109,9 @@ func (d DataModel) Update() error {
 }
 
 func (d DataModel) AddAttribute(a Attribute) error {
+	if len(a.Name) == 0 {
+		return fmt.Errorf("attribute name can not be nil")
+	}
 	if d.isExistAttribute(a) {
 		return fmt.Errorf("attribute is exist")
 	}
@@ -123,6 +126,27 @@ func (d DataModel) AddAttribute(a Attribute) error {
 	return err
 }
 
+func (d DataModel) AddAttributes(list []Attribute) error {
+	for _, item := range list {
+		err := d.AddAttribute(item)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (d DataModel) RemoveAttribute(a Attribute) error {
+	if len(a.Name) == 0 {
+		return fmt.Errorf("attribute name can not be nil")
+	}
+	selector := bson.M{"_id": d.Id}
+	option := bson.M{"$pull": bson.M{"attributes": bson.M{"name": a.Name}}}
+	ms, c := mongo.Collection(shareDB.DocManagerDBName(), dataModelCollection)
+	defer ms.Close()
+	return c.Update(selector, option)
+}
+
 func (d DataModel) isExistAttribute(a Attribute) bool {
 	selector := bson.M{"_id": d.Id, "attributes.name": a.Name}
 	return d.isExist(selector)
@@ -135,7 +159,11 @@ func (d DataModel) Insert() (id int64, err error) {
 	}
 	d.CreateTime = time.Now().Unix()
 	d.Id = id
-	return id, d.insert(d)
+	err = d.insert(d)
+	if err != nil {
+		d.AddAttributes(d.Attributes)
+	}
+	return id, err
 }
 
 func (d DataModel) TotalCount(query, selector interface{}) (int, error) {
