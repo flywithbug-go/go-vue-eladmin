@@ -29,6 +29,7 @@ func setLog() {
 	//c.SetColor(true)
 	//log.Register(c)
 
+	fmt.Println("\tinit log")
 	//日志保存到db
 	w := log_writer.NewDBWriter()
 	log.Register(w)
@@ -40,15 +41,18 @@ func setLog() {
 
 	log.SetLevel(1)
 	log.SetLayout("2006-01-02 15:04:05")
+	fmt.Println("\t\tcomplete")
 
 }
 
 func setFileConfig() {
+	fmt.Println("\t设置图片文件存储路径")
 	file_handler.SetLocalImageFilePath(config.Conf().LocalFilePath)
 }
 
 func setJWTKey() {
 	//signingKey read
+	fmt.Println("\t配置JWT 秘钥文件")
 	jwt.ReadSigningKey(config.Conf().PrivateKeyPath, config.Conf().PublicKeyPath)
 }
 
@@ -57,29 +61,37 @@ func init() {
 	//配置文件
 	configPath := flag.String("config", "config.json", "Configuration file to use")
 	flag.Parse()
+	fmt.Println("ParseConfig")
 	err := config.ReadConfig(*configPath)
 	if err != nil {
 		panic(err)
 	}
+	fmt.Println("\tComplete")
 }
 
 func setMongoDB() {
 	//mongodb启动连接
 	//设置数据库名字
-
+	fmt.Println("init mongodb")
 	shareDB.SetDocMangerDBName(config.Conf().DBConfig.DBName)
 	shareDB.SetMonitorDBName(config.Conf().MonitorDBConfig.DBName)
 
+	fmt.Println("\tdoc_manager")
 	err := mongo.RegisterMongo(config.Conf().DBConfig.Url, config.Conf().DBConfig.DBName)
 	if err != nil {
 		panic(err)
 	}
+	fmt.Println("\tmonitor")
 	err = mongo.RegisterMongo(config.Conf().MonitorDBConfig.Url, config.Conf().MonitorDBConfig.DBName)
 	if err != nil {
 		panic(err)
 	}
+	fmt.Println("\tindex")
+
 	//模型唯一索引
 	mongo_index.CreateMgoIndex()
+	fmt.Println("\tcomplete")
+
 }
 
 func setMail() {
@@ -104,6 +116,7 @@ func main() {
 
 	//jwt验证
 	setJWTKey()
+	fmt.Println("start Server")
 
 	//启动ApiServer服务
 	server.StartServer(config.Conf().Port, config.Conf().StaticPath, config.Conf().RouterPrefix, config.Conf().AuthPrefix)
