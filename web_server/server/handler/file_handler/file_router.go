@@ -5,7 +5,7 @@ import "vue-admin/web_server/server/handler/handler_common"
 var Routers = []handler_common.GinHandleFunc{
 	{
 		Handler:    uploadImageHandler, //上传图片
-		RouterType: handler_common.RouterTypeNeedAuth,
+		RouterType: handler_common.RouterTypeNormal,
 		Method:     "POST",
 		Route:      "/upload/image",
 	},
