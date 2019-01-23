@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"testing"
-	"vue-admin/web_server/config"
 	"vue-admin/web_server/model/a_mongo_index"
 
 	"gopkg.in/mgo.v2/bson"
@@ -26,7 +25,7 @@ func TestPipe(t *testing.T) {
 }
 
 func TestPipelineFetch(t *testing.T) {
-	mongo.RegisterMongo(config.Conf().DBConfig.Url, shareDB.DocManagerDBName()())
+	mongo.RegisterMongo("127.0.0.1:27017", "doc_manager")
 	permission := Permission{}
 
 	name := "user"

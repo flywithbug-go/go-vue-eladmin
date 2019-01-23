@@ -1,7 +1,7 @@
 package shareDB
 
 var (
-	docManager = "docmanager"
+	docManager = "doc_manager"
 	monitorDB  = "monitor"
 )
 
