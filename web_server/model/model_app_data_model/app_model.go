@@ -1,4 +1,4 @@
-package model_app_model
+package model_app_data_model
 
 import (
 	"encoding/json"
@@ -11,7 +11,7 @@ import (
 )
 
 const (
-	AppModelCollection = mongo_index.CollectionAppModel
+	AppDataModelCollection = mongo_index.CollectionAppDataModel
 )
 
 type AppModel struct {
@@ -27,43 +27,43 @@ func (r AppModel) ToJson() string {
 }
 
 func (r AppModel) isExist(query interface{}) bool {
-	return mongo.IsExist(shareDB.DocManagerDBName(), AppModelCollection, query)
+	return mongo.IsExist(shareDB.DocManagerDBName(), AppDataModelCollection, query)
 }
 
 func (r AppModel) insert(docs ...interface{}) error {
-	return mongo.Insert(shareDB.DocManagerDBName(), AppModelCollection, docs...)
+	return mongo.Insert(shareDB.DocManagerDBName(), AppDataModelCollection, docs...)
 }
 
 func (r AppModel) update(selector, update interface{}) error {
-	return mongo.Update(shareDB.DocManagerDBName(), AppModelCollection, selector, update, true)
+	return mongo.Update(shareDB.DocManagerDBName(), AppDataModelCollection, selector, update, true)
 }
 
 func (r AppModel) findOne(query, selector interface{}) (AppModel, error) {
 	ap := AppModel{}
-	err := mongo.FindOne(shareDB.DocManagerDBName(), AppModelCollection, query, selector, &ap)
+	err := mongo.FindOne(shareDB.DocManagerDBName(), AppDataModelCollection, query, selector, &ap)
 	return ap, err
 }
 func (r AppModel) findAll(query, selector interface{}) (results []AppModel, err error) {
 	results = []AppModel{}
-	err = mongo.FindAll(shareDB.DocManagerDBName(), AppModelCollection, query, selector, &results)
+	err = mongo.FindAll(shareDB.DocManagerDBName(), AppDataModelCollection, query, selector, &results)
 	return results, err
 }
 
 func (r AppModel) remove(selector interface{}) error {
-	return mongo.Remove(shareDB.DocManagerDBName(), AppModelCollection, selector)
+	return mongo.Remove(shareDB.DocManagerDBName(), AppDataModelCollection, selector)
 }
 
 func (r AppModel) removeAll(selector interface{}) error {
-	return mongo.RemoveAll(shareDB.DocManagerDBName(), AppModelCollection, selector)
+	return mongo.RemoveAll(shareDB.DocManagerDBName(), AppDataModelCollection, selector)
 }
 
 func (r AppModel) totalCount(query, selector interface{}) (int, error) {
-	return mongo.TotalCount(shareDB.DocManagerDBName(), AppModelCollection, query, selector)
+	return mongo.TotalCount(shareDB.DocManagerDBName(), AppDataModelCollection, query, selector)
 }
 
 func (r AppModel) findPage(page, limit int, query, selector interface{}, fields ...string) (results []AppModel, err error) {
 	results = []AppModel{}
-	err = mongo.FindPage(shareDB.DocManagerDBName(), AppModelCollection, page, limit, query, selector, &results, fields...)
+	err = mongo.FindPage(shareDB.DocManagerDBName(), AppDataModelCollection, page, limit, query, selector, &results, fields...)
 	return
 }
 
@@ -81,7 +81,7 @@ func (r AppModel) Exist(query interface{}) bool {
 }
 
 func (r AppModel) Insert() error {
-	r.Id, _ = mongo.GetIncrementId(shareDB.DocManagerDBName(), AppModelCollection)
+	r.Id, _ = mongo.GetIncrementId(shareDB.DocManagerDBName(), AppDataModelCollection)
 	r.CreateTime = time.Now().Unix()
 	return r.insert(r)
 }

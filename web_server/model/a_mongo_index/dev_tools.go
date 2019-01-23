@@ -7,8 +7,8 @@ import (
 )
 
 const (
-	CollectionDataModel = "data_model"
-	CollectionAppModel  = "app_model"
+	CollectionDataModel    = "data_model"
+	CollectionAppDataModel = "app_data_model"
 )
 
 func devToolsIndex() []Index {
@@ -27,7 +27,7 @@ func devToolsIndex() []Index {
 		},
 		{
 			DBName:     shareDB.DocManagerDBName(),
-			Collection: CollectionAppModel,
+			Collection: CollectionAppDataModel,
 			Index: mgo.Index{
 				Key:        []string{"model_id", "app_id"},
 				Unique:     true,
