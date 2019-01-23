@@ -176,9 +176,11 @@ func (d DataModel) updateApplication() {
 	aM := model_app_data_model.AppDataModel{}
 	aM.RemoveModelId(d.Id)
 	for _, app := range d.Apps {
-		aM.AppId = app.Id
-		aM.ModelId = d.Id
-		aM.Insert()
+		if app.Exist() {
+			aM.AppId = app.Id
+			aM.ModelId = d.Id
+			aM.Insert()
+		}
 	}
 }
 

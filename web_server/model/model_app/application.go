@@ -90,6 +90,10 @@ func (a Application) removeAll(selector interface{}) error {
 	return mongo.RemoveAll(shareDB.DocManagerDBName(), appCollection, selector)
 }
 
+func (a Application) Exist() bool {
+	return a.isExist(bson.M{"_id": a.Id})
+}
+
 func (a *Application) Insert() error {
 	if a.BundleId == "" {
 		return errors.New("bundleId must fill")
