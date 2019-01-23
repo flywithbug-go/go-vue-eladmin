@@ -8,6 +8,7 @@ import (
 
 const (
 	CollectionDataModel = "data_model"
+	CollectionAppModel  = "app_model"
 )
 
 func devToolsIndex() []Index {
