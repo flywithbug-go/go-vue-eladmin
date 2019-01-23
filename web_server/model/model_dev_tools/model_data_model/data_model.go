@@ -21,8 +21,8 @@ const (
 	modelAttributeTypeInt    //Int类型
 	modelAttributeTypeBool   //布尔类型
 	modelAttributeTypeString //String类型
-	modelAttributeTypeList   //数组 （基础类型或者模型）
 	modelAttributeTypeObject //模型
+	modelAttributeTypeList   //数组 （基础类型或者模型）
 )
 
 const (
@@ -30,10 +30,12 @@ const (
 )
 
 type Attribute struct {
-	Type      typeStatus `json:"type,omitempty" bson:"type,omitempty"` //int string list bool
-	Name      string     `json:"name,omitempty" bson:"name,omitempty"`
-	ModelName string     `json:"model_name,omitempty" bson:"model_name,omitempty"`
-	ModelId   int64      `json:"model_id,omitempty" bson:"model_id,omitempty"`
+	Type typeStatus `json:"type,omitempty" bson:"type,omitempty"` //int string list bool
+	Name string     `json:"name,omitempty" bson:"name,omitempty"`
+
+	//attribute是数组时，数组内元素对象
+	ModelName string `json:"model_name,omitempty" bson:"model_name,omitempty"`
+	ModelId   int64  `json:"model_id,omitempty" bson:"model_id,omitempty"`
 }
 
 type DataModel struct {
