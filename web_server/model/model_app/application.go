@@ -7,6 +7,7 @@ import (
 	"time"
 	"vue-admin/web_server/core/mongo"
 	"vue-admin/web_server/model/a_mongo_index"
+	"vue-admin/web_server/model/model_app_data_model"
 	"vue-admin/web_server/model/model_app_manager"
 	"vue-admin/web_server/model/model_user"
 	"vue-admin/web_server/model/shareDB"
@@ -153,6 +154,14 @@ func (a Application) Remove() error {
 	if a.Id == 0 {
 		return errors.New("id is 0")
 	}
+	//删除app的用户关联数据
+	appM := model_app_manager.AppManager{}
+	appM.RemoveAppId(a.Id)
+
+	//删除app的模型关联数据
+	adm := model_app_data_model.AppDataModel{}
+	adm.RemoveAppId(a.Id)
+
 	return a.remove(bson.M{"_id": a.Id})
 }
 

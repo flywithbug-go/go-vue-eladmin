@@ -6,6 +6,8 @@ import (
 	"time"
 	"vue-admin/web_server/core/mongo"
 	"vue-admin/web_server/model/a_mongo_index"
+	"vue-admin/web_server/model/model_app"
+	"vue-admin/web_server/model/model_app_data_model"
 	"vue-admin/web_server/model/shareDB"
 
 	"gopkg.in/mgo.v2"
@@ -32,18 +34,18 @@ const (
 type Attribute struct {
 	Type typeStatus `json:"type,omitempty" bson:"type,omitempty"` //int string list bool
 	Name string     `json:"name,omitempty" bson:"name,omitempty"`
-
 	//attribute是数组时，数组内元素对象
 	ModelName string `json:"model_name,omitempty" bson:"model_name,omitempty"`
 	ModelId   int64  `json:"model_id,omitempty" bson:"model_id,omitempty"`
 }
 
 type DataModel struct {
-	Id         int64       `json:"id,omitempty" bson:"_id,omitempty"`
-	Name       string      `json:"name,omitempty" bson:"name,omitempty"`
-	Desc       string      `json:"desc,omitempty" bson:"desc,omitempty"`
-	CreateTime int64       `json:"create_time,omitempty" bson:"create_time,omitempty"`
-	Attributes []Attribute `json:"attributes,omitempty" bson:"attributes,omitempty"` //模型的属性表
+	Id         int64                   `json:"id,omitempty" bson:"_id,omitempty"`
+	Name       string                  `json:"name,omitempty" bson:"name,omitempty"`
+	Desc       string                  `json:"desc,omitempty" bson:"desc,omitempty"`
+	CreateTime int64                   `json:"create_time,omitempty" bson:"create_time,omitempty"`
+	Attributes []Attribute             `json:"attributes,omitempty" bson:"attributes,omitempty"` //模型的属性表
+	Apps       []model_app.Application `json:"apps,omitempty" bson:"apps,omitempty"`             //不存入数据库
 }
 
 func (d DataModel) ToJson() string {
@@ -105,14 +107,6 @@ func (d DataModel) explain(pipeline, result interface{}) (results []DataModel, e
 	return
 }
 
-func (d DataModel) Update() error {
-	return d.update(bson.M{"_id": d.Id}, d)
-}
-
-func (d DataModel) Remove() error {
-	return d.remove(bson.M{"_id": d.Id})
-}
-
 func (d DataModel) AddAttribute(a Attribute) error {
 	if len(a.Name) == 0 {
 		return fmt.Errorf("attribute name can not be nil")
@@ -167,13 +161,38 @@ func (d DataModel) Insert() (id int64, err error) {
 	}
 	d.CreateTime = time.Now().Unix()
 	d.Id = id
+	list := d.Apps
+	d.Apps = nil
 	err = d.insert(d)
 	if err != nil {
 		d.AddAttributes(d.Attributes)
 	}
+	d.Apps = list
+	d.updateApplication()
 	return id, err
 }
 
+func (d DataModel) updateApplication() {
+	aM := model_app_data_model.AppDataModel{}
+	aM.RemoveModelId(d.Id)
+	for _, app := range d.Apps {
+		aM.AppId = app.Id
+		aM.ModelId = d.Id
+		aM.Insert()
+	}
+}
+
+func (d DataModel) Update() error {
+	d.updateApplication()
+	d.Apps = nil
+	return d.update(bson.M{"_id": d.Id}, d)
+}
+
+func (d DataModel) Remove() error {
+	aM := model_app_data_model.AppDataModel{}
+	aM.RemoveModelId(d.Id)
+	return d.remove(bson.M{"_id": d.Id})
+}
 func (d DataModel) TotalCount(query, selector interface{}) (int, error) {
 	return d.totalCount(query, selector)
 }
