@@ -23,8 +23,18 @@ import (
 
 const (
 	MaxPictureSize     int64 = 10485760
-	MaxPictureSizeInfo       = "10m"
+	MaxPictureSizeInfo       = "10M"
 )
+
+// 获取文件大小的接口
+type Size interface {
+	Size() int64
+}
+
+// 获取文件信息的接口
+type Stat interface {
+	Stat() (os.FileInfo, error)
+}
 
 var (
 	localImageDirPath = "../image/"
