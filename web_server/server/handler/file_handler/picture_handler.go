@@ -4,12 +4,10 @@ import (
 	"fmt"
 	"net/http"
 	"vue-admin/web_server/common"
+	"vue-admin/web_server/model"
 	"vue-admin/web_server/server/handler/handler_common"
 
-	"vue-admin/web_server/model"
-
 	"github.com/flywithbug/log4go"
-
 	"github.com/gin-gonic/gin"
 )
 
