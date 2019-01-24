@@ -70,6 +70,7 @@ func Logger() gin.HandlerFunc {
 
 		para := common.Para(c)
 		if para != nil {
+			fmt.Println(l.Para)
 			l.Para = common.Para(c)
 		}
 		l.ResponseCode = common.ResponseCode(c)

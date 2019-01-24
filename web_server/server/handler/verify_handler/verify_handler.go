@@ -25,26 +25,25 @@ func sendVerifyMailHanlder(c *gin.Context) {
 		c.Set(common.KeyContextResponseCode, aRes.Code)
 		c.JSON(http.StatusOK, aRes)
 	}()
-	verify := mailVerifyPara{}
-	err := c.BindJSON(&verify)
+	para := new(mailVerifyPara)
+	err := c.BindJSON(para)
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "Param invalid"+err.Error())
 		return
 	}
-	c.Set(common.KeyContextPara, verify)
-
-	if !email.MailVerify(verify.Mail) {
+	c.Set(common.KeyContextPara, para)
+	if !email.MailVerify(para.Mail) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "mail invalid")
 		return
 	}
-	vCode, err := model_verify.GeneralVerifyData(verify.Mail)
+	vCode, err := model_verify.GeneralVerifyData(para.Mail)
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusInternalServerError, "invalid"+err.Error())
 		return
 	}
-	err = email.SendVerifyCode("", vCode, verify.Mail)
+	err = email.SendVerifyCode("", vCode, para.Mail)
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusInternalServerError, err.Error())

@@ -30,8 +30,8 @@ func addMenuHandler(c *gin.Context) {
 		return
 	}
 
-	para := model_menu.Menu{}
-	err := c.BindJSON(&para)
+	para := new(model_menu.Menu)
+	err := c.BindJSON(para)
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
@@ -89,8 +89,8 @@ func updateMenuHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "has no permission")
 		return
 	}
-	para := model_menu.Menu{}
-	err := c.BindJSON(&para)
+	para := new(model_menu.Menu)
+	err := c.BindJSON(para)
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
@@ -122,8 +122,8 @@ func removeMenuHandler(c *gin.Context) {
 		return
 	}
 	//need id
-	para := model_menu.Menu{}
-	err := c.BindJSON(&para)
+	para := new(model_menu.Menu)
+	err := c.BindJSON(para)
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())

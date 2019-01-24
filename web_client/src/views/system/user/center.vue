@@ -14,7 +14,7 @@
             :headers="headers"
             :action="updateAvatarApi"
             class="avatar-uploader">
-            <img v-if="avatar" :src="avatar + '?size=200'" title="点击上传头像" class="avatar">
+            <img v-if="avatar" :src="avatar + '?size=240'" title="点击上传头像" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"/>
           </el-upload>
         </div>

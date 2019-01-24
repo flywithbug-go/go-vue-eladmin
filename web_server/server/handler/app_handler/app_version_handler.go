@@ -55,8 +55,8 @@ func updateAppVersionHandler(c *gin.Context) {
 		c.JSON(http.StatusOK, aRes)
 	}()
 
-	appV := model_app.AppVersion{}
-	err := c.BindJSON(&appV)
+	appV := new(model_app.AppVersion)
+	err := c.BindJSON(appV)
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid: "+err.Error())
@@ -146,15 +146,15 @@ func removeAppVersionHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "has no permission")
 		return
 	}
-	appV := model_app.AppVersion{}
-	err := c.BindJSON(&appV)
+	appV := new(model_app.AppVersion)
+	err := c.BindJSON(appV)
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid: "+err.Error())
 		return
 	}
 	c.Set(common.KeyContextPara, appV)
-	if check_permission.CheckNoAppVersionManagerPermission(c, appV) {
+	if check_permission.CheckNoAppVersionManagerPermission(c, *appV) {
 		log4go.Info(handler_common.RequestId(c) + "has no permission")
 		aRes.SetErrorInfo(http.StatusBadRequest, "has no permission")
 		return

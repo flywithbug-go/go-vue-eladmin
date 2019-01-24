@@ -28,15 +28,14 @@ func addRoleHandler(c *gin.Context) {
 		return
 	}
 
-	para := model_role.Role{}
-	err := c.BindJSON(&para)
+	para := new(model_role.Role)
+	err := c.BindJSON(para)
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
 	c.Set(common.KeyContextPara, para)
-
 	err = para.Insert()
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())
@@ -82,8 +81,8 @@ func updateRoleHandler(c *gin.Context) {
 		return
 	}
 
-	para := model_role.Role{}
-	err := c.BindJSON(&para)
+	para := new(model_role.Role)
+	err := c.BindJSON(para)
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
@@ -111,8 +110,8 @@ func removeRoleHandler(c *gin.Context) {
 		return
 	}
 	//need id
-	para := model_role.Role{}
-	err := c.BindJSON(&para)
+	para := new(model_role.Role)
+	err := c.BindJSON(para)
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())

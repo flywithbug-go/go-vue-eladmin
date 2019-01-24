@@ -20,9 +20,9 @@ type typeStatus int
 const (
 	modelAttributeTypeUndefine typeStatus = iota //待定
 	//基础类型
+	modelAttributeTypeString //String类型
 	modelAttributeTypeInt    //Int类型
 	modelAttributeTypeBool   //布尔类型
-	modelAttributeTypeString //String类型
 	modelAttributeTypeObject //模型
 	modelAttributeTypeList   //数组 （基础类型或者模型）
 )
@@ -50,7 +50,7 @@ type Attribute struct {
 
 type DataModel struct {
 	Id         int64                   `json:"id,omitempty" bson:"_id,omitempty"`
-	Name       string                  `json:"name,omitempty" bson:"name,omitempty"`
+	Name       string                  `json:"name,omitempty" bson:"name,omitempty"` //过滤中文名
 	Desc       string                  `json:"desc,omitempty" bson:"desc,omitempty"`
 	CreateTime int64                   `json:"create_time,omitempty" bson:"create_time,omitempty"`
 	Attributes []Attribute             `json:"attributes,omitempty" bson:"attributes,omitempty"` //模型的属性表
@@ -167,11 +167,15 @@ func (d DataModel) FindOne(query, selector interface{}) (dm DataModel, err error
 	if query == nil {
 		query = bson.M{"_id": d.Id}
 	}
-
-	return d.findOne(query, selector)
+	dm, err = d.findOne(query, selector)
+	if err != nil {
+		return
+	}
+	dm.Apps, _ = d.fetchApplications(nil)
+	return
 }
 
-func (d *DataModel) fetchApplications(selector interface{}) (results []model_app.Application, err error) {
+func (d DataModel) fetchApplications(selector interface{}) (results []model_app.Application, err error) {
 	if selector == nil {
 		selector = bson.M{"_id": 1, "name": 1}
 	}
@@ -186,11 +190,12 @@ func (d *DataModel) fetchApplications(selector interface{}) (results []model_app
 	for _, item := range list {
 		app := model_app.Application{}
 		app.Id = item.AppId
-		app.FindOne()
-
+		app, err = app.FindOne(nil, nil)
+		if err == nil {
+			results = append(results, app)
+		}
 	}
 	return
-
 }
 
 func (d DataModel) Insert() (id int64, err error) {
@@ -213,7 +218,7 @@ func (d DataModel) Insert() (id int64, err error) {
 
 func (d DataModel) updateApplication() {
 	aM := model_app_data_model.AppDataModel{}
-	aM.RemoveModelId(d.Id)
+	//aM.RemoveModelId(d.Id)
 	for _, app := range d.Apps {
 		if app.Exist() {
 			aM.AppId = app.Id

@@ -76,15 +76,15 @@ func editHandler(c *gin.Context) {
 	//	aRes.SetErrorInfo(http.StatusBadRequest, "has no permission")
 	//	return
 	//}
-	para := model_app.Application{}
-	err := c.BindJSON(&para)
+	para := new(model_app.Application)
+	err := c.BindJSON(para)
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid: "+err.Error())
 		return
 	}
 	c.Set(common.KeyContextPara, para)
-	if check_permission.CheckNoAppManagerPermission(c, para) &&
+	if check_permission.CheckNoAppManagerPermission(c, *para) &&
 		check_permission.CheckNoPermission(c, model_app.ApplicationPermissionEdit) {
 		log4go.Info(handler_common.RequestId(c) + "has no permission")
 		aRes.SetErrorInfo(http.StatusBadRequest, "has no permission")
@@ -187,14 +187,14 @@ func delHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "has no permission")
 		return
 	}
-	app := model_app.Application{}
-	err := c.BindJSON(&app)
+	app := new(model_app.Application)
+	err := c.BindJSON(app)
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid: "+err.Error())
 		return
 	}
-	if check_permission.CheckNoAppManagerPermission(c, app) {
+	if check_permission.CheckNoAppManagerPermission(c, *app) {
 		log4go.Info(handler_common.RequestId(c) + "has no permission")
 		aRes.SetErrorInfo(http.StatusBadRequest, "has no permission")
 		return

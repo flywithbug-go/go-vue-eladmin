@@ -19,16 +19,15 @@ func loginHandler(c *gin.Context) {
 		c.Set(common.KeyContextResponseCode, aRes.Code)
 		c.JSON(http.StatusOK, aRes)
 	}()
-	user := model_user.User{}
-	err := c.BindJSON(&user)
+	user := new(model_user.User)
+	err := c.BindJSON(user)
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
 	c.Set(common.KeyContextPara, user)
-
-	user, err = model_user.LoginUser(user.Username, user.Password)
+	*user, err = model_user.LoginUser(user.Username, user.Password)
 	if err != nil {
 		log4go.Error(err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "username or password not right")

@@ -27,16 +27,16 @@ func addPermissionHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "has no permission")
 		return
 	}
-	p := model_permission.Permission{}
-	err := c.BindJSON(&p)
+	para := new(model_permission.Permission)
+	err := c.BindJSON(para)
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
-	c.Set(common.KeyContextPara, p)
+	c.Set(common.KeyContextPara, para)
 
-	id, err := p.Insert()
+	id, err := para.Insert()
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusInternalServerError, "server invalid: "+err.Error())
@@ -80,8 +80,8 @@ func updatePermissionHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "has no permission")
 		return
 	}
-	para := model_permission.Permission{}
-	err := c.BindJSON(&para)
+	para := new(model_permission.Permission)
+	err := c.BindJSON(para)
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
@@ -110,8 +110,8 @@ func removePermissionHandler(c *gin.Context) {
 		return
 	}
 	//need id
-	para := model_permission.Permission{}
-	err := c.BindJSON(&para)
+	para := new(model_permission.Permission)
+	err := c.BindJSON(para)
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
