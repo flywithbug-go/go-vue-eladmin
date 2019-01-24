@@ -190,8 +190,11 @@ func (a Application) fetchOwnerManagers() (model_user.User, []model_user.User, [
 	return user, users, managerInfo
 }
 
-func (a Application) FindOne() (Application, error) {
-	a, err := a.findOne(bson.M{"_id": a.Id}, nil)
+func (a Application) FindOne(query, selector interface{}) (Application, error) {
+	if query == nil {
+		query = bson.M{"_id": a.Id}
+	}
+	a, err := a.findOne(query, selector)
 	if err != nil {
 		return a, err
 	}

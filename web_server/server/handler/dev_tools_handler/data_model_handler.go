@@ -2,6 +2,7 @@ package dev_tools_handler
 
 import (
 	"net/http"
+	"strconv"
 	"vue-admin/web_server/common"
 	"vue-admin/web_server/model"
 	"vue-admin/web_server/model/model_dev_tools/model_data_model"
@@ -123,4 +124,15 @@ func getDataModelHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "has no permission")
 		return
 	}
+	ids := c.Query("id")
+	id, _ := strconv.ParseInt(ids, 10, 64)
+	para := model_data_model.DataModel{}
+	para.Id = id
+	para, err := para.FindOne(nil, nil)
+	if err != nil {
+		log4go.Info(handler_common.RequestId(c) + err.Error())
+		aRes.SetErrorInfo(http.StatusBadRequest, "invalid: "+err.Error())
+		return
+	}
+
 }

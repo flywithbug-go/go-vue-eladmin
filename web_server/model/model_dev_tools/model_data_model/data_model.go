@@ -163,6 +163,36 @@ func (d DataModel) isExistAttribute(a Attribute) bool {
 	return d.isExist(selector)
 }
 
+func (d DataModel) FindOne(query, selector interface{}) (dm DataModel, err error) {
+	if query == nil {
+		query = bson.M{"_id": d.Id}
+	}
+
+	return d.findOne(query, selector)
+}
+
+func (d *DataModel) fetchApplications(selector interface{}) (results []model_app.Application, err error) {
+	if selector == nil {
+		selector = bson.M{"_id": 1, "name": 1}
+	}
+	aM := model_app_data_model.AppDataModel{}
+	aM.ModelId = d.Id
+
+	list, err := aM.FindAll(bson.M{"model_id": d.Id}, nil)
+	if err != nil {
+		return
+	}
+	results = make([]model_app.Application, 0)
+	for _, item := range list {
+		app := model_app.Application{}
+		app.Id = item.AppId
+		app.FindOne()
+
+	}
+	return
+
+}
+
 func (d DataModel) Insert() (id int64, err error) {
 	id, err = mongo.GetIncrementId(shareDB.DocManagerDBName(), dataModelCollection)
 	if err != nil {

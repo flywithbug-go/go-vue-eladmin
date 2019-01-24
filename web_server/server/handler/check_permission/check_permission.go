@@ -47,7 +47,7 @@ func CheckNoPermission(c *gin.Context, permission string) bool {
 }
 
 func CheckNoAppManagerPermission(c *gin.Context, app model_app.Application) bool {
-	app, err := app.FindOne()
+	app, err := app.FindOne(nil, nil)
 	if err != nil {
 		return true
 	}
@@ -67,7 +67,7 @@ func CheckNoAppManagerPermission(c *gin.Context, app model_app.Application) bool
 func CheckNoAppVersionManagerPermission(c *gin.Context, appV model_app.AppVersion) bool {
 	app := model_app.Application{}
 	app.Id = appV.AppId
-	app, err := app.FindOne()
+	app, err := app.FindOne(nil, nil)
 	if err != nil {
 		return true
 	}
