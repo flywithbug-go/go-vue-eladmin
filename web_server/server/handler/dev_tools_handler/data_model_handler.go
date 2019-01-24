@@ -2,6 +2,7 @@ package dev_tools_handler
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"regexp"
 	"strconv"
@@ -19,7 +20,7 @@ import (
 )
 
 var (
-	nameReg = regexp.MustCompile(`^[A-Z][a-z0-9_-]+$`)
+	nameReg = regexp.MustCompile(`^[A-Za-z0-9_-]+$`)
 )
 
 type paraAttribute struct {
@@ -54,8 +55,9 @@ func addDataModelHandler(c *gin.Context) {
 
 	match := nameReg.FindAllString(para.Name, -1)
 	if len(match) == 0 {
-		log4go.Info(handler_common.RequestId(c) + "name not right")
-		aRes.SetErrorInfo(http.StatusBadRequest, "name not right")
+		msg := fmt.Sprintf("name:%s not right", para.Name)
+		log4go.Info(handler_common.RequestId(c) + msg)
+		aRes.SetErrorInfo(http.StatusBadRequest, msg)
 		return
 	}
 	id, err := para.Insert()

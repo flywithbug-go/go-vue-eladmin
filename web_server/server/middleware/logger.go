@@ -70,8 +70,7 @@ func Logger() gin.HandlerFunc {
 
 		para := common.Para(c)
 		if para != nil {
-			fmt.Println(l.Para)
-			l.Para = common.Para(c)
+			l.Para = para
 		}
 		l.ResponseCode = common.ResponseCode(c)
 		log.InfoExt(l, "[GIN] [%s] [Completed]\t%s %s %s|\t%8v|\t%s|\t%5d|\t%s%3d%s|\t%s",

@@ -3,6 +3,7 @@ package model_data_model
 import (
 	"encoding/json"
 	"fmt"
+	"regexp"
 	"time"
 	"vue-admin/web_server/core/mongo"
 	"vue-admin/web_server/model/a_mongo_index"
@@ -37,6 +38,10 @@ const (
 	DataModelPermissionSelect = "Data_Model_SELECT"
 	DataModelPermissionEdit   = "Data_Model_EDIT"
 	DataModelPermissionDelete = "Data_Model_DELETE"
+)
+
+var (
+	nameReg = regexp.MustCompile(`^[A-Za-z0-9_-]+$`)
 )
 
 const (
@@ -122,11 +127,11 @@ func (d DataModel) explain(pipeline, result interface{}) (results []DataModel, e
 }
 
 func (d DataModel) AddAttribute(a Attribute) error {
-	if len(a.Name) == 0 {
-		return fmt.Errorf("attribute name can not be nil")
+	if !checkNameReg(a.Name) {
+		return fmt.Errorf("attribute name:%s not right", a.Name)
 	}
 	if d.isExistAttribute(a) {
-		return fmt.Errorf("attribute is exist")
+		return fmt.Errorf("duplicate attribute name:%s", a.Name)
 	}
 	update := bson.M{"$addToSet": bson.M{"attributes": a}}
 	change := mgo.Change{
@@ -141,18 +146,15 @@ func (d DataModel) AddAttribute(a Attribute) error {
 
 func (d DataModel) AddAttributes(list []Attribute) error {
 	for _, item := range list {
-		if int(item.Type) < len(ModelTypeStatus) {
+		if int(item.Type) >= len(ModelTypeStatus) || int(item.Type) < 0 {
 			return fmt.Errorf("type Status not found")
 		}
-		if item.ModelId > 0 {
+		if item.Type >= modelAttributeTypeObject {
 			m, err := d.FindOne(bson.M{"_id": item.ModelId}, nil)
 			if err != nil {
-				return err
+				return fmt.Errorf("data_model id:%d not found", item.ModelId)
 			}
 			item.ModelName = m.Name
-			if modelAttributeTypeObject > item.Type {
-				item.Type = modelAttributeTypeObject
-			}
 		}
 		item.TypeStatus = ModelTypeStatus[item.Type]
 		err := d.AddAttribute(item)
@@ -161,6 +163,14 @@ func (d DataModel) AddAttributes(list []Attribute) error {
 		}
 	}
 	return nil
+}
+
+func checkNameReg(name string) bool {
+	match := nameReg.FindAllString(name, -1)
+	if len(match) == 0 {
+		return false
+	}
+	return true
 }
 
 func (d DataModel) RemoveAttribute(a Attribute) error {
@@ -219,6 +229,9 @@ func (d DataModel) Insert() (id int64, err error) {
 	if err != nil {
 		return -1, err
 	}
+	if !checkNameReg(d.Name) {
+		return -1, fmt.Errorf("data_model name:%s not right", d.Name)
+	}
 	d.CreateTime = time.Now().Unix()
 	d.Id = id
 	list := d.Apps
@@ -245,8 +258,16 @@ func (d DataModel) updateApplication() {
 }
 
 func (d DataModel) Update() error {
+	if len(d.Name) > 0 && !checkNameReg(d.Name) {
+		return fmt.Errorf("data_model name:%s not right", d.Name)
+	}
 	d.updateApplication()
 	d.Apps = nil
+	err := d.AddAttributes(d.Attributes)
+	if err != nil {
+		return err
+	}
+	d.Attributes = nil
 	return d.update(bson.M{"_id": d.Id}, d)
 }
 
