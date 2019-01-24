@@ -9,11 +9,55 @@ import (
 	"mime/multipart"
 	"os"
 	"path/filepath"
+	"strconv"
+	"strings"
 	"time"
 	"vue-admin/web_server/model/model_file"
 
+	"github.com/disintegration/imaging"
+
+	"github.com/flywithbug/file"
+
 	"github.com/flywithbug/log4go"
 )
+
+const (
+	MaxPictureSize     int64 = 10485760
+	MaxPictureSizeInfo       = "10m"
+)
+
+var (
+	localImageDirPath = "../image/"
+)
+
+func SetLocalImageFilePath(path string) {
+	localImageDirPath = path
+}
+
+func loadImageFile(path, filename, size string) (imgPath string, err error) {
+	fileOrigin := localImageDirPath + path + "/" + filename
+	if len(size) == 0 {
+		return fileOrigin, nil
+	}
+	ext := filepath.Ext(filename)
+	if strings.EqualFold(ext, ".gif") {
+		return fileOrigin, nil
+	}
+	fileSizePath := localImageDirPath + path + "/" + size + "-" + filename
+	if !file.FileExists(fileSizePath) {
+		src, err := imaging.Open(fileOrigin)
+		if err != nil {
+			return "", err
+		}
+		sizeW, err := strconv.Atoi(size)
+		src = imaging.Resize(src, sizeW, 0, imaging.Lanczos)
+		err = imaging.Save(src, fileSizePath)
+		if err != nil {
+			return "", err
+		}
+	}
+	return fileSizePath, nil
+}
 
 func saveImageFile(file multipart.File, header *multipart.FileHeader) (imgPath string, err error) {
 	defer file.Close()

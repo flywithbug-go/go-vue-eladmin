@@ -8,14 +8,9 @@ import (
 	"image/png"
 	"io"
 	"net/http"
-	"os"
-	"path/filepath"
-	"strconv"
-	"strings"
 	"vue-admin/web_server/common"
 	"vue-admin/web_server/server/handler/handler_common"
 
-	"github.com/flywithbug/file"
 	"github.com/flywithbug/log4go"
 	"github.com/nfnt/resize"
 	"golang.org/x/image/bmp"
@@ -29,19 +24,6 @@ import (
 	_ "image/jpeg"
 	_ "image/png"
 )
-
-const (
-	MaxPictureSize     int64 = 10485760
-	MaxPictureSizeInfo       = "10m"
-)
-
-var (
-	localImageDirPath = "../image/"
-)
-
-func SetLocalImageFilePath(path string) {
-	localImageDirPath = path
-}
 
 func uploadImageHandler(c *gin.Context) {
 	aRes := model.NewResponse()
@@ -75,45 +57,52 @@ func loadImageHandler(c *gin.Context) {
 		return
 	}
 	size := c.Query("size")
-
-	fileOrigin := localImageDirPath + path + "/" + filename
-	sizeW, err := strconv.Atoi(size)
-
-	if len(size) == 0 || err != nil {
-		http.ServeFile(c.Writer, c.Request, fileOrigin)
+	imgPath, err := loadImageFile(path, filename, size)
+	if err != nil {
+		log4go.Info(handler_common.RequestId(c) + err.Error())
+		http.Error(c.Writer, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	ext := filepath.Ext(filename)
-	if strings.EqualFold(ext, ".gif") {
-		http.ServeFile(c.Writer, c.Request, fileOrigin)
-		return
-	}
-
-	filePath := localImageDirPath + path + "/" + size + "-" + filename
-	if !file.FileExists(filePath) {
-		if !file.FileExists(fileOrigin) {
-			c.Writer.Write([]byte("Error: Image Not found."))
-			return
-		}
-
-		fIn, _ := os.Open(fileOrigin)
-		//log4go.Info(handler_common.RequestId(c) + fileOrigin)
-		defer fIn.Close()
-		fOut, _ := os.Create(filePath)
-		//log4go.Info(handler_common.RequestId(c) + filename)
-		defer fOut.Close()
-		if sizeW < 100 {
-			sizeW = 100
-		}
-		err := scale(fIn, fOut, sizeW, 100)
-		if err != nil {
-			log4go.Info(handler_common.RequestId(c) + err.Error())
-			http.ServeFile(c.Writer, c.Request, fileOrigin)
-			return
-		}
-	}
-
-	http.ServeFile(c.Writer, c.Request, filePath)
+	http.ServeFile(c.Writer, c.Request, imgPath)
+	//
+	//fileOrigin := localImageDirPath + path + "/" + filename
+	//sizeW, err := strconv.Atoi(size)
+	//
+	//if len(size) == 0 || err != nil {
+	//	http.ServeFile(c.Writer, c.Request, fileOrigin)
+	//	return
+	//}
+	//ext := filepath.Ext(filename)
+	//if strings.EqualFold(ext, ".gif") {
+	//	http.ServeFile(c.Writer, c.Request, fileOrigin)
+	//	return
+	//}
+	//
+	//filePath := localImageDirPath + path + "/" + size + "-" + filename
+	//if !file.FileExists(filePath) {
+	//	if !file.FileExists(fileOrigin) {
+	//		c.Writer.Write([]byte("Error: Image Not found."))
+	//		return
+	//	}
+	//
+	//	fIn, _ := os.Open(fileOrigin)
+	//	//log4go.Info(handler_common.RequestId(c) + fileOrigin)
+	//	defer fIn.Close()
+	//	fOut, _ := os.Create(filePath)
+	//	//log4go.Info(handler_common.RequestId(c) + filename)
+	//	defer fOut.Close()
+	//	if sizeW < 100 {
+	//		sizeW = 100
+	//	}
+	//	err := scale(fIn, fOut, sizeW, 100)
+	//	if err != nil {
+	//		log4go.Info(handler_common.RequestId(c) + err.Error())
+	//		http.ServeFile(c.Writer, c.Request, fileOrigin)
+	//		return
+	//	}
+	//}
+	//
+	//http.ServeFile(c.Writer, c.Request, filePath)
 }
 
 func scale(in io.Reader, out io.Writer, size, quality int) error {
