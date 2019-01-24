@@ -11,10 +11,6 @@ import (
 	"github.com/flywithbug/log4go"
 
 	"github.com/gin-gonic/gin"
-
-	_ "image/gif"
-	_ "image/jpeg"
-	_ "image/png"
 )
 
 func uploadImageHandler(c *gin.Context) {
