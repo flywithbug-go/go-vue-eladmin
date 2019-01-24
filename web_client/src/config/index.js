@@ -1,7 +1,7 @@
 const BaseURL = process.env.BASE_API
 
-const UploadImageURL = 'https://www.flywithme.top/api' + '/upload/image'
-const downloadImageURL = 'https://www.flywithme.top/api' + '/image'
+const UploadImageURL = BaseURL + '/upload/image'
+const downloadImageURL = BaseURL + '/image'
 
 const PathPermissionTree = '/permission/tree'
 const PathPermissionList = '/permission/list'
