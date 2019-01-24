@@ -24,12 +24,15 @@ const (
 	modelAttributeTypeInt    //Int类型
 	modelAttributeTypeBool   //布尔类型
 	modelAttributeTypeObject //模型
-	modelAttributeTypeList   //数组 （基础类型或者模型）
+	modelAttributeTypeArray  //数组 （基础类型或者模型）
+)
+
+var (
+	ModelTypeStatus = [...]string{"Undefined", "String", "Int", "Bool", "Object", "Array"}
 )
 
 const (
-	DataModelPermissionALL = "Data_Model_ALL"
-
+	DataModelPermissionALL    = "Data_Model_ALL"
 	DataModelPermissionCreate = "Data_Model_CREATE"
 	DataModelPermissionSelect = "Data_Model_SELECT"
 	DataModelPermissionEdit   = "Data_Model_EDIT"
@@ -41,8 +44,10 @@ const (
 )
 
 type Attribute struct {
-	Type typeStatus `json:"type,omitempty" bson:"type,omitempty"` //int string list bool
-	Name string     `json:"name,omitempty" bson:"name,omitempty"`
+	Type       typeStatus `json:"type,omitempty" bson:"type,omitempty"` //int string list bool
+	TypeStatus string     `json:"type_status,omitempty" bson:"type_status,omitempty"`
+
+	Name string `json:"name,omitempty" bson:"name,omitempty"`
 	//attribute是数组时，数组内元素对象
 	ModelName string `json:"model_name,omitempty" bson:"model_name,omitempty"`
 	ModelId   int64  `json:"model_id,omitempty" bson:"model_id,omitempty"`
@@ -136,9 +141,20 @@ func (d DataModel) AddAttribute(a Attribute) error {
 
 func (d DataModel) AddAttributes(list []Attribute) error {
 	for _, item := range list {
-		if item.ModelId > 0 {
-
+		if int(item.Type) < len(ModelTypeStatus) {
+			return fmt.Errorf("type Status not found")
 		}
+		if item.ModelId > 0 {
+			m, err := d.FindOne(bson.M{"_id": item.ModelId}, nil)
+			if err != nil {
+				return err
+			}
+			item.ModelName = m.Name
+			if modelAttributeTypeObject > item.Type {
+				item.Type = modelAttributeTypeObject
+			}
+		}
+		item.TypeStatus = ModelTypeStatus[item.Type]
 		err := d.AddAttribute(item)
 		if err != nil {
 			return err
@@ -236,7 +252,9 @@ func (d DataModel) Update() error {
 
 func (d DataModel) Remove() error {
 	aM := model_app_data_model.AppDataModel{}
-	aM.RemoveModelId(d.Id)
+	if aM.Exist(bson.M{"model_id": d.Id}) {
+		return fmt.Errorf("model in use")
+	}
 	return d.remove(bson.M{"_id": d.Id})
 }
 func (d DataModel) TotalCount(query, selector interface{}) (int, error) {

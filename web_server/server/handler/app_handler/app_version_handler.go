@@ -30,22 +30,22 @@ func addAppVersionHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "has no permission")
 		return
 	}
-	appV := new(model_app.AppVersion)
-	err := c.BindJSON(appV)
+	para := new(model_app.AppVersion)
+	err := c.BindJSON(para)
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid: "+err.Error())
 		return
 	}
-	c.Set(common.KeyContextPara, appV)
+	c.Set(common.KeyContextPara, para.ToJson())
 
-	err = appV.Insert()
+	err = para.Insert()
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusInternalServerError, "para invalid: "+err.Error())
 		return
 	}
-	aRes.AddResponseInfo("app", appV)
+	aRes.AddResponseInfo("app", para)
 }
 
 func updateAppVersionHandler(c *gin.Context) {
@@ -55,25 +55,25 @@ func updateAppVersionHandler(c *gin.Context) {
 		c.JSON(http.StatusOK, aRes)
 	}()
 
-	appV := new(model_app.AppVersion)
-	err := c.BindJSON(appV)
+	para := new(model_app.AppVersion)
+	err := c.BindJSON(para)
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid: "+err.Error())
 		return
 	}
 
-	c.Set(common.KeyContextPara, appV)
-	js, _ := json.Marshal(appV)
+	c.Set(common.KeyContextPara, para.ToJson())
+	js, _ := json.Marshal(para)
 	fmt.Println(string(js))
-	appVersion, _ := appV.FindOne()
+	appVersion, _ := para.FindOne()
 	if check_permission.CheckNoAppVersionManagerPermission(c, appVersion) &&
 		check_permission.CheckNoPermission(c, model_app.ApplicationPermissionEdit) {
 		log4go.Info(handler_common.RequestId(c) + "has no permission")
 		aRes.SetErrorInfo(http.StatusBadRequest, "has no permission")
 		return
 	}
-	err = appV.Update()
+	err = para.Update()
 
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())
@@ -146,20 +146,20 @@ func removeAppVersionHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "has no permission")
 		return
 	}
-	appV := new(model_app.AppVersion)
-	err := c.BindJSON(appV)
+	para := new(model_app.AppVersion)
+	err := c.BindJSON(para)
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid: "+err.Error())
 		return
 	}
-	c.Set(common.KeyContextPara, appV)
-	if check_permission.CheckNoAppVersionManagerPermission(c, *appV) {
+	c.Set(common.KeyContextPara, para.ToJson())
+	if check_permission.CheckNoAppVersionManagerPermission(c, *para) {
 		log4go.Info(handler_common.RequestId(c) + "has no permission")
 		aRes.SetErrorInfo(http.StatusBadRequest, "has no permission")
 		return
 	}
-	err = appV.Remove()
+	err = para.Remove()
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusInternalServerError, "para invalid: "+err.Error())

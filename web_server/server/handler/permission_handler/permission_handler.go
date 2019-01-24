@@ -34,7 +34,7 @@ func addPermissionHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
-	c.Set(common.KeyContextPara, para)
+	c.Set(common.KeyContextPara, para.ToJson())
 
 	id, err := para.Insert()
 	if err != nil {
@@ -87,7 +87,7 @@ func updatePermissionHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
-	c.Set(common.KeyContextPara, para)
+	c.Set(common.KeyContextPara, para.ToJson())
 
 	err = para.Update()
 	if err != nil {
@@ -117,7 +117,7 @@ func removePermissionHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
-	c.Set(common.KeyContextPara, para)
+	c.Set(common.KeyContextPara, para.ToJson())
 
 	err = para.Remove()
 	if err != nil {

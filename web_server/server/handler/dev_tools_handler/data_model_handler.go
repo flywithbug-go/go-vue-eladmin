@@ -1,6 +1,7 @@
 package dev_tools_handler
 
 import (
+	"encoding/json"
 	"net/http"
 	"regexp"
 	"strconv"
@@ -9,6 +10,8 @@ import (
 	"vue-admin/web_server/model/model_dev_tools/model_data_model"
 	"vue-admin/web_server/server/handler/check_permission"
 	"vue-admin/web_server/server/handler/handler_common"
+
+	"gopkg.in/mgo.v2/bson"
 
 	"github.com/flywithbug/log4go"
 
@@ -22,6 +25,11 @@ var (
 type paraAttribute struct {
 	ModelId   int64                      `json:"model_id"`
 	Attribute model_data_model.Attribute `json:"attribute"`
+}
+
+func (u paraAttribute) ToJson() string {
+	js, _ := json.Marshal(u)
+	return string(js)
 }
 
 func addDataModelHandler(c *gin.Context) {
@@ -42,7 +50,7 @@ func addDataModelHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
-	c.Set(common.KeyContextPara, para)
+	c.Set(common.KeyContextPara, para.ToJson())
 
 	match := nameReg.FindAllString(para.Name, -1)
 	if len(match) == 0 {
@@ -77,7 +85,7 @@ func addAttributeHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
-	c.Set(common.KeyContextPara, para)
+	c.Set(common.KeyContextPara, para.ToJson())
 	if para.ModelId == 0 {
 		log4go.Info(handler_common.RequestId(c) + "id is 0")
 		aRes.SetErrorInfo(http.StatusBadRequest, "id is 0")
@@ -112,7 +120,7 @@ func updateDataModelHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
-	c.Set(common.KeyContextPara, para)
+	c.Set(common.KeyContextPara, para.ToJson())
 	if para.Id == 0 {
 		log4go.Info(handler_common.RequestId(c) + "id is 0")
 		aRes.SetErrorInfo(http.StatusBadRequest, "id is 0")
@@ -145,7 +153,7 @@ func removeDataModelHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
-	c.Set(common.KeyContextPara, para)
+	c.Set(common.KeyContextPara, para.ToJson())
 	if para.Id == 0 {
 		log4go.Info(handler_common.RequestId(c) + "id is 0")
 		aRes.SetErrorInfo(http.StatusBadRequest, "id is 0")
@@ -172,10 +180,15 @@ func getDataModelHandler(c *gin.Context) {
 		return
 	}
 	ids := c.Query("id")
+	if len(ids) == 0 {
+		log4go.Info(handler_common.RequestId(c) + "para invalid")
+		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid")
+		return
+	}
 	id, _ := strconv.ParseInt(ids, 10, 64)
 	para := model_data_model.DataModel{}
 	para.Id = id
-	para, err := para.FindOne(nil, nil)
+	para, err := para.FindOne(bson.M{"_id": id}, nil)
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "invalid: "+err.Error())

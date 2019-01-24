@@ -35,7 +35,7 @@ func addRoleHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
-	c.Set(common.KeyContextPara, para)
+	c.Set(common.KeyContextPara, para.ToJson())
 	err = para.Insert()
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())
@@ -88,7 +88,7 @@ func updateRoleHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
-	c.Set(common.KeyContextPara, para)
+	c.Set(common.KeyContextPara, para.ToJson())
 
 	err = para.Update()
 	if err != nil {
@@ -117,7 +117,7 @@ func removeRoleHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
-	c.Set(common.KeyContextPara, para)
+	c.Set(common.KeyContextPara, para.ToJson())
 	err = para.Remove()
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())

@@ -37,7 +37,7 @@ func addMenuHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
-	c.Set(common.KeyContextPara, para)
+	c.Set(common.KeyContextPara, para.ToJson())
 
 	if !para.IFrame && strings.HasPrefix(para.Path, "http") {
 		aRes.SetErrorInfo(http.StatusBadRequest, "外链必须以http或者https开头")
@@ -96,7 +96,7 @@ func updateMenuHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
-	c.Set(common.KeyContextPara, para)
+	c.Set(common.KeyContextPara, para.ToJson())
 
 	if !para.IFrame && !strings.HasPrefix(para.Path, "http") {
 		aRes.SetErrorInfo(http.StatusBadRequest, "外链必须以http或者https开头")
@@ -129,7 +129,7 @@ func removeMenuHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
-	c.Set(common.KeyContextPara, para)
+	c.Set(common.KeyContextPara, para.ToJson())
 
 	err = para.Remove()
 	if err != nil {

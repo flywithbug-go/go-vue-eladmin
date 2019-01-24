@@ -1,6 +1,7 @@
 package user_handler
 
 import (
+	"encoding/json"
 	"net/http"
 	"strings"
 	"vue-admin/web_server/common"
@@ -18,6 +19,11 @@ type ParaUser struct {
 	OldPassword string `json:"old_password"`
 	Code        string `json:"code"`
 	Mail        string `json:"mail"`
+}
+
+func (u ParaUser) ToJson() string {
+	js, _ := json.Marshal(u)
+	return string(js)
 }
 
 func validPasswordHandler(c *gin.Context) {
@@ -56,7 +62,7 @@ func updatePasswordHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
-	c.Set(common.KeyContextPara, para)
+	c.Set(common.KeyContextPara, para.ToJson())
 
 	if strings.EqualFold(para.Password, para.OldPassword) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "password not changed")
@@ -98,7 +104,7 @@ func updateMailHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
-	c.Set(common.KeyContextPara, para)
+	c.Set(common.KeyContextPara, para.ToJson())
 
 	if len(para.Mail) == 0 || len(para.Password) == 0 || len(para.Code) == 0 {
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid")

@@ -1,6 +1,7 @@
 package verify_handler
 
 import (
+	"encoding/json"
 	"net/http"
 	"strconv"
 	"vue-admin/web_server/common"
@@ -19,6 +20,11 @@ type mailVerifyPara struct {
 	Mail string `json:"mail"`
 }
 
+func (v mailVerifyPara) ToJson() string {
+	js, _ := json.Marshal(v)
+	return string(js)
+}
+
 func sendVerifyMailHanlder(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
@@ -32,7 +38,7 @@ func sendVerifyMailHanlder(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "Param invalid"+err.Error())
 		return
 	}
-	c.Set(common.KeyContextPara, para)
+	c.Set(common.KeyContextPara, para.ToJson())
 	if !email.MailVerify(para.Mail) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "mail invalid")
 		return

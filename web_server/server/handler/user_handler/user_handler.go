@@ -37,16 +37,16 @@ func addUserHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "has no permission")
 		return
 	}
-	user := new(model_user.User)
-	err := c.BindJSON(user)
+	para := new(model_user.User)
+	err := c.BindJSON(para)
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
-	c.Set(common.KeyContextPara, user)
+	c.Set(common.KeyContextPara, para.ToJson())
 
-	err = user.Insert()
+	err = para.Insert()
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
@@ -107,16 +107,16 @@ func updateUserHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "has no permission")
 		return
 	}
-	user := new(model_user.User)
-	err := c.BindJSON(user)
+	para := new(model_user.User)
+	err := c.BindJSON(para)
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
-	c.Set(common.KeyContextPara, user)
+	c.Set(common.KeyContextPara, para.ToJson())
 
-	err = user.Update()
+	err = para.Update()
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "db update failed: "+err.Error())
@@ -136,21 +136,21 @@ func deleteUserHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "has no permission")
 		return
 	}
-	user := new(model_user.User)
-	err := c.BindJSON(user)
+	para := new(model_user.User)
+	err := c.BindJSON(para)
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
-	c.Set(common.KeyContextPara, user)
+	c.Set(common.KeyContextPara, para.ToJson())
 
-	if common.UserId(c) == user.Id {
+	if common.UserId(c) == para.Id {
 		log4go.Info(handler_common.RequestId(c) + "can not delete your self")
 		aRes.SetErrorInfo(http.StatusForbidden, "can not delete your self")
 		return
 	}
-	err = user.Remove()
+	err = para.Remove()
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "db delete failed: "+err.Error())
@@ -308,7 +308,7 @@ func updateAvatar(c *gin.Context) {
 		return
 	}
 	para.Id = common.UserId(c)
-	c.Set(common.KeyContextPara, para)
+	c.Set(common.KeyContextPara, para.ToJson())
 	err = para.UpdateAvatar()
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())

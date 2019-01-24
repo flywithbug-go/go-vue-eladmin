@@ -38,7 +38,7 @@ func addHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid: "+err.Error())
 		return
 	}
-	c.Set(common.KeyContextPara, app)
+	c.Set(common.KeyContextPara, app.ToJson())
 	if app.BundleId == "" {
 		aRes.SetErrorInfo(http.StatusBadRequest, "BundleId must fill")
 		return
@@ -83,7 +83,7 @@ func editHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid: "+err.Error())
 		return
 	}
-	c.Set(common.KeyContextPara, para)
+	c.Set(common.KeyContextPara, para.ToJson())
 	if check_permission.CheckNoAppManagerPermission(c, *para) &&
 		check_permission.CheckNoPermission(c, model_app.ApplicationPermissionEdit) {
 		log4go.Info(handler_common.RequestId(c) + "has no permission")
@@ -187,20 +187,20 @@ func delHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "has no permission")
 		return
 	}
-	app := new(model_app.Application)
-	err := c.BindJSON(app)
+	para := new(model_app.Application)
+	err := c.BindJSON(para)
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid: "+err.Error())
 		return
 	}
-	if check_permission.CheckNoAppManagerPermission(c, *app) {
+	if check_permission.CheckNoAppManagerPermission(c, *para) {
 		log4go.Info(handler_common.RequestId(c) + "has no permission")
 		aRes.SetErrorInfo(http.StatusBadRequest, "has no permission")
 		return
 	}
-	c.Set(common.KeyContextPara, app)
-	err = app.Remove()
+	c.Set(common.KeyContextPara, para.ToJson())
+	err = para.Remove()
 	if err != nil {
 		log4go.Error(handler_common.RequestId(c) + err.Error())
 		aRes.SetErrorInfo(http.StatusInternalServerError, "para invalid: "+err.Error())

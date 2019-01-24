@@ -26,7 +26,7 @@ func loginHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
-	c.Set(common.KeyContextPara, user)
+	c.Set(common.KeyContextPara, user.ToJson())
 	*user, err = model_user.LoginUser(user.Username, user.Password)
 	if err != nil {
 		log4go.Error(err.Error())
@@ -68,7 +68,7 @@ func registerHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
 		return
 	}
-	c.Set(common.KeyContextPara, user)
+	c.Set(common.KeyContextPara, user.ToJson())
 
 	if user.Username == "" {
 		aRes.SetErrorInfo(http.StatusBadRequest, "username can not be nil")
