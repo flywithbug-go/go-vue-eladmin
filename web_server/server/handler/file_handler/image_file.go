@@ -60,7 +60,7 @@ func loadImageFile(path, filename, size string) (imgPath string, err error) {
 			return "", err
 		}
 		sizeW, err := strconv.Atoi(size)
-		src = imaging.Resize(src, sizeW, 0, imaging.Lanczos)
+		src = imaging.Fit(src, sizeW, sizeW, imaging.Lanczos)
 		err = imaging.Save(src, fileSizePath)
 		if err != nil {
 			return "", err

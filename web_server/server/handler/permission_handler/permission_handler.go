@@ -95,6 +95,7 @@ func updatePermissionHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "invalid: "+err.Error())
 		return
 	}
+	aRes.SetSuccess()
 }
 
 func removePermissionHandler(c *gin.Context) {
@@ -124,6 +125,8 @@ func removePermissionHandler(c *gin.Context) {
 		aRes.SetErrorInfo(http.StatusBadRequest, "invalid: "+err.Error())
 		return
 	}
+	aRes.SetSuccess()
+
 }
 
 func getPermissionListHandler(c *gin.Context) {

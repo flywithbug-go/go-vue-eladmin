@@ -11,7 +11,7 @@
       <el-table-column prop="username" label="用户名"/>
       <el-table-column label="头像">
         <template slot-scope="scope">
-          <img :src="scope.row.avatar" class="el-avatar" width="100px" align="center">
+          <img :src="scope.row.avatar+ '?size=120'" class="avatar" width="100px" align="center">
         </template>
       </el-table-column>
       <el-table-column prop="email" label="邮箱"/>
