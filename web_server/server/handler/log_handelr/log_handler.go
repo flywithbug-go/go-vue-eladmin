@@ -23,6 +23,8 @@ func getLogListHandler(c *gin.Context) {
 	page, _ := strconv.Atoi(c.Query("page"))
 	userId := c.Query("user_id")
 	requestId := c.Query("requestId")
+	resCode, _ := strconv.Atoi(c.Query("response_code"))
+
 	flag := c.Query("flag")
 	if size == 0 {
 		size = 10
@@ -40,6 +42,9 @@ func getLogListHandler(c *gin.Context) {
 	}
 	if len(flag) > 0 {
 		query["flag"] = flag
+	}
+	if resCode > 0 {
+		query["response_code"] = resCode
 	}
 	var l = model_monitor.Log{}
 	totalCount, _ := l.TotalCount(query, nil)

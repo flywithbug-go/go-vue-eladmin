@@ -22,7 +22,7 @@
         <template slot-scope="scope">
           <el-tag v-if="scope.row.response_code === 400" type="warning">{{ scope.row.response_code }}</el-tag>
           <el-tag v-else-if="scope.row.response_code === 200" type="success">{{ scope.row.response_code }}</el-tag>
-          <el-tag v-else-if="scope.row.response_code === -1" type="info">{{ scope.row.status_code }}</el-tag>
+          <el-tag v-else-if="scope.row.response_code > 0" type="info">{{ scope.row.response_code }}</el-tag>
           <el-tag v-else type="info">{{ scope.row.status_code }}</el-tag>
         </template>
       </el-table-column>
@@ -73,6 +73,7 @@ export default {
       const user_id = query.user_id
       const flag = query.flag
       const requestId = query.requestId
+      const code = query.code
       this.params = { page: this.page, size: this.size, sort: sort }
       if (requestId && requestId.length > 0) {
         this.params['requestId'] = requestId
@@ -83,6 +84,9 @@ export default {
       }
       if (flag && flag.length > 0) {
         this.params['flag'] = flag
+      }
+      if (code && code > 0) {
+        this.params['response_code'] = code
       }
       console.log(':query', this.params)
       return true
