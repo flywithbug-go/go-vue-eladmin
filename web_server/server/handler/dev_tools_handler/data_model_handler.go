@@ -52,7 +52,6 @@ func addDataModelHandler(c *gin.Context) {
 		return
 	}
 	c.Set(common.KeyContextPara, para.ToJson())
-
 	match := nameReg.FindAllString(para.Name, -1)
 	if len(match) == 0 {
 		msg := fmt.Sprintf("name:%s not right", para.Name)

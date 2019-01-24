@@ -125,10 +125,10 @@ func (l Log) Insert() error {
 		return l.Update()
 	}
 	if l.Para != nil {
-		js, _ := json.Marshal(l.Para)
-		if js != nil {
-			l.Para = string(js)
-		}
+		//js, _ := json.Marshal(l.Para)
+		//if js != nil {
+		//	l.Para = string(js)
+		//}
 	}
 	return l.insert(l)
 }

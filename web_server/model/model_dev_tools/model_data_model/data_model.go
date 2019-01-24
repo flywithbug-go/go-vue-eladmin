@@ -153,7 +153,8 @@ func (d DataModel) AddAttributes(list []Attribute) error {
 		if item.Type >= modelAttributeTypeObject {
 			m, err := d.FindOne(bson.M{"_id": item.ModelId}, nil)
 			if err != nil {
-				return fmt.Errorf("data_model TypeStatus:%s id:%d not found", item.TypeStatus, item.ModelId)
+				return fmt.Errorf("model attribute name:%s TypeStatus:%s id:%d not found",
+					item.Name, item.TypeStatus, item.ModelId)
 			}
 			item.ModelName = m.Name
 		}
