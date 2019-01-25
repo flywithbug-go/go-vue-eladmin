@@ -169,6 +169,37 @@ func removeDataModelHandler(c *gin.Context) {
 	aRes.SetSuccess()
 }
 
+func removeAttribuiteHandler(c *gin.Context) {
+	aRes := model.NewResponse()
+	defer func() {
+		c.Set(common.KeyContextResponseCode, aRes.Code)
+		c.JSON(http.StatusOK, aRes)
+	}()
+	if check_permission.CheckNoPermission(c, model_data_model.DataModelPermissionDelete) {
+		log4go.Info(handler_common.RequestId(c) + "has no permission")
+		aRes.SetErrorInfo(http.StatusBadRequest, "has no permission")
+		return
+	}
+	para := new(paraAttribute)
+	err := c.BindJSON(para)
+	if err != nil {
+		log4go.Info(handler_common.RequestId(c) + err.Error())
+		aRes.SetErrorInfo(http.StatusBadRequest, "para invalid"+err.Error())
+		return
+	}
+	c.Set(common.KeyContextPara, para.ToJson())
+
+	dm := model_data_model.DataModel{}
+	dm.Id = para.ModelId
+	err = dm.RemoveAttribute(para.Attribute)
+	if err != nil {
+		log4go.Info(handler_common.RequestId(c) + err.Error())
+		aRes.SetErrorInfo(http.StatusBadRequest, "invalid: "+err.Error())
+		return
+	}
+	aRes.SetSuccess()
+}
+
 func getDataModelHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {

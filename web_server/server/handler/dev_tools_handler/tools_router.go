@@ -16,17 +16,17 @@ var Routers = []handler_common.GinHandleFunc{
 		Route:      "/tools/model",
 	},
 	{
-		Handler:    addAttributeHandler, //模型修改
+		Handler:    addAttributeHandler, //添加模型属性
 		RouterType: handler_common.RouterTypeNeedAuth,
 		Method:     "PUT",
 		Route:      "/tools/model/attribute",
 	},
-	//{
-	//	Handler:    addAttributeHandler, //模型修改
-	//	RouterType: handler_common.RouterTypeNeedAuth,
-	//	Method:     "PUT",
-	//	Route:      "/tools/model/attribute",
-	//},
+	{
+		Handler:    removeAttribuiteHandler, //删除模型属性
+		RouterType: handler_common.RouterTypeNeedAuth,
+		Method:     "DELETE",
+		Route:      "/tools/model/attribute",
+	},
 	{
 		Handler:    removeDataModelHandler, //模型删除
 		RouterType: handler_common.RouterTypeNeedAuth,
