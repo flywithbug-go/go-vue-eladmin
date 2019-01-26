@@ -28,7 +28,7 @@ func (v mailVerifyPara) ToJson() string {
 func sendVerifyMailHanlder(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.Set(common.KeyContextResponseCode, aRes.Code)
+		c.Set(common.KeyContextResponse, aRes)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	para := new(mailVerifyPara)
@@ -61,7 +61,7 @@ func sendVerifyMailHanlder(c *gin.Context) {
 func getVerifyListHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.Set(common.KeyContextResponseCode, aRes.Code)
+		c.Set(common.KeyContextResponse, aRes)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	size, _ := strconv.Atoi(c.Query("size"))

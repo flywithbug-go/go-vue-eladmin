@@ -19,7 +19,7 @@ import (
 func addRoleHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.Set(common.KeyContextResponseCode, aRes.Code)
+		c.Set(common.KeyContextResponse, aRes)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_role.RolePermissionCreate) {
@@ -47,7 +47,7 @@ func addRoleHandler(c *gin.Context) {
 func getRoleHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.Set(common.KeyContextResponseCode, aRes.Code)
+		c.Set(common.KeyContextResponse, aRes)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_role.RolePermissionSelect) {
@@ -72,7 +72,7 @@ func getRoleHandler(c *gin.Context) {
 func updateRoleHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.Set(common.KeyContextResponseCode, aRes.Code)
+		c.Set(common.KeyContextResponse, aRes)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_role.RolePermissionEdit) {
@@ -101,7 +101,7 @@ func updateRoleHandler(c *gin.Context) {
 func removeRoleHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.Set(common.KeyContextResponseCode, aRes.Code)
+		c.Set(common.KeyContextResponse, aRes)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_role.RolePermissionDelete) {
@@ -129,7 +129,7 @@ func removeRoleHandler(c *gin.Context) {
 func getRoleListHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.Set(common.KeyContextResponseCode, aRes.Code)
+		c.Set(common.KeyContextResponse, aRes)
 		c.JSON(http.StatusOK, aRes)
 	}()
 
@@ -172,7 +172,7 @@ func getRoleListHandler(c *gin.Context) {
 func getRoleTreeHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.Set(common.KeyContextResponseCode, aRes.Code)
+		c.Set(common.KeyContextResponse, aRes)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_role.RolePermissionSelect) {

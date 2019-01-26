@@ -10,6 +10,7 @@ const (
 
 	KeyUserAgent           = "User-Agent"
 	KeyContextPara         = "_key_ctx_para"
+	KeyContextResponse     = "_key_ctx_response"
 	KeyContextUserId       = "_key_ctx_userId_"
 	KeyContextRequestId    = "X-Reqid"
 	KeyContextResponseCode = "_key_ctx_response_code"
@@ -49,6 +50,14 @@ func XRequestId(ctx *gin.Context) string {
 
 func Para(c *gin.Context) interface{} {
 	para, ok := c.Get(KeyContextPara)
+	if !ok {
+		return nil
+	}
+	return para
+}
+
+func Response(c *gin.Context) interface{} {
+	para, ok := c.Get(KeyContextResponse)
 	if !ok {
 		return nil
 	}

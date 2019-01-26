@@ -29,7 +29,7 @@ type responseVisit struct {
 func visitHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.Set(common.KeyContextResponseCode, aRes.Code)
+		c.Set(common.KeyContextResponse, aRes)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	query := bson.M{}
@@ -59,7 +59,7 @@ func visitHandler(c *gin.Context) {
 func visitCountHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.Set(common.KeyContextResponseCode, aRes.Code)
+		c.Set(common.KeyContextResponse, aRes)
 		c.JSON(http.StatusOK, aRes)
 	}()
 
@@ -72,7 +72,7 @@ func visitCountHandler(c *gin.Context) {
 func chartListHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.Set(common.KeyContextResponseCode, aRes.Code)
+		c.Set(common.KeyContextResponse, aRes)
 		c.JSON(http.StatusOK, aRes)
 	}()
 

@@ -14,7 +14,7 @@ import (
 func uploadImageHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.Set(common.KeyContextResponseCode, aRes.Code)
+		c.Set(common.KeyContextResponse, aRes)
 		c.JSON(http.StatusOK, aRes)
 	}()
 

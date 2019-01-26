@@ -22,7 +22,7 @@ import (
 func addAppVersionHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.Set(common.KeyContextResponseCode, aRes.Code)
+		c.Set(common.KeyContextResponse, aRes)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_app.ApplicationPermissionCreate) {
@@ -51,7 +51,7 @@ func addAppVersionHandler(c *gin.Context) {
 func updateAppVersionHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.Set(common.KeyContextResponseCode, aRes.Code)
+		c.Set(common.KeyContextResponse, aRes)
 		c.JSON(http.StatusOK, aRes)
 	}()
 
@@ -86,7 +86,7 @@ func updateAppVersionHandler(c *gin.Context) {
 func getAppVersionListHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.Set(common.KeyContextResponseCode, aRes.Code)
+		c.Set(common.KeyContextResponse, aRes)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_app.ApplicationPermissionSelect) {
@@ -138,7 +138,7 @@ func getAppVersionListHandler(c *gin.Context) {
 func removeAppVersionHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.Set(common.KeyContextResponseCode, aRes.Code)
+		c.Set(common.KeyContextResponse, aRes)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_app.ApplicationPermissionDelete) {

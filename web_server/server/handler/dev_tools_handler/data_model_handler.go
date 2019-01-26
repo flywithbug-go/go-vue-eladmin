@@ -36,7 +36,7 @@ func (u paraAttribute) ToJson() string {
 func addDataModelHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.Set(common.KeyContextResponseCode, aRes.Code)
+		c.Set(common.KeyContextResponse, aRes)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_data_model.DataModelPermissionCreate) {
@@ -71,7 +71,7 @@ func addDataModelHandler(c *gin.Context) {
 func addAttributeHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.Set(common.KeyContextResponseCode, aRes.Code)
+		c.Set(common.KeyContextResponse, aRes)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_data_model.DataModelPermissionCreate) {
@@ -106,7 +106,7 @@ func addAttributeHandler(c *gin.Context) {
 func updateDataModelHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.Set(common.KeyContextResponseCode, aRes.Code)
+		c.Set(common.KeyContextResponse, aRes)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_data_model.DataModelPermissionEdit) {
@@ -139,7 +139,7 @@ func updateDataModelHandler(c *gin.Context) {
 func removeDataModelHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.Set(common.KeyContextResponseCode, aRes.Code)
+		c.Set(common.KeyContextResponse, aRes)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_data_model.DataModelPermissionDelete) {
@@ -172,7 +172,7 @@ func removeDataModelHandler(c *gin.Context) {
 func removeAttribuiteHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.Set(common.KeyContextResponseCode, aRes.Code)
+		c.Set(common.KeyContextResponse, aRes)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_data_model.DataModelPermissionDelete) {
@@ -203,7 +203,7 @@ func removeAttribuiteHandler(c *gin.Context) {
 func getDataModelHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.Set(common.KeyContextResponseCode, aRes.Code)
+		c.Set(common.KeyContextResponse, aRes)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_data_model.DataModelPermissionSelect) {

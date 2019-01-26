@@ -29,9 +29,11 @@ type Log struct {
 	UserId       int64         `json:"user_id,omitempty" bson:"user_id,omitempty"`
 	Para         interface{}   `json:"para,omitempty" bson:"para,omitempty"`
 	ResponseCode int           `json:"response_code,omitempty" bson:"response_code,omitempty"`
-	StartTime    int64         `json:"start_time,omitempty" bson:"start_time,omitempty"`
-	EndTime      int64         `json:"end_time,omitempty" bson:"end_time,omitempty"`
-	UUID         string        `json:"uuid,omitempty" bson:"uuid,omitempty"`
+	Response     interface{}   `json:"response,omitempty" bson:"response,omitempty"`
+
+	StartTime int64  `json:"start_time,omitempty" bson:"start_time,omitempty"`
+	EndTime   int64  `json:"end_time,omitempty" bson:"end_time,omitempty"`
+	UUID      string `json:"uuid,omitempty" bson:"uuid,omitempty"`
 }
 
 func (l *Log) ReSet() {

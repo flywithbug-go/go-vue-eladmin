@@ -2,7 +2,12 @@
   <div class="app-container">
     <eHeader :query="query"/>
     <!--表格渲染-->
-    <el-table v-loading="loading" :data="data" size="small" border style="width: 100%;">
+    <el-table
+      v-loading="loading"
+      :data="data"
+      size="small"
+      border
+      style="width: 100%;">
       <el-table-column prop="user_id" label="用户ID" width="80px" />
       <el-table-column :show-overflow-tooltip="true" prop="client_ip" label="IP" width="120px"/>
       <el-table-column prop="method" label="Method" width="80px" />
@@ -58,6 +63,11 @@ import { formatTimeDuration } from '@/utils/date'
 export default {
   components: { eHeader },
   mixins: [initData],
+  data() {
+    return {
+      win_height: ''
+    }
+  },
   created() {
     this.$nextTick(() => {
       this.init()

@@ -28,7 +28,7 @@ type ParaUserEdit struct {
 func addUserHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.Set(common.KeyContextResponseCode, aRes.Code)
+		c.Set(common.KeyContextResponse, aRes)
 		c.JSON(http.StatusOK, aRes)
 	}()
 
@@ -58,7 +58,7 @@ func addUserHandler(c *gin.Context) {
 func getUserInfoHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.Set(common.KeyContextResponseCode, aRes.Code)
+		c.Set(common.KeyContextResponse, aRes)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	var id int64
@@ -99,7 +99,7 @@ func getUserInfoHandler(c *gin.Context) {
 func updateUserHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.Set(common.KeyContextResponseCode, aRes.Code)
+		c.Set(common.KeyContextResponse, aRes)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_user.UserPermissionEdit) {
@@ -128,7 +128,7 @@ func updateUserHandler(c *gin.Context) {
 func deleteUserHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.Set(common.KeyContextResponseCode, aRes.Code)
+		c.Set(common.KeyContextResponse, aRes)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_user.UserPermissionDelete) {
@@ -162,7 +162,7 @@ func deleteUserHandler(c *gin.Context) {
 func getUserTreeListInfoHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.Set(common.KeyContextResponseCode, aRes.Code)
+		c.Set(common.KeyContextResponse, aRes)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_user.UserPermissionSelect) {
@@ -225,7 +225,7 @@ func getUserTreeListInfoHandler(c *gin.Context) {
 func queryListHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.Set(common.KeyContextResponseCode, aRes.Code)
+		c.Set(common.KeyContextResponse, aRes)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_user.UserPermissionSelect) {
@@ -297,7 +297,7 @@ func queryListHandler(c *gin.Context) {
 func updateAvatar(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.Set(common.KeyContextResponseCode, aRes.Code)
+		c.Set(common.KeyContextResponse, aRes)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	para := new(model_user.User)

@@ -23,7 +23,7 @@ type appPara struct {
 func addHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.Set(common.KeyContextResponseCode, aRes.Code)
+		c.Set(common.KeyContextResponse, aRes)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_app.ApplicationPermissionCreate) {
@@ -68,7 +68,7 @@ func addHandler(c *gin.Context) {
 func editHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.Set(common.KeyContextResponseCode, aRes.Code)
+		c.Set(common.KeyContextResponse, aRes)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	//if check_permission.CheckNoPermission(c, model_app.ApplicationPermissionEdit) {
@@ -102,7 +102,7 @@ func editHandler(c *gin.Context) {
 func listHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.Set(common.KeyContextResponseCode, aRes.Code)
+		c.Set(common.KeyContextResponse, aRes)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_app.ApplicationPermissionSelect) {
@@ -157,7 +157,7 @@ func listHandler(c *gin.Context) {
 func simpleListHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.Set(common.KeyContextResponseCode, aRes.Code)
+		c.Set(common.KeyContextResponse, aRes)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_app.ApplicationPermissionSelect) {
@@ -179,7 +179,7 @@ func simpleListHandler(c *gin.Context) {
 func delHandler(c *gin.Context) {
 	aRes := model.NewResponse()
 	defer func() {
-		c.Set(common.KeyContextResponseCode, aRes.Code)
+		c.Set(common.KeyContextResponse, aRes)
 		c.JSON(http.StatusOK, aRes)
 	}()
 	if check_permission.CheckNoPermission(c, model_app.ApplicationPermissionDelete) {

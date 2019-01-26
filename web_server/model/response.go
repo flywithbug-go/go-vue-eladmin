@@ -1,11 +1,19 @@
 package model
 
-import "net/http"
+import (
+	"encoding/json"
+	"net/http"
+)
 
 type Response struct {
 	Data map[string]interface{} `json:"data"`
 	Code int                    `json:"code"`
 	Msg  string                 `json:"msg"`
+}
+
+func (s Response) ToJson() string {
+	js, _ := json.Marshal(s)
+	return string(js)
 }
 
 func NewResponse() *Response {

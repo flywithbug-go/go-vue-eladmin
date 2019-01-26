@@ -9,6 +9,7 @@ import (
 	"time"
 	"vue-admin/web_server/common"
 	"vue-admin/web_server/log_writer"
+	"vue-admin/web_server/model"
 
 	log "github.com/flywithbug/log4go"
 	"github.com/gin-gonic/gin"
@@ -72,7 +73,15 @@ func Logger() gin.HandlerFunc {
 		if para != nil {
 			l.Para = para
 		}
-		l.ResponseCode = common.ResponseCode(c)
+		resI := common.Response(c)
+		if resI != nil {
+			aRes, ok := resI.(*model.Response)
+			if ok {
+				l.ResponseCode = aRes.Code
+				//TODO 是否真的需要返回数据落库 再定。
+				l.Response = aRes
+			}
+		}
 		log.InfoExt(l, "[GIN] [%s] [Completed]\t%s %s %s|\t%8v|\t%s|\t%5d|\t%s%3d%s|\t%s",
 			l.RequestId,
 			methodColor, l.Method, reset,
