@@ -78,8 +78,10 @@ func Logger() gin.HandlerFunc {
 			aRes, ok := resI.(*model.Response)
 			if ok {
 				l.ResponseCode = aRes.Code
-				//TODO 是否真的需要返回数据落库 再定。
-				l.Response = aRes
+				//TODO 数据返回不正确时记录response
+				if aRes.Code != 200 {
+					l.Response = aRes
+				}
 			}
 		}
 		log.InfoExt(l, "[GIN] [%s] [Completed]\t%s %s %s|\t%8v|\t%s|\t%5d|\t%s%3d%s|\t%s",
