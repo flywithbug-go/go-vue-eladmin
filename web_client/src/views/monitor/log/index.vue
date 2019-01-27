@@ -32,7 +32,7 @@
         </template>
       </el-table-column>
       <el-table-column :show-overflow-tooltip="true" prop="para" label="参数" width="80px"/>
-      <el-table-column :show-overflow-tooltip="true" prop="response" label="返回" width="80px">
+      <el-table-column :show-overflow-tooltip="true" prop="response" label="错误返回" width="80px" align="center">
         <template slot-scope="scope">
           {{ scope.row.response }}
         </template>
