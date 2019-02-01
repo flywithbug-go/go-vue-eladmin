@@ -24,8 +24,10 @@ const (
 	modelAttributeTypeString //String类型
 	modelAttributeTypeInt    //Int类型
 	modelAttributeTypeBool   //布尔类型
-	modelAttributeTypeObject //模型
 	modelAttributeTypeArray  //数组 （基础类型或者模型）
+
+	modelAttributeTypeObject //模型
+
 )
 
 var (
@@ -147,14 +149,14 @@ func (d DataModel) AddAttribute(a Attribute) error {
 func (d DataModel) AddAttributes(list []Attribute) error {
 	for _, item := range list {
 		if int(item.Type) >= len(ModelTypeStatus) || int(item.Type) < 0 {
-			return fmt.Errorf("type Status not found")
+			return fmt.Errorf("type Status:%d not found", item.Type)
 		}
 		item.TypeStatus = ModelTypeStatus[item.Type]
-		if item.Type >= modelAttributeTypeObject {
+		if item.Type == modelAttributeTypeObject {
 			m, err := d.FindOne(bson.M{"_id": item.ModelId}, nil)
 			if err != nil {
-				return fmt.Errorf("model attribute name:%s TypeStatus:%s id:%d not found",
-					item.Name, item.TypeStatus, item.ModelId)
+				return fmt.Errorf("model attribute name:%s Type:%d id:%d not found",
+					item.Name, item.Type, d.Id)
 			}
 			item.ModelName = m.Name
 		}
