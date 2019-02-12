@@ -116,21 +116,15 @@ func (l Log) explain(pipeline, result interface{}) (results []Log, err error) {
 }
 
 func (l Log) Update() error {
-	if !l.isExist(bson.M{"request_id": l.RequestId}) {
-		return l.Insert()
-	}
+	//if !l.isExist(bson.M{"request_id": l.RequestId}) {
+	//	return l.Insert()
+	//}
 	return l.update(bson.M{"request_id": l.RequestId}, l)
 }
 
 func (l Log) Insert() error {
 	if l.isExist(bson.M{"request_id": l.RequestId}) {
 		return l.Update()
-	}
-	if l.Para != nil {
-		//js, _ := json.Marshal(l.Para)
-		//if js != nil {
-		//	l.Para = string(js)
-		//}
 	}
 	return l.insert(l)
 }

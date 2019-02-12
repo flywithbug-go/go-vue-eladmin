@@ -41,13 +41,13 @@ func (v VisitUId) update(selector, update interface{}) error {
 	return mongo.Update(shareDB.MonitorDBName(), visitUIdCollection, selector, update, true)
 }
 
-func (v VisitUId) findOne(query, selector interface{}) (Log, error) {
-	ap := Log{}
+func (v VisitUId) findOne(query, selector interface{}) (VisitUId, error) {
+	ap := VisitUId{}
 	err := mongo.FindOne(shareDB.MonitorDBName(), visitUIdCollection, query, selector, &ap)
 	return ap, err
 }
-func (v VisitUId) findAll(query, selector interface{}) (results []Log, err error) {
-	results = []Log{}
+func (v VisitUId) findAll(query, selector interface{}) (results []VisitUId, err error) {
+	results = []VisitUId{}
 	err = mongo.FindAll(shareDB.MonitorDBName(), visitUIdCollection, query, selector, &results)
 	return results, err
 }

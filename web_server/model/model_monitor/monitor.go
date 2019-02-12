@@ -36,7 +36,7 @@ func (l Log) AddMonitorInfo() {
 	visitUid := visitUIdPool.Get().(*VisitUId)
 	vApi := visitApiPool.Get().(*VisitApi)
 	if len(l.UUID) == 0 && l.UserId > 0 {
-		visitUid.findOne(bson.M{"user_id": l.UserId}, nil)
+		*visitUid, _ = visitUid.findOne(bson.M{"user_id": l.UserId}, nil)
 		l.UUID = visitUid.UUID
 	}
 	l.Insert()
