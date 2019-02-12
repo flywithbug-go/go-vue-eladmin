@@ -57,9 +57,9 @@ func NewConsoleWriter() *ConsoleWriter {
 }
 
 func (w *ConsoleWriter) Write(r *log4go.Record) error {
-	//if r.Level == log4go.NEVERSHOW {
-	//	return nil
-	//}
+	if r.Level == NEVERShow {
+		return nil
+	}
 	if w.color {
 		fmt.Fprint(os.Stdout, ((*colorRecord)(r)).String())
 	} else {

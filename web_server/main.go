@@ -29,7 +29,7 @@ func setLog() {
 	//c.SetColor(true)
 	//log.Register(c)
 
-	fmt.Println("\tinit log")
+	fmt.Println("init log")
 	//日志保存到db
 	w := log_writer.NewDBWriter()
 	log.Register(w)
@@ -41,18 +41,18 @@ func setLog() {
 
 	log.SetLevel(1)
 	log.SetLayout("2006-01-02 15:04:05")
-	fmt.Println("\t\tcomplete")
+	fmt.Println("\tcomplete")
 
 }
 
 func setFileConfig() {
-	fmt.Println("\t设置图片文件存储路径")
+	fmt.Println("设置图片文件存储路径")
 	file_handler.SetLocalImageFilePath(config.Conf().LocalFilePath)
 }
 
 func setJWTKey() {
 	//signingKey read
-	fmt.Println("\t配置JWT 秘钥文件")
+	fmt.Println("配置JWT 秘钥文件")
 	jwt.ReadSigningKey(config.Conf().PrivateKeyPath, config.Conf().PublicKeyPath)
 }
 
@@ -116,8 +116,7 @@ func main() {
 
 	//jwt验证
 	setJWTKey()
-	fmt.Println("start Server")
-
+	fmt.Println("Server")
 	//启动ApiServer服务
 	server.StartServer(config.Conf().Port, config.Conf().StaticPath, config.Conf().RouterPrefix, config.Conf().AuthPrefix)
 }
