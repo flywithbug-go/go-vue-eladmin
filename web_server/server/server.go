@@ -13,8 +13,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func StartServer(port, staticPath, rPrefix, authPrefix, env string) {
-	gin.SetMode(env)
+func StartServer(port, staticPath, rPrefix, authPrefix string) {
 	r := gin.New()
 	r.Use(middleware.Logger(), gin.Recovery())
 	r.Use(static.Serve("/", static.LocalFile(staticPath, true)))
