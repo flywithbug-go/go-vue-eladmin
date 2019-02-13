@@ -90,7 +90,7 @@ export default {
           title: '添加成功',
           message: res.msg,
           type: 'success',
-          duration: 1500
+          duration: 10000
         })
         this.loading = false
         this.$parent.$parent.init()

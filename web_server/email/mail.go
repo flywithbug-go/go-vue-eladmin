@@ -30,8 +30,8 @@ func sendMail(to, title, subject, body, from string) error {
 	return Mail.DialAndSend(m)
 }
 
-func SendVerifyMail(title, verifyStr, mail string) error {
-	return sendMail(mail, title, "Flywithbug", verifyStr, config.Conf().MailConfig.Username)
+func SendMail(title, subject, content, mail string) error {
+	return sendMail(mail, title, subject, content, config.Conf().MailConfig.Username)
 }
 
 var routerRe = regexp.MustCompile(`^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$`)

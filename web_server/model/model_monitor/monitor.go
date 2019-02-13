@@ -4,8 +4,6 @@ import (
 	"strings"
 	"sync"
 	"time"
-
-	"gopkg.in/mgo.v2/bson"
 )
 
 const (
@@ -35,10 +33,6 @@ func (l Log) AddMonitorInfo() {
 	}
 	visitUid := visitUIdPool.Get().(*VisitUId)
 	vApi := visitApiPool.Get().(*VisitApi)
-	if len(l.UUID) == 0 && l.UserId > 0 {
-		*visitUid, _ = visitUid.findOne(bson.M{"user_id": l.UserId}, nil)
-		l.UUID = visitUid.UUID
-	}
 	l.Insert()
 	timeF := time.Now().Format(TimeLayout)
 	if l.Latency > 0 {

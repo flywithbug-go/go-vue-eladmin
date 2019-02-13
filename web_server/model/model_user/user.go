@@ -94,7 +94,7 @@ func (u User) removeAll(selector interface{}) error {
 /*
 	userModify
 */
-func (u User) Insert() error {
+func (u *User) Insert() error {
 	u.Id, _ = mongo.GetIncrementId(shareDB.DocManagerDBName(), userCollection)
 	u.Enabled = true
 	u.CreateTime = time.Now().Unix()

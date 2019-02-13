@@ -24,6 +24,15 @@ type VisitUId struct {
 	Total    int    `json:"total,omitempty" bson:"total,omitempty"`
 }
 
+func (v *VisitUId) ReSet() {
+	v.ClientIp = ""
+	v.UUID = ""
+	v.UserId = 0
+	v.Count = 0
+	v.TimeDate = ""
+	v.Total = 0
+}
+
 func (v VisitUId) ToJson() string {
 	js, _ := json.Marshal(v)
 	return string(js)

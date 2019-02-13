@@ -1,10 +1,12 @@
 package user_handler
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
 	"vue-admin/web_server/common"
+	"vue-admin/web_server/email"
 	"vue-admin/web_server/model"
 	"vue-admin/web_server/model/model_user"
 	"vue-admin/web_server/server/handler/check_permission"
@@ -45,7 +47,6 @@ func addUserHandler(c *gin.Context) {
 		return
 	}
 	c.Set(common.KeyContextPara, para.ToJson())
-
 	err = para.Insert()
 	if err != nil {
 		log4go.Info(handler_common.RequestId(c) + err.Error())
@@ -53,6 +54,13 @@ func addUserHandler(c *gin.Context) {
 		return
 	}
 	aRes.SetSuccess()
+	aRes.Msg = fmt.Sprintf("用户名：%s 密码：%s", para.Name, para.Password)
+	err = email.SendMail("后台管理", "用户密码", aRes.Msg, para.Email)
+	if err != nil {
+		log4go.Info(handler_common.RequestId(c) + "邮件发送失败" + err.Error())
+		aRes.SetErrorInfo(http.StatusBadRequest, "邮件发送失败"+err.Error())
+		return
+	}
 }
 
 func getUserInfoHandler(c *gin.Context) {

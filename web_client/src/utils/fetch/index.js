@@ -29,6 +29,7 @@ client.interceptors.response.use(response => {
   const res = response.data
   console.log('interceptorsRes:', res)
   res.data.code = res.code
+  if (res.msg) res.data.msg = res.msg
   if (res.code === 200) {
     return res.data
   }
