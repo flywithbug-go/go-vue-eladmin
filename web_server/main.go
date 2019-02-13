@@ -19,15 +19,6 @@ import (
 
 //log 启动配置
 func setLog() {
-	//log日志写入文件
-	//w := log.NewFileWriter()
-	//w.SetPathPattern(config.Conf().LogPath)
-	//log.Register(w)
-
-	//log日志控制台输出
-	//c := log.NewConsoleWriter()
-	//c.SetColor(true)
-	//log.Register(c)
 
 	fmt.Println("init log")
 	//日志保存到db
@@ -118,5 +109,10 @@ func main() {
 	setJWTKey()
 	fmt.Println("Server")
 	//启动ApiServer服务
-	server.StartServer(config.Conf().Port, config.Conf().StaticPath, config.Conf().RouterPrefix, config.Conf().AuthPrefix)
+	server.StartServer(
+		config.Conf().Port,
+		config.Conf().StaticPath,
+		config.Conf().RouterPrefix,
+		config.Conf().AuthPrefix,
+		config.Conf().Env)
 }

@@ -25,11 +25,11 @@ type Config struct {
 	StaticPath      string          `json:"static_path"`
 	DBConfig        DBConfig        `json:"db_config"`         //数据库配置
 	MonitorDBConfig MonitorDBConfig `json:"monitor_db_config"` //日志数据库配置
-
-	RouterPrefix string     `json:"router_prefix"` //api前缀
-	AuthPrefix   string     `json:"auth_prefix"`   //白名单
-	MailConfig   MailConfig `json:"mail_config"`   //邮箱
-	AppConfig    AppConfig  `json:"app_config"`
+	RouterPrefix    string          `json:"router_prefix"`     //api前缀
+	AuthPrefix      string          `json:"auth_prefix"`       //白名单
+	MailConfig      MailConfig      `json:"mail_config"`       //邮箱
+	AppConfig       AppConfig       `json:"app_config"`
+	Env             string          `json:"env"` // release   debug test
 }
 
 type AppConfig struct {
